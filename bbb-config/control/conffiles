@@ -1,0 +1,4 @@
+/etc/bigbluebutton/bbb-conf/apply-lib.sh
+/etc/bigbluebutton/bigbluebutton-release
+/etc/bigbluebutton/nopdfmark.ps
+/etc/cron.daily/bigbluebutton
