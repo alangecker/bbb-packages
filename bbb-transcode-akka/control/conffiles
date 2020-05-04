@@ -1,0 +1,4 @@
+/usr/share/bbb-transcode-akka/conf/application.ini
+/usr/share/bbb-transcode-akka/conf/logback.xml
+/etc/default/bbb-transcode-akka
+/lib/systemd/system/bbb-transcode-akka.service

@@ -1,0 +1,11 @@
+Source: bbb-transcode-akka
+Package: bbb-transcode-akka
+Version: 2.2.0-8
+Section: java
+Priority: optional
+Architecture: all
+Installed-Size: 35990
+Depends: java7-runtime-headless, bash
+Maintainer: Mario Gasparoni <mariogasparoni@gmail.com>
+Description: BigBlueButton Transcoder
+ BigBlueButton FFmpeg transcoder.
