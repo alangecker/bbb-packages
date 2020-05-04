@@ -1,0 +1,24 @@
+prefix=/opt/freeswitch
+exec_prefix=/opt/freeswitch
+libdir=/opt/freeswitch/lib
+libexecdir=${exec_prefix}/libexec
+includedir=/opt/freeswitch/include/freeswitch
+modulesdir=/opt/freeswitch/lib/freeswitch/mod
+runtimedir=/opt/freeswitch/var/run/freeswitch
+logfiledir=/opt/freeswitch/var/log/freeswitch
+sysconfdir=${prefix}/etc
+confdir=/opt/freeswitch/etc/freeswitch
+dbdir=/opt/freeswitch/var/lib/freeswitch/db
+htdocsdir=/opt/freeswitch/share/freeswitch/htdocs
+localstatedir=/opt/freeswitch/var/lib/freeswitch
+grammardir=/opt/freeswitch/share/freeswitch/grammar
+soundsdir=/opt/freeswitch/share/freeswitch/sounds
+scriptdir=/opt/freeswitch/share/freeswitch/scripts
+recordingsdir=/opt/freeswitch/var/lib/freeswitch/recordings
+bindir=${exec_prefix}/bin
+
+Name: freeswitch
+Version: 1.10.3-dev
+Description: FreeSWITCH open source telephony platform
+Libs: -L${libdir} -lfreeswitch
+Cflags: -I${includedir}
