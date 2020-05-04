@@ -1,0 +1,11 @@
+Package: bbb-freeswitch-sounds
+Version: 1:1.6.7-6
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 300890
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: FreeSWITCH Sounds
