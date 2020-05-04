@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Start-Class: org.bigbluebutton.web.Application
+Spring-Boot-Classes: WEB-INF/classes/
+Spring-Boot-Lib: WEB-INF/lib/
+Spring-Boot-Version: 1.5.18.RELEASE
+Main-Class: org.springframework.boot.loader.WarLauncher
+

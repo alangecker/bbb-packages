@@ -1,0 +1,6 @@
+#Thu, 30 Apr 2020 18:22:11 +0000
+
+info.app.version=0.10.0
+info.app.name=bigbluebutton
+grails.env=production
+info.app.grailsVersion=3.3.9
