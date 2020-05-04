@@ -1,0 +1,12 @@
+Package: bbb-playback-notes
+Version: 1:2.2.0-6
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 13
+Depends: bbb-record-core
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBluebutton playback of notes
