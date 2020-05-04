@@ -1,0 +1,6 @@
+#Tue, 10 Dec 2019 17:56:14 +0000
+
+info.app.version=0.5
+info.app.name=bbb-lti
+grails.env=production
+info.app.grailsVersion=3.3.10

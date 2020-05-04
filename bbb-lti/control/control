@@ -1,0 +1,12 @@
+Package: bbb-lti
+Version: 1:2.2.0-33
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 47258
+Depends: unzip, bbb-web
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBlueButton endpoint for LTI
