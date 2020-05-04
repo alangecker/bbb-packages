@@ -10,7 +10,6 @@ existingPkg = os.listdir('deb')
 
 
 tmpdir = mkdtemp()
-print(tmpdir)
 
 res = subprocess.check_output(['curl', '-s', repo+"/dists/bigbluebutton-xenial/main/binary-amd64/Packages"])
 for pkg in res.decode('utf-8').split('\n\n'):
@@ -21,10 +20,12 @@ for pkg in res.decode('utf-8').split('\n\n'):
     version = re.search(r'Version: (.*)', pkg)[1]
     path = re.search(r'Filename: (.*)', pkg)[1]
     filename = path.split('/')[-1]
+    print("processing "+name+"...")
     
-    # if filename in existingPkg:
-    #     # this package was already processed
-    #     continue
+    if filename in existingPkg:
+        print(" - skipping (already extracted)")
+        # this package was already processed
+        continue
 
     print({
         'name': name,
@@ -79,3 +80,4 @@ for pkg in res.decode('utf-8').split('\n\n'):
     subprocess.run(['git', 'add', directory+'/'+name])
     subprocess.run(['git', 'commit', '-m', name+': '+version])
 
+print("done")
