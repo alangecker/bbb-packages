@@ -1,0 +1,3 @@
+/usr/share/bbb-apps-akka/conf/application.ini
+/etc/default/bbb-apps-akka
+/lib/systemd/system/bbb-apps-akka.service
