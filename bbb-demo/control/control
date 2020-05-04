@@ -1,0 +1,12 @@
+Package: bbb-demo
+Version: 1:2.2.0-9
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 1939
+Depends: unzip, tomcat7
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBlueButton API demos
