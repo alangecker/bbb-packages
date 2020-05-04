@@ -1,0 +1,12 @@
+Package: bbb-apps-video-broadcast
+Version: 1:2.2.0-8
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 34554
+Depends: bbb-red5
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBlueButton video broadcast module for Red5
