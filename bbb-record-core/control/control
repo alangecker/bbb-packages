@@ -1,0 +1,12 @@
+Package: bbb-record-core
+Version: 1:2.2.0-65
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 199
+Depends: ffmpeg,vorbis-tools,sox,mencoder,ruby-dev,libcurl4-openssl-dev,libxslt1-dev,libxml2-dev,build-essential,bbb-mkclean,libncurses5-dev,gnuplot,zlib1g-dev,python3,python3-lxml,python3-icu,redis-server,poppler-utils,ruby,yq,rsync,libsystemd-dev
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBlueButton record and playback
