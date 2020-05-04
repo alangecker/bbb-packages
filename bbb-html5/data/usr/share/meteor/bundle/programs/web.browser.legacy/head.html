@@ -1,0 +1,53 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    html {
+      box-sizing: border-box;
+    }
+
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+
+    body {
+      position: fixed;
+      height: 100%;
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+      font-size: 1rem; /* 16px */
+      background-color: #06172A;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    #app {
+      height: 100%;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    [hidden]:not([hidden="false"]) {
+      display: none !important;
+    }
+  </style>
+  <script>
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+    });
+  </script>
+  <script src="compatibility/adapter.js?v=VERSION" language="javascript"></script>
+  <script src="compatibility/bowser.js?v=VERSION" language="javascript"></script>
+  <script src="compatibility/sip.js?v=VERSION" language="javascript"></script>
+  <script src="compatibility/kurento-extension.js?v=VERSION" language="javascript"></script>
+  <script src="compatibility/kurento-utils.js?v=VERSION" language="javascript"></script>

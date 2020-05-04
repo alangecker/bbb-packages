@@ -1,0 +1,385 @@
+{
+  "format": "javascript-image-pre1",
+  "arch": "os",
+  "load": [
+    {
+      "node_modules": "npm/node_modules/meteor/meteor/node_modules",
+      "path": "packages/meteor.js"
+    },
+    {
+      "path": "packages/meteor-base.js"
+    },
+    {
+      "path": "packages/mobile-experience.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/npm-mongo/node_modules",
+      "path": "packages/npm-mongo.js"
+    },
+    {
+      "path": "packages/ecmascript-runtime.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/modules-runtime/node_modules",
+      "path": "packages/modules-runtime.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/modules/node_modules",
+      "path": "packages/modules.js"
+    },
+    {
+      "path": "packages/modern-browsers.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/es5-shim/node_modules",
+      "path": "packages/es5-shim.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/promise/node_modules",
+      "path": "packages/promise.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/ecmascript-runtime-client/node_modules",
+      "path": "packages/ecmascript-runtime-client.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/ecmascript-runtime-server/node_modules",
+      "path": "packages/ecmascript-runtime-server.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/babel-compiler/node_modules",
+      "path": "packages/babel-compiler.js"
+    },
+    {
+      "sourceMap": "packages/ecmascript.js.map",
+      "path": "packages/ecmascript.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/babel-runtime/node_modules",
+      "path": "packages/babel-runtime.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/fetch/node_modules",
+      "path": "packages/fetch.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/inter-process-messaging/node_modules",
+      "path": "packages/inter-process-messaging.js"
+    },
+    {
+      "path": "packages/dynamic-import.js"
+    },
+    {
+      "sourceMap": "packages/base64.js.map",
+      "path": "packages/base64.js"
+    },
+    {
+      "sourceMap": "packages/ejson.js.map",
+      "path": "packages/ejson.js"
+    },
+    {
+      "sourceMap": "packages/diff-sequence.js.map",
+      "path": "packages/diff-sequence.js"
+    },
+    {
+      "path": "packages/geojson-utils.js"
+    },
+    {
+      "sourceMap": "packages/id-map.js.map",
+      "path": "packages/id-map.js"
+    },
+    {
+      "sourceMap": "packages/random.js.map",
+      "path": "packages/random.js"
+    },
+    {
+      "sourceMap": "packages/mongo-id.js.map",
+      "path": "packages/mongo-id.js"
+    },
+    {
+      "sourceMap": "packages/ordered-dict.js.map",
+      "path": "packages/ordered-dict.js"
+    },
+    {
+      "sourceMap": "packages/tracker.js.map",
+      "path": "packages/tracker.js"
+    },
+    {
+      "sourceMap": "packages/minimongo.js.map",
+      "path": "packages/minimongo.js"
+    },
+    {
+      "sourceMap": "packages/check.js.map",
+      "path": "packages/check.js"
+    },
+    {
+      "sourceMap": "packages/retry.js.map",
+      "path": "packages/retry.js"
+    },
+    {
+      "sourceMap": "packages/callback-hook.js.map",
+      "path": "packages/callback-hook.js"
+    },
+    {
+      "sourceMap": "packages/ddp-common.js.map",
+      "path": "packages/ddp-common.js"
+    },
+    {
+      "path": "packages/reload.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/socket-stream-client/node_modules",
+      "sourceMap": "packages/socket-stream-client.js.map",
+      "path": "packages/socket-stream-client.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/ddp-client/node_modules",
+      "sourceMap": "packages/ddp-client.js.map",
+      "path": "packages/ddp-client.js"
+    },
+    {
+      "path": "packages/underscore.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/logging/node_modules",
+      "sourceMap": "packages/logging.js.map",
+      "path": "packages/logging.js"
+    },
+    {
+      "sourceMap": "packages/routepolicy.js.map",
+      "path": "packages/routepolicy.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/boilerplate-generator/node_modules",
+      "sourceMap": "packages/boilerplate-generator.js.map",
+      "path": "packages/boilerplate-generator.js"
+    },
+    {
+      "sourceMap": "packages/webapp-hashing.js.map",
+      "path": "packages/webapp-hashing.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/webapp/node_modules",
+      "sourceMap": "packages/webapp.js.map",
+      "path": "packages/webapp.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/ddp-server/node_modules",
+      "sourceMap": "packages/ddp-server.js.map",
+      "path": "packages/ddp-server.js"
+    },
+    {
+      "path": "packages/ddp.js"
+    },
+    {
+      "sourceMap": "packages/allow-deny.js.map",
+      "path": "packages/allow-deny.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/mongo-decimal/node_modules",
+      "sourceMap": "packages/mongo-decimal.js.map",
+      "path": "packages/mongo-decimal.js"
+    },
+    {
+      "sourceMap": "packages/binary-heap.js.map",
+      "path": "packages/binary-heap.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/mongo/node_modules",
+      "sourceMap": "packages/mongo.js.map",
+      "path": "packages/mongo.js"
+    },
+    {
+      "path": "packages/reactive-var.js"
+    },
+    {
+      "path": "packages/standard-minifier-css.js"
+    },
+    {
+      "path": "packages/standard-minifier-js.js"
+    },
+    {
+      "sourceMap": "packages/shell-server.js.map",
+      "path": "packages/shell-server.js"
+    },
+    {
+      "path": "packages/static-html.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/tmeasday_check-npm-versions/node_modules",
+      "sourceMap": "packages/tmeasday_check-npm-versions.js.map",
+      "path": "packages/tmeasday_check-npm-versions.js"
+    },
+    {
+      "sourceMap": "packages/react-meteor-data.js.map",
+      "path": "packages/react-meteor-data.js"
+    },
+    {
+      "path": "packages/url.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/http/node_modules",
+      "path": "packages/http.js"
+    },
+    {
+      "path": "packages/session.js"
+    },
+    {
+      "sourceMap": "packages/nathantreid_css-modules.js.map",
+      "path": "packages/nathantreid_css-modules.js"
+    },
+    {
+      "sourceMap": "packages/rocketchat_streamer.js.map",
+      "path": "packages/rocketchat_streamer.js"
+    },
+    {
+      "path": "packages/deps.js"
+    },
+    {
+      "path": "packages/cfs_reactive-property.js"
+    },
+    {
+      "path": "packages/cfs_reactive-list.js"
+    },
+    {
+      "path": "packages/cfs_micro-queue.js"
+    },
+    {
+      "path": "packages/cfs_power-queue.js"
+    },
+    {
+      "path": "packages/livedata.js"
+    },
+    {
+      "path": "packages/hot-code-push.js"
+    },
+    {
+      "path": "packages/launch-screen.js"
+    },
+    {
+      "sourceMap": "packages/autoupdate.js.map",
+      "path": "packages/autoupdate.js"
+    },
+    {
+      "node_modules": "npm/node_modules",
+      "path": "app/global-imports.js",
+      "assets": {
+        "config/settings.yml": "assets/app/config/settings.yml",
+        "locales/ar.json": "assets/app/locales/ar.json",
+        "locales/az.json": "assets/app/locales/az.json",
+        "locales/bg_BG.json": "assets/app/locales/bg_BG.json",
+        "locales/ca.json": "assets/app/locales/ca.json",
+        "locales/cs_CZ.json": "assets/app/locales/cs_CZ.json",
+        "locales/da.json": "assets/app/locales/da.json",
+        "locales/de.json": "assets/app/locales/de.json",
+        "locales/el_GR.json": "assets/app/locales/el_GR.json",
+        "locales/en.json": "assets/app/locales/en.json",
+        "locales/es.json": "assets/app/locales/es.json",
+        "locales/es_ES.json": "assets/app/locales/es_ES.json",
+        "locales/es_MX.json": "assets/app/locales/es_MX.json",
+        "locales/et.json": "assets/app/locales/et.json",
+        "locales/eu.json": "assets/app/locales/eu.json",
+        "locales/fa_IR.json": "assets/app/locales/fa_IR.json",
+        "locales/fi.json": "assets/app/locales/fi.json",
+        "locales/fr.json": "assets/app/locales/fr.json",
+        "locales/gl.json": "assets/app/locales/gl.json",
+        "locales/he.json": "assets/app/locales/he.json",
+        "locales/hi_IN.json": "assets/app/locales/hi_IN.json",
+        "locales/hr.json": "assets/app/locales/hr.json",
+        "locales/hu_HU.json": "assets/app/locales/hu_HU.json",
+        "locales/hy_AM.json": "assets/app/locales/hy_AM.json",
+        "locales/id.json": "assets/app/locales/id.json",
+        "locales/it_IT.json": "assets/app/locales/it_IT.json",
+        "locales/ja.json": "assets/app/locales/ja.json",
+        "locales/ja_JP.json": "assets/app/locales/ja_JP.json",
+        "locales/ka_GE.json": "assets/app/locales/ka_GE.json",
+        "locales/km.json": "assets/app/locales/km.json",
+        "locales/ko_KR.json": "assets/app/locales/ko_KR.json",
+        "locales/lt_LT.json": "assets/app/locales/lt_LT.json",
+        "locales/lv.json": "assets/app/locales/lv.json",
+        "locales/nb_NO.json": "assets/app/locales/nb_NO.json",
+        "locales/nl.json": "assets/app/locales/nl.json",
+        "locales/pl_PL.json": "assets/app/locales/pl_PL.json",
+        "locales/pt.json": "assets/app/locales/pt.json",
+        "locales/pt_BR.json": "assets/app/locales/pt_BR.json",
+        "locales/ro_RO.json": "assets/app/locales/ro_RO.json",
+        "locales/ru.json": "assets/app/locales/ru.json",
+        "locales/ru_RU.json": "assets/app/locales/ru_RU.json",
+        "locales/sk_SK.json": "assets/app/locales/sk_SK.json",
+        "locales/sl.json": "assets/app/locales/sl.json",
+        "locales/sr.json": "assets/app/locales/sr.json",
+        "locales/sv_SE.json": "assets/app/locales/sv_SE.json",
+        "locales/th.json": "assets/app/locales/th.json",
+        "locales/th_TH.json": "assets/app/locales/th_TH.json",
+        "locales/tr.json": "assets/app/locales/tr.json",
+        "locales/tr_TR.json": "assets/app/locales/tr_TR.json",
+        "locales/uk_UA.json": "assets/app/locales/uk_UA.json",
+        "locales/vi.json": "assets/app/locales/vi.json",
+        "locales/vi_VN.json": "assets/app/locales/vi_VN.json",
+        "locales/zh_CN.json": "assets/app/locales/zh_CN.json",
+        "locales/zh_TW.json": "assets/app/locales/zh_TW.json"
+      }
+    },
+    {
+      "node_modules": "npm/node_modules",
+      "sourceMap": "app/app.js.map",
+      "path": "app/app.js",
+      "assets": {
+        "config/settings.yml": "assets/app/config/settings.yml",
+        "locales/ar.json": "assets/app/locales/ar.json",
+        "locales/az.json": "assets/app/locales/az.json",
+        "locales/bg_BG.json": "assets/app/locales/bg_BG.json",
+        "locales/ca.json": "assets/app/locales/ca.json",
+        "locales/cs_CZ.json": "assets/app/locales/cs_CZ.json",
+        "locales/da.json": "assets/app/locales/da.json",
+        "locales/de.json": "assets/app/locales/de.json",
+        "locales/el_GR.json": "assets/app/locales/el_GR.json",
+        "locales/en.json": "assets/app/locales/en.json",
+        "locales/es.json": "assets/app/locales/es.json",
+        "locales/es_ES.json": "assets/app/locales/es_ES.json",
+        "locales/es_MX.json": "assets/app/locales/es_MX.json",
+        "locales/et.json": "assets/app/locales/et.json",
+        "locales/eu.json": "assets/app/locales/eu.json",
+        "locales/fa_IR.json": "assets/app/locales/fa_IR.json",
+        "locales/fi.json": "assets/app/locales/fi.json",
+        "locales/fr.json": "assets/app/locales/fr.json",
+        "locales/gl.json": "assets/app/locales/gl.json",
+        "locales/he.json": "assets/app/locales/he.json",
+        "locales/hi_IN.json": "assets/app/locales/hi_IN.json",
+        "locales/hr.json": "assets/app/locales/hr.json",
+        "locales/hu_HU.json": "assets/app/locales/hu_HU.json",
+        "locales/hy_AM.json": "assets/app/locales/hy_AM.json",
+        "locales/id.json": "assets/app/locales/id.json",
+        "locales/it_IT.json": "assets/app/locales/it_IT.json",
+        "locales/ja.json": "assets/app/locales/ja.json",
+        "locales/ja_JP.json": "assets/app/locales/ja_JP.json",
+        "locales/ka_GE.json": "assets/app/locales/ka_GE.json",
+        "locales/km.json": "assets/app/locales/km.json",
+        "locales/ko_KR.json": "assets/app/locales/ko_KR.json",
+        "locales/lt_LT.json": "assets/app/locales/lt_LT.json",
+        "locales/lv.json": "assets/app/locales/lv.json",
+        "locales/nb_NO.json": "assets/app/locales/nb_NO.json",
+        "locales/nl.json": "assets/app/locales/nl.json",
+        "locales/pl_PL.json": "assets/app/locales/pl_PL.json",
+        "locales/pt.json": "assets/app/locales/pt.json",
+        "locales/pt_BR.json": "assets/app/locales/pt_BR.json",
+        "locales/ro_RO.json": "assets/app/locales/ro_RO.json",
+        "locales/ru.json": "assets/app/locales/ru.json",
+        "locales/ru_RU.json": "assets/app/locales/ru_RU.json",
+        "locales/sk_SK.json": "assets/app/locales/sk_SK.json",
+        "locales/sl.json": "assets/app/locales/sl.json",
+        "locales/sr.json": "assets/app/locales/sr.json",
+        "locales/sv_SE.json": "assets/app/locales/sv_SE.json",
+        "locales/th.json": "assets/app/locales/th.json",
+        "locales/th_TH.json": "assets/app/locales/th_TH.json",
+        "locales/tr.json": "assets/app/locales/tr.json",
+        "locales/tr_TR.json": "assets/app/locales/tr_TR.json",
+        "locales/uk_UA.json": "assets/app/locales/uk_UA.json",
+        "locales/vi.json": "assets/app/locales/vi.json",
+        "locales/vi_VN.json": "assets/app/locales/vi_VN.json",
+        "locales/zh_CN.json": "assets/app/locales/zh_CN.json",
+        "locales/zh_TW.json": "assets/app/locales/zh_TW.json"
+      }
+    }
+  ]
+}

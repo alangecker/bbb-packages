@@ -1,0 +1,18 @@
+[Unit]
+Description=BigBlueButton HTML5 service
+Wants=redis-server.service mongod.service
+After=syslog.target network.target mongod.service etherpad.service
+
+[Service]
+Type=simple
+# ExecStartPre=/bin/sh -c 'while ! /usr/bin/mongo --eval "db.version()" > /dev/null 2>&1; do sleep 0.1; done'
+ExecStart=/usr/share/meteor/bundle/systemd_start.sh
+WorkingDirectory=/usr/share/meteor/bundle
+StandardOutput=syslog
+StandardError=syslog
+# User=meteor
+# Group=meteor
+
+[Install]
+WantedBy=multi-user.target
+
