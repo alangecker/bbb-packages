@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<configuration scan="true" scanPeriod="1 minute">
+  <!-- Uncomment if you are using the logback plugin for eclipse
+  <consolePlugin/>
+  -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"} [%thread] %logger{35} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>log/red5.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>log/red5.%d{yyyy-MM-dd}.log</FileNamePattern>
+      <!-- keep 14 days worth of history -->
+      <MaxHistory>14</MaxHistory>
+    </rollingPolicy>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"} [%thread] %-5level %logger{35} - %msg%n</Pattern>
+    </layout>
+  </appender>
+
+  <appender name="ERRORFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>log/error.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>log/error.%d{yyyy-MM-dd}.log</FileNamePattern>
+      <!-- keep 14 days worth of history -->
+      <MaxHistory>14</MaxHistory>
+    </rollingPolicy>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"} [%thread] %-5level %logger{35} - %msg%n</Pattern>
+    </layout>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
+    <encoder>
+      <pattern>%d{"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"} [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root>
+    <level value="INFO" />
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="FILE" />
+    <appender-ref ref="ERRORFILE" />
+  </root>
+
+  <logger name="org.red5.server.stream.PlayEngine"><level value="INFO"/></logger>
+  <logger name="org.red5.server.net.rtmp.codec.RTMPProtocolEncoder"><level value="INFO" /></logger>
+  <logger name="org.red5.server.net.rtmp.RTMPConnection"><level value="INFO"/></logger>
+<!--
+  <logger name="org.red5.server.net.rtmp.codec.RTMPProtocolEncoder"><level value="DEBUG" /></logger>
+  <logger name="org.red5.server.net.rtmp.RTMPConnection"><level value="DEBUG"/></logger>
+  <logger name="org.red5.server.BaseConnection"><level value="DEBUG"/></logger>
+  <logger name="org.red5.server.net.rtmp.RTMPMinaConnection"><level value="DEBUG"/></logger>^M
+  <logger name="org.red5.server.net.rtmp.RTMPMinaIOHandler"><level value="DEBUG"/></logger>^M
+  <logger name="org.red5.server.net.rtmp.RTMPConnManager"><level value="DEBUG"/></logger>^M
+-->
+
+  <logger name="org.springframework.scheduling" level="WARN" />
+  <logger name="org.springframework"><level value="INFO" /></logger>
+  <logger name="org.apache"><level value="INFO" /></logger>
+  <logger name="ch.qos"><level value="WARN" /></logger>
+  <logger name="org.apache.jasper.servlet" level="WARN" />
+</configuration>
+

@@ -1,0 +1,17 @@
+[Unit]
+Description=Red5
+Wants=redis-server.service
+After=syslog.target network.target 
+
+[Service]
+Type=simple
+ExecStart=/usr/share/red5/red5.sh
+ExecStop=/usr/share/red5/red5-shutdown.sh
+User=red5
+WorkingDirectory=/usr/share/red5
+
+LimitNOFILE=64000
+
+[Install]
+WantedBy=multi-user.target
+
