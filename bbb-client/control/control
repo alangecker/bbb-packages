@@ -1,0 +1,12 @@
+Package: bbb-client
+Version: 1:2.2.0-33
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 56133
+Depends: nginx
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBlueButton Flash client
