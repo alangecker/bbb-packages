@@ -1,0 +1,12 @@
+Package: bbb-apps-screenshare
+Version: 1:2.2.0-42
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 47926
+Depends: bbb-red5
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBlueButton screenshare module for Red5
