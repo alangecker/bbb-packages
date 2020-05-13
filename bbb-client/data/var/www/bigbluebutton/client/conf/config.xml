@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <config>
-    <version>583</version>
+    <version>590</version>
     <help url="http://HOST/help.html"/>
     <javaTest url="http://HOST/testjava.html"/>
     <porttest host="rtmp://HOST" ipv4FallbackHost="" application="video/portTest" timeout="10000"/>
@@ -10,7 +10,7 @@
      		  rtlEnabled="false"
     		  localesConfig="http://HOST/client/conf/locales.xml"
     		  localesDirectory="http://HOST/client/locale/"/>
-    <skinning url="http://HOST/client/branding/css/V2Theme.css.swf?v=583" />
+    <skinning url="http://HOST/client/branding/css/V2Theme.css.swf?v=590" />
     <branding logo="logos/logo.swf" copyright="&#169; 2019 &lt;u&gt;&lt;a href=&quot;http://HOST/home.html&quot; target=&quot;_blank&quot;&gt;BigBlueButton Inc.&lt;/a&gt;&lt;/u&gt; (build {0})" background="" toolbarColor="" showQuote="true"/>
     <shortcutKeys showButton="true" />
     <browserVersions chrome="62" firefox="56" flash="23"/>
@@ -26,7 +26,7 @@
 
 		<modules>
 
-		<module name="ChatModule" url="http://HOST/client/ChatModule.swf?v=583"
+		<module name="ChatModule" url="http://HOST/client/ChatModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			dependsOn="UsersModule"
 			privateEnabled="true"
@@ -38,7 +38,7 @@
 			maxNumWindows="9"
 		/>
 
-		<module name="UsersModule" url="http://HOST/client/UsersModule.swf?v=583"
+		<module name="UsersModule" url="http://HOST/client/UsersModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			allowKickUser="true"
 			enableEmojiStatus="true"
@@ -51,7 +51,7 @@
 		/>
 
 		<module name="ScreenshareModule"
-			url="http://HOST/client/ScreenshareModule.swf?v=583"
+			url="http://HOST/client/ScreenshareModule.swf?v=590"
 			uri="rtmp://HOST/screenshare"
 			showButton="true"
 			enablePause="true"
@@ -64,7 +64,7 @@
 			help="http://HOST/client/help/screenshare-help.html"
 		/>
 
-		<module name="PhoneModule" url="http://HOST/client/PhoneModule.swf?v=583"
+		<module name="PhoneModule" url="http://HOST/client/PhoneModule.swf?v=590"
 			uri="rtmp://HOST/sip"
 			dependsOn="UsersModule"
 			autoJoin="true"
@@ -80,7 +80,7 @@
 			echoTestApp="9196"
 		/>
 
-		<module name="VideoconfModule" url="http://HOST/client/VideoconfModule.swf?v=583"
+		<module name="VideoconfModule" url="http://HOST/client/VideoconfModule.swf?v=590"
 			uri="rtmp://HOST/video"
 			dependsOn="UsersModule"
 			baseTabIndex="401"
@@ -96,7 +96,7 @@
 			priorityRatio="0.67"
 		/>
 
-		<module name="WhiteboardModule" url="http://HOST/client/WhiteboardModule.swf?v=583"
+		<module name="WhiteboardModule" url="http://HOST/client/WhiteboardModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			dependsOn="PresentModule"
 			baseTabIndex="601"
@@ -104,12 +104,12 @@
 			onlyPenMUW="false"
 		/>
 
-		<module name="PollingModule" url="http://HOST/client/PollingModule.swf?v=583"
+		<module name="PollingModule" url="http://HOST/client/PollingModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			dependsOn="PresentModule"
 		/>
 
-		<module name="PresentModule" url="http://HOST/client/PresentModule.swf?v=583"
+		<module name="PresentModule" url="http://HOST/client/PresentModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			dependsOn="UsersModule"
 			host="http://HOST"
@@ -123,20 +123,20 @@
 			disableFirefoxF60Upload="true"
 		/>
 
-		<module name="CaptionModule" url="http://HOST/client/CaptionModule.swf?v=583"
+		<module name="CaptionModule" url="http://HOST/client/CaptionModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			dependsOn="UsersModule"
 			maxPasteLength="1024"
 			baseTabIndex="701"
 		/>
 
-		<module name="LayoutModule" url="http://HOST/client/LayoutModule.swf?v=583"
+		<module name="LayoutModule" url="http://HOST/client/LayoutModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			layoutConfig="http://HOST/client/conf/layout.xml"
 			enableEdit="false"
 		/>
 
-		<module name="SharedNotesModule" url="http://HOST/client/SharedNotesModule.swf?v=583"
+		<module name="SharedNotesModule" url="http://HOST/client/SharedNotesModule.swf?v=590"
 			uri="rtmp://HOST/bigbluebutton"
 			dependsOn="UsersModule"
 			refreshDelay="500"
@@ -150,12 +150,12 @@
 		/>
 
 <!--
-    <module name="NotesModule" url="http://HOST/client/NotesModule.swf?v=583"
+    <module name="NotesModule" url="http://HOST/client/NotesModule.swf?v=590"
       saveURL="http://HOST"
       position="top-left"
     />
     
-    <module name="BroadcastModule" url="http://HOST/client/BroadcastModule.swf?v=583"
+    <module name="BroadcastModule" url="http://HOST/client/BroadcastModule.swf?v=590"
       uri="rtmp://HOST/bigbluebutton"
       streamsUri="http://HOST/streams.xml"
       position="top-left"

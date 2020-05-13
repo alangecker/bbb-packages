@@ -294,7 +294,7 @@ case "$1" in
 
     rm -f /tmp/sip.nginx
     if [ -f /etc/bigbluebutton/nginx/sip.nginx ]; then
-      cp /etc/bigbluebutton/nginx/sip.nginx /tmp/sip.nginx
+      cp /etc/bigbluebutton/nginx/sip.nginx /tmp/bbb-sip.nginx
     fi
 
     rm -f /tmp/bbb_webrtc_bridge_sip.js

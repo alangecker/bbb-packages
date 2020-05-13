@@ -277,11 +277,49 @@ fi
 
 #set -x
 
+# All this is now handled by bbb-html5
 if [ ! -L /etc/nginx/sites-enabled/bigbluebutton ]; then
   ln -s /etc/nginx/sites-available/bigbluebutton /etc/nginx/sites-enabled/bigbluebutton
 fi
 
+  if [ -f /tmp/bbb-sip.nginx ]; then
+    IP_SIP=$(cat /tmp/bbb-sip.nginx | grep -v '#' | sed -n '/proxy_pass/{s/.*\/\///;s/:.*//;p}')
+    IP_PORT=$(cat /tmp/bbb-sip.nginx | grep -v '#' | sed -n '/proxy_pass/{s/[^:]*.*[^:]*://;s/;.*//;p}')
+    if grep proxy_pass /tmp/bbb-sip.nginx | grep -q https; then
+      sed -i "s/proxy_pass http.*/proxy_pass https:\/\/$IP_SIP:$IP_PORT;/g" \
+              /etc/bigbluebutton/nginx/sip.nginx
+    else
+      sed -i "s/proxy_pass http.*/proxy_pass http:\/\/$IP_SIP:$IP_PORT;/g" \
+              /etc/bigbluebutton/nginx/sip.nginx
+    fi
+  else
+   # New install
+   sed -i "s/proxy_pass .*/proxy_pass http:\/\/$IP:5066;/g" /etc/bigbluebutton/nginx/sip.nginx
+  fi
 
+if [ -f /etc/nginx/sites-available/bigbluebutton ]; then
+  if [ -f /tmp/nginx-bigbluebutton ]; then
+          IP=$(cat /tmp/nginx-bigbluebutton | grep -v '#' | head -n 1 | sed -n '/server_name/{s/.*name[ ]*//;s/;//;p}')
+  # else
+  # IP was already set by deb-helper.sh
+  fi
+
+  sed -i "s/server_name  .*/server_name  $IP;/g" /etc/nginx/sites-available/bigbluebutton
+
+  if [ ! -L /etc/bigbluebutton/nginx/client.nginx ]; then
+          ln -s /etc/bigbluebutton/nginx/client /etc/bigbluebutton/nginx/client.nginx
+  fi
+
+  #if [ ! -L /etc/bigbluebutton/nginx/web.nginx ]; then
+  #        ln -s /etc/bigbluebutton/nginx/web /etc/bigbluebutton/nginx/web.nginx
+  #fi
+
+  # reloadService nginx
+fi
+
+
+
+exit 0
 
 if [ -f /tmp/config.xml ]; then         
   # This is an upgrade
@@ -337,7 +375,7 @@ if [ -f /tmp/config.xml ]; then
   sed -i "s/host=\"conf\/join-mock.xml\"/host=\"$PROTOCOL_HTTP:\/\/$IP_HTTP\/bigbluebutton\/conference-session\/enter\"/g" \
           /var/www/bigbluebutton/client/conf/config.xml
 
-  if [ -f /tmp/sip.nginx ]; then
+  if [ -f /tmp/bbb-sip.nginx ]; then
     IP_SIP=$(cat /tmp/sip.nginx | grep -v '#' | sed -n '/proxy_pass/{s/.*\/\///;s/:.*//;p}')
     IP_PORT=$(cat /tmp/sip.nginx | grep -v '#' | sed -n '/proxy_pass/{s/[^:]*.*[^:]*://;s/;.*//;p}')
     if grep proxy_pass /tmp/sip.nginx | grep -q https; then

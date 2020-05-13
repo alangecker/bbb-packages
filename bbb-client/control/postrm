@@ -275,6 +275,7 @@ fi
 ### END DEB-HELPERS.SH ###
 ##########################
 
+exit 0
 if [ -L /etc/nginx/sites-enabled/bigbluebutton ]; then
   rm /etc/nginx/sites-enabled/bigbluebutton
 fi
