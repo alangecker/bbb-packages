@@ -55,10 +55,12 @@ for pkg in res.decode('utf-8').split('\n\n'):
 
     # extract data
     subprocess.run(['mkdir', '-p', directory+'/'+name+'/data'])
+
+    
     subprocess.run([
         'tar', 
         'xfv', 
-        tmpdir+'/data.tar.gz', 
+        tmpdir+'/data.tar.gz' if os.path.isfile(tmpdir+'/data.tar.gz') else tmpdir+'/data.tar', 
         '-C', directory+'/'+name+'/data',
         '--exclude', '*.jar',
         '--exclude', '*.class',
