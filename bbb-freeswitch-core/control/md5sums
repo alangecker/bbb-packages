@@ -326,7 +326,7 @@ f07a99b4c83e4ec6cb541717cd4c4639  opt/freeswitch/lib/freeswitch/mod/mod_sms.so
 2b66394808fe7a99b9f36fb44def2705  opt/freeswitch/lib/freeswitch/mod/mod_sndfile.la
 67b6248f9facf07517a5ade2791ea2fa  opt/freeswitch/lib/freeswitch/mod/mod_sndfile.so
 305509634dd4ce100dfb0c297bd34a59  opt/freeswitch/lib/freeswitch/mod/mod_sofia.la
-fd1f37da5d961755be7e10eea90d8e44  opt/freeswitch/lib/freeswitch/mod/mod_sofia.so
+378e5558c5c5a8b0bf183d9a563afdea  opt/freeswitch/lib/freeswitch/mod/mod_sofia.so
 7b68e2955cc35901ceac1a1fd2f8d18b  opt/freeswitch/lib/freeswitch/mod/mod_spandsp.la
 fe3c8efd0f4d57d3144c9fd11ad95484  opt/freeswitch/lib/freeswitch/mod/mod_spandsp.so
 9359bbb2716d7f028fbbd534ae4ddb95  opt/freeswitch/lib/freeswitch/mod/mod_syslog.la
@@ -416,5 +416,5 @@ aa25fa90ff07e1dd37ecedd91908a496  opt/freeswitch/share/freeswitch/htdocs/portal/
 f11e41bdc8a118ea03b32fa4d9b2eb5c  opt/freeswitch/share/freeswitch/htdocs/slimtest.htm
 d210b2c08b6dbf35ba6099fcbbf49b8b  opt/freeswitch/var/lib/freeswitch/images/default-avatar.png
 e916e54794a0ac7593903c343b99b0db  opt/freeswitch/var/lib/freeswitch/images/default-mute.png
-57fd18fa39cb1139e10feacc45b41278  usr/share/doc/bbb-freeswitch-core/changelog.gz
+0614880bbf4f53109ee3a95d38d6f219  usr/share/doc/bbb-freeswitch-core/changelog.gz
 85eace8f35ade18104b9ac9630dcc4fe  var/freeswitch/meetings/readme.txt
