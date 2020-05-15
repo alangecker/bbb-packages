@@ -1,0 +1,23 @@
+[Unit]
+Description=BigBlueButton Transcoder
+Requires=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/share/bbb-transcode-akka
+EnvironmentFile=/etc/default/bbb-transcode-akka
+ExecStart=/usr/share/bbb-transcode-akka/bin/bbb-transcode-akka
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=60
+SuccessExitStatus=
+TimeoutStopSec=5
+User=bigbluebutton
+ExecStartPre=/bin/mkdir -p /run/bbb-transcode-akka
+ExecStartPre=/bin/chown bigbluebutton:bigbluebutton /run/bbb-transcode-akka
+ExecStartPre=/bin/chmod 755 /run/bbb-transcode-akka
+PermissionsStartOnly=true
+LimitNOFILE=1024
+
+[Install]
+WantedBy=multi-user.target

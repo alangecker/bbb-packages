@@ -1,0 +1,38 @@
+# #####################################
+# ##### Environment Configuration #####
+# #####################################
+
+# To use your own template create
+#   src/templates/etc-default-systemv
+# see http://www.scala-sbt.org/sbt-native-packager/archetypes/cheatsheet.html#server-app-config-src-templates-etc-default-systemv-systemd
+
+# This file is parsed by systemd. You can modify it to specify environment
+# variables for your application.
+#
+# For a description of the format, see: `man systemd.exec`, section
+# `EnvironmentFile`.
+
+# Available replacements
+# see http://www.scala-sbt.org/sbt-native-packager/archetypes/systemloaders.html#override-start-script
+# --------------------------------------------------------------------
+# Name                   Contains                     Current value
+# (remove space)
+# $ {{author}}           debian author                Mario Gasparoni <mariogasparoni@gmail.com>
+# $ {{descr}}            debian package description   BigBlueButton Transcoder
+# $ {{exec}}             startup script name          bbb-transcode-akka
+# $ {{chdir}}            app directory                /usr/share/bbb-transcode-akka
+# $ {{retries}}          retries for startup          0
+# $ {{retryTimeout}}     retry timeout                60
+# $ {{app_name}}         normalized app name          bbb-transcode-akka
+# $ {{app_main_class}}   main class/entry point       ${{app_main_class}}
+# $ {{daemon_user}}      daemon user                  bigbluebutton
+# $ {{daemon_group}}     daemon group                 bigbluebutton
+# --------------------------------------------------------------------
+
+# Setting JAVA_OPTS
+# -----------------
+# JAVA_OPTS="-Dpidfile.path=/var/run/bbb-transcode-akka/play.pid"
+
+# Setting PIDFILE
+# ---------------
+# PIDFILE="/var/run/bbb-transcode-akka/play.pid"
