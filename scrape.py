@@ -72,8 +72,6 @@ for pkg in res.decode('utf-8').split('\n\n'):
         '--exclude', '*.so.*',
         '--exclude', '*.la',
         '--exclude', '*.a',
-        '--exclude', '*.ttf',
-        '--exclude', '*.woff',
         '--exclude', 'node_modules',
         '--exclude', 'test_image.jpg'
     ])
