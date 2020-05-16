@@ -3,7 +3,7 @@ ca7dbf9d91a741d62f6960b3df9154ea  usr/local/bigbluebutton/core/scripts/caption/p
 f8cd7d4cf87b661a2e8465ecd151e487  usr/local/bigbluebutton/core/scripts/presentation.yml
 bb82db6e16af3010dc32651efe7e08a4  usr/local/bigbluebutton/core/scripts/process/presentation.rb
 7dcdab63fe45b6bfb70bd15ad407a1e8  usr/local/bigbluebutton/core/scripts/publish/presentation.rb
-98b652ef60e5f6b0a25436b70d63fca6  usr/share/doc/bbb-playback-presentation/changelog.gz
+00114902031ebb1ace4f1f104bfd99ba  usr/share/doc/bbb-playback-presentation/changelog.gz
 d899df82f4b9bd613722fbc58df01b95  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/acornmediaplayer.base.css
 a4e7611323f80843a7e4f457646d4834  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/jquery.acornmediaplayer.js
 ea8e76ae3e6577c57444d2af69b76171  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/themes/access/access-captions-dark.png
@@ -171,7 +171,7 @@ fb5dae610cb75d92ddcc7632de9dd0ee  var/bigbluebutton/playback/presentation/2.0/li
 874d8be9cd6d6b72f1d63a5435edf2c3  var/bigbluebutton/playback/presentation/2.0/lib/pace.min.js
 f40c537cfed1e360cf9939adb3a08946  var/bigbluebutton/playback/presentation/2.0/lib/popcorn-complete.min.js
 609977d29ca3bc4bbc96138126830939  var/bigbluebutton/playback/presentation/2.0/lib/popcorn.chattimeline.js
-c16cd3529627cd5a9c1fae58134515c7  var/bigbluebutton/playback/presentation/2.0/lib/writing.js
+1c44030249b7555fd355384f5c72bea4  var/bigbluebutton/playback/presentation/2.0/lib/writing.js
 2200a281f51bad5c8838631797fb4580  var/bigbluebutton/playback/presentation/2.0/logo.png
 1751e253154f78359d06d2b099349f85  var/bigbluebutton/playback/presentation/2.0/playback.css
 65a87f11befc578d150cd0b1f15d2f5e  var/bigbluebutton/playback/presentation/2.0/playback.html
