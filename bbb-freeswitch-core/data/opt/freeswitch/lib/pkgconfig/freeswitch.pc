@@ -18,7 +18,7 @@ recordingsdir=/opt/freeswitch/var/lib/freeswitch/recordings
 bindir=${exec_prefix}/bin
 
 Name: freeswitch
-Version: 1.10.3-dev
+Version: 1.10.4-dev
 Description: FreeSWITCH open source telephony platform
 Libs: -L${libdir} -lfreeswitch
 Cflags: -I${includedir}
