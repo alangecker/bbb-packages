@@ -2,3 +2,4 @@
 /etc/bigbluebutton/bigbluebutton-release
 /etc/bigbluebutton/nopdfmark.ps
 /etc/cron.daily/bigbluebutton
+/etc/cron.hourly/bbb-resync-freeswitch
