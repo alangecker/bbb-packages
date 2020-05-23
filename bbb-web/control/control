@@ -1,10 +1,10 @@
 Package: bbb-web
-Version: 1:2.2.0-125
+Version: 1:2.2.0-128
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 126241
+Installed-Size: 126242
 Depends: zip,unzip,imagemagick,redis-server,xpdf-utils,libreoffice,ttf-mscorefonts-installer|msttcorefonts|ttf-liberation,psmisc,fonts-crosextra-carlito,fonts-crosextra-caladea,fonts-noto
 Section: default
 Priority: extra
