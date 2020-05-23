@@ -3,15 +3,15 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2430709,
-  "totalMinifiedGzipBytes": 567133,
+  "totalMinifiedBytes": 2481141,
+  "totalMinifiedGzipBytes": 572465,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
     "packages/mobile-experience.js": 37,
     "packages/modules-runtime.js": 4199,
     "packages/modules.js": [
-      979597,
+      1011565,
       {
         "node_modules": {
           "meteor": {
@@ -545,37 +545,47 @@
             "util.js": 854
           },
           "react-player": {
-            "package.json": 91,
+            "package.json": 90,
             "lib": {
-              "ReactPlayer.js": 5633,
+              "ReactPlayer.js": 7306,
+              "props.js": 2309,
+              "utils.js": 3598,
               "players": {
-                "YouTube.js": 4635,
-                "SoundCloud.js": 3274,
-                "Vimeo.js": 3734,
-                "Facebook.js": 3410,
-                "Streamable.js": 3117,
-                "Wistia.js": 3379,
-                "Twitch.js": 3337,
-                "DailyMotion.js": 3907,
-                "Mixcloud.js": 3009,
-                "FilePlayer.js": 7764,
-                "index.js": 384
+                "index.js": 4457,
+                "YouTube.js": 6884,
+                "SoundCloud.js": 5062,
+                "Vimeo.js": 5596,
+                "Facebook.js": 4760,
+                "Streamable.js": 4524,
+                "Wistia.js": 5426,
+                "Twitch.js": 5164,
+                "DailyMotion.js": 6132,
+                "Mixcloud.js": 4825,
+                "Vidyard.js": 4997,
+                "FilePlayer.js": 9686
               },
-              "utils.js": 4225,
-              "props.js": 2399,
-              "singlePlayer.js": 2804,
-              "Player.js": 5647,
-              "Preview.js": 2926,
-              "preload.js": 1072
+              "patterns.js": 1596,
+              "Player.js": 7230,
+              "Preview.js": 4740
             },
             "node_modules": {
               "deepmerge": {
                 "package.json": 80,
                 "dist": {
-                  "umd.js": 1508
+                  "cjs.js": 1573
                 }
               }
             }
+          },
+          "memoize-one": {
+            "package.json": 94,
+            "dist": {
+              "memoize-one.cjs.js": 352
+            }
+          },
+          "react-fast-compare": {
+            "package.json": 86,
+            "index.js": 1628
           },
           "load-script": {
             "package.json": 63,
@@ -1365,7 +1375,7 @@
       {}
     ],
     "app/app.js": [
-      1204720,
+      1223184,
       {
         "imports": {
           "ui": {
@@ -1375,9 +1385,9 @@
                   "user-participants": {
                     "user-list-item": {
                       "user-dropdown": {
-                        "component.jsx": 12388,
+                        "component.jsx": 11688,
                         "styles.scss": 54,
-                        "styles.scss.js": 18848
+                        "styles.scss.js": 17719
                       },
                       "user-icons": {
                         "component.jsx": 834,
@@ -1393,7 +1403,7 @@
                       "container.jsx": 1251
                     },
                     "user-options": {
-                      "component.jsx": 7384,
+                      "component.jsx": 7388,
                       "container.jsx": 2076,
                       "styles.scss": 54,
                       "styles.scss.js": 1457
@@ -1412,7 +1422,7 @@
                     "component.jsx": 2364
                   },
                   "user-notes": {
-                    "component.jsx": 2315,
+                    "component.jsx": 2334,
                     "container.jsx": 773
                   },
                   "user-polls": {
@@ -1422,9 +1432,9 @@
                     "component.jsx": 1451
                   },
                   "component.jsx": 1938,
-                  "container.jsx": 684,
+                  "container.jsx": 692,
                   "styles.scss": 54,
-                  "styles.scss.js": 13384
+                  "styles.scss.js": 13876
                 },
                 "chat-list-item": {
                   "chat-avatar": {
@@ -1453,7 +1463,7 @@
                 },
                 "component.jsx": 1250,
                 "container.jsx": 1153,
-                "service.js": 6895,
+                "service.js": 6974,
                 "styles.scss": 54,
                 "styles.scss.js": 4652
               },
@@ -1496,7 +1506,7 @@
                   "component.jsx": 2947
                 },
                 "component.jsx": 3061,
-                "container.jsx": 2608,
+                "container.jsx": 2701,
                 "service.js": 5033,
                 "styles.scss": 54,
                 "styles.scss.js": 4463
@@ -1579,7 +1589,7 @@
                   "component.jsx": 1923,
                   "container.jsx": 1217,
                   "styles.scss": 54,
-                  "styles.scss.js": 25485
+                  "styles.scss.js": 25978
                 },
                 "video-button": {
                   "component.jsx": 1515,
@@ -1588,7 +1598,7 @@
                   "styles.scss": 54,
                   "styles.scss.js": 8824
                 },
-                "component.jsx": 22378,
+                "component.jsx": 22448,
                 "container.jsx": 1185,
                 "service.js": 3131
               },
@@ -1616,7 +1626,7 @@
                   "component.jsx": 4941
                 },
                 "desktop-share": {
-                  "component.jsx": 5160
+                  "component.jsx": 5273
                 },
                 "presentation-options": {
                   "component.jsx": 1180
@@ -1824,7 +1834,7 @@
                 "container.jsx": 1052,
                 "service.js": 1986,
                 "styles.scss": 54,
-                "styles.scss.js": 24867
+                "styles.scss.js": 25363
               },
               "button": {
                 "base": {
@@ -1862,7 +1872,7 @@
                   "styles.scss": 54,
                   "styles.scss.js": 10034
                 },
-                "component.jsx": 7359,
+                "component.jsx": 7125,
                 "container.jsx": 531,
                 "service.js": 1119,
                 "styles.scss": 54,
@@ -1904,7 +1914,7 @@
                   "context.jsx": 2256
                 },
                 "component.jsx": 1656,
-                "container.jsx": 4124,
+                "container.jsx": 4056,
                 "service.js": 1724,
                 "styles.scss": 54,
                 "styles.scss.js": 3552
@@ -1929,6 +1939,11 @@
                   "component.jsx": 3044,
                   "styles.scss": 54,
                   "styles.scss.js": 3380
+                },
+                "remove-user": {
+                  "component.jsx": 2040,
+                  "styles.scss": 54,
+                  "styles.scss.js": 14714
                 },
                 "simple": {
                   "component.jsx": 2072,
@@ -2062,7 +2077,7 @@
                 "component.jsx": 716
               },
               "join-handler": {
-                "component.jsx": 3624
+                "component.jsx": 3713
               },
               "loading-screen": {
                 "component.jsx": 418,
@@ -2109,13 +2124,13 @@
               "screenshare": {
                 "component.jsx": 4148,
                 "container.jsx": 735,
-                "service.js": 1446,
+                "service.js": 1567,
                 "styles.scss": 54,
                 "styles.scss.js": 7742
               },
               "shortcut-help": {
-                "component.jsx": 4154,
-                "service.jsx": 804,
+                "component.jsx": 4179,
+                "service.jsx": 842,
                 "styles.scss": 54,
                 "styles.scss.js": 938
               },
@@ -2125,7 +2140,7 @@
                 "styles.scss.js": 1534
               },
               "subscriptions": {
-                "component.jsx": 2462
+                "component.jsx": 2207
               },
               "switch": {
                 "component.jsx": 1930,
@@ -2173,7 +2188,7 @@
                 "index.js": 958
               },
               "settings": {
-                "index.js": 1061
+                "index.js": 1143
               },
               "storage": {
                 "reactive.js": 1140,
@@ -2192,8 +2207,8 @@
               "client": {
                 "bridge": {
                   "base.js": 781,
-                  "kurento.js": 4723,
-                  "sip.js": 10968
+                  "kurento.js": 4761,
+                  "sip.js": 11242
                 }
               }
             },
@@ -2201,8 +2216,8 @@
               "client": {
                 "bridge": {
                   "index.js": 95,
-                  "kurento.js": 3863,
-                  "service.js": 159
+                  "kurento.js": 3952,
+                  "service.js": 1724
                 }
               },
               "index.js": 170
@@ -2293,14 +2308,14 @@
           },
           "utils": {
             "deviceInfo.js": 213,
-            "fetchStunTurnServers.js": 864,
+            "fetchStunTurnServers.js": 1124,
             "hexInt.js": 269,
             "humanizeSeconds.js": 131,
             "ios-webview-audio-polyfills.js": 1820,
             "keyCodes.js": 350,
             "logoutRouteHandler.js": 308,
             "mediaElementPlayRetry.js": 311,
-            "safari-webrtc.js": 1968,
+            "safari-webrtc.js": 1496,
             "sdpUtils.js": 4525,
             "slideCalcUtils.js": 630,
             "statuses.js": 254,

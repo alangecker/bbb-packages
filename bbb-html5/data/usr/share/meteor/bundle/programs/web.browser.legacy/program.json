@@ -57,9 +57,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/kurento-extension.js",
-      "size": 29156,
-      "hash": "34ee61363c05cc043dd5bbb23d67a609b56642d8",
-      "sri": "S5skpMHJcXtmv+4c79kXmrryu5VJo1aknzXgAmAMe5N3hH7/Pq6eIxPAa++xnwK3Oq77TF7ISNO9GD++X4cUoQ=="
+      "size": 29033,
+      "hash": "80d1a242601dc8b6f5bf2f182a1485e5e068d7d6",
+      "sri": "Q0ssucICaApPdb0wziSHZPc+a5ZHZ2amy+DqRnU+UX1pB1gz8gdJWOW2BIpvovoDOf84PZbiNOKCLgxW98C9Jw=="
     },
     {
       "path": "app/compatibility/kurento-utils.js",
@@ -67,9 +67,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/kurento-utils.js",
-      "size": 158775,
-      "hash": "976fac44daab11afb3a46828230cac534c46b2ab",
-      "sri": "jW1nFdCRo+8y75/UqfmkP/n/Aq/WDrxGRNs3SK3wyQ1FNGpqU+faiH6a6hYKZQHJIF8/bfyEFkpbQJhglpwI0A=="
+      "size": 158803,
+      "hash": "746b872547fddf927d513e158ca7615aa4b164ff",
+      "sri": "Bf6Y6jfpF10S6GvbfyJHzzRbEVhc5Ur58oTaS/OztwWABk1oJA0YS98AcCER8Za72nxsEicZ27X6jQoqALFVpA=="
     },
     {
       "path": "app/compatibility/sip.js",
@@ -77,9 +77,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/sip.js",
-      "size": 384823,
-      "hash": "a93d5dc93fc0cf15303efc423dfcedbd7d43ed30",
-      "sri": "b+GJntsftSfWWqKnUCEctFpOaVNwU9B0Xt6Bf7mNfV0IHEkNrPt40W9tnjEYQ+LiywTB87FoeRLVYrcJHC3t7A=="
+      "size": 384793,
+      "hash": "1365b74ce553d495068beffefc8973bb18992bd2",
+      "sri": "iyBY5gzSEZiCrqq5bPCwOClqk88iHlEmh9psPKaObCsvjPnncqjfEUsdWvn+GfGGFH70kQk94fYJZx9NhDP6Lw=="
     },
     {
       "path": "app/svgs/bbb_audio_icon.svg",
