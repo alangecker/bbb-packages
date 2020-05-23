@@ -1,10 +1,10 @@
 Package: bbb-apps-video
-Version: 1:2.2.0-39
+Version: 1:2.2.0-41
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 34425
+Installed-Size: 34426
 Depends: bbb-red5
 Section: default
 Priority: extra
