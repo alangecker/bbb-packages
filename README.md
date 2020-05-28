@@ -1,6 +1,8 @@
 # BigBlueButton Debian Packages
 tracks changes of the closed source debian packages.
 
+**Alternative:** There is https://github.com/bbb-pkg/meta doing almost the same
+
 ## Background
 Currently there are quite of lot of configuration files and scripts served within the ubuntu/debian packages, which aren't locatable in any public place. The only way to retrieve them is manually via the debian repository without any possibility to track changes and even less contribute to it, why I consider it as closed source.
 
