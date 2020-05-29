@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2481141,
-  "totalMinifiedGzipBytes": 572465,
+  "totalMinifiedBytes": 2483287,
+  "totalMinifiedGzipBytes": 573105,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1375,7 +1375,7 @@
       {}
     ],
     "app/app.js": [
-      1223184,
+      1225330,
       {
         "imports": {
           "ui": {
@@ -1509,7 +1509,7 @@
                 "container.jsx": 2701,
                 "service.js": 5033,
                 "styles.scss": 54,
-                "styles.scss.js": 4463
+                "styles.scss.js": 4661
               },
               "presentation": {
                 "presentation-toolbar": {
@@ -1530,14 +1530,14 @@
                     "container.jsx": 1128,
                     "service.js": 868
                   },
-                  "component.jsx": 3799,
+                  "component.jsx": 3809,
                   "container.jsx": 1189,
                   "service.js": 352
                 },
                 "default-content": {
-                  "component.jsx": 731,
+                  "component.jsx": 892,
                   "styles.scss": 54,
-                  "styles.scss.js": 1289
+                  "styles.scss.js": 1374
                 },
                 "download-presentation-button": {
                   "component.jsx": 922,
@@ -1566,8 +1566,8 @@
                 "slide": {
                   "component.jsx": 542
                 },
-                "component.jsx": 10013,
-                "container.jsx": 1209,
+                "component.jsx": 10357,
+                "container.jsx": 1917,
                 "service.js": 2607,
                 "styles.scss": 54,
                 "styles.scss.js": 10099
@@ -1689,7 +1689,7 @@
                 "annotation-factory": {
                   "reactive-annotation": {
                     "component.jsx": 543,
-                    "container.jsx": 792,
+                    "container.jsx": 1371,
                     "service.js": 163
                   },
                   "static-annotation": {
@@ -1858,7 +1858,7 @@
                   "styles.scss": 54,
                   "styles.scss.js": 8988
                 },
-                "component.jsx": 1695,
+                "component.jsx": 1665,
                 "container.jsx": 345,
                 "service.js": 2471
               },
@@ -2130,7 +2130,7 @@
               },
               "shortcut-help": {
                 "component.jsx": 4179,
-                "service.jsx": 842,
+                "service.jsx": 856,
                 "styles.scss": 54,
                 "styles.scss.js": 938
               },
@@ -2301,7 +2301,7 @@
           },
           "startup": {
             "client": {
-              "base.jsx": 6721,
+              "base.jsx": 6798,
               "intl.jsx": 4723,
               "logger.js": 1680
             }
