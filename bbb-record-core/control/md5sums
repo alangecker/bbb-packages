@@ -39,10 +39,10 @@ c183d19fd506d6fe89c192908a47f66f  usr/local/bigbluebutton/core/scripts/publish/R
 6550815908b68341e97e56c79bc4e1c7  usr/local/bigbluebutton/core/scripts/rap-archive-worker.rb
 d1a4308fbe0e5b753131d14bfa76f005  usr/local/bigbluebutton/core/scripts/rap-caption-inbox.rb
 0607223674de1f429e722d8d1d9b911c  usr/local/bigbluebutton/core/scripts/rap-events-worker.rb
-1b245a3661f4054ea1900f7f1e708bd2  usr/local/bigbluebutton/core/scripts/rap-process-worker.rb
+df7d96a3ff6c5ffa1c0dd5010f3bf8ec  usr/local/bigbluebutton/core/scripts/rap-process-worker.rb
 069bcc805955c4378709e9232226672f  usr/local/bigbluebutton/core/scripts/rap-publish-worker.rb
 fbe487149c302a9e1898689572fcf0b3  usr/local/bigbluebutton/core/scripts/rap-sanity-worker.rb
 7f3d5a64675a284726db075e54c8ad6f  usr/local/bigbluebutton/core/scripts/sanity/sanity.rb
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 c8ba295784c49e5fd3cd2533efe8e826  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-2ee9202188e42a219e5a9902bf3035a7  usr/share/doc/bbb-record-core/changelog.gz
+8716947f0468db4739682a23f5105a1a  usr/share/doc/bbb-record-core/changelog.gz
