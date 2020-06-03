@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2483287,
-  "totalMinifiedGzipBytes": 573105,
+  "totalMinifiedBytes": 2483352,
+  "totalMinifiedGzipBytes": 573115,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1375,7 +1375,7 @@
       {}
     ],
     "app/app.js": [
-      1225330,
+      1225395,
       {
         "imports": {
           "ui": {
@@ -1864,7 +1864,7 @@
               },
               "external-video-player": {
                 "custom-players": {
-                  "arc-player.jsx": 2518
+                  "arc-player.jsx": 2583
                 },
                 "modal": {
                   "component.jsx": 2698,
