@@ -1,4 +1,4 @@
-c92fd79504a4cb324aad702811aadc40  usr/share/doc/bbb-apps/changelog.gz
+5119018d9cdfe1dd688a43769143bf5e  usr/share/doc/bbb-apps/changelog.gz
 92d04d6bd8a0235843240bba30d2f091  usr/share/red5/webapps/bigbluebutton/META-INF/MANIFEST.MF
 57a823ced48019563267aa5466b9e6c7  usr/share/red5/webapps/bigbluebutton/WEB-INF/bigbluebutton.properties
 ea0a6a5fd7b15feba5423bfaf2e06543  usr/share/red5/webapps/bigbluebutton/WEB-INF/classes/application.conf
@@ -25,8 +25,8 @@ a92fb4c481d9e8cff9162317582dec5d  usr/share/red5/webapps/bigbluebutton/WEB-INF/c
 c7003cc309c3716a33ee9f51f5d504da  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/akka-actor_2.12-2.5.19.jar
 2f881aed222a9c57fab0480674da61ec  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/akka-slf4j_2.12-2.5.19.jar
 04177054e180d09e3998808efa0401c7  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/aopalliance-1.0.jar
-5f43ad962e5293891a0ad8ed321aa3b8  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/bbb-apps-common_2.12-0.0.1590162759-SNAPSHOT.jar
-9551732a60d02819402162c4c3adfe32  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/bbb-common-message_2.12-0.0.1590162759-SNAPSHOT.jar
+2de5565755c0f1145ac86966746cd6f3  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/bbb-apps-common_2.12-0.0.1591029485-SNAPSHOT.jar
+4dc5f8bed90fc96c0a302eac5ff18c54  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/bbb-common-message_2.12-0.0.1591029485-SNAPSHOT.jar
 467c2a1f64319c99b5faf03fc78572af  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/commons-io-2.6.jar
 540b1256d887a6993ecbef23371a3302  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/commons-lang3-3.8.1.jar
 08c4c1bdf25e2e30c2615bc477c3b36c  usr/share/red5/webapps/bigbluebutton/WEB-INF/lib/commons-pool2-2.8.0.jar
