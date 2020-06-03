@@ -1,5 +1,5 @@
 fd23346626f14f392810262e12826fd5  etc/bigbluebutton/bbb-conf/apply-lib.sh
-8b48599e1a0ed6d55ab0554abe96071b  etc/bigbluebutton/bigbluebutton-release
+cc51877f567d744319da33bc79e27596  etc/bigbluebutton/bigbluebutton-release
 184ae11f3de1bc29b27f476f4bbab785  etc/bigbluebutton/nopdfmark.ps
 a94f7fb088cd4b9ae39bf67fd9fa7c06  etc/cron.daily/bigbluebutton
 e73df50b93366b56b2174359379dff7b  etc/cron.hourly/bbb-resync-freeswitch
@@ -10,7 +10,7 @@ a8f4e47e37495025e8145a4bed92e62e  usr/share/bigbluebutton/blank/blank-presentati
 2d8c3c408f80030ab4e8bf1c02af56ed  usr/share/bigbluebutton/blank/blank-slide.swf
 b3c208be3b219429bcdb13ca1f979cac  usr/share/bigbluebutton/blank/blank-svg.svg
 ba3ddcef465d28c19663272909c980ab  usr/share/bigbluebutton/blank/blank-thumb.png
-b1944f0be91a810336c5ecfccbe39ae6  usr/share/doc/bbb-config/changelog.gz
+81b173e52f793fa0bc6342f5ac4d39b6  usr/share/doc/bbb-config/changelog.gz
 dfd6448df1e1c78edc0887a1dd5c908b  var/bigbluebutton/blank/blank-png.png
 a8f4e47e37495025e8145a4bed92e62e  var/bigbluebutton/blank/blank-presentation.pdf
 2d8c3c408f80030ab4e8bf1c02af56ed  var/bigbluebutton/blank/blank-slide.swf
@@ -20,8 +20,8 @@ ba3ddcef465d28c19663272909c980ab  var/bigbluebutton/blank/blank-thumb.png
 9f18afde30751307f09e8b7c0cb3a54d  var/www/bigbluebutton-default/css/bijou.min.css
 008e0bb5ebfa7bc298a042f95944df25  var/www/bigbluebutton-default/css/font-awesome.min.css
 da923b1525dc3c23ec63bf5d136172b9  var/www/bigbluebutton-default/css/style.css
-96f8a74671e2c57b3786676643a5a39d  var/www/bigbluebutton-default/default.pdf
-45adb30049aa490d3feaac78ebdfe00d  var/www/bigbluebutton-default/default.pptx
+fe4d40327b8625042b9449750727fdc3  var/www/bigbluebutton-default/default.pdf
+c33a70df0c81a9f591e60b784f383142  var/www/bigbluebutton-default/default.pptx
 b9a4f3e43e9d04cd2277118ac6787886  var/www/bigbluebutton-default/favicon.ico
 0d2717cd5d853e5c765ca032dfd41a4d  var/www/bigbluebutton-default/fonts/FontAwesome.otf
 674f50d287a8c48dc19ba404d20fe713  var/www/bigbluebutton-default/fonts/fontawesome-webfont.eot
