@@ -1,6 +1,6 @@
 Source: bbb-apps-akka
 Package: bbb-apps-akka
-Version: 2.2.0-86
+Version: 2.2.0-87
 Section: java
 Priority: optional
 Architecture: all
