@@ -1,9 +1,9 @@
 56131ec629809d20221f8abcfb402cf4  etc/bigbluebutton/nginx/presentation.nginx
 ca7dbf9d91a741d62f6960b3df9154ea  usr/local/bigbluebutton/core/scripts/caption/presentation
 f8cd7d4cf87b661a2e8465ecd151e487  usr/local/bigbluebutton/core/scripts/presentation.yml
-bb82db6e16af3010dc32651efe7e08a4  usr/local/bigbluebutton/core/scripts/process/presentation.rb
+1452cef01db9bf0b2fe795e79087dc3c  usr/local/bigbluebutton/core/scripts/process/presentation.rb
 0b45a08f70856deb0674e40b8fc9f93e  usr/local/bigbluebutton/core/scripts/publish/presentation.rb
-5029cbf580e684d65387cb426ec9cefd  usr/share/doc/bbb-playback-presentation/changelog.gz
+857e6917d49b89c02ba5eb7f5ef69a3b  usr/share/doc/bbb-playback-presentation/changelog.gz
 d899df82f4b9bd613722fbc58df01b95  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/acornmediaplayer.base.css
 a4e7611323f80843a7e4f457646d4834  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/jquery.acornmediaplayer.js
 ea8e76ae3e6577c57444d2af69b76171  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/themes/access/access-captions-dark.png
