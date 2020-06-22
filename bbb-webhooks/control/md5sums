@@ -2465,20 +2465,6 @@ bf1f9ad1e2e1d507aef4883fff7103de  usr/local/bigbluebutton/bbb-webhooks/node_modu
 31287fdbbb1db6d72020d84d606d4fcd  usr/local/bigbluebutton/bbb-webhooks/node_modules/mime-types/README.md
 bf015bb6811afc5c98e3e5f7072fdc79  usr/local/bigbluebutton/bbb-webhooks/node_modules/mime-types/index.js
 27dd10193b60e080b0bccc5f2dcfd2b1  usr/local/bigbluebutton/bbb-webhooks/node_modules/mime-types/package.json
-9a948e25c9dd10247619f816d6f38985  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/.travis.yml
-aea1cde69645f4b99be4ff7ca9abcce1  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/LICENSE
-559dd0b28e67e4da65c434476bc2c885  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/example/parse.js
-822fc8889c4bc1e1906b9e51560e7978  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/index.js
-da7d2a6b1ec1227729fe43db3fd7d3b0  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/package.json
-651854ca82c2fd452b10b7874d9b4ebc  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/readme.markdown
-190934d8330fccc8c5aa07a3e43f028d  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/dash.js
-c3598075b51486aa545526d13b454c66  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/default_bool.js
-e03ea33b7cfbb7799a90b5b7a799d253  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/dotted.js
-652e865e69ae41e78d9ad95f8557f0a2  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/long.js
-02125d8ef8b795946d6e238b880d0814  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/parse.js
-076418970e9e56b926ded3e24aee7a01  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/parse_modified.js
-a964fe2c657d6e71d1c3a2c8bc5ce79c  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/short.js
-caa1c589b42a96804176247191ccb980  usr/local/bigbluebutton/bbb-webhooks/node_modules/minimist/test/whitespace.js
 c2b11750d7b7109651085eaa98249622  usr/local/bigbluebutton/bbb-webhooks/node_modules/mkdirp/.travis.yml
 b2d989bc186e7f6b418a5fdd5cc0b56b  usr/local/bigbluebutton/bbb-webhooks/node_modules/mkdirp/LICENSE
 9ef5fb33a1a94773afb7dc52b0dfbb5d  usr/local/bigbluebutton/bbb-webhooks/node_modules/mkdirp/bin/cmd.js
@@ -3183,7 +3169,7 @@ ffb3150520dbeac7f60daf1930aa7530  usr/local/bigbluebutton/bbb-webhooks/node_modu
 2775d54f359a925a2a73aa6120ad1191  usr/local/bigbluebutton/bbb-webhooks/node_modules/winston-transport/test/legacy.test.js
 b5db188501af334c555f8a08dba14451  usr/local/bigbluebutton/bbb-webhooks/node_modules/winston-transport/tsconfig.json
 270c11b35da3d69140f10180cffbb763  usr/local/bigbluebutton/bbb-webhooks/opts-global.sh
-b18ab916539ca71733fd440c3c04491a  usr/local/bigbluebutton/bbb-webhooks/package-lock.json
+c77909474695fbc1181bf5510d15b83a  usr/local/bigbluebutton/bbb-webhooks/package-lock.json
 b480f73ec8ec9b5f980ed141b24603c9  usr/local/bigbluebutton/bbb-webhooks/package.json
 b22017b7dda169923ca43886c20a0663  usr/local/bigbluebutton/bbb-webhooks/responses.js
 d6e75678162720d22eb9facac50bbce0  usr/local/bigbluebutton/bbb-webhooks/test/helpers.js
@@ -3193,4 +3179,4 @@ b8b259ff9553bd99dad8bf54244e2a64  usr/local/bigbluebutton/bbb-webhooks/userMappi
 a9599b30eb5872a2d17f068f25e9ac72  usr/local/bigbluebutton/bbb-webhooks/utils.js
 33ac6a44d9c4d7e8ddb1c3692a5ccf2d  usr/local/bigbluebutton/bbb-webhooks/web_hooks.js
 5b6ee49235c8d48948507c533bdaf962  usr/local/bigbluebutton/bbb-webhooks/web_server.js
-59995a5337d75a9826dd6f77d2cca194  usr/share/doc/bbb-webhooks/changelog.gz
+26881d46b8673e21382b600298c41c3f  usr/share/doc/bbb-webhooks/changelog.gz
