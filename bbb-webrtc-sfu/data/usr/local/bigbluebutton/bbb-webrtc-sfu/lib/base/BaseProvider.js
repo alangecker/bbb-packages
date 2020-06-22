@@ -103,7 +103,8 @@ module.exports = class BaseProvider extends EventEmitter {
   }
 
 
-  getRecordingPath (room, subPath, recordingName, format) {
+  getRecordingPath (room, subPath, recordingName) {
+    const format = config.get('recordingFormat');
     const basePath = config.get('recordingBasePath');
     const timestamp = (new Date()).getTime();
 

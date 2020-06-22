@@ -12,13 +12,18 @@ const LOG_PREFIX = "[stream]";
 const DockerSpawner = require('./containers/docker');
 const KubernetesSpawner = require('./containers/kubernetes');
 
-const KEEPALIVE_INTERVAL = 20000;
+const KEEPALIVE_INTERVAL = 15000;
 const MAX_MISSED_KEEPALIVES = 3;
 
 let getJoinUrl = (server, meetingId) => {
 
   let room = server.monitoring.getMeetingInfo(meetingId);
   let options = config.has('bbb-stream.bot_join_options') ? config.get('bbb-stream.bot_join_options') : {};
+
+  options = {...options,
+    'userdata-html5recordingbot': true,
+    'joinViaHtml5': true
+  };
 
   return room.then(function(meeting) {
     let response = meeting.response;
@@ -28,28 +33,27 @@ let getJoinUrl = (server, meetingId) => {
 
 }
 
-const getContainerSpawner = (imageName, streamType, id, process) => {
+const getContainerSpawner = (imageName, process) => {
   const containerType = config.get('bbb-stream.container_type');
 
   if (!containerType || containerType === 'docker') {
-      return new DockerSpawner(imageName, streamType, id, process);
+      return new DockerSpawner(imageName, process);
   }
 
   if (containerType === 'kubernetes') {
-    return new KubernetesSpawner(imageName, streamType, id, process);
+    return new KubernetesSpawner(imageName, process);
   }
 
 };
 
 module.exports = class Stream extends BaseProvider {
-  constructor(_bbbGW, _id, _meetingId, _streamUrl, _streamType) {
+  constructor(_bbbGW, _id, _meetingId, _streamUrl) {
     super();
     this.sfuApp = C.STREAM_APP;
     this.bbbGW = _bbbGW;
     this.id = _id;
     this.meetingId = _meetingId;
     this.streamUrl = _streamUrl;
-    this.streamType = _streamType;
     this.keepAliveInterval = null;
     this._missedKeepAlives = 0;
 
@@ -64,17 +68,17 @@ module.exports = class Stream extends BaseProvider {
 
     this.server = bbb.server(bigbluebutton_url, secret);
 
-    this.containerSpawner = getContainerSpawner(this.imageName, this.streamType, this.id, this);
+    this.containerSpawner = getContainerSpawner(this.imageName, this);
   }
 
   async start (callback) {
-    Logger.info(LOG_PREFIX, "Starting streaming instance for", this.id, "type is:", this.streamType);
+    Logger.info(LOG_PREFIX, "Starting streaming instance for", this.id);
 
     try {
       getJoinUrl(this.server, this.meetingId).then((url) => {
         this.startContainer(url);
 
-        this.keepAliveInterval = this.createStreamKeepAlive();
+	this.keepAliveInterval = this.createStreamKeepAlive();
       });
       return callback(null);
     }

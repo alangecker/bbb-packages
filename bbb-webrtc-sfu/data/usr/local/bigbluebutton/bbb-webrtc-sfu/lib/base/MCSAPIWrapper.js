@@ -7,9 +7,7 @@ const Logger = require('../utils/Logger');
 const MCS = require('mcs-js');
 const C = require('../bbb/messages/Constants');
 
-const LOG_PREFIX = '[sfu-mcs-api]';
 const CONNECTION_TIMEOUT = 10000;
-
 let instance = null;
 
 module.exports = class MCSAPIWrapper extends EventEmitter {
@@ -18,8 +16,6 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
       super();
       this._mcs = null;
       instance = this;
-      this._onClientConnectionError = this._onClientConnectionError.bind(this);
-      this._onOpen = this._onOpen.bind(this);
       this.connected = false;
     }
 
@@ -35,17 +31,28 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
         this._monitorConnectionState();
         this._connectionResolver = resolve;
       } catch(error) {
-        Logger.error(`[sfu-mcs-api] Startup MCS connection failed due to ${error.message}`,
-          { error });
+        Logger.warn('[sfu-mcs-api]', err);
         resolve();
       }
     })
   }
 
   _monitorConnectionState () {
-    this._mcs.once('error', this._onClientConnectionError)
-    this._mcs.once('close', this._onClientConnectionError)
-    this._mcs.once('open', this._onOpen);
+    this._mcs.on('open', this._onOpen.bind(this));
+    this._mcs.on('close', this._onDisconnection.bind(this));
+    this._mcs.on('error', this._onDisconnection.bind(this));
+
+    this._mcs.on(C.MEDIA_STATE, (args) => {
+      Logger.debug("[sfu-mcs-api] Received media state event", args);
+      const { mediaId, state } = args;
+      this.emit(C.MEDIA_STATE, { mediaId, state });
+    });
+
+    this._mcs.on(C.MEDIA_STATE_ICE, (args) => {
+      Logger.debug("[sfu-mcs-api] Received onIceCandidate event", args);
+      const { mediaId, candidate } = args;
+      this.emit(C.MEDIA_STATE_ICE, { mediaId, candidate });
+    });
   }
 
   _onOpen () {
@@ -55,21 +62,19 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
       this._reconnectionRoutine = null;
     }
 
-    this._mcs.on('error', this._onClientConnectionError);
-    this._mcs.once('close', this._onClientConnectionError);
     this.emit(C.MCS_CONNECTED);
     this.connected = true;
     this._connectionResolver();
   }
 
-  _onDisconnection () {
+  async _onDisconnection () {
     // TODO base reconenction, should be ane exponential backoff
     if (this._reconnectionRoutine == null) {
       this.emit(C.MCS_DISCONNECTED);
       this.connected = false;
       this._reconnectionRoutine = setInterval(async () => {
         try {
-          Logger.info("[sfu-mcs-api] Trying to reconnect to MCS at", this.addr);
+          Logger.info("[sfu-mcs-api] Connecting to MCS at", this.addr);
           this._mcs = new MCS(this.addr);
           this._monitorConnectionState()
         } catch (err) {
@@ -78,16 +83,6 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
         }
       }, 2000);
     }
-  }
-
-  _onClientConnectionError (error) {
-    if (error) {
-    Logger.error(LOG_PREFIX, `SFU socket connection to mcs-core failed due to ${error.message}`,
-      { message: error.message, code: error.code });
-    } else {
-      Logger.error(LOG_PREFIX, `SFU socket connection to mcs-core closed unexpectedly`);
-    }
-    this._onDisconnection();
   }
 
   async join (room, type, params) {
@@ -100,9 +95,10 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
     }
   }
 
-  async leave (room, user, params = {}) {
+  async leave (room, user) {
     try {
-      const answer = await this._mcs.leave(user, room, params);
+      const answer = await this._mcs.leave(user, room);
+      //const answer = await this._mediaController.leave(room, user);
       return (answer);
     }
     catch (error) {
@@ -133,7 +129,8 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
 
   async unpublish (user, mediaId) {
     try {
-      await this._mcs.unpublish(user, mediaId);
+      await this._mcs.unpublish(mediaId);
+      //await this._mediaController.unpublish(mediaId);
       return ;
     }
     catch (error) {
@@ -154,6 +151,7 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
   async unsubscribe (user, mediaId) {
     try {
       await this._mcs.unsubscribe(user, mediaId);
+      //await this._mediaController.unsubscribe(user, mediaId);
       return ;
     }
     catch (error) {
@@ -161,9 +159,9 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
     }
   }
 
-  async startRecording(userId, mediaId, recordingPath, options) {
+  async startRecording(userId, mediaId, recordingPath) {
     try {
-      const { recordingId } = await this._mcs.startRecording(userId, mediaId, recordingPath, options);
+      const { recordingId } = await this._mcs.startRecording(userId, mediaId, recordingPath);
       return recordingId;
     }
     catch (error) {
@@ -302,8 +300,11 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
       error.details = error.message;
       error.response = error;
     }
+
     const { code, message, details, stack } = error.response;
     response = { type: 'error', code, message, details, stack, operation };
+    Logger.error("[mcs-api] Reject operation", response.operation, "with", { error: response });
+
     return response;
   }
 }

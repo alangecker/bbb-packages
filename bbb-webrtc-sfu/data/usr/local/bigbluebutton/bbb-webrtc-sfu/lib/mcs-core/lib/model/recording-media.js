@@ -11,15 +11,14 @@ const Media = require('./media');
 const Balancer = require('../media/balancer');
 const config = require('config');
 const Logger = require('../utils/logger');
-const LOG_PREFIX = "[mcs-recording-media]";
 
 module.exports = class RecordingMedia extends Media {
   constructor(
     room,
     user,
     mediaSessionId,
-    remoteDescriptor,
-    localDescriptor,
+    offer,
+    answer,
     type,
     adapter,
     adapterElementId,
@@ -27,62 +26,40 @@ module.exports = class RecordingMedia extends Media {
     options
   ) {
     super(room, user, mediaSessionId, type, adapter, adapterElementId, host, options);
-    this.sourceMedia = options.sourceMedia || undefined;
-    if (localDescriptor) {
-      this.localDescriptor = localDescriptor;
-    }
-    if (remoteDescriptor) {
-      this.remoteDescriptor = remoteDescriptor;
+    Logger.info("[mcs-sdp-media] New session with options", type);
+    // {SdpWrapper} SdpWrapper
+    if (answer) {
+      this.setAnswer(answer);
     }
 
-    Logger.info(LOG_PREFIX,  "New media created", JSON.stringify(this.getMediaInfo()));
+    this.sourceMedia = options.sourceMedia? options.sourceMedia : null;
+
+    this._updateHostLoad();
   }
 
-  set remoteDescriptor (remoteDescriptor) {
-    if (remoteDescriptor) {
-      this._remoteDescriptor = remoteDescriptor;
-      this.fillMediaTypes();
-    }
-  }
-
-  get remoteDescriptor () {
-    return this._remoteDescriptor;
-  }
-
-  set localDescriptor (localDescriptor) {
-    if (localDescriptor) {
-      this._localDescriptor = localDescriptor;
-      this.fillMediaTypes();
+  setOffer (offer) {
+    if (offer) {
+      this.offer = offer;
     }
   }
 
-  get localDescriptor () {
-    return this._localDescriptor;
-  }
-
-  fillMediaTypes () {
-    if (this.sourceMedia) {
-      const { video, audio, content } = this.sourceMedia.mediaTypes;
-      this.mediaTypes.video = video;
-      this.mediaTypes.audio = audio;
-      this.mediaTypes.content = content;
+  setAnswer (answer) {
+    if (answer) {
+      this.answer = answer;
+      this.mediaTypes.video = this.sourceMedia.hasAvailableVideoCodec();
+      this.mediaTypes.audio = this.sourceMedia.hasAvailableAudioCodec();
     }
   }
 
-  updateHostLoad () {
-    if (this.mediaTypes.video && !this.hasVideo) {
-      Balancer.incrementHostStreams(this.host.id, C.MEDIA_PROFILE.MAIN);
+  _updateHostLoad () {
+    if (this.mediaTypes.video) {
+      Balancer.incrementHostStreams(this.host.id, 'video');
       this.hasVideo = true;
     }
 
-    if (this.mediaTypes.audio && !this.hasAudio) {
-      Balancer.incrementHostStreams(this.host.id, C.MEDIA_PROFILE.AUDIO);
+    if (this.mediaTypes.audio) {
+      Balancer.incrementHostStreams(this.host.id, 'audio');
       this.hasAudio = true;
-    }
-
-    if (this.mediaTypes.content && !this.hasContent) {
-      Balancer.incrementHostStreams(this.host.id, C.MEDIA_PROFILE.CONTENT);
-      this.hasContent= true;
     }
   }
 }

@@ -8,19 +8,13 @@
  * 2x model
  * @constructor
  */
-
-const config = require('config');
-const ADD_TIMESTAMP = config.has('addTimestampToAkkaMessages')
-  ? config.get('addTimestampToAkkaMessages')
-  : true;
-
 function OutMessage2x(messageName, routing, headerFields) {
 
 
     this.envelope = {
       name: messageName,
       routing: routing,
-      timestamp: ADD_TIMESTAMP? Date.now() : undefined,
+      timestamp: Date.now() 
     }
     /**
      * The header template of the message

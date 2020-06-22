@@ -1,5 +1,4 @@
 const {Docker} = require('node-docker-api');
-const config = require('config');
 
 const docker = new Docker({ socketPath: '/var/run/docker.sock' })
 
@@ -8,28 +7,19 @@ const Logger = require('../../utils/Logger');
 const LOG_PREFIX = "[docker]";
 
 module.exports = class DockerSpawner {
-  constructor(imageName, streamType, meetingId, process) {
+  constructor(imageName, process) {
     this.imageName = imageName;
     this.container = null;
     this.containerDied = null;
     this.process = process;
-    this.streamType = streamType;
-    this.meetingId = meetingId;
   }
 
   startContainer(link, streamUrl) {
 
-    const gopValues = config.get('bbb-stream.gop');
-    const gop = gopValues[this.streamType] || gopValues.rtmp;
-
     try {
       docker.container.create({
         Image: this.imageName,
-        Env: [ `LINK=${link}`, `OUTPUT=${streamUrl}`, `FORMAT=rtmp`, `GOP=${gop}` ],
-        HostConfig: {
-          AutoRemove: true,
-        },
-        name: `streaming_${this.meetingId}`,
+        Env: [ `LINK=${link}`, `OUTPUT=${streamUrl}`, `FORMAT=rtmp` ]
       })
       .then((c) => {
         this.container = c;

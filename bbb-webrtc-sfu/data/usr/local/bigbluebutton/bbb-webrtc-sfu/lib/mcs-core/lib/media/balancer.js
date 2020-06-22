@@ -10,18 +10,12 @@ const C = require('../constants/constants');
 const KMS_ARRAY = config.get('kurento');
 const VIDEO_TRANSPOSING_CEILING = config.get('video-transposing-ceiling');
 const AUDIO_TRANSPOSING_CEILING = config.get('audio-transposing-ceiling');
-const BALANCING_STRATEGY = config.has('balancing-strategy')
-  ? config.get('balancing-strategy')
-  : C.BALANCING_STRATEGIES.ROUND_ROBIN;
 const KMS_FAIL_AFTER = 5;
+const KMS_FAILOVER_TIMEOUT_MS = 15000;
 const NOF_STARTUP_CONNECTION_RETRIES = config.has('kurentoStartupRetries')
   ? config.get('kurentoStartupRetries')
   : 10;
 const HOST_RETRY_TIMER = 3000;
-const KMS_FAILOVER_TIMEOUT_MS = 15000;
-const KMS_DEFAULT_OPTIONS = {
-  failAfter: 5,
-};
 
 let instance = null;
 
@@ -39,24 +33,11 @@ class Balancer extends EventEmitter {
   async upstartHosts () {
     const processHosts = async () => {
       const tryToConnect = async (host) => {
-        const {
-          url,
-          ip,
-          mediaType,
-          retries,
-          ipClassMappings = { public: host.ip },
-          options = KMS_DEFAULT_OPTIONS,
-        } = host;
+        const { url, ip, mediaType, retries } = host;
         if (retries < NOF_STARTUP_CONNECTION_RETRIES) {
           if (!this._hostStarted(url, ip)) {
             try {
-              const newHost = await Balancer.connectToHost(
-                url,
-                ip,
-                options,
-                ipClassMappings,
-                mediaType
-              );
+              const newHost = await Balancer.connectToHost(url, ip, mediaType);
               this._monitorConnectionState(newHost);
               this.addHost(newHost);
             }
@@ -81,9 +62,9 @@ class Balancer extends EventEmitter {
     processHosts();
   }
 
-  static connectToHost (url, ip, options, ipClassMappings, mediaType = C.MEDIA_PROFILE.ALL) {
+  static connectToHost (url, ip) {
     const connect =  new Promise((resolve, reject) => {
-      mediaServerClient(url, options, (error, client) => {
+      mediaServerClient(url, {failAfter: KMS_FAIL_AFTER}, (error, client) => {
         if (error) {
           return reject(error);
         }
@@ -91,14 +72,8 @@ class Balancer extends EventEmitter {
           id: rid(),
           url,
           ip,
-          medias: {
-            [C.MEDIA_PROFILE.MAIN]: 0,
-            [C.MEDIA_PROFILE.CONTENT]: 0,
-            [C.MEDIA_PROFILE.AUDIO]: 0,
-          },
-          options,
-          ipClassMappings,
-          mediaType,
+          video: 0,
+          audio: 0,
           client: client
         };
         return resolve(newHost);
@@ -112,15 +87,13 @@ class Balancer extends EventEmitter {
     return Promise.race([connect, failOver]);
   }
 
-  async getHost (mediaType = C.MEDIA_PROFILE.ALL) {
-    Logger.info(`[mcs-balancer] Getting host for mediaType: ${mediaType}`);
-
-    const host = this._fetchAvailableHost(mediaType);
+  async getHost () {
+    const host = this._fetchAvailableHost();
     if (host == null) {
       throw C.ERROR.MEDIA_SERVER_OFFLINE;
     }
 
-    Logger.info("[mcs-balancer] Chosen host is", JSON.stringify({ id: host.id, url: host.url, ip: host.ip, mediaType: host.mediaType, medias: host.medias }));
+    Logger.info("[mcs-balancer] Chosen host is", host.id, host.url, host.ip, host.video, host.audio);
     return host;
   }
 
@@ -144,79 +117,34 @@ class Balancer extends EventEmitter {
     this.hosts = this.hosts.filter(host => host.id !== hostId);
   }
 
-  decrementHostStreams (hostId, mediaType) {
+  decrementHostStreams (hostId, nature) {
     const host = this.retrieveHost(hostId);
     if (host) {
-      host.medias[mediaType]--;
-      Logger.info(`[mcs-balancer] Host ${host.id} ${mediaType} streams decremented`, JSON.stringify(host.medias));
+      host[nature]--;
+      Logger.info("[mcs-balancer] Host", host.id, nature, 'streams decremented', { audio: host.audio }, { video: host.video });
     }
   }
 
-  incrementHostStreams (hostId, mediaType) {
+  incrementHostStreams (hostId, nature) {
     const host = this.retrieveHost(hostId);
     if (host) {
-      host.medias[mediaType]++;
-      Logger.info(`[mcs-balancer] Host ${host.id} ${mediaType} streams incremented`, JSON.stringify(host.medias));
+      host[nature]++;
+      Logger.info("[mcs-balancer] Host", host.id, "streams incremented", { audio: host.audio }, { video: host.video });
     }
   }
 
-  _fetchAvailableHost (mediaType) {
-    // Check if there any available hosts. Otherwise, throw the OFFLINE error
-    // which will be propagated to root API call that triggered it
+  _fetchAvailableHost () {
     if (this.hosts.length <= 0) {
       throw C.ERROR.MEDIA_SERVER_OFFLINE;
     }
 
-    switch (BALANCING_STRATEGY) {
-      case C.BALANCING_STRATEGY.MEDIA_TYPE:
-        return this._mediaTypeHost(mediaType);
-        break;
-      case C.BALANCING_STRATEGY.ROUND_ROBIN:
-      default:
-        return this._roundRobinHost();
-    }
-  }
-
-  _roundRobinHost () {
-    let host = this.hosts.find(host =>
-      (host.medias[C.MEDIA_PROFILE.MAIN] < VIDEO_TRANSPOSING_CEILING) &&
-      (host.medias[C.MEDIA_PROFILE.AUDIO] < AUDIO_TRANSPOSING_CEILING)
-    );
+    let host = this.hosts.find(host => host.video < VIDEO_TRANSPOSING_CEILING &&
+      host.audio < AUDIO_TRANSPOSING_CEILING);
 
     // Round robin if all instances are fully loaded
     if (host == null) {
       host = this.hosts.shift();
       this.addHost(host);
-    }
-
-    return host;
-  }
-
-  _compareLoad (h1, h2) {
-    const h1Load = h1.medias[C.MEDIA_PROFILE.MAIN] + h1.medias[C.MEDIA_PROFILE.CONTENT] + h1.medias[C.MEDIA_PROFILE.AUDIO];
-    const h2Load = h2.medias[C.MEDIA_PROFILE.MAIN] + h2.medias[C.MEDIA_PROFILE.CONTENT] + h2.medias[C.MEDIA_PROFILE.AUDIO];
-    return h1Load - h2Load;
-  }
-
-  _mediaTypeHost (mediaType) {
-    // The algorithm here is a very naive one: look for a media server allocated
-    // for the required type. If not found, get the least loaded one. The only
-    // wart here is that we won't mix video/content streams with audio streams,
-    // so that's also taken into account when looking for the least loaded server.
-    let host = this.hosts.find(host => host.mediaType === mediaType);
-
-    // Didn't find a host for the mediaType, get the least loaded.
-    // separation
-    if (host == null) {
-      // Isolate audio if possible. And yeah, I understand it is odd that the
-      // constants are MEDIA_PROFILE and the config is mediaType, but that's life.
-      if (mediaType !== C.MEDIA_PROFILE.AUDIO) {
-        host = this.hosts
-          .filter(h => h.mediaType !== C.MEDIA_PROFILE.AUDIO)
-          .sort(this._compareLoad)[0];
-      } else {
-        host = this.hosts.sort(this._compareLoad)[0];
-      }
     }
 
     return host;
@@ -267,13 +195,13 @@ class Balancer extends EventEmitter {
   }
 
   _reconnectToServer (host) {
-    const { client, id, url, options } = host;
+    const { client, id, url } = host;
     Logger.info("[mcs-balancer] Reconnecting to host", id, url);
     if (this._reconnectionRoutine[id] == null) {
       this._reconnectionRoutine[id] = setInterval(async () => {
         try {
           const connect =  new Promise((resolve, reject) => {
-            mediaServerClient(url, options, (error, client) => {
+            mediaServerClient(url, {failAfter: KMS_FAIL_AFTER}, (error, client) => {
               if (error) {
                 return reject(error);
               }

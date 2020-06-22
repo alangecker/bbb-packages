@@ -19,107 +19,116 @@ const MR = class MCSRouter {
       this._mcs = null;
       this._mediaController = new MediaController();
       this.clients = {};
-      // This is a hash map of client arrays for which the keys are the available
-      // events implemented by the API augmented by the event identifier (if it's necessary).
-      // The keys are in the following format: <event-name:(identifier? identifier : 'all')>
-      this.clientEventMap = {};
+      this.clientEventMap = [];
       instance = this;
     }
 
     return instance;
   }
 
-  start (address, port, secure) {
+  async start (address, port, secure) {
     this._mediaController.start();
     this._dispatchEvents();
   }
 
-  stop () {
+  async stop () {
     return this._mediaController.stop();
   }
 
-  join (roomId, type, params) {
+  async join (args) {
+    const { room_id, type, params } = args;
     try {
-      return this._mediaController.join(roomId, type, params);
+      const userId = await this._mediaController.join(room_id, type, params);
+      return userId;
     }
     catch (error) {
-      throw (this._handleError(error, 'join', { roomId, type, params }));
+      throw (this._handleError(error, 'join', { room_id , type, params}));
     }
   }
 
-  leave (roomId, userId, params = {}) {
+  async leave (args) {
+    const { userId, roomId } = args;
     try {
-      return this._mediaController.leave(roomId, userId, params);
+      const answer = await this._mediaController.leave(roomId, userId);
+      return (answer);
     }
     catch (error) {
-      throw (this._handleError(error, 'leave', { userId, roomId, }));
+      throw (this._handleError(error, 'leave', { ...arguments }));
     }
   }
 
-  publishnsubscribe (args) {
+  async publishnsubscribe (args) {
     const { user, room, type, source, params } = args;
     try {
-      return this._mediaController.publishAndSubscribe(room, user, source, type, params);
+      const answer = await this._mediaController.publishAndSubscribe(room, user, source, type, params);
+      return (answer);
     }
     catch (error) {
       throw (this._handleError(error, 'publishnsubscribe', { room, user, source, type, params }));
     }
   }
 
-  publish (args) {
+  async publish (args) {
     const { user, room, type, params } = args;
     try {
-      return this._mediaController.publish(user, room, type, params);
+      const answer = await this._mediaController.publish(user, room, type, params);
+      return (answer);
     }
     catch (error) {
-      throw (this._handleError(error, 'publish', { user, room, type }));
+      throw (this._handleError(error, 'publish', { ...arguments }));
     }
   }
 
-  unpublish (args) {
-    const { userId, mediaId } = args;
+  async unpublish (args) {
+    const { mediaId } = args;
     try {
-      return this._mediaController.unpublish(userId, mediaId);
+      await this._mediaController.unpublish(mediaId);
+      return ;
     }
     catch (error) {
-      throw (this._handleError(error, 'unpublish', { userId, mediaId }));
+      throw (this._handleError(error, 'unpublish', { ...arguments }));
     }
   }
 
-  subscribe (args) {
+  async subscribe (args) {
     const { user, source, type, params } = args;
     try {
-      return this._mediaController.subscribe(user, source, type, params);
+      const answer = await this._mediaController.subscribe(user, source, type, params);
+      return (answer);
     }
     catch (error) {
-      throw (this._handleError(error, 'subscribe', { user, source, type }));
+      throw (this._handleError(error, 'subscribe', { ...arguments }));
     }
   }
 
-  unsubscribe (args) {
+  async unsubscribe (args) {
     const { userId, mediaId } = args;
     try {
-      return this._mediaController.unsubscribe(userId, mediaId);
+      await this._mediaController.unsubscribe(userId, mediaId);
+      return ;
     }
     catch (error) {
-      throw (this._handleError(error, 'unsubscribe',  { userId, mediaId }));
+      throw (this._handleError(error, 'unsubscribe',  { ...arguments }));
     }
   }
 
-  startRecording (args) {
-    const { userId, mediaId, recordingPath, params } = args;
+  async startRecording(args) {
+    const { userId, mediaId, recordingPath } = args;
     try {
-      return this._mediaController.startRecording(userId, mediaId, recordingPath, params);
+      const { userId, mediaId, recordingPath } = args;
+      const answer = await this._mediaController.startRecording(userId, mediaId, recordingPath);
+      return (answer);
     }
     catch (error) {
-      throw (this._handleError(error, 'startRecording', { userId, mediaId, recordingPath }));
+      throw (this._handleError(error, 'startRecording', { userId, mediaId, recordingPath}));
     }
   }
 
-  stopRecording (args) {
+  async stopRecording(args) {
     const { userId, recordingId } = args;
     try {
-      return this._mediaController.stopRecording(userId, recordingId);
+      const answer = await this._mediaController.stopRecording(userId, recordingId);
+      return (answer);
     }
     catch (error) {
       throw (this._handleError(error, 'stopRecording', { userId, recordingId }));
@@ -140,7 +149,7 @@ const MR = class MCSRouter {
       });
     }
     catch (error) {
-      throw (this._handleError(error, 'connect', { source_id, sink_ids, type }));
+      throw (this._handleError(error, 'connect', { ...args }));
     }
   }
 
@@ -168,7 +177,7 @@ const MR = class MCSRouter {
       this._mediaController.onEvent(eventName, identifier);
     }
     catch (error) {
-      throw (this._handleError(error, 'onEvent', { eventName, identifier }));
+      throw (this._handleError(error, 'onEvent', args));
     }
   }
 
@@ -183,170 +192,141 @@ const MR = class MCSRouter {
     }
   }
 
-  getUserMedias (args) {
+  async getUserMedias (args) {
     const { userId } = args;
     try {
-      return this._mediaController.getUserMedias(userId);
+      const medias = await this._mediaController.getUserMedias(userId);
+      return medias;
     }
     catch (error) {
       throw (this._handleError(error, 'getUserMedias', { userId }));
     }
   }
 
-  getUsers (args) {
+  async getUsers (args) {
     const { roomId } = args;
     try {
-      return this._mediaController.getUsers(roomId);
+      const users = await this._mediaController.getUsers(roomId);
+      return users;
     }
     catch (error) {
       throw (this._handleError(error, 'getUsers', { roomId }));
     }
   }
 
-  getRooms () {
+  async getRooms () {
     try {
-      return this._mediaController.getRooms();
+      const rooms = this._mediaController.getRooms();
+      return rooms;
     }
     catch (error) {
       throw (this._handleError(error, 'getRooms', {}));
     }
   }
 
-  setConferenceFloor (args) {
-    const { mediaId, roomId } = args
+  async setConferenceFloor(args) {
     try {
-      return this._mediaController.setConferenceFloor(roomId, mediaId);
+      const { mediaId, roomId } = args
+      const floorInfo = await this._mediaController.setConferenceFloor(roomId, mediaId)
+      return floorInfo;
     }
     catch (error) {
-      throw (this._handleError(error, 'setConferenceFloor', { roomId, mediaId }))
+      throw (this._handleError(error, 'setConferenceFloor', {}))
     }
   }
 
-  setContentFloor (args) {
-    const { roomId, mediaId } = args
+  async setContentFloor(args) {
     try {
-      return this._mediaController.setContentFloor(roomId, mediaId);
+      const { roomId, mediaId } = args
+      const floorInfo = await this._mediaController.setContentFloor(roomId, mediaId)
+      return floorInfo;
     }
     catch (error) {
-      throw (this._handleError(error, 'setContentFloor', { roomId, mediaId }))
+      throw (this._handleError(error, 'setContentFloor', {}))
     }
   }
 
-  releaseConferenceFloor (args) {
+  async releaseConferenceFloor(args) {
+    try {
+      const { roomId } = args
+      const previousFloor = await this._mediaController.releaseConferenceFloor(roomId)
+      return previousFloor;
+    }
+    catch (error) {
+      throw (this._handleError(error, 'releaseConferenceFloor', {}))
+    }
+  }
+
+  async releaseContentFloor(args) {
+    try {
+      const { roomId } = args
+      const previousFloor = await this._mediaController.releaseContentFloor(roomId)
+      return previousFloor;
+    }
+    catch (error) {
+      throw (this._handleError(error, 'releaseContentFloor', {}))
+    }
+  }
+
+  async getConferenceFloor(args) {
     const { roomId } = args
     try {
-      return this._mediaController.releaseConferenceFloor(roomId);
+      const floorInfo = await this._mediaController.getConferenceFloor(roomId)
+      return floorInfo;
     }
     catch (error) {
-      throw (this._handleError(error, 'releaseConferenceFloor', { roomId }))
+      throw (this._handleError(error, 'getConferenceFloor', {}))
     }
   }
 
-  releaseContentFloor (args) {
+  async getContentFloor(args) {
     const { roomId } = args
     try {
-      return this._mediaController.releaseContentFloor(roomId);
+      const floorInfo = await this._mediaController.getContentFloor(roomId)
+      return floorInfo;
     }
     catch (error) {
-      throw (this._handleError(error, 'releaseContentFloor', { roomId }))
+      throw (this._handleError(error, 'getContentFloor', {}))
     }
   }
 
-  getConferenceFloor (args) {
-    const { roomId } = args
-    try {
-      return this._mediaController.getConferenceFloor(roomId);
-    }
-    catch (error) {
-      throw (this._handleError(error, 'getConferenceFloor', { roomId }))
-    }
-  }
-
-  getContentFloor (args) {
-    const { roomId } = args
-    try {
-      return this._mediaController.getContentFloor(roomId);
-    }
-    catch (error) {
-      throw (this._handleError(error, 'getContentFloor', { roomId }))
-    }
-  }
-
-  setVolume (args) {
+  async setVolume(args) {
     const { mediaId, volume } = args
     try {
-      return this._mediaController.setVolume(mediaId, volume);
+      await this._mediaController.setVolume(mediaId,volume)
     }
     catch (error) {
       throw (this._handleError(error, 'setVolume', { mediaId, volume }))
     }
   }
 
-  mute (args) {
+  async mute(args) {
     const { mediaId } = args
     try {
-      return this._mediaController.mute(mediaId);
+      await this._mediaController.mute(mediaId)
     }
     catch (error) {
       throw (this._handleError(error, 'mute', { mediaId }))
     }
   }
 
-  unmute (args) {
+  async unmute(args) {
     const { mediaId } = args
     try {
-      return this._mediaController.unmute(mediaId);
+      await this._mediaController.unmute(mediaId)
     }
     catch (error) {
-      throw (this._handleError(error, 'unmute', { mediaId }))
+      throw (this._handleError(error, 'unmute', {mediaId}))
     }
   }
 
-  setStrategy ({ identifier, strategy, params = {} }) {
-    try {
-      this._mediaController.setStrategy(identifier, strategy, params);
-    }
-    catch (error) {
-      throw (this._handleError(error, 'setStrategy', { identifier, strategy, params }));
-    }
-  }
-
-  getStrategy ({ identifier }) {
-    try {
-      return this._mediaController.getStrategy(identifier);
-    }
-    catch (error) {
-      throw (this._handleError(error, 'getStrategy', { identifier }));
-    }
-  }
-
-  dtmf (args) {
+  async dtmf (args) {
     const { mediaId, tone } = args
     try {
-      return this._mediaController.dtmf(mediaId, tone)
+      await this._mediaController.dtmf(mediaId, tone)
     }
     catch (error) {
-      throw (this._handleError(error, 'dtmf', { mediaId, tone }));
-    }
-  }
-
-  requestKeyframe (args) {
-    const { mediaId } = args
-    try {
-      return this._mediaController.requestKeyframe(mediaId)
-    }
-    catch (error) {
-      throw (this._handleError(error, 'requestKeyframe', { mediaId }));
-    }
-  }
-
-  getMedias (args) {
-    const { memberType, identifier, options } = args
-    try {
-      return this._mediaController.getMedias(memberType, identifier, options)
-    }
-    catch (error) {
-      throw (this._handleError(error, 'getMedias', { memberType, identifier }));
+      throw (this._handleError(error, 'dtmf', { mediaId, tone }))
     }
   }
 
@@ -357,17 +337,16 @@ const MR = class MCSRouter {
   _handleError (error, operation) {
     const { code, message, details, stack } = error;
     const response = { type: 'error', code, message, details, operation };
-    Logger.error("[mcs-router] Reject operation", response.operation, "with", { response, rawError: error });
+    Logger.trace(LOG_PREFIX, "Error stack", stack);
+    Logger.error("[mcs-router] Reject operation", response.operation, "with", { error: response });
 
     return response;
   }
 
   _disconnectAllClientSessions (client) {
-    client.userSessions.forEach(session => {
+    client.userSessions.forEach(async s => {
       try {
-        Logger.info(LOG_PREFIX, `Closing user ${session.userId} session due to a client disconnection`,
-          { roomId: session.roomId, userId: session.userId, clientTrackingId: session.clientTrackingId });
-        this.leave(session.roomId, session.userId);
+        await this.leave(s);
       } catch (e) {
         this._handleError(e, 'leave');
       }
@@ -398,13 +377,13 @@ const MR = class MCSRouter {
       this._disconnectAllClientSessions(client);
     });
 
-    client.on('join', (args) =>  {
-      let transactionId, room_id, type, params;
+    client.on('join', async (args) =>  {
+      let transactionId, room_id;
       try {
-        ({ transactionId, room_id, type, params } = args);
-        const userId = this.join(room_id, type, params);
+        ({ transactionId, room_id } = args);
+        const userId = await this.join(args);
         client.joined(userId, { transactionId });
-        client.userSessions.push({ userId, roomId: room_id, clientTrackingId: client.trackingId });
+        client.userSessions.push({ userId, roomId: room_id });
       } catch (e) {
         this._notifyMethodError(client, e, transactionId);
       }
@@ -509,44 +488,44 @@ const MR = class MCSRouter {
       }
     });
 
-    client.on('getRooms', (args) => {
+    client.on('getRooms', async (args) => {
       let transactionId;
       try {
         ({ transactionId } = args);
-        const rooms = this.getRooms();
+        const rooms = await this.getRooms();
         client.roomsList(rooms, { transactionId });
       } catch (e) {
         this._notifyMethodError(client, e, transactionId);
       }
     });
 
-    client.on('getUsers', (args) => {
+    client.on('getUsers', async (args) => {
       let transactionId;
       try {
         ({ transactionId } = args);
-        const users = this.getUsers(args);
+        const users = await this.getUsers(args);
         client.usersList(users, { transactionId });
       } catch (e) {
         this._notifyMethodError(client, e, transactionId);
       }
     });
 
-    client.on('getUserMedias', (args) => {
+    client.on('getUserMedias', async (args) => {
       let transactionId;
       try {
         ({ transactionId } = args);
-        const medias = this.getUserMedias(args);
+        const medias = await this.getUserMedias(args);
         client.userMedias(medias, { transactionId });
       } catch (e) {
         this._notifyMethodError(client, e, transactionId);
       }
     });
 
-    client.on('leave', (args) => {
-      let userId, roomId, transactionId, params;
+    client.on('leave', async (args) => {
+      let userId, transactionId;
       try {
-        ({ userId, roomId, transactionId, params } = args);
-        this.leave(roomId, userId, params);
+        ({ userId, transactionId } = args);
+        await this.leave(args);
         client.left(userId, { transactionId });
       } catch (e) {
         this._notifyMethodError(client, e, transactionId);
@@ -556,7 +535,9 @@ const MR = class MCSRouter {
     client.on('onEvent', async (args) => {
       try {
         Logger.trace("[mcs-router] Client", client.trackingId, "subscribing to event", args);
-        this._addToClientEventMap(args, client);
+        const { eventName, identifier } = args;
+        const eventMap = { identifier, eventName, client };
+        this._addToClientEventMap(eventMap);
         await this.onEvent(args);
       } catch (e) {
         Logger.error('[mcs-router] OnEvent error', e);
@@ -585,11 +566,11 @@ const MR = class MCSRouter {
       }
     });
 
-    client.on('setConferenceFloor', (args) => {
+    client.on('setConferenceFloor', async (args) => {
       let transactionId, mediaId, roomId;
       try {
         ({transactionId, mediaId, roomId } = args);
-        const { floor, previousFloor } = this.setConferenceFloor(args)
+        const { floor, previousFloor } = await this.setConferenceFloor(args)
         client.conferenceFloorChanged(roomId, { floor, previousFloor, transactionId })
       }
       catch (e) {
@@ -597,11 +578,11 @@ const MR = class MCSRouter {
       }
     });
 
-    client.on('setContentFloor', (args) => {
+    client.on('setContentFloor', async (args) =>{
       let transactionId, mediaId, roomId;
       try {
         ({ transactionId, mediaId, roomId } = args);
-        const { floor, previousFloor } = this.setContentFloor(args)
+        const { floor, previousFloor } = await this.setContentFloor(args)
         client.contentFloor(roomId, { floor, previousFloor, transactionId })
       }
       catch (e) {
@@ -609,11 +590,11 @@ const MR = class MCSRouter {
       }
     });
 
-    client.on('releaseConferenceFloor', (args) => {
+    client.on('releaseConferenceFloor', async (args) => {
       let transactionId, roomId;
       try {
         ({ transactionId, roomId} = args);
-        const previousFloor = this.releaseConferenceFloor(args)
+        const previousFloor = await this.releaseConferenceFloor(args)
         client.conferenceFloorChanged(roomId, { previousFloor, transactionId })
       }
       catch (e) {
@@ -621,11 +602,11 @@ const MR = class MCSRouter {
       }
     });
 
-    client.on('releaseContentFloor', (args) =>{
+    client.on('releaseContentFloor', async (args) =>{
       let transactionId, roomId;
       try {
         ({ transactionId, roomId} = args);
-        const previousFloor = this.releaseContentFloor(args)
+        const previousFloor = await this.releaseContentFloor(args)
         client.contentFloorChanged(roomId, { previousFloor, transactionId })
       }
       catch (e) {
@@ -633,11 +614,11 @@ const MR = class MCSRouter {
       }
     });
 
-    client.on('getContentFloor', (args) =>{
+    client.on('getContentFloor', async (args) =>{
       let transactionId, roomId;
       try {
         ({ transactionId, roomId } = args);
-        const { floor, previousFloor }  = this.getContentFloor(args)
+        const { floor, previousFloor }  = await this.getContentFloor(args)
         client.contentFloor(roomId, { floor, previousFloor, transactionId })
       }
       catch (e) {
@@ -645,72 +626,48 @@ const MR = class MCSRouter {
       }
     });
 
-    client.on('getConferenceFloor', (args) => {
+    client.on('getConferenceFloor', async (args) =>{
       let transactionId, roomId;
       try {
         ({ transactionId, roomId } = args);
-        const { floor, previousFloor } = this.getConferenceFloor(args)
-        client.conferenceFloor(roomId, { floor, previousFloor, transactionId })
+        const { floor, previousFloor } = await this.getConferenceFloor(args)
+        client.conferenceFloor(roomId, { floor, previousFloor, transactionId})
       }
       catch (e) {
         this._notifyMethodError(client, e, transactionId)
       }
     });
 
-    client.on('setVolume', async (args) => {
+    client.on('setVolume', async (args) =>{
       let transactionId, mediaId, volume;
       try {
         ({ transactionId, mediaId, volume} = args);
         await this.setVolume(args)
-        client.volumeChanged(mediaId, volume, { transactionId })
+        client.volumeChanged(mediaId, volume, {transactionId})
       }
       catch (e) {
         this._notifyMethodError(client, e, transactionId)
       }
     });
 
-    client.on('mute', async (args) => {
+    client.on('mute', async (args) =>{
       let transactionId, mediaId;
       try {
         ({ transactionId, mediaId} = args);
         await this.mute(args)
-        client.muted(mediaId, {}, { transactionId })
+        client.muted(mediaId, {}, {transactionId})
       }
       catch (e) {
         this._notifyMethodError(client, e, transactionId)
       }
     });
 
-    client.on('unmute', async (args) => {
+    client.on('unmute', async (args) =>{
       let transactionId, mediaId;
       try {
         ({ transactionId, mediaId} = args);
         await this.unmute(args)
-        client.unmuted(mediaId, {}, { transactionId })
-      }
-      catch (e) {
-        this._notifyMethodError(client, e, transactionId)
-      }
-    });
-
-    client.on('setStrategy', (args) => {
-      let transactionId, identifier, strategy;
-      try {
-        ({ transactionId, identifier, strategy } = args);
-        this.setStrategy(args)
-        client.currentStrategy(identifier, strategy, { transactionId })
-      }
-      catch (e) {
-        this._notifyMethodError(client, e, transactionId)
-      }
-    });
-
-    client.on('getStrategy', (args) => {
-      let transactionId, identifier;
-      try {
-        ({ transactionId, identifier } = args);
-        const strategy = this.getStrategy(args)
-        client.currentStrategy(identifier, strategy, { transactionId })
+        client.unmuted(mediaId, {}, {transactionId})
       }
       catch (e) {
         this._notifyMethodError(client, e, transactionId)
@@ -728,58 +685,20 @@ const MR = class MCSRouter {
         this._notifyMethodError(client, e, transactionId)
       }
     });
-
-    client.on('requestKeyframe', async (args) =>{
-      let transactionId, mediaId;
-      try {
-        ({ transactionId, mediaId } = args);
-        await this.requestKeyframe(args);
-        client.keyframeRequested(mediaId, { transactionId });
-      }
-      catch (e) {
-        this._notifyMethodError(client, e, transactionId)
-      }
-    });
-
-    client.on('getMedias', (args) =>{
-      let transactionId;
-      try {
-        ({ transactionId } = args);
-        const medias = this.getMedias(args);
-        client.getMediasResponse(medias, { transactionId });
-      }
-      catch (e) {
-        this._notifyMethodError(client, e, transactionId)
-      }
-    });
   }
 
-  _addToClientEventMap (eventSubscription, client) {
-    const { identifier, eventName } = eventSubscription;
-    const index = `${eventName}:${identifier}`
-    let map = this.clientEventMap[index];
-    if (!map) {
-      map = [];
-      this.clientEventMap[index] = map;
-    }
-    map.push(client);
+  _addToClientEventMap (map) {
+    this.clientEventMap.push({ ...map });
+    //this.clientEventMap.forEach(c => Logger.trace("Mapped client", c.identifier, c.eventName, typeof c.client));
   }
 
-  _removeEventFromClientEventMap (identifier, eventName) {
-    const index = `${eventName}:${identifier}`
-    delete this.clientEventMap[index];
+  _removeFromClientEventMap (identifier, eventName) {
+    this.clientEventMap = this.clientEventMap.filter(c => !(c.identifier === identifier && c.eventName === eventName));
   }
 
   _removeClientFromEventMap (client) {
     Logger.trace('[mcs-router]', "Removing client", client.trackingId, "from event map");
-    Object.keys(this.clientEventMap).forEach(idx => {
-      const map = this.clientEventMap[idx].filter(c => c.trackingId !== client.trackingId);
-      if (map.length <= 0)  {
-        delete this.clientEventMap[idx];
-      } else {
-        this.clientEventMap[idx] = map;
-      }
-    });
+    this.clientEventMap = this.clientEventMap.filter(c => c.client.trackingId !== client.trackingId);
   }
 
   _removeClientFromTracking (client) {
@@ -791,8 +710,14 @@ const MR = class MCSRouter {
   }
 
   _getClientToDispatch (identifier, eventName) {
-    const index = `${eventName}:${identifier}`
-    return this.clientEventMap[index] || [];
+    const clientMap = this.clientEventMap.filter(c => c.identifier === identifier && c.eventName === eventName);
+
+    if (clientMap.length > 0 ) {
+      Logger.trace('[mcs-router] Found', clientMap.length, 'clients', clientMap.map(c => [c.identifier, c.eventName, c.client.trackingId]))
+    }
+
+    const clients = clientMap.map(cm => cm.client);
+    return clients;
   }
 
   _dispatchEvents() {
@@ -800,178 +725,154 @@ const MR = class MCSRouter {
       const { mediaId, candidate } = event;
       const clients = this._getClientToDispatch(mediaId, C.EMAP[C.EVENT.MEDIA_STATE.ICE]);
 
-      clients.forEach(client => {
-        client.onIceCandidate(mediaId, candidate);
-      });
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.onIceCandidate(mediaId, candidate);
+        });
+      }
     });
 
     this.emitter.on(C.EVENT.MEDIA_STATE.MEDIA_EVENT, event => {
-      let { mediaId, state, timestampHR, timestampUTC, rawEvent } = event;
-      state = { ...state, timestampHR, timestampUTC, rawEvent };
+      const { mediaId, state } = event;
       const clients = this._getClientToDispatch(mediaId, C.EMAP[C.EVENT.MEDIA_STATE.MEDIA_EVENT]);
 
-      clients.forEach(client => {
-        client.mediaState(mediaId, state);
-      });
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.mediaState(mediaId, state);
+        })
+      }
     });
 
-    this.emitter.on(C.EVENT.ROOM_CREATED, ({ id }) => {
+    this.emitter.on(C.EVENT.ROOM_CREATED, roomId => {
       const clients = this._getClientToDispatch('all', C.EVENT.ROOM_CREATED);
-      Logger.trace('[mcs-router] Room created event', id);
-      clients.forEach(client => {
-        client.roomCreated(id);
-      });
+
+      Logger.trace('[mcs-router] Room created event', roomId);
+
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.roomCreated(roomId);
+        })
+      }
     });
 
-    this.emitter.on(C.EVENT.ROOM_DESTROYED, ({ roomId }) => {
+    this.emitter.on(C.EVENT.ROOM_DESTROYED, roomId => {
       const clients = this._getClientToDispatch(roomId, C.EVENT.ROOM_DESTROYED);
-      this._removeEventFromClientEventMap(roomId, C.EVENT.MEDIA_CONNECTED);
-      this._removeEventFromClientEventMap(roomId, C.EVENT.USER_JOINED);
-      this._removeEventFromClientEventMap(roomId, C.EVENT.USER_LEFT);
-      this._removeEventFromClientEventMap(roomId, C.EVENT.ROOM_DESTROYED);
-      this._removeEventFromClientEventMap(roomId, C.EVENT.CONTENT_FLOOR_CHANGED);
-      this._removeEventFromClientEventMap(roomId, C.EVENT.CONFERENCE_FLOOR_CHANGED);
+
       Logger.trace('[mcs-router] Room destroyed event', roomId);
-      clients.forEach(client => {
-        client.roomDestroyed(roomId);
-      });
+
+      this._removeFromClientEventMap(roomId, C.EVENT.MEDIA_CONNECTED);
+      this._removeFromClientEventMap(roomId, C.EVENT.USER_JOINED);
+      this._removeFromClientEventMap(roomId, C.EVENT.USER_LEFT);
+
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.roomDestroyed(roomId);
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.MEDIA_CONNECTED, event => {
       const { roomId } = event;
       const clients = this._getClientToDispatch(roomId, C.EVENT.MEDIA_CONNECTED);
 
-      clients.forEach(client => {
-        client.mediaConnected(roomId, event);
-      })
+      //this.clientEventMap.forEach(c => Logger.trace("Mapped client", c.identifier, c.eventName, typeof c.client));
+
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.mediaConnected(roomId, event);
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.MEDIA_DISCONNECTED, event => {
       const { roomId, mediaId } = event;
       const clients = this._getClientToDispatch(mediaId, C.EVENT.MEDIA_DISCONNECTED);
-      this._removeEventFromClientEventMap(mediaId, C.EMAP[C.EVENT.MEDIA_STATE.MEDIA_EVENT]);
-      this._removeEventFromClientEventMap(mediaId, C.EMAP[C.EVENT.MEDIA_STATE.ICE]);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.MEDIA_DISCONNECTED);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.MEDIA_RENEGOTIATED);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.MEDIA_VOLUME_CHANGED);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.MEDIA_START_TALKING);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.MEDIA_STOP_TALKING);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.MEDIA_MUTED);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.MEDIA_UNMUTED);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.KEYFRAME_NEEDED);
-      this._removeEventFromClientEventMap(mediaId, C.EVENT.SUBSCRIBED_TO);
-      clients.forEach(client => {
-        Logger.trace('[mcs-router] Emitting media disconnected for', mediaId, "at client", client.trackingId);
-        client.mediaDisconnected(roomId, mediaId);
-      })
+      this._removeFromClientEventMap(mediaId, C.EMAP[C.EVENT.MEDIA_STATE.MEDIA_EVENT]);
+      this._removeFromClientEventMap(mediaId, C.EMAP[C.EVENT.MEDIA_STATE.ICE]);
+
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          Logger.trace('[mcs-router] Emitting media disconnected for', mediaId, "at client", client.trackingId);
+          client.mediaDisconnected(roomId, mediaId);
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.USER_JOINED, event => {
       const { roomId, userId } = event;
       const clients = this._getClientToDispatch(roomId, C.EVENT.USER_JOINED);
 
-      clients.forEach(client => {
-        client.userJoined(roomId, event);
-      })
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.userJoined(roomId, event);
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.USER_LEFT, event => {
       const { roomId , userId } = event;
       const clients = this._getClientToDispatch(roomId, C.EVENT.USER_LEFT);
 
-      clients.forEach(client => {
-        client.userLeft(roomId, userId);
-      });
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.userLeft(roomId, userId);
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.CONTENT_FLOOR_CHANGED, event => {
       const { roomId, floor, previousFloor } = event;
       const clients = this._getClientToDispatch(roomId, C.EVENT.CONTENT_FLOOR_CHANGED);
 
-      clients.forEach(client => {
-        client.contentFloorChanged(roomId, { floor, previousFloor });
-      })
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.contentFloorChanged(roomId, { floor, previousFloor });
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.CONFERENCE_FLOOR_CHANGED, event => {
       const { roomId, floor, previousFloor } = event;
       const clients = this._getClientToDispatch(roomId, C.EVENT.CONFERENCE_FLOOR_CHANGED);
 
-      clients.forEach(client => {
-        client.conferenceFloorChanged(roomId, { floor, previousFloor });
-      })
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.conferenceFloorChanged(roomId, { floor, previousFloor });
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.MEDIA_VOLUME_CHANGED, event => {
       const { mediaId, volume } = event;
       const clients = this._getClientToDispatch(mediaId, C.EVENT.MEDIA_VOLUME_CHANGED);
 
-      clients.forEach(client => {
-        client.volumeChanged(mediaId, volume);
-      })
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.volumeChanged(mediaId, volume);
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.MEDIA_MUTED, event => {
       const { mediaId } = event;
       const clients = this._getClientToDispatch(mediaId, C.EVENT.MEDIA_MUTED);
 
-      clients.forEach(client => {
-        client.muted(mediaId);
-      })
+      if (clients.length > 0) {
+        clients.forEach(client => {
+          client.muted(mediaId);
+        })
+      }
     });
 
     this.emitter.on(C.EVENT.MEDIA_UNMUTED, event => {
       const { mediaId } = event;
       const clients = this._getClientToDispatch(mediaId, C.EVENT.MEDIA_UNMUTED);
 
-      clients.forEach(client => {
-        client.unmuted(mediaId);
-      })
-    });
-
-    this.emitter.on(C.EVENT.MEDIA_RENEGOTIATED, event => {
-      const { mediaId } = event;
-      const clients = this._getClientToDispatch(mediaId, C.EVENT.MEDIA_RENEGOTIATED);
-
-      clients.forEach(client => {
-        client.mediaRenegotiated(mediaId, event);
-      })
-    });
-
-    this.emitter.on(C.EVENT.MEDIA_START_TALKING, event => {
-      const { mediaId, roomId, userId } = event;
-      const clients = this._getClientToDispatch(mediaId, C.EVENT.MEDIA_START_TALKING);
       if (clients.length > 0) {
         clients.forEach(client => {
-          client.startTalking(roomId, userId, mediaId);
+          client.unmuted(mediaId);
         })
       }
-    });
-
-    this.emitter.on(C.EVENT.MEDIA_STOP_TALKING, event => {
-      const { mediaId, roomId, userId } = event;
-      const clients = this._getClientToDispatch(mediaId, C.EVENT.MEDIA_STOP_TALKING);
-      if (clients.length > 0) {
-        clients.forEach(client => {
-          client.stopTalking(roomId, userId, mediaId);
-        })
-      }
-    });
-
-    this.emitter.on(C.EVENT.SUBSCRIBED_TO, ({ mediaId, sourceMediaInfo }) => {
-      const clients = this._getClientToDispatch(mediaId, C.EVENT.SUBSCRIBED_TO);
-
-      clients.forEach(client => {
-        client.subscribedTo(mediaId, sourceMediaInfo);
-      });
-    });
-
-    this.emitter.on(C.EVENT.KEYFRAME_NEEDED, mediaId => {
-      const clients = this._getClientToDispatch(mediaId, C.EVENT.KEYFRAME_NEEDED);
-
-      clients.forEach(client => {
-        client.keyframeNeeded(mediaId);
-      });
     });
   }
 }

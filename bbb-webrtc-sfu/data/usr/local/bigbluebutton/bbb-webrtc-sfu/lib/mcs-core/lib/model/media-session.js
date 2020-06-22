@@ -14,8 +14,7 @@ const Logger = require('../utils/logger');
 const AdapterFactory = require('../adapters/adapter-factory');
 const { handleError } = require('../utils/util');
 const GLOBAL_EVENT_EMITTER = require('../utils/emitter');
-const MEDIA_SPECS = C.DEFAULT_MEDIA_SPECS;
-const StrategyManager = require('../media/strategy-manager.js');
+const MEDIA_SPECS = config.get('conference-media-specs');
 
 const LOG_PREFIX = "[mcs-media-session]";
 
@@ -29,11 +28,6 @@ const isComposedAdapter = adapter => {
   return false;
 }
 
-const DEFAULT_PROFILES = {
-  audio: 'sendrecv',
-  video: 'sendrecv',
-}
-
 module.exports = class MediaSession {
   constructor (
     room,
@@ -44,31 +38,19 @@ module.exports = class MediaSession {
     this.id = rid();
     this.roomId = room;
     this.userId = user;
-    // The following attributes are optional parameters in the `options` object.
-    // They'll be parsed and set in processOptionalParameters
-    // Readable name for this session, provided by clients
-    this.name;
-    // Media server adapter, falls back to Kurento
-    this._adapter;
-    // Custom string identifying a media session, up to clients to define it
-    this._customIdentifier;
-    // Nature of the media according to the use case (video || content || audio)
-    this._mediaProfile;
-    // Media specs for the media. If not specified, falls back to the default
-    this.mediaSpecs;
-    // Profiles that this media should support. Used for the OFFERER role to be able
-    // to set which media types and how many of them to set.
-    this.profiles;
-    // Switching strategy
-    this._strategy;
-    this.processOptionalParameters(options);
+    this._options = options;
     // State indicator of this session. Might be STOPPED, STARTING or STARTED
     this._status = C.STATUS.STOPPED;
     // Signalling or transport layer type
-    this.type = type;
-    // Defines if there are multiple adapters configured for this session
-    this._isComposedAdapter = isComposedAdapter(this._adapter);
+    this._type = type;
+    // Readable name for this session, provided by clients
+    this.name = options.name? options.name : C.STRING.DEFAULT_NAME;
+    // Media server adapter, falls back to Kurento
+    this._adapter = options.adapter? options.adapter : C.STRING.KURENTO;
+    // Custom string identifying a media session, up to clients to define it
+    this._customIdentifier = options.customIdentifier? options.customIdentifier : null;
     // Media server interface based on given adapter
+    this._isComposedAdapter = isComposedAdapter(this._adapter);
     this._adapters = AdapterFactory.getAdapters(this._adapter);
     // Media server adapter ID for this session's element
     this.videoMediaElement;
@@ -76,7 +58,6 @@ module.exports = class MediaSession {
     // Array of media sessions that are subscribed to this feed
     this.subscribedSessions = [];
     this.medias = [];
-    this.invalidMedias = [];
     // An object that describes the capabilities of this media session
     this.mediaTypes = {
       video: false,
@@ -86,91 +67,36 @@ module.exports = class MediaSession {
       application: false,
       message: false,
     }
+    // Nature of the media according to the use case (main || content || audio)
+    this._mediaProfile = options.mediaProfile? options.mediaProfile : 'main';
+    // Media specs for the media. If not specified, falls back to the default
+    this.mediaSpecs = options.mediaSpecs? options.mediaSpecs : MEDIA_SPECS;
     this.muted = false;
     this.volume = 50;
   }
 
-  set strategy (strategy) {
-    if (!StrategyManager.isValidStrategy(strategy)) {
-      throw C.ERROR.MEDIA_INVALID_TYPE;
-    }
-
-    this._strategy = strategy;
-
-    GLOBAL_EVENT_EMITTER.emit(C.EVENT.STRATEGY_CHANGED, this.getMediaInfo());
-  }
-
-  get strategy () {
-    return this._strategy;
-  }
-
-  set muted (isMuted) {
-    // Only mutate the muted state if it changed
-    if (isMuted !== this._muted) {
-      const event = {
-        mediaId: this.id,
-      }
-
-      if (isMuted) {
-        GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_MUTED, event);
-      } else {
-        GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_UNMUTED, event);
-      }
-
-      this._muted = isMuted;
-    }
-  }
-
-  get muted () {
-    return this._muted;
-  }
-
-  set volume (volume) {
-    // Only mutate the volume state if it changed
-    if (volume !== this._volume) {
-      this._volume = volume;
-      const event = {
-        mediaId: this.id,
-        volume,
-      }
-      GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_VOLUME_CHANGED, event);
-      if (volume === 0) {
-        if (!this.muted) {
-          this.muted = true;
-        }
-      } else if (this.muted) {
-        this.muted = false;
-      }
-    }
-  }
-
-  get volume () {
-    return this._volume;
-  }
-
-  start () {
+  async start () {
     this._status = C.STATUS.STARTING;
+    return;
   }
 
   stop () {
-    if (this._status === C.STATUS.STARTED || this._status === C.STATUS.STARTING) {
+    if (this._status === C.STATUS.STARTED || this._states === C.STATUS.STARTING) {
       this._status = C.STATUS.STOPPING;
       try {
         this.medias.forEach(async m => {
-          try {
-            await m.stop();
-          } catch (error) {
-            Logger.error(LOG_PREFIX, `Error when stopping media ${m.id}`,
-              { error, ...m.getMediaInfo() });
-          }
+          await m.stop();
         });
 
         this._status = C.STATUS.STOPPED;
-        GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_DISCONNECTED, this.getMediaInfo());
+
+        GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_DISCONNECTED, { roomId: this.roomId, mediaId: this.id, mediaSessionId: this.mediaSessionId });
+
         return Promise.resolve();
       }
       catch (err) {
-        throw (this._handleError(err));
+        err = this._handleError(err);
+        return Promise.reject(err);
       }
     } else {
       return Promise.resolve();
@@ -179,166 +105,154 @@ module.exports = class MediaSession {
 
   async connect (sink, type = 'ALL') {
     try {
-      Logger.info(LOG_PREFIX, "Connecting endpoints", JSON.stringify({ sourceId: this.id, sinkId: sink.id, type}));
-      await this._connect(sink, type);
+      // Connect this media session to sinks of the appropriate type
+      // TODO REVIEW THE CONTENT X VIDEO CONNECTION_TYPE ASAP (it makes little sense)
+      switch (type ) {
+        case C.CONNECTION_TYPE.AUDIO:
+          await this._connectAudio(sink);
+          break;
+        case C.CONNECTION_TYPE.VIDEO:
+          await this._connectVideo(sink);
+          break;
+        case C.CONNECTION_TYPE.CONTENT:
+          await this._connectContent(sink);
+          break;
+        default:
+          await this._connectEverything(sink);
+      }
+      return;
     }
     catch (err) {
       throw (this._handleError(err));
     }
   }
 
-  _connect (sink, connectionType) {
-    // This thing can be optimized. Don't have the time to do it now.
-    const videoSources = [];
-    const audioSources = [];
-    const contentSources = [];
-    const videoSinks = [];
-    const audioSinks = [];
-    const contentSinks = [];
-
-    const mapMedias = (medias, video, audio, content, filterDirection) => {
-      if (medias) {
-        medias.forEach(m => {
-          if (m.mediaTypes.video && m.mediaTypes.video !== filterDirection) {
-            video.push(m);
-          }
-          if (m.mediaTypes.audio && m.mediaTypes.audio !== filterDirection) {
-            audio.push(m);
-          }
-          if (m.mediaTypes.content && m.mediaTypes.content !== filterDirection) {
-            content.push(m);
-          }
-        });
-      }
-    }
-
-    const meshConnect = (sources, sinks, type) => {
-      sinks.forEach(async (sim, i) => {
-        const som = sources[i]? sources[i] : sources[0];
-        if (som) {
-          try {
-            Logger.info(LOG_PREFIX, "Adapter elements to be connected", JSON.stringify({
-                sourceId: som.id,
-                sourceAdapterElementId: som.adapterElementId,
-                sinkId: sim.id,
-                sinkAdapterElementId: sim.adapterElementId,
-                type,
-              }));
-
-            await som.connect(
-              sim,
-              type,
-            );
-          } catch (err) {
-            throw (this._handleError(err));
-          }
+  async _connect (sink, sourceMediaId, mediaProfile, connectionType) {
+    const sourceMedia = sourceMediaId? sourceMediaId : this.medias.find(m => m._mediaProfile === mediaProfile);
+    const sinkMedias = sink.medias? sink.medias.filter(m => (m._mediaProfile === mediaProfile || mediaProfile === C.MEDIA_PROFILE.ALL)) : [sink];
+    if (sourceMedia && sinkMedias.length > 0) {
+      sinkMedias.forEach(sinkMedia => {
+        Logger.trace("[mcs-media-session] Adapter elements to be connected", sourceMedia.adapterElementId, "=>", sinkMedia.adapterElementId);
+        try {
+          sourceMedia.connect(
+            sinkMedia,
+            connectionType,
+          );
+        } catch (err) {
+          // Temporarily supress connect error throw until we fix
+          // the mediaProfile spec
+          //throw (this._handleError(err));
+          Logger.error(LOG_PREFIX, err);
         }
       });
     }
+  }
 
-    const sinkMedias = sink.medias? sink.medias : [sink]
-    mapMedias(this.medias, videoSources, audioSources, contentSources, 'recvonly');
-    mapMedias(sinkMedias, videoSinks, audioSinks, contentSinks, 'sendonly');
+  _connectContent (sink, sourceMediaId = null) {
+    return this._connect(sink, sourceMediaId, C.MEDIA_PROFILE.CONTENT, C.CONNECTION_TYPE.VIDEO);
+  }
 
-    switch (connectionType) {
-      case C.CONNECTION_TYPE.AUDIO:
-        meshConnect(audioSources, audioSinks, C.CONNECTION_TYPE.AUDIO);
-        break;
-      case C.CONNECTION_TYPE.VIDEO:
-        meshConnect(videoSources, videoSinks, C.CONNECTION_TYPE.VIDEO);
-        break;
-      case C.CONNECTION_TYPE.CONTENT:
-        meshConnect(contentSources, contentSinks, C.CONNECTION_TYPE.CONTENT);
-        break;
-      case C.CONNECTION_TYPE.ALL:
-        meshConnect(videoSources, videoSinks, C.CONNECTION_TYPE.VIDEO);
-        meshConnect(audioSources, audioSinks, C.CONNECTION_TYPE.AUDIO);
-        meshConnect(contentSources, contentSinks, C.CONNECTION_TYPE.CONTENT);
-        break;
-      default:
-        throw { ...C.ERROR.MEDIA_INVALID_TYPE, details: `Invalid connection type ${connectionType}` };
-    }
+  _connectAudio (sink, sourceMediaId = null) {
+    return this._connect(sink, sourceMediaId, C.MEDIA_PROFILE.AUDIO, C.CONNECTION_TYPE.AUDIO);
+  }
+
+  _connectVideo (sink, sourceMediaId = null) {
+    return this._connect(sink, sourceMediaId, C.MEDIA_PROFILE.VIDEO, C.CONNECTION_TYPE.VIDEO);
+  }
+
+  _connectEverything (sink, sourceMediaId = null) {
+    return this._connect(sink, sourceMediaId, C.MEDIA_PROFILE.ALL, C.CONNECTION_TYPE.ALL);
   }
 
   async disconnect (sink, type = 'ALL') {
     try {
-      Logger.info(LOG_PREFIX, "Disconnecting endpoints", JSON.stringify({ sourceId: this.id, sinkId: sink.id, type}));
-      return this._disconnect(sink, type);
+      // Disconnect this media session to sinks of the appropriate type
+      // in the future, it'd also be nice to be able to connect children media of a session
+      switch (type ) {
+        case C.CONNECTION_TYPE.CONTENT:
+          await this._disconnectContent(sink);
+          break;
+        case C.CONNECTION_TYPE.AUDIO:
+          await this._disconnectAudio(sink);
+          break;
+        case C.CONNECTION_TYPE.VIDEO:
+          await this._disconnectVideo(sink);
+          break;
+        default:
+          await this._disconnectEverything(sink);
+      }
+      return;
     }
     catch (err) {
       throw (this._handleError(err));
     }
   }
 
-  async _disconnect (sink, connectionType) {
-    let sinkMedias = sink.medias? sink.medias : [sink]
-
-    this.medias.forEach(som => {
-      const sinkMediasToDisconnect = sinkMedias.filter(sim => sim.subscribedTo === som.id);
-      sinkMediasToDisconnect.forEach(sim => {
-        Logger.info(LOG_PREFIX, "Adapter elements to be disconnected", JSON.stringify({
-          sourceId: som.id,
-          sourceAdapterElementId: som.adapterElementId,
-          sinkId: sim.id,
-          sinkAdapterElementId: sim.adapterElementId,
-          connectionType,
-        }));
+  async _disconnect (sink, sourceMediaId, mediaProfile, connectionType) {
+    const sourceMedia = sourceMediaId? sourceMediaId : this.medias.find(m => m._mediaProfile === mediaProfile);
+    const sinkMedias = sink.medias? sink.medias.filter(m => (m._mediaProfile === mediaProfile || mediaProfile === C.MEDIA_PROFILE.ALL)) : [sink];
+    if (sourceMedia && sinkMedias.length > 0) {
+      sinkMedias.forEach(sinkMedia => {
+        Logger.trace(LOG_PREFIX, "Adapter elements to be disconnected", sourceMedia.adapterElementId, "=X>", sinkMedia.adapterElementId);
         try {
-          return som.disconnect(
-            sim,
+          return sourceMedia.disconnect(
+            sinkMedia,
             connectionType,
           );
         } catch (err) {
           throw (this._handleError(err));
         }
       });
-    });
+    }
   }
 
-  setVolume (volume) {
-    const prevVolume = this.volume;
+  _disconnectContent (sink, sourceMediaId = null) {
+    return this._disconnect(sink, sourceMediaId, C.MEDIA_PROFILE.CONTENT, C.CONNECTION_TYPE.VIDEO);
+  }
+
+  _disconnectAudio (sink, sourceMediaId = null) {
+    return this._disconnect(sink, sourceMediaId, C.MEDIA_PROFILE.AUDIO, C.CONNECTION_TYPE.AUDIO);
+  }
+
+  _disconnectVideo (sink, sourceMediaId = null) {
+    return this._disconnect(sink, sourceMediaId, C.MEDIA_PROFILE.VIDEO, C.CONNECTION_TYPE.VIDEO);
+  }
+
+  _disconnectEverything (sink, sourceMediaId = null) {
+    return this._disconnect(sink, sourceMediaId, C.MEDIA_PROFILE.ALL, C.CONNECTION_TYPE.ALL);
+  }
+
+  async setVolume (volume) {
     try {
       this.medias.forEach(async m => {
         if (m.mediaTypes.audio) {
-          await m.setVolume(volume);
+          m.setVolume(volume);
         }
       });
-      this.volume = volume;
-    } catch (err) {
-      // Roll back just in case
-      this.volume = prevVolume;
-      throw (this._handleError(err));
-    }
-  }
-
-  mute () {
-    const prevMuteState = this.muted;
-    try {
-      this.medias.forEach(async m => {
-        if (m.mediaTypes.audio && !m.muted) {
-          await m.mute();
+      if (volume === 0 && !this.muted) {
+        const event = {
+          mediaId: this.id,
         }
-      });
-      this.muted = true;
-    } catch (err) {
-      // Roll back just in case
-      this.muted = prevMuteState;
-      throw (this._handleError(err));
-    }
-  }
-
-  unmute () {
-    const prevMuteState = this.muted;
-    try {
-      this.medias.forEach(async m => {
-        if (m.mediaTypes.audio && m.muted) {
-          await m.unmute();
+        GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_MUTED, event);
+        this.muted = true;
+      }
+      else {
+        this.volume = volume;
+        const event = {
+          mediaId: this.id,
+          volume: this.volume,
         }
-      });
-      this.muted = false;
+        GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_VOLUME_CHANGED, event);
+        if (this.muted) {
+          const event = {
+            mediaId: this.id,
+          };
+          GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_UNMUTED, event);
+          this.muted = false;
+        }
+      }
+      return;
     } catch (err) {
-      // Roll back just in case
-      this.muted = prevMuteState;
       throw (this._handleError(err));
     }
   }
@@ -361,43 +275,10 @@ module.exports = class MediaSession {
     }
   }
 
-  requestKeyframe () {
-    return new Promise((resolve, reject) => {
-      try {
-        const mediasToRequest= this.medias.filter(({ mediaTypes }) => mediaTypes.video &&
-          mediaTypes.video !== 'recvonly');
-
-        if (mediasToRequest.length <= 0) {
-          throw (this._handleError({
-            ...C.ERROR.MEDIA_NOT_FOUND,
-            details: "MEDIA_SESSION_REQUEST_KEYFRAME_NO_AVAILABLE_MEDIA_UNIT"
-          }));
-        }
-
-        mediasToRequest.forEach(async m => {
-          try {
-            await m.requestKeyframe();
-          } catch (err) {
-            // Media unit doesn't support keyf req. via its adapter. Fire a keyframeNeeded
-            // event in hope the gateway who created it is listening to it and is
-            // able to request it via signalling
-            if (err.code === C.ERROR.MEDIA_INVALID_OPERATION.code) {
-              m.keyframeNeeded();
-            }
-          }
-        });
-
-        return resolve();
-      } catch (e) {
-        return reject(this._handleError(e))
-      }
-    });
-  }
-
   sessionStarted () {
     if (this._status === C.STATUS.STARTING) {
       this._status = C.STATUS.STARTED;
-      Logger.debug(LOG_PREFIX, `Session ${this.id} successfully started`);
+      Logger.debug("[mcs-media-session] Session", this.id, "successfully started");
     }
   }
 
@@ -420,20 +301,16 @@ module.exports = class MediaSession {
   getMediaInfo () {
     const medias = this.medias.map(m => m.getMediaInfo());
     const mediaInfo = {
-      type: this.type,
-      memberType: C.MEMBERS.MEDIA_SESSION,
       mediaSessionId: this.id,
       mediaId: this.id,
       medias,
       roomId: this.roomId,
       userId: this.userId,
       name: this.name,
-      customIdentifier: this._customIdentifier || undefined,
+      customIdentifier: this._customIdentifier? this._customIdentifier : undefined,
       mediaTypes: this.mediaTypes,
       isMuted: this.muted,
       volume: this.volume,
-      strategy: this.strategy,
-      mediaProfile: this._mediaProfile,
     };
 
     return mediaInfo;
@@ -445,37 +322,20 @@ module.exports = class MediaSession {
   }
 
   createAndSetMediaNames () {
-    this.medias.forEach((m, index) => {
-      const name = `${this.name}-${++index}`
-      Logger.debug(LOG_PREFIX, `Setting name ${name} for media ${m.id}`);
+    this.medias.forEach(async (m, index) => {
+      let name = `${this.name}-${++index}`
+      Logger.debug(LOG_PREFIX,"Setting name", name, "for media", m.id);
       m.setName(name);
     });
   }
 
   getContentMedia () {
-    const contentMedia = this.medias.find(m => m.mediaTypes.content && m.mediaTypes.content !== 'recvonly');
+    let contentMedia = this.medias.find(m => m.mediaTypes.content && m.mediaTypes.content !== 'recvonly')
 
     if (contentMedia) {
       return contentMedia;
     }
 
     return this.medias.find(m => m.mediaTypes.video && m.mediaTypes.video !== 'recvonly');
-  }
-
-  processOptionalParameters (options) {
-    this._options = options;
-    // Readable name for this session, provided by clients
-    this.name = options.name? options.name : C.STRING.DEFAULT_NAME;
-    // Media server adapter, falls back to Kurento
-    this._adapter = options.adapter? options.adapter : C.STRING.KURENTO;
-    // Custom string identifying a media session, up to clients to define it
-    this._customIdentifier = options.customIdentifier? options.customIdentifier : null;
-    // Nature of the media according to the use case (video || content || audio)
-    this._mediaProfile = options.mediaProfile;
-    // Media specs for the media. If not specified, falls back to the default
-    this.mediaSpecs = options.mediaSpecs? options.mediaSpecs : {...MEDIA_SPECS};
-    this.profiles = options.profiles || DEFAULT_PROFILES;
-    // Switching strategy
-    this._strategy = options.strategy || C.STRATEGIES.FREEWILL;
   }
 }

@@ -16,6 +16,8 @@ exports.isError = (error) => {
 exports.handleError = (logPrefix, error) => {
   let { message, code, stack, data, details } = error;
 
+  Logger.trace(logPrefix, "Error stack", error);
+
   if (code && code >= C.ERROR.MIN_CODE && code <= C.ERROR.MAX_CODE) {
     return error;
   }
@@ -42,11 +44,7 @@ exports.handleError = (logPrefix, error) => {
     error.details = message;
   }
 
-  if (stack && !error.stackWasLogged)  {
-    Logger.error(logPrefix, `Stack trace for error ${error.code} | ${error.message} ->`,
-      { errorStack: error.stack.toString() });
-    error.stackWasLogged = true;
-  }
+  Logger.debug(logPrefix, "Handling error", error.code, error.message);
 
   return error;
 }
@@ -55,14 +53,4 @@ exports.convertRange = (originalRange, newRange, value) => {
   const newValue  = Math.round(((value - originalRange.floor) / (originalRange.ceiling - originalRange.floor)) * (newRange.ceiling - newRange.floor) + newRange.floor);
 
   return newValue;
-}
-
-/*
- * hrTime
- * Gets monotonic system time in milliseconds
- */
-exports.hrTime = function () {
-  let t = process.hrtime();
-
-  return t[0]*1000 + parseInt(t[1]/1000000);
 }

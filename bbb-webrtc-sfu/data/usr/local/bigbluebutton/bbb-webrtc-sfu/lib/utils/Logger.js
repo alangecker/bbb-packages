@@ -3,10 +3,11 @@
 const Winston = require('winston');
 const Logger = new Winston.Logger();
 const config = require('config');
+Winston.transports.DailyRotateFile = require('winston-daily-rotate-file');
 
 const LOG_CONFIG = config.get('log') || {};
-const { level, filename } = LOG_CONFIG;
-const COLORIZE = process.env.NODE_ENV !== 'production';
+const { level } = LOG_CONFIG;
+let filename = LOG_CONFIG.filename;
 
 Logger.configure({
   levels: { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, trace: 5 },
@@ -24,7 +25,7 @@ Logger.add(Winston.transports.Console, {
   timestamp:true,
   prettyPrint: false,
   humanReadableUnhandledException: true,
-  colorize: COLORIZE,
+  colorize: true,
   handleExceptions: false,
   silent: false,
   stringify: (obj) => JSON.stringify(obj),
@@ -33,9 +34,10 @@ Logger.add(Winston.transports.Console, {
 
 
 if (filename) {
-  Logger.add(Winston.transports.File, {
+  Logger.add(Winston.transports.DailyRotateFile, {
     filename,
-    prettyPrint: false,
+    prettyPrint: true,
+    datePattern: '.yyyy-MM-dd',
     prepend: false,
     stringify: (obj) => JSON.stringify(obj), // single lines
     level,

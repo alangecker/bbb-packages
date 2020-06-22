@@ -5,14 +5,12 @@ const Logger = require('../utils/logger');
 const EventEmitter = require('events').EventEmitter;
 const C = require('../constants/constants');
 const Balancer = require('../media/balancer');
-
-const LOG_PREFIX = '[mcs-adapter-factory]';
 // Media server adapters
-const CONFIGURED_ADAPTERS= config.get('media-server-adapters');
-const ADAPTER_PATH_PREFIX = './';
-
+const configuredAdapters = config.get('media-server-adapters');
+const adapterPathPrefix = './';
 // Preset configured adapters
-const DEFAULT_ADAPTERS = {'contentAdapter': 'Kurento', 'videoAdapter': 'Kurento', 'audioAdapter': 'Freeswitch'};
+const defaultAdapters = {'contentAdapter': 'Kurento', 'videoAdapter': 'Kurento', 'audioAdapter': 'Freeswitch'};
+
 
 let instance = null;
 
@@ -22,17 +20,17 @@ class AdapterFactory extends EventEmitter {
     if (instance == null) {
       instance = this;
       this.adapters = [];
-      CONFIGURED_ADAPTERS.forEach(a => {
+      configuredAdapters.forEach(a => {
         try {
           const { path, name } = a;
-          const adapter = require(`${ADAPTER_PATH_PREFIX}${path}`);
+          const adapter = require(`${adapterPathPrefix}${path}`);
           this.adapters.push({ adapter, name });
         } catch (e) {
-          Logger.error(LOG_PREFIX, 'Could not add configured adapter', a, e);
+          Logger.error('[mcs-adapter-factory] Could not add configured adapter', a, e);
         }
       });
 
-      Logger.info(LOG_PREFIX, 'Configured media server adapters:', this.adapters.map(a => a.name));
+      Logger.info('[mcs-adapter-factory] Configured media server adapters', this.adapters, this.adapters.map(a => a.name));
     }
     return instance;
   }
@@ -50,7 +48,7 @@ class AdapterFactory extends EventEmitter {
     const adapterObj = this.adapters.find(a => a.name === adapterName);
     if (adapterObj) {
       const aConstructor = adapterObj.adapter;
-      adapter = new aConstructor(adapterName, Balancer);
+      adapter = new aConstructor(Balancer);
     }
 
     return adapter;
@@ -58,7 +56,7 @@ class AdapterFactory extends EventEmitter {
 
   getAdapters (adapterReq) {
     let adapters = {};
-    let defaultAdaptersMap = { ...DEFAULT_ADAPTERS };
+    let defaultAdaptersMap = { ... defaultAdapters };
 
     const findComposedAdapters = (aMap) => {
       Object.keys(aMap).forEach(r => {
