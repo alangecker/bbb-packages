@@ -11,7 +11,7 @@ public:
     appName: BigBlueButton HTML5 Client
     bbbServerVersion: 2.2
     copyright: "©2020 BigBlueButton Inc."
-    html5ClientBuild: 937
+    html5ClientBuild: 960
     helpLink: https://bigbluebutton.org/html5/
     lockOnJoin: true
     cdn: ""
@@ -21,10 +21,13 @@ public:
     enableNetworkInformation: false
     enableLimitOfViewersInWebcam: false
     enableTalkingIndicator: true
+    mirrorOwnWebcam: false
     viewersInWebcam: 8
     ipv4FallbackDomain: ""
     allowLogout: true
     allowFullscreen: true
+    remainingTimeThreshold: 30
+    remainingTimeAlertThreshold: 1
     defaultSettings:
       application:
         animations: true
