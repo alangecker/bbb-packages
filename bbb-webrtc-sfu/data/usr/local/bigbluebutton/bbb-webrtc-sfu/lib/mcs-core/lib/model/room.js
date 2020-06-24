@@ -5,15 +5,22 @@
 
 'use strict'
 
+const config = require('config');
 const C = require('../constants/constants');
 const GLOBAL_EVENT_EMITTER = require('../utils/emitter');
 const Logger = require('../utils/logger');
+const StrategyManager = require('../media/strategy-manager.js');
+const { perRoom: ROOM_MEDIA_THRESHOLD } = config.get('mediaThresholds');
+
 const LOG_PREFIX = "[mcs-room]";
+const MAX_PREVIOUS_FLOORS = 10;
 
 module.exports = class Room {
   constructor (id) {
     this.id = id;
-    this._users = {};
+    this.users = {};
+    this.mediaSessions = [];
+    this.medias = [];
     this._conferenceFloor;
     this._previousConferenceFloors = [];
     this._contentFloor;
@@ -21,34 +28,125 @@ module.exports = class Room {
     this._registeredEvents = [];
     this._trackContentMediaDisconnection();
     this._trackConferenceMediaDisconnection();
+    this._strategy = C.STRATEGIES.FREEWILL;
+  }
+
+  set strategy (strategy) {
+    if (!StrategyManager.isValidStrategy(strategy)) {
+      throw C.ERROR.MEDIA_INVALID_TYPE;
+    }
+
+    this._strategy = strategy;
+
+    GLOBAL_EVENT_EMITTER.emit(C.EVENT.STRATEGY_CHANGED, this.getInfo());
+  }
+
+  get strategy () {
+    return this._strategy;
+  }
+
+  getInfo () {
+    return {
+      memberType: C.MEMBERS.ROOM,
+      roomId: this.id,
+      strategy: this.strategy,
+    };
+  }
+
+  getMediaInfos () {
+    return this.mediaSessions.map(ms => ms.getMediaInfo());
   }
 
   getUser (id) {
-    return this._users[id];
+    return this.users[id];
   }
 
   getUsers () {
-    return Object.keys(this._users).map(uk => this._users[uk].getUserInfo());
+    return Object.keys(this.users).map(uk => this.users[uk].getUserInfo());
   }
 
-  setUser (user) {
-    this._users[user.id] = user;
-    GLOBAL_EVENT_EMITTER.emit(C.EVENT.USER_JOINED, { roomId: this.id, user: user.getUserInfo() });
+  isAboveThreshold () {
+    if (ROOM_MEDIA_THRESHOLD > 0 && this.medias.length >= ROOM_MEDIA_THRESHOLD) {
+      Logger.error(LOG_PREFIX, `Room has exceeded the media threshold`,
+        { roomId: this.id, threshold: ROOM_MEDIA_THRESHOLD, current: this.medias.length}
+      );
+      return true;
+    }
+    return false;
+  }
+
+  addUser (user) {
+    const found = user.id in this.users;
+    if (!found) {
+      this.users[user.id] = user;
+      GLOBAL_EVENT_EMITTER.emit(C.EVENT.USER_JOINED, { roomId: this.id, user: user.getUserInfo() });
+    }
+  }
+
+  addMedia (media) {
+    this.medias.push(media);
+  }
+
+  getMedia (mediaId) {
+    this.medias.find(m => m.id === mediaId);
+  }
+
+  removeMedia ({ id }) {
+    this.medias = this.medias.filter(media => media.id !== id);
+  }
+
+  addMediaSession (mediaSession) {
+    this.mediaSessions.push(mediaSession);
+    mediaSession.medias.forEach(this.addMedia.bind(this));
+  }
+
+  getMediaSession (mediaSessionId) {
+    return this.mediaSessions.find(ms => ms.id === mediaSessionId);
+  }
+
+  getSourceMediaSessionsOfType (mediaType) {
+    return this.mediaSessions.filter(({ medias }) =>
+      medias.some(({ mediaTypes }) => mediaTypes[mediaType] && mediaTypes[mediaType] !== 'recvonly')
+    );
+  }
+
+  getSinkMediaSessionsOfType (mediaType) {
+    return this.mediaSessions.filter(({ medias }) =>
+      medias.some(({ mediaTypes }) => mediaTypes[mediaType] && mediaTypes[mediaType] !== 'sendonly')
+    );
+  }
+
+  removeMediaSession (mediaSessionId) {
+    const mediaSession = this.getMediaSession(mediaSessionId);
+    mediaSession.medias.forEach(this.removeMedia.bind(this));
+    this.mediaSessions = this.mediaSessions.filter(ms => ms.id !== mediaSessionId);
   }
 
   getConferenceFloor () {
+    const floor = this._conferenceFloor? this._conferenceFloor.getMediaInfo() : undefined;
+    const previousFloor = this._previousConferenceFloors.length <= 0
+      ? undefined
+      : this._previousConferenceFloors.slice(0, MAX_PREVIOUS_FLOORS).map(m => m.getMediaInfo());
+
+
     const conferenceFloorInfo = {
-      floor: this._conferenceFloor? this._conferenceFloor.getMediaInfo() : undefined,
-      previousFloor: this._previousConferenceFloors[0]? this._previousConferenceFloors[0].getMediaInfo() : undefined,
+      floor,
+      previousFloor
     };
 
     return conferenceFloorInfo;
   }
 
   getContentFloor () {
+    const floor = this._contentFloor ? this._contentFloor.getMediaInfo() : undefined;
+    const previousFloor = this._previousContentFloors.length <= 0
+      ? undefined
+      : this._previousContentFloors.slice(0, MAX_PREVIOUS_FLOORS).map(m => m.getMediaInfo());
+
+
     const contentFloorInfo = {
-      floor: this._contentFloor? this._contentFloor.getMediaInfo() : undefined,
-      previousFloor: this._previousContentFloors[0]? this._previousContentFloors[0].getMediaInfo() : undefined,
+      floor,
+      previousFloor
     };
 
     return contentFloorInfo;
@@ -60,13 +158,54 @@ module.exports = class Room {
   }
 
   setConferenceFloor (media) {
-    if (this._conferenceFloor && this._previousConferenceFloor[0] && this._previousConferenceFloor[0].id !== this._conferenceFloor.id) {
+    let tentativeFloor;
+
+    // Check if the media is audio-only. If it is, check the parent media session for
+    // video medias If we can't find it there too, fetch the user's media list
+    // and look for a valid video media and set it as the floor.
+    // If even then there isn't one, do nothing. This is a case where the user
+    // is audio only. We could consider implementing a backlog list in case those
+    // users join with video later on and lift them from the backlog back
+    // to the conference floors
+    if (!media.mediaTypes.video) {
+      const { mediaSessionId, userId } = media;
+      const floorMediaSession = this.getMediaSession(mediaSessionId);
+      const findMediaWithVideo = (mediaSession) => {
+        return mediaSession.medias.find(m => {
+          return m.mediaTypes.video === 'sendrecv' || m.mediaTypes.video === 'sendonly';
+        });
+      };
+
+      tentativeFloor = findMediaWithVideo(floorMediaSession);
+
+      if (tentativeFloor == null) {
+        const floorUser = this.getUser(userId);
+        const userMediaSessions = Object.keys(floorUser.mediaSessions).map(msk => floorUser.getMediaSession(msk));
+
+        tentativeFloor = userMediaSessions.find(ms => {
+          const msWV = findMediaWithVideo(ms)
+          return !!msWV;
+        });
+      }
+    } else {
+      tentativeFloor = media;
+    }
+
+    if (tentativeFloor == null) {
+      Logger.warn(`${LOG_PREFIX} Could not find a valid video media for the conference ${this.id} floor ${media.id}, do nothing`);
+      return;
+    }
+
+    // Rotate the current floor the the previous floors' list
+    if (this._conferenceFloor && tentativeFloor.id !== this._conferenceFloor.id) {
       this._setPreviousConferenceFloor();
     }
 
-    this._conferenceFloor = media;
+    this._conferenceFloor = tentativeFloor;
+    this._previousConferenceFloors = this._previousConferenceFloors.filter(m => m.id !== tentativeFloor.id);
     const conferenceFloorInfo = this.getConferenceFloor();
     GLOBAL_EVENT_EMITTER.emit(C.EVENT.CONFERENCE_FLOOR_CHANGED, { roomId: this.id, ...conferenceFloorInfo });
+
     return conferenceFloorInfo;
   }
 
@@ -86,10 +225,15 @@ module.exports = class Room {
     return contentFloorInfo;
   }
 
-  releaseConferenceFloor () {
+  releaseConferenceFloor (preserve = true) {
     if (this._conferenceFloor) {
-      this._setPreviousConferenceFloor();
-      this._conferenceFloor = null
+      const nextFloor = this._previousConferenceFloors.shift();
+      if (preserve) {
+        this._setPreviousConferenceFloor();
+      } else {
+        this._previousConferenceFloors = this._previousConferenceFloors.filter(pcf => pcf.id !== this._conferenceFloor.id);
+      }
+      this._conferenceFloor = nextFloor;
       const conferenceFloorInfo = this.getConferenceFloor();
       GLOBAL_EVENT_EMITTER.emit(C.EVENT.CONFERENCE_FLOOR_CHANGED, { roomId: this.id, ...conferenceFloorInfo});
     }
@@ -140,10 +284,8 @@ module.exports = class Room {
         const { floor } = this.getContentFloor();
 
         if (floor && (mediaId === floor.mediaId || mediaSessionId === floor.mediaId)) {
-          this.releaseConferenceFloor();
+          this.releaseConferenceFloor(false);
         }
-
-        this._previousConferenceFloors = this._previousConferenceFloors.filter(pcf => pcf.id !== mediaId);
       }
     };
 
@@ -151,11 +293,10 @@ module.exports = class Room {
     this._registerEvent(C.EVENT.MEDIA_DISCONNECTED, clearConferenceFloor);
   }
 
-  destroyUser(userId) {
-    GLOBAL_EVENT_EMITTER.emit(C.EVENT.USER_LEFT, { roomId: this.id,  userId });
-    if (this._users[userId]) {
-      delete this._users[userId];
-      if (Object.keys(this._users).length <= 0) {
+  destroyUser (userId) {
+    if (this.users[userId]) {
+      delete this.users[userId];
+      if (Object.keys(this.users).length <= 0) {
         GLOBAL_EVENT_EMITTER.emit(C.EVENT.ROOM_EMPTY, this.id);
       }
     }
@@ -163,8 +304,10 @@ module.exports = class Room {
 
   destroy () {
     Logger.debug(LOG_PREFIX, "Destroying room", this.id);
+
     this._registeredEvents.forEach(({ event, callback }) => {
       GLOBAL_EVENT_EMITTER.removeListener(event, callback);
     });
+    this._registeredEvents = [];
   }
 }
