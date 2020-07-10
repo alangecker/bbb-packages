@@ -18,7 +18,7 @@ f17b82e9ea88763dddae843e1b465ea4  usr/local/bigbluebutton/core/lib/recordandplay
 d44e8434d81e4c7afdee01f99bd36b06  usr/local/bigbluebutton/core/lib/recordandplayback/generators/audio.rb
 a370f122dc120227b9d1849e8de3282d  usr/local/bigbluebutton/core/lib/recordandplayback/generators/audio_processor.rb
 baddfc3a39bdc01107aa49650ab1d3e7  usr/local/bigbluebutton/core/lib/recordandplayback/generators/captions.rb
-6994b276e061d7eaff42796761503328  usr/local/bigbluebutton/core/lib/recordandplayback/generators/events.rb
+1667bd18a0d0627bf0cdbe317cf0ffec  usr/local/bigbluebutton/core/lib/recordandplayback/generators/events.rb
 e334d90f4a33f30248434da48525fa49  usr/local/bigbluebutton/core/lib/recordandplayback/generators/presentation.rb
 ff9f04a6f0a82e61d89c350b98564a67  usr/local/bigbluebutton/core/lib/recordandplayback/generators/video.rb
 85d82f2d3241d00e8d4d74064478e896  usr/local/bigbluebutton/core/lib/recordandplayback.rb
@@ -45,4 +45,4 @@ fbe487149c302a9e1898689572fcf0b3  usr/local/bigbluebutton/core/scripts/rap-sanit
 7f3d5a64675a284726db075e54c8ad6f  usr/local/bigbluebutton/core/scripts/sanity/sanity.rb
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 c8ba295784c49e5fd3cd2533efe8e826  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-b4e721bfb01fa4e339d7f6caa511419f  usr/share/doc/bbb-record-core/changelog.gz
+9a25fc6a226d1d5ccb5748f026369501  usr/share/doc/bbb-record-core/changelog.gz
