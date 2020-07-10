@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2489187,
-  "totalMinifiedGzipBytes": 574327,
+  "totalMinifiedBytes": 2490090,
+  "totalMinifiedGzipBytes": 574672,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1376,7 +1376,7 @@
       {}
     ],
     "app/app.js": [
-      1229022,
+      1229925,
       {
         "imports": {
           "ui": {
@@ -1464,7 +1464,7 @@
                 },
                 "component.jsx": 1250,
                 "container.jsx": 1153,
-                "service.js": 6974,
+                "service.js": 6990,
                 "styles.scss": 54,
                 "styles.scss.js": 4652
               },
@@ -1543,7 +1543,7 @@
                 "download-presentation-button": {
                   "component.jsx": 922,
                   "styles.scss": 54,
-                  "styles.scss.js": 1320
+                  "styles.scss.js": 1253
                 },
                 "presentation-close-button": {
                   "component.jsx": 639,
@@ -1599,7 +1599,7 @@
                   "styles.scss": 54,
                   "styles.scss.js": 8824
                 },
-                "component.jsx": 22448,
+                "component.jsx": 22606,
                 "container.jsx": 1185,
                 "service.js": 3383
               },
@@ -1865,7 +1865,8 @@
               },
               "external-video-player": {
                 "custom-players": {
-                  "arc-player.jsx": 2583
+                  "arc-player.jsx": 2583,
+                  "panopto.jsx": 299
                 },
                 "modal": {
                   "component.jsx": 2698,
@@ -1873,9 +1874,9 @@
                   "styles.scss": 54,
                   "styles.scss.js": 10034
                 },
-                "component.jsx": 7289,
+                "component.jsx": 7343,
                 "container.jsx": 531,
-                "service.js": 1119,
+                "service.js": 1224,
                 "styles.scss": 54,
                 "styles.scss.js": 2199
               },
@@ -2040,7 +2041,7 @@
                 "styles.scss.js": 559
               },
               "breakout-join-confirmation": {
-                "component.jsx": 3358,
+                "component.jsx": 3566,
                 "container.jsx": 963,
                 "styles.scss": 54,
                 "styles.scss.js": 600
@@ -2072,7 +2073,7 @@
                 "container.jsx": 449,
                 "service.js": 968,
                 "styles.scss": 54,
-                "styles.scss.js": 1801
+                "styles.scss.js": 1734
               },
               "icon": {
                 "component.jsx": 716
@@ -2177,7 +2178,7 @@
               },
               "audio-manager": {
                 "error-codes.js": 97,
-                "index.js": 10082
+                "index.js": 10107
               },
               "auth": {
                 "index.js": 4716
@@ -2208,7 +2209,7 @@
               "client": {
                 "bridge": {
                   "base.js": 781,
-                  "kurento.js": 4761,
+                  "kurento.js": 4786,
                   "sip.js": 11755
                 }
               }
@@ -2302,9 +2303,9 @@
           },
           "startup": {
             "client": {
-              "base.jsx": 6754,
+              "base.jsx": 6776,
               "intl.jsx": 4723,
-              "logger.js": 1680
+              "logger.js": 1790
             }
           },
           "utils": {
