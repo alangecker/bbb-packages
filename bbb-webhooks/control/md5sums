@@ -7,9 +7,9 @@ e146d30368eb94fc5b178c23c08408b2  usr/local/bigbluebutton/bbb-webhooks/Dockerfil
 c747684871dc9029aaa998f45a4408a4  usr/local/bigbluebutton/bbb-webhooks/README.md
 c2665820a6c08c0599b32610c13a918a  usr/local/bigbluebutton/bbb-webhooks/app.js
 8a714c9046bf5ee1a62701ceb5ffe4e5  usr/local/bigbluebutton/bbb-webhooks/application.js
-4ea7a08aa2c18f5f4a169565b9a8a458  usr/local/bigbluebutton/bbb-webhooks/callback_emitter.js
-4a61bf95c80ea25f0f389b03a4df8764  usr/local/bigbluebutton/bbb-webhooks/config/custom-environment-variables.yml
-ea30a5c1a2df5c45443bbcee7a27fe38  usr/local/bigbluebutton/bbb-webhooks/config/default.example.yml
+f5359b82940e30d0d69316865d39b791  usr/local/bigbluebutton/bbb-webhooks/callback_emitter.js
+93052ebb9574292809b9cefa8173313c  usr/local/bigbluebutton/bbb-webhooks/config/custom-environment-variables.yml
+f1b66244675d702d065ab6a80d18c518  usr/local/bigbluebutton/bbb-webhooks/config/default.example.yml
 6e2dc6c52520654cded7accc78f8a71f  usr/local/bigbluebutton/bbb-webhooks/extra/events.js
 6098915bdb35671eef9bccccb642a558  usr/local/bigbluebutton/bbb-webhooks/extra/post_catcher.js
 28ece0bfafe79b17e6ca1bd6e15c6baa  usr/local/bigbluebutton/bbb-webhooks/hook.js
@@ -3179,4 +3179,4 @@ b8b259ff9553bd99dad8bf54244e2a64  usr/local/bigbluebutton/bbb-webhooks/userMappi
 a9599b30eb5872a2d17f068f25e9ac72  usr/local/bigbluebutton/bbb-webhooks/utils.js
 33ac6a44d9c4d7e8ddb1c3692a5ccf2d  usr/local/bigbluebutton/bbb-webhooks/web_hooks.js
 5b6ee49235c8d48948507c533bdaf962  usr/local/bigbluebutton/bbb-webhooks/web_server.js
-26881d46b8673e21382b600298c41c3f  usr/share/doc/bbb-webhooks/changelog.gz
+e30e64838a53805cbc5ba6a1ffc27434  usr/share/doc/bbb-webhooks/changelog.gz
