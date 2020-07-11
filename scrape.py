@@ -59,7 +59,7 @@ for pkg in res.decode('utf-8').split('\n\n'):
         'xfv', 
         tmpdir+'/data.tar.gz' if os.path.isfile(tmpdir+'/data.tar.gz') else tmpdir+'/data.tar', 
         '-C', directory+'/'+name+'/data',
-        '--exclude', '*.jar',
+        # '--exclude', '*.jar',
         '--exclude', '*.class',
         '--exclude', '*.gz',
         '--exclude', '*.swf',
