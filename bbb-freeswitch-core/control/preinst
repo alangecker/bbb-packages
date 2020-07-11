@@ -296,6 +296,12 @@ case "$1" in
                 cp /opt/freeswitch/conf/autoload_configs/verto.conf.xml /tmp/verto.conf.xml
         fi
 
+        rm -f /tmp/event_socket.conf.xml
+        if [ -f /opt/freeswitch/etc/freeswitch/autoload_configs/event_socket.conf.xml ]; then
+                cp /opt/freeswitch/etc/freeswitch/autoload_configs/event_socket.conf.xml /tmp/event_socket.conf.xml
+        fi
+
+
 	if [ -f /.dockerenv ]; then
            # To make it easier, we'll override how systemd runs freeswitch
 	   mkdir -p /etc/systemd/system/freeswitch.service.d
