@@ -3,15 +3,13 @@ import os
 import re
 from tempfile import mkdtemp
 
-repo = "http://ubuntu.bigbluebutton.org/xenial-22/"
+repo = "http://ubuntu.bigbluebutton.org/bionic-230-dev/"
 
 directory = '.'
 existingPkg = os.listdir('deb')
 
 
-tmpdir = mkdtemp()
-
-res = subprocess.check_output(['curl', '-s', repo+"/dists/bigbluebutton-xenial/main/binary-amd64/Packages"])
+res = subprocess.check_output(['curl', '-s', repo+"/dists/bigbluebutton-bionic/main/binary-amd64/Packages"])
 for pkg in res.decode('utf-8').split('\n\n'):
     if "Package: bbb-" not in pkg:
         continue
@@ -35,8 +33,7 @@ for pkg in res.decode('utf-8').split('\n\n'):
     })
     subprocess.run(['wget',  '-O', 'deb/'+filename, repo+"/"+path])
 
-    # remove old files
-    subprocess.run(['rm',  '-rf', tmpdir+'/*'])
+    tmpdir = mkdtemp()
 
     # extract .deb
     subprocess.run(['ar',  'x', '--output', tmpdir, 'deb/'+filename])
@@ -49,7 +46,7 @@ for pkg in res.decode('utf-8').split('\n\n'):
     subprocess.run([
         'tar', 
         'xfv', 
-        tmpdir+'/control.tar.gz', 
+        tmpdir+'/control.tar.gz' if os.path.isfile(tmpdir+'/control.tar.gz') else tmpdir+'/control.tar',
         '-C', directory+'/'+name+'/control',
     ])
 
