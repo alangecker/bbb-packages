@@ -11,7 +11,7 @@ public:
     appName: BigBlueButton HTML5 Client
     bbbServerVersion: 2.2
     copyright: "©2020 BigBlueButton Inc."
-    html5ClientBuild: 968
+    html5ClientBuild: 1008
     helpLink: https://bigbluebutton.org/html5/
     lockOnJoin: true
     cdn: ""
@@ -20,6 +20,7 @@ public:
     allowUserLookup: false
     enableNetworkInformation: false
     enableLimitOfViewersInWebcam: false
+    enableMultipleCameras: true
     enableTalkingIndicator: true
     mirrorOwnWebcam: false
     viewersInWebcam: 8
@@ -35,6 +36,8 @@ public:
         chatPushAlerts: false
         userJoinAudioAlerts: false
         userJoinPushAlerts: false
+        raiseHandAudioAlerts: false
+        raiseHandPushAlerts: false
         fallbackLocale: en
         overrideLocale: null
       audio:
@@ -86,16 +89,6 @@ public:
     packetLostThreshold: 10
   kurento:
     wsUrl: HOST
-    # Valid for video-provider. Time (ms) before its WS connection times out
-    # and tries to reconnect.
-    wsConnectionTimeout: 4000
-    cameraTimeouts:
-      # Base camera timeout: used as the camera *sharing* timeout and
-      # as the minimum camera subscribe reconnection timeout
-      baseTimeout: 15000
-      # Max timeout: used as the max camera subscribe reconnection timeout. Each
-      # subscribe reattempt increases the reconnection timer up to this
-      maxTimeout: 60000
     chromeDefaultExtensionKey: akgoaoikmbmhcopjgakkcepdgdgkjfbc
     chromeDefaultExtensionLink: https://chrome.google.com/webstore/detail/bigbluebutton-screenshare/akgoaoikmbmhcopjgakkcepdgdgkjfbc
     chromeExtensionKey: KEY
@@ -116,6 +109,17 @@ public:
         - screen
       firefoxScreenshareSource: window
     cameraProfiles:
+      # id: unique identifier of the profile
+      # name: name of the profile visible to users
+      # default: if this is the default profile which is pre-selected
+      # bitrate: the average bitrate for used for a webcam stream
+      # constraints:
+      #   # Optional constraints put on the requested video a browser MAY honor
+      #   # For a detailed list on possible values see:
+      #   # https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
+      #   # Examples:
+      #   width: requested width of the camera stream
+      #   frameRate: requested framerate
       - id: low
         name: Low quality
         default: false
@@ -134,7 +138,6 @@ public:
         bitrate: 800
     enableScreensharing: true
     enableVideo: true
-    enableVideoStats: false
     enableVideoMenu: true
     enableListenOnly: true
     autoShareWebcam: false
@@ -190,6 +193,7 @@ public:
   layout:
     autoSwapLayout: false
     hidePresentation: false
+    webcamsDefaultPlacement: "top"
   media:
     stunTurnServersFetchAddress: "/bigbluebutton/api/stuns"
     cacheStunTurnServers: true
@@ -200,8 +204,26 @@ public:
     callHangupMaximumRetries: 10
     echoTestNumber: 'echo'
     relayOnlyOnReconnect: false
-    listenOnlyCallTimeout: 15000
+  stats:
+    enabled: true
+    interval: 2000
+    length: 5
+    log: false
+    jitter:
+      - 10
+      - 20
+      - 30
+    loss:
+      - 0.05
+      - 0.1
+      - 0.2
+    level:
+      - warning
+      - danger
+      - critical
+    help: STATS_HELP_URL
   presentation:
+    allowDownloadable: true
     defaultPresentationFile: default.pdf
     panZoomThrottle: 32
     restoreOnUpdate: false
@@ -375,22 +397,25 @@ private:
       enabled: false
   minBrowserVersions:
     - browser: chrome
-      version: 59
+      version: 72
     - browser: chromeMobileIOS
       version: Infinity
     - browser: firefox
-      version: 52
+      version: 63
     - browser: firefoxMobile
-      version: 52
+      version: 68
     - browser: edge
-      version: 17
+      version: 79
     - browser: ie
       version: Infinity
     - browser: safari
-      version: [11, 1]
+      version: [12, 1]
     - browser: mobileSafari
-      version: [11, 1]
+      version: [12, 1]
     - browser: opera
-      version: 46
+      version: 50
     - browser: electron
       version: [0, 36]
+    - browser: YandexBrowser
+      version: 19
+

@@ -55,7 +55,6 @@
       "path": "packages/ecmascript.js"
     },
     {
-      "node_modules": "npm/node_modules/meteor/babel-runtime/node_modules",
       "path": "packages/babel-runtime.js"
     },
     {

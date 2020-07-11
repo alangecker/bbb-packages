@@ -1,2 +1,4 @@
 /etc/bigbluebutton/nginx/bbb-html5.nginx
+/etc/bigbluebutton/nginx/sip.nginx
+/etc/nginx/sites-available/bigbluebutton
 /etc/systemd/system/mongod.service

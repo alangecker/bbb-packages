@@ -1,3 +1,7 @@
+module.export({
+  Profile: () => Profile
+});
+
 // Tiny profiler
 //
 // Enable by setting the environment variable `METEOR_PROFILE`.
@@ -160,98 +164,75 @@
 //     B: 250.0
 //
 // In both reports the grand total is 600ms.
-var _ = require('underscore');
+const Fiber = require('fibers');
 
-var Fiber = require('fibers');
+const filter = parseFloat(process.env.METEOR_PROFILE || "100"); // ms
 
-Profile.enabled = !!process.env['METEOR_PROFILE'];
-var filter = parseFloat(process.env['METEOR_PROFILE']); // ms
+let bucketStats = Object.create(null);
+let SPACES_STR = ' '; // return a string of `x` spaces
 
-if (isNaN(filter)) {
-  filter = 100; // ms
-}
-
-var bucketStats = {};
-var SPACES_STR = ' '; // return a string of `x` spaces
-
-var spaces = function (x) {
-  while (SPACES_STR.length < x) {
+function spaces(len) {
+  while (SPACES_STR.length < len) {
     SPACES_STR = SPACES_STR + SPACES_STR;
   }
 
-  return SPACES_STR.slice(0, x);
-};
+  return SPACES_STR.slice(0, len);
+}
 
-var DOTS_STR = '.'; // return a string of `x` dots
+let DOTS_STR = '.'; // return a string of `x` dots
 
-var dots = function (x) {
-  while (DOTS_STR.length < x) {
+function dots(len) {
+  while (DOTS_STR.length < len) {
     DOTS_STR = DOTS_STR + DOTS_STR;
   }
 
-  return DOTS_STR.slice(0, x);
-};
+  return DOTS_STR.slice(0, len);
+}
 
-var leftAlign = function (str, len) {
-  if (str.length < len) {
-    str = str + spaces(len - str.length);
-  }
-
-  return str;
-};
-
-var rightAlign = function (str, len) {
-  if (str.length < len) {
-    str = spaces(len - str.length) + str;
-  }
-
-  return str;
-};
-
-var leftRightAlign = function (str1, str2, len) {
+function leftRightAlign(str1, str2, len) {
   var middle = Math.max(1, len - str1.length - str2.length);
   return str1 + spaces(middle) + str2;
-};
+}
 
-var leftRightDots = function (str1, str2, len) {
+function leftRightDots(str1, str2, len) {
   var middle = Math.max(1, len - str1.length - str2.length);
   return str1 + dots(middle) + str2;
-};
+}
 
-var printIndentation = function (isLastLeafStack) {
-  if (_.isEmpty(isLastLeafStack)) {
+function printIndentation(isLastLeafStack) {
+  if (!isLastLeafStack.length) {
     return '';
   }
 
-  var init = _.map(_.initial(isLastLeafStack), function (isLastLeaf) {
-    return isLastLeaf ? '   ' : '│  ';
-  }).join('');
+  const {
+    length
+  } = isLastLeafStack;
+  let init = '';
 
-  var last = _.last(isLastLeafStack) ? '└─ ' : '├─ ';
+  for (let i = 0; i < length - 1; ++i) {
+    const isLastLeaf = isLastLeafStack[i];
+    init += isLastLeaf ? '   ' : '│  ';
+  }
+
+  const last = isLastLeafStack[length - 1] ? '└─ ' : '├─ ';
   return init + last;
-};
+}
 
-var formatMs = function (n) {
+function formatMs(n) {
   // integer with thousands separators
   return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " ms";
-};
+}
 
-var encodeEntryKey = function (entry) {
+function encodeEntryKey(entry) {
   return entry.join('\t');
-};
+}
 
-var decodeEntryKey = function (key) {
+function decodeEntryKey(key) {
   return key.split('\t');
-};
+}
 
-var globalEntry = [];
-var running = false;
-var runningName;
-
-var start = function () {
-  bucketStats = {};
-  running = true;
-};
+const globalEntry = [];
+let running = false;
 
 function Profile(bucketName, f) {
   if (!Profile.enabled) {
@@ -263,80 +244,116 @@ function Profile(bucketName, f) {
       return f.apply(this, arguments);
     }
 
-    var name;
-
-    if (_.isFunction(bucketName)) {
-      name = bucketName.apply(this, arguments);
-    } else {
-      name = bucketName;
-    }
-
-    var currentEntry;
-
-    if (Fiber.current) {
-      currentEntry = Fiber.current.profilerEntry || (Fiber.current.profilerEntry = []);
-    } else {
-      currentEntry = globalEntry;
-    }
-
+    const name = typeof bucketName === "function" ? bucketName.apply(this, arguments) : bucketName;
+    const currentEntry = Fiber.current ? Fiber.current.profilerEntry || (Fiber.current.profilerEntry = []) : globalEntry;
     currentEntry.push(name);
-    var key = encodeEntryKey(currentEntry);
-    var start = process.hrtime();
-    var err = null;
+    const key = encodeEntryKey(currentEntry);
+    const start = process.hrtime();
 
     try {
       return f.apply(this, arguments);
-    } catch (e) {
-      err = e;
     } finally {
-      var elapsed = process.hrtime(start);
-      var stats = bucketStats[key] || (bucketStats[key] = {
+      const elapsed = process.hrtime(start);
+      const stats = bucketStats[key] || (bucketStats[key] = {
         time: 0.0,
-        count: 0
+        count: 0,
+        isOther: false
       });
       stats.time += elapsed[0] * 1000 + elapsed[1] / 1000000;
       stats.count++;
       currentEntry.pop();
     }
-
-    if (err) {
-      throw err;
-    }
   }, f);
 }
 
-var time = function (bucket, f) {
-  return Profile(bucket, f)();
-};
+(function (Profile) {
+  Profile.enabled = !!process.env.METEOR_PROFILE;
 
-var entries = null;
-var prefix = "| ";
+  function time(bucket, f) {
+    return Profile(bucket, f)();
+  }
 
-var entryName = function (entry) {
-  return _.last(entry);
-};
+  Profile.time = time;
 
-var entryStats = function (entry) {
+  function run(bucket, f) {
+    if (!Profile.enabled) {
+      return f();
+    }
+
+    if (running) {
+      // We've kept the calls to Profile.run in the tool disjoint so far,
+      // and should probably keep doing so, but if we mess up, warn and continue.
+      console.log("Warning: Nested Profile.run at " + bucket);
+      return time(bucket, f);
+    }
+
+    runningName = bucket;
+    print("(#".concat(reportNum, ") Profiling: ").concat(runningName));
+    start();
+
+    try {
+      return time(bucket, f);
+    } finally {
+      report();
+      reportNum++;
+    }
+  }
+
+  Profile.run = run;
+
+  function start() {
+    bucketStats = {};
+    running = true;
+  }
+
+  let runningName;
+  let reportNum = 1;
+
+  function report() {
+    if (!Profile.enabled) {
+      return;
+    }
+
+    running = false;
+    print('');
+    setupReport();
+    reportHierarchy();
+    print('');
+    reportHotLeaves();
+    print('');
+    print("(#".concat(reportNum, ") Total: ").concat(formatMs(getTopLevelTotal())) + " (".concat(runningName, ")"));
+    print('');
+  }
+})(Profile || module.runSetters(Profile = {}));
+
+let entries = [];
+const prefix = "| ";
+
+function entryName(entry) {
+  return entry[entry.length - 1];
+}
+
+function entryStats(entry) {
   return bucketStats[encodeEntryKey(entry)];
-};
+}
 
-var entryTime = function (entry) {
+function entryTime(entry) {
   return entryStats(entry).time;
-};
+}
 
-var isTopLevelEntry = function (entry) {
+function isTopLevelEntry(entry) {
   return entry.length === 1;
-};
+}
 
-var topLevelEntries = function () {
-  return _.filter(entries, isTopLevelEntry);
-};
+function topLevelEntries() {
+  return entries.filter(isTopLevelEntry);
+}
 
-var print = function (text) {
+function print(text) {
   console.log(prefix + text);
-};
+}
 
-var isChild = function (entry1, entry2) {
+function isChild(entry1, entry2) {
   if (entry2.length !== entry1.length + 1) {
     return false;
   }
@@ -348,186 +365,123 @@ var isChild = function (entry1, entry2) {
   }
 
   return true;
-};
+}
 
-var children = function (entry1) {
-  return _.filter(entries, function (entry2) {
-    return isChild(entry1, entry2);
-  });
-};
+function children(entry1) {
+  return entries.filter(entry2 => isChild(entry1, entry2));
+}
 
-var hasChildren = function (entry) {
-  return children(entry).length !== 0;
-};
+function hasChildren(entry) {
+  return children(entry).length > 0;
+}
 
-var hasSignificantChildren = function (entry) {
-  return _.some(children(entry), function (entry) {
-    return entryTime(entry) >= filter;
-  });
-};
+function hasSignificantChildren(entry) {
+  return children(entry).some(entry => entryTime(entry) >= filter);
+}
 
-var isLeaf = function (entry) {
+function isLeaf(entry) {
   return !hasChildren(entry);
-};
+}
 
-var otherTime = function (entry) {
-  var total = 0;
-
-  _.each(children(entry), function (child) {
+function otherTime(entry) {
+  let total = 0;
+  children(entry).forEach(child => {
     total += entryTime(child);
   });
-
   return entryTime(entry) - total;
-};
+}
 
-var injectOtherTime = function (entry) {
-  var name = "other " + entryName(entry);
-
-  var other = _.clone(entry);
-
-  other.push(name);
+function injectOtherTime(entry) {
+  const other = entry.slice(0);
+  other.push("other " + entryName(entry));
   bucketStats[encodeEntryKey(other)] = {
     time: otherTime(entry),
     count: entryStats(entry).count,
     isOther: true
   };
   entries.push(other);
-};
+}
 
-var reportOn = function (entry, isLastLeafStack) {
-  isLastLeafStack = isLastLeafStack || [];
-  var stats = entryStats(entry);
-  var isParent = hasSignificantChildren(entry);
-  var name = entryName(entry);
+;
+
+function reportOn(entry) {
+  let isLastLeafStack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  const stats = entryStats(entry);
+  const isParent = hasSignificantChildren(entry);
+  const name = entryName(entry);
   print((isParent ? leftRightDots : leftRightAlign)(printIndentation(isLastLeafStack) + name, formatMs(stats.time), 70) + (stats.isOther ? "" : " (" + stats.count + ")"));
 
   if (isParent) {
-    var childrenList = _.filter(children(entry), function (entry) {
-      var stats = entryStats(entry);
-      return stats.time > filter;
+    const childrenList = children(entry).filter(entry => {
+      return entryStats(entry).time > filter;
     });
-
-    _.each(childrenList, function (child, i) {
-      var isLastLeaf = i === childrenList.length - 1;
+    childrenList.forEach((child, i) => {
+      const isLastLeaf = i === childrenList.length - 1;
       reportOn(child, isLastLeafStack.concat(isLastLeaf));
     });
   }
-};
+}
 
-var reportHierarchy = function () {
-  _.each(topLevelEntries(), function (entry) {
-    reportOn(entry);
-  });
-};
+function reportHierarchy() {
+  topLevelEntries().forEach(entry => reportOn(entry));
+}
 
-var allLeafs = function () {
-  return _.union(_.map(_.filter(entries, isLeaf), entryName));
-};
+function allLeafs() {
+  const set = Object.create(null);
+  entries.filter(isLeaf).map(entryName).forEach(name => set[name] = true);
+  return Object.keys(set).sort();
+}
 
-var leafTotals = function (leafName) {
-  var time = 0;
-  var count = 0;
-
-  _.each(_.filter(entries, function (entry) {
+function leafTotals(leafName) {
+  let time = 0;
+  let count = 0;
+  entries.filter(entry => {
     return entryName(entry) === leafName && isLeaf(entry);
-  }), function (leaf) {
-    var stats = entryStats(leaf);
+  }).forEach(leaf => {
+    const stats = entryStats(leaf);
     time += stats.time;
     count += stats.count;
   });
-
   return {
     time,
     count
   };
-};
+}
 
-var reportHotLeaves = function () {
+function reportHotLeaves() {
   print('Top leaves:');
-  var totals = [];
-
-  _.each(allLeafs(), function (leaf) {
-    var info = leafTotals(leaf);
-    totals.push({
+  const totals = allLeafs().map(leaf => {
+    const info = leafTotals(leaf);
+    return {
       name: leaf,
       time: info.time,
       count: info.count
-    });
-  });
-
-  totals.sort(function (a, b) {
+    };
+  }).sort((a, b) => {
     return a.time === b.time ? 0 : a.time > b.time ? -1 : 1;
   });
-
-  _.each(totals, function (total) {
+  totals.forEach(total => {
     if (total.time < 100) {
       // hard-coded larger filter to quality as "hot" here
       return;
     }
 
-    print(leftRightDots(total.name, formatMs(total.time), 65) + ` (${total.count})`);
+    print(leftRightDots(total.name, formatMs(total.time), 65) + " (".concat(total.count, ")"));
   });
-};
+}
 
-var getTopLevelTotal = function () {
-  var topTotal = 0;
-
-  _.each(topLevelEntries(), function (entry) {
+function getTopLevelTotal() {
+  let topTotal = 0;
+  topLevelEntries().forEach(entry => {
     topTotal += entryTime(entry);
   });
-
   return topTotal;
-};
+}
 
-var setupReport = function () {
-  entries = _.map(_.keys(bucketStats), decodeEntryKey);
-
-  _.each(_.filter(entries, hasSignificantChildren), function (parent) {
+function setupReport() {
+  entries = Object.keys(bucketStats).map(decodeEntryKey);
+  entries.filter(hasSignificantChildren).forEach(parent => {
     injectOtherTime(parent);
   });
-};
-
-var reportNum = 1;
-
-var report = function () {
-  if (!Profile.enabled) {
-    return;
-  }
-
-  running = false;
-  print('');
-  setupReport();
-  reportHierarchy();
-  print('');
-  reportHotLeaves();
-  print('');
-  print(`(#${reportNum}) Total: ${formatMs(getTopLevelTotal())}` + ` (${runningName})`);
-  print('');
-};
-
-var run = function (bucketName, f) {
-  if (!Profile.enabled) {
-    return f();
-  } else if (running) {
-    // We've kept the calls to Profile.run in the tool disjoint so far,
-    // and should probably keep doing so, but if we mess up, warn and continue.
-    console.log("Warning: Nested Profile.run at " + bucketName);
-    return time(bucketName, f);
-  } else {
-    runningName = bucketName;
-    print(`(#${reportNum}) Profiling: ${runningName}`);
-    start();
-
-    try {
-      return time(bucketName, f);
-    } finally {
-      report();
-      reportNum++;
-    }
-  }
-};
-
-Profile.time = time;
-Profile.run = run;
-exports.Profile = Profile;
+}
 //# sourceMappingURL=profile.js.map

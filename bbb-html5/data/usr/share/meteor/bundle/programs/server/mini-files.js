@@ -1,65 +1,100 @@
-var _ = require("underscore");
-var os = require("os");
-var path = require("path");
-var assert = require("assert");
+module.export({
+  isWindowsLikeFilesystem: () => isWindowsLikeFilesystem,
+  toPosixPath: () => toPosixPath,
+  convertToPosixPath: () => convertToPosixPath,
+  toDosPath: () => toDosPath,
+  convertToWindowsPath: () => convertToWindowsPath,
+  convertToOSPath: () => convertToOSPath,
+  convertToStandardPath: () => convertToStandardPath,
+  convertToOSLineEndings: () => convertToOSLineEndings,
+  convertToStandardLineEndings: () => convertToStandardLineEndings,
+  unicodeNormalizePath: () => unicodeNormalizePath,
+  wrapPathFunction: () => wrapPathFunction,
+  pathJoin: () => pathJoin,
+  pathNormalize: () => pathNormalize,
+  pathRelative: () => pathRelative,
+  pathResolve: () => pathResolve,
+  pathDirname: () => pathDirname,
+  pathBasename: () => pathBasename,
+  pathExtname: () => pathExtname,
+  pathIsAbsolute: () => pathIsAbsolute,
+  pathSep: () => pathSep,
+  pathDelimiter: () => pathDelimiter,
+  pathOsDelimiter: () => pathOsDelimiter
+});
+let path;
+module.link("path", {
+  default(v) {
+    path = v;
+  }
 
-// All of these functions are attached to files.js for the tool;
-// they live here because we need them in boot.js as well to avoid duplicating
-// a lot of the code.
-//
-// Note that this file does NOT contain any of the "perform I/O maybe
-// synchronously" functions from files.js; this is intentional, because we want
-// to make it very hard to accidentally use fs.*Sync functions in the app server
-// after bootup (since they block all concurrency!)
-var files = module.exports;
+}, 0);
+let release, EOL;
+module.link("os", {
+  release(v) {
+    release = v;
+  },
 
-// Detect that we are on a Windows-like Filesystem, such as that in a WSL
-// (Windows Subsystem for Linux) even if it otherwise looks like we're on Unix.
-// https://github.com/Microsoft/BashOnWindows/issues/423#issuecomment-221627364
-var isWindowsLikeFilesystem = function () {
-  return process.platform === "win32" ||
-    (os.release().indexOf("Microsoft") > -1);
-};
+  EOL(v) {
+    EOL = v;
+  }
 
-var toPosixPath = function (p, partialPath) {
+}, 1);
+
+function isWindowsLikeFilesystem() {
+  return process.platform === "win32" || release().indexOf("Microsoft") >= 0;
+}
+
+function toPosixPath(p) {
+  let partialPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   // Sometimes, you can have a path like \Users\IEUser on windows, and this
   // actually means you want C:\Users\IEUser
-  if (p[0] === "\\" && (! partialPath)) {
+  if (p[0] === "\\" && !partialPath) {
     p = process.env.SystemDrive + p;
   }
 
   p = p.replace(/\\/g, '/');
-  if (p[1] === ':' && ! partialPath) {
+
+  if (p[1] === ':' && !partialPath) {
     // transform "C:/bla/bla" to "/c/bla/bla"
     p = '/' + p[0] + p.slice(2);
   }
 
   return p;
-};
+}
 
-var toDosPath = function (p, partialPath) {
-  if (p[0] === '/' && ! partialPath) {
-    if (! /^\/[A-Za-z](\/|$)/.test(p))
-      throw new Error("Surprising path: " + p);
-    // transform a previously windows path back
+const convertToPosixPath = toPosixPath;
+
+function toDosPath(p) {
+  let partialPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (p[0] === '/' && !partialPath) {
+    if (!/^\/[A-Za-z](\/|$)/.test(p)) throw new Error("Surprising path: " + p); // transform a previously windows path back
     // "/C/something" to "c:/something"
+
     p = p[1] + ":" + p.slice(2);
   }
 
   p = p.replace(/\//g, '\\');
   return p;
-};
+}
 
+const convertToWindowsPath = toDosPath;
 
-var convertToOSPath = function (standardPath, partialPath) {
+function convertToOSPath(standardPath) {
+  let partialPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   if (process.platform === "win32") {
     return toDosPath(standardPath, partialPath);
   }
 
   return standardPath;
-};
+}
 
-var convertToStandardPath = function (osPath, partialPath) {
+function convertToStandardPath(osPath) {
+  let partialPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   if (process.platform === "win32") {
     return toPosixPath(osPath, partialPath);
   }
@@ -67,69 +102,42 @@ var convertToStandardPath = function (osPath, partialPath) {
   return osPath;
 }
 
-var convertToOSLineEndings = function (fileContents) {
-  return fileContents.replace(/\n/g, os.EOL);
-};
+function convertToOSLineEndings(fileContents) {
+  return fileContents.replace(/\n/g, EOL);
+}
 
-var convertToStandardLineEndings = function (fileContents) {
+function convertToStandardLineEndings(fileContents) {
   // Convert all kinds of end-of-line chars to linuxy "\n".
-  return fileContents.replace(new RegExp("\r\n", "g"), "\n")
-                     .replace(new RegExp("\r", "g"), "\n");
-};
+  return fileContents.replace(new RegExp("\r\n", "g"), "\n").replace(new RegExp("\r", "g"), "\n");
+}
 
-// Return the Unicode Normalization Form of the passed in path string, using
-// "Normalization Form Canonical Composition"
-const unicodeNormalizePath = (path) => {
-  return (path) ? path.normalize('NFC') : path;
-};
+function unicodeNormalizePath(path) {
+  return path ? path.normalize('NFC') : path;
+}
 
-// wrappings for path functions that always run as they were on unix (using
-// forward slashes)
-var wrapPathFunction = function (name, partialPaths) {
-  var f = path[name];
-  assert.strictEqual(typeof f, "function");
-
-  return function (/* args */) {
+function wrapPathFunction(f) {
+  let partialPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  return function wrapper() {
     if (process.platform === 'win32') {
-      var args = _.toArray(arguments);
-      args = _.map(args, function (p, i) {
-        // if partialPaths is turned on (for path.join mostly)
-        // forget about conversion of absolute paths for Windows
-        return toDosPath(p, partialPaths);
-      });
-
-      var result = f.apply(path, args);
-      if (typeof result === "string") {
-        result = toPosixPath(result, partialPaths);
-      }
-
-      return result;
+      const result = f.apply(path, Array.prototype.map.call(arguments, // if partialPaths is turned on (for path.join mostly)
+      // forget about conversion of absolute paths for Windows
+      p => toDosPath(p, partialPath)));
+      return typeof result === "string" ? toPosixPath(result, partialPath) : result;
     }
 
     return f.apply(path, arguments);
   };
-};
+}
 
-files.pathJoin = wrapPathFunction("join", true);
-files.pathNormalize = wrapPathFunction("normalize");
-files.pathRelative = wrapPathFunction("relative");
-files.pathResolve = wrapPathFunction("resolve");
-files.pathDirname = wrapPathFunction("dirname");
-files.pathBasename = wrapPathFunction("basename");
-files.pathExtname = wrapPathFunction("extname");
-// The path.isAbsolute function is implemented in Node v4.
-files.pathIsAbsolute = wrapPathFunction("isAbsolute");
-files.pathSep = '/';
-files.pathDelimiter = ':';
-files.pathOsDelimiter = path.delimiter;
-
-files.isWindowsLikeFilesystem = isWindowsLikeFilesystem;
-
-files.convertToStandardPath = convertToStandardPath;
-files.convertToOSPath = convertToOSPath;
-files.convertToWindowsPath = toDosPath;
-files.convertToPosixPath = toPosixPath;
-
-files.convertToStandardLineEndings = convertToStandardLineEndings;
-files.convertToOSLineEndings = convertToOSLineEndings;
-files.unicodeNormalizePath = unicodeNormalizePath;
+const pathJoin = wrapPathFunction(path.join, true);
+const pathNormalize = wrapPathFunction(path.normalize);
+const pathRelative = wrapPathFunction(path.relative);
+const pathResolve = wrapPathFunction(path.resolve);
+const pathDirname = wrapPathFunction(path.dirname);
+const pathBasename = wrapPathFunction(path.basename);
+const pathExtname = wrapPathFunction(path.extname);
+const pathIsAbsolute = wrapPathFunction(path.isAbsolute);
+const pathSep = '/';
+const pathDelimiter = ':';
+const pathOsDelimiter = path.delimiter;
+//# sourceMappingURL=mini-files.js.map

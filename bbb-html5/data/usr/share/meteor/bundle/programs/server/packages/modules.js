@@ -6,7 +6,7 @@ var global = Package.meteor.global;
 var meteorEnv = Package.meteor.meteorEnv;
 var meteorInstall = Package['modules-runtime'].meteorInstall;
 
-var require = meteorInstall({"node_modules":{"meteor":{"modules":{"server.js":function(require){
+var require = meteorInstall({"node_modules":{"meteor":{"modules":{"server.js":function module(require){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -20,7 +20,7 @@ require("./reify.js");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"install-packages.js":function(require,exports,module){
+},"install-packages.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -130,7 +130,7 @@ install("autoupdate", "meteor/autoupdate/autoupdate_server.js");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"process.js":function(require,exports,module){
+},"process.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -177,7 +177,7 @@ for (var key in meteorEnv) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"reify.js":function(require,exports,module){
+},"reify.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -191,7 +191,7 @@ require("reify/lib/runtime").enable(
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"node_modules":{"reify":{"lib":{"runtime":{"index.js":function(require,exports,module){
+},"node_modules":{"reify":{"lib":{"runtime":{"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -208,29 +208,18 @@ module.useNode();
     ".json"
   ]
 });
-meteorInstall({"node_modules":{"@babel":{"runtime":{"helpers":{"interopRequireDefault.js":function(require,exports,module){
+meteorInstall({"node_modules":{"@babel":{"runtime":{"helpers":{"objectSpread2.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
-// node_modules/@babel/runtime/helpers/interopRequireDefault.js                                     //
-//                                                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                    //
-module.useNode();
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-},"objectSpread.js":function(require,exports,module){
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                  //
-// node_modules/@babel/runtime/helpers/objectSpread.js                                              //
+// node_modules/@babel/runtime/helpers/objectSpread2.js                                             //
 //                                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                     //
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"objectWithoutProperties.js":function(require,exports,module){
+},"objectWithoutProperties.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -241,7 +230,7 @@ module.useNode();
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"extends.js":function(require,exports,module){
+},"extends.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -252,7 +241,7 @@ module.useNode();
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"package.json":function(require,exports,module){
+}},"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -263,7 +252,7 @@ module.useNode();
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}}},"langmap":{"package.json":function(require,exports,module){
+}}},"langmap":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -279,7 +268,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"language-mapping-list.js":function(require,exports,module){
+},"language-mapping-list.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -290,33 +279,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"heapdump":{"package.json":function(require,exports,module){
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                  //
-// node_modules/heapdump/package.json                                                               //
-//                                                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                    //
-module.exports = {
-  "name": "heapdump",
-  "version": "0.3.15"
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-},"index.js":function(require,exports,module){
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                  //
-// node_modules/heapdump/index.js                                                                   //
-//                                                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                    //
-module.useNode();
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-}},"yaml":{"package.json":function(require,exports,module){
+}},"yaml":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -326,13 +289,13 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "yaml",
-  "version": "1.6.0",
+  "version": "1.10.0",
   "main": "./index.js"
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -343,7 +306,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"useragent":{"package.json":function(require,exports,module){
+}},"useragent":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -359,7 +322,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -370,34 +333,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"memwatch-next":{"package.json":function(require,exports,module){
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                  //
-// node_modules/memwatch-next/package.json                                                          //
-//                                                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                    //
-module.exports = {
-  "name": "memwatch-next",
-  "version": "0.3.0",
-  "main": "include.js"
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-},"include.js":function(require,exports,module){
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                  //
-// node_modules/memwatch-next/include.js                                                            //
-//                                                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                    //
-module.useNode();
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-}},"winston":{"package.json":function(require,exports,module){
+}},"winston":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -413,7 +349,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"lib":{"winston.js":function(require,exports,module){
+},"lib":{"winston.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -424,7 +360,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}}},"redis":{"package.json":function(require,exports,module){
+}}},"redis":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -440,7 +376,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -451,7 +387,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"eventemitter2":{"package.json":function(require,exports,module){
+}},"eventemitter2":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -467,7 +403,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"lib":{"eventemitter2.js":function(require,exports,module){
+},"lib":{"eventemitter2.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -478,7 +414,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}}},"flat":{"package.json":function(require,exports,module){
+}}},"flat":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -494,7 +430,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -505,7 +441,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"axios":{"package.json":function(require,exports,module){
+}},"axios":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -515,13 +451,13 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "axios",
-  "version": "0.19.0",
+  "version": "0.19.2",
   "main": "index.js"
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -532,7 +468,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"string-hash":{"package.json":function(require,exports,module){
+}},"string-hash":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -548,7 +484,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -559,7 +495,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"lodash":{"package.json":function(require,exports,module){
+}},"lodash":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -575,7 +511,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"lodash.js":function(require,exports,module){
+},"lodash.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -586,7 +522,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"probe-image-size":{"package.json":function(require,exports,module){
+}},"probe-image-size":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -596,12 +532,12 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "probe-image-size",
-  "version": "4.0.1"
+  "version": "4.1.1"
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -612,7 +548,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"fibers":{"package.json":function(require,exports,module){
+}},"fibers":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -622,13 +558,13 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "fibers",
-  "version": "3.1.1",
+  "version": "4.0.3",
   "main": "fibers"
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"fibers.js":function(require,exports,module){
+},"fibers.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -639,7 +575,7 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"react":{"package.json":function(require,exports,module){
+}},"react":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -649,13 +585,13 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "react",
-  "version": "16.8.6",
+  "version": "16.13.1",
   "main": "index.js"
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"index.js":function(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -670,7 +606,8 @@ module.useNode();
   "extensions": [
     ".js",
     ".json",
-    ".jsx"
+    ".jsx",
+    ".mjs"
   ]
 });
 

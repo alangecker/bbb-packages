@@ -2,34 +2,34 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "7df6acf6cb0f651dba4e71b3adac0efd23889793.js",
+      "path": "447336066de6f305390348246a610239fe7e86ef.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/7df6acf6cb0f651dba4e71b3adac0efd23889793.js?meteor_js_resource=true",
-      "size": 2490090,
-      "hash": "7df6acf6cb0f651dba4e71b3adac0efd23889793",
-      "sri": "N2kSOh6Dd+7+QxJFqLHTYfyQGEnat0UZTOGKBgoRP4PxCRtubvne5zlUsAjhqiId+ftwtmWzapBKnsZkaG0+uA=="
+      "url": "/447336066de6f305390348246a610239fe7e86ef.js?meteor_js_resource=true",
+      "size": 2740092,
+      "hash": "447336066de6f305390348246a610239fe7e86ef",
+      "sri": "XWWe8lcwxH7CQXlinOYWd1z9jcq+eF7tukR9y/ZPWNeIuU5KSpwqNGyea/gSZbp4sgbgBpM+0aVb/oQmajR2bA=="
     },
     {
-      "path": "7df6acf6cb0f651dba4e71b3adac0efd23889793.stats.json",
+      "path": "447336066de6f305390348246a610239fe7e86ef.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/7df6acf6cb0f651dba4e71b3adac0efd23889793.stats.json?meteor_js_resource=true",
-      "size": 68185,
-      "hash": "6cb4b9bc9e830324643653fc20b5350c6268caea",
-      "sri": "Q6ETX7f2ONBj78Issg1yXHxS0cVNYRRtNPgdY8I5Ev6QJ35LdkMBIP7OvPOO8Ne62Pymyh3pib5qwrQStQ5nMQ=="
+      "url": "/447336066de6f305390348246a610239fe7e86ef.stats.json?meteor_js_resource=true",
+      "size": 80836,
+      "hash": "3892e2a69579ce65bc126024a94bf2880e8ff777",
+      "sri": "C9n574wTgJCzpSonyCjkn2SYvGSacoQYLiYsxXq6RdC6W/KHyiFtg6xHZtIQ6GrXuCfkP24H12ANpq8kZ9V8dA=="
     },
     {
-      "path": "b02c1e609b497129c953cf5bdab38c10f9dbff0a.css",
+      "path": "5698c061cfba32badc3285de664514e3f4c25d8b.css",
       "where": "client",
       "type": "css",
       "cacheable": true,
-      "url": "/b02c1e609b497129c953cf5bdab38c10f9dbff0a.css?meteor_css_resource=true",
-      "size": 18961,
-      "hash": "b02c1e609b497129c953cf5bdab38c10f9dbff0a",
-      "sri": "BS4+7HqXNyIaotM0rBd91OZJ8UpXr694FtQGmOtgdzjDTKdjcPhpp4gI6+3w4W2mk28rcoh5qgUmGVMsJujGmQ=="
+      "url": "/5698c061cfba32badc3285de664514e3f4c25d8b.css?meteor_css_resource=true",
+      "size": 19000,
+      "hash": "5698c061cfba32badc3285de664514e3f4c25d8b",
+      "sri": "Q0TeAhLlz0M7sm7wfcvqtILMvSHpKFfM0/LJnQa8wwkNDkANUFR21C1s8S5kgwyasbpyWzNL7RGYTOMO8Gan+w=="
     },
     {
       "path": "app/compatibility/adapter.js",
@@ -38,8 +38,8 @@
       "cacheable": false,
       "url": "/compatibility/adapter.js",
       "size": 192415,
-      "hash": "77ac3a196b4db46fdc80bb1f379fb336f2db0230",
-      "sri": "UDSyUH1R8PYvcZ2+OJe6J1WFjNIB5t5QAQtJ0C9ZbqvXUJq9fVjY7cysk0G+6/JQK3WvWKz01t9N3ps9LoTmNA=="
+      "hash": "e0857f5bc8743b31fa995c2a6d4a4de465519fe2",
+      "sri": null
     },
     {
       "path": "app/compatibility/bowser.js",
@@ -48,8 +48,8 @@
       "cacheable": false,
       "url": "/compatibility/bowser.js",
       "size": 18325,
-      "hash": "f16f25e7c36aed753ff0f7ffdc9390a878b92a27",
-      "sri": "UMXdIXudNM500NFTPt+6TKFhl1NsTu1Gl2V3EAhvdVcP1i5vkkvTdaXpOd8CIN58h3vuKCGbnIE2GFbqN+spTw=="
+      "hash": "ec619fd37d6ac36e1e83e866bb6d4e0d48dd9084",
+      "sri": null
     },
     {
       "path": "app/compatibility/kurento-extension.js",
@@ -58,8 +58,8 @@
       "cacheable": false,
       "url": "/compatibility/kurento-extension.js",
       "size": 29033,
-      "hash": "80d1a242601dc8b6f5bf2f182a1485e5e068d7d6",
-      "sri": "Q0ssucICaApPdb0wziSHZPc+a5ZHZ2amy+DqRnU+UX1pB1gz8gdJWOW2BIpvovoDOf84PZbiNOKCLgxW98C9Jw=="
+      "hash": "74cffc506bdc6596b41ba30482876676a7179cc0",
+      "sri": null
     },
     {
       "path": "app/compatibility/kurento-utils.js",
@@ -68,8 +68,8 @@
       "cacheable": false,
       "url": "/compatibility/kurento-utils.js",
       "size": 158803,
-      "hash": "746b872547fddf927d513e158ca7615aa4b164ff",
-      "sri": "Bf6Y6jfpF10S6GvbfyJHzzRbEVhc5Ur58oTaS/OztwWABk1oJA0YS98AcCER8Za72nxsEicZ27X6jQoqALFVpA=="
+      "hash": "6ec99ff8266b58a84c26d9a7c5f9d3fc30171199",
+      "sri": null
     },
     {
       "path": "app/compatibility/sip.js",
@@ -78,8 +78,8 @@
       "cacheable": false,
       "url": "/compatibility/sip.js",
       "size": 384793,
-      "hash": "1365b74ce553d495068beffefc8973bb18992bd2",
-      "sri": "iyBY5gzSEZiCrqq5bPCwOClqk88iHlEmh9psPKaObCsvjPnncqjfEUsdWvn+GfGGFH70kQk94fYJZx9NhDP6Lw=="
+      "hash": "842f1ea842c1833fcedf61c0f6a166790b49f3b5",
+      "sri": null
     },
     {
       "path": "app/svgs/bbb_audio_icon.svg",
@@ -88,8 +88,8 @@
       "cacheable": false,
       "url": "/svgs/bbb_audio_icon.svg",
       "size": 1242,
-      "hash": "43e53a67bb799c96205cf57a36d430c3519b401f",
-      "sri": "kgTk3Sz3fAhYg2kkw+zuP9XT2Pqi5iwx+beg09mkeBZbeN87f92estQCXWSL7/dzlX9yoU7GWHJGfqssB+Y6lQ=="
+      "hash": "4994ba5c56e3b62a184d4b64fe08b3a59ff88d23",
+      "sri": null
     },
     {
       "path": "app/svgs/bbb_headphones_icon.svg",
@@ -98,8 +98,8 @@
       "cacheable": false,
       "url": "/svgs/bbb_headphones_icon.svg",
       "size": 806,
-      "hash": "60c50cd605943fefe3aadd52db11c07b738023cb",
-      "sri": "OF+nozqK5g+flyhHt62ck49dXizLH3RpOdHjwnIMuBMzyMv2QeWMXqDav3LEW2ATsEMe8X7iXPk3T2ZaTPc5UA=="
+      "hash": "c1bc85cb6e6be99382ac37770363d2d7f90fc653",
+      "sri": null
     },
     {
       "path": "app/fonts/BbbIcons/bbb-icons.woff",
@@ -107,9 +107,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/fonts/BbbIcons/bbb-icons.woff",
-      "size": 16328,
-      "hash": "3a1ca42e9390f172c44bb5b2c15bf1d1289ed6fc",
-      "sri": "E5/SlpgcBpo9KkamGQg2BLeMOu/47YPbrvlm1781BiCGUSUJn52Iueq/Xg3WFnKsOOPQcAq4fmb/2fGK3GQFFw=="
+      "size": 16556,
+      "hash": "449660ddd3b519df972e7f3b69a8f5890d112b61",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/OFL.txt",
@@ -118,8 +118,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/OFL.txt",
       "size": 4579,
-      "hash": "67818ccbae77075513d49eca13ce7bde1758c25e",
-      "sri": "xO+YQf9zP7vjIDWp7cuX5HucCCNQtCQ4q/FbYvn9VNnkzz9/B4l+cInzLscVPC4NqNoB0NNhOhJW246KYp5ybw=="
+      "hash": "fda9df8730d218558e2e93d74f2fb88ab3ac7b27",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-Bold.woff",
@@ -128,8 +128,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-Bold.woff",
       "size": 151868,
-      "hash": "ec113a47acca1e72639e5c1895b938a0de794909",
-      "sri": "1AYwDOFoLvjwJbj5+9q+XeI687PVLJ9rqswU13rwrml+dhOKus38w+TyDr8kyscTr0e/zQ5ie2o22HsdbLh3oQ=="
+      "hash": "cc9840c9e76024064a72abd5a593c95f3c288cb3",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-BoldItalic.woff",
@@ -138,8 +138,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-BoldItalic.woff",
       "size": 117964,
-      "hash": "aaa39c4947ae6dc9e7ca032e0fda912dedc916ec",
-      "sri": "mOrq135LSLcXGZxmD2RPUuAtBT5x4/VMNUhRlAk2BV+Hos/qJCRBSwxuwfHx2TDAj2f0pszvXJAmANxbSZO3XQ=="
+      "hash": "00c198321cc8073c3b680cbb8e0aea1be1206720",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-Italic.woff",
@@ -148,8 +148,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-Italic.woff",
       "size": 115924,
-      "hash": "b0b4bda0199ec92e46aaf57c812c8fa0ea06bc0e",
-      "sri": "TzOf1kU7JyQmjLWksRwAg9yXkICa/e5YD8tiWH5AEq1BJ9Djr705wZ96/oE5tcPtKNmIZ3cYt7AHbmJKNAQepw=="
+      "hash": "17797434aecbca2753175206bbe5fbb0f215382b",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-Light.woff",
@@ -158,8 +158,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-Light.woff",
       "size": 146020,
-      "hash": "a965ddc630b268fb1d7e6561f6b1fbcbe1c4a3d4",
-      "sri": "LZpmk1p1Zwx2XpOmQBDr/y6OrBvsU75V5r/RaTcpsNMe7ZhN7NWEbAGUkbpw3ZpZvKJtTrfoVPJ+XEtoJ4fpxA=="
+      "hash": "4911b8461e24a8602daf5e0a8a08d11e653b0f3f",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-LightItalic.woff",
@@ -168,8 +168,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-LightItalic.woff",
       "size": 113140,
-      "hash": "679735a97ff8fcb04c3adaf3f2d8b04ee9dd1b6d",
-      "sri": "Ds5fuln4A03dsKfn99/IshyZKApHNkLuayQ6HpkmKKi1muCw511tdiKqQhl4lDzCXRkoQaS8EikDrHANm3E8Zw=="
+      "hash": "8df5efd5688eac567d6fd55174bb83d2e32c4849",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-Regular.woff",
@@ -178,8 +178,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-Regular.woff",
       "size": 148620,
-      "hash": "c3dba74e9e5f04beec3ea66a127a1c826b59e331",
-      "sri": "nMeHxlozJrEgQ2tQ4YN2ZSg+idcrnbghEQBCjFGJX328LlIdVmrV4OIi/UatJO5iwFH8rXPoSwkpD5xxb1v4Jg=="
+      "hash": "248bfeaa58d78b117d737be3c37977ac1bc3b90e",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-Semibold.woff",
@@ -188,8 +188,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-Semibold.woff",
       "size": 150320,
-      "hash": "a88baedaddb6e85a37a9d7af4495a8b81600302b",
-      "sri": "NipTDUqPiyISYtWvR8k0q8rz/r2wst1rBeb8Bfci3POxqndEsy40ACxccuIGv4e87b3rYY7Dh4HDt7fbURtGvA=="
+      "hash": "b93e7509b8cf22deeb6007d2ab6e0837a54e81f1",
+      "sri": null
     },
     {
       "path": "app/fonts/SourceSansPro/SourceSansPro-SemiboldItalic.woff",
@@ -198,8 +198,8 @@
       "cacheable": false,
       "url": "/fonts/SourceSansPro/SourceSansPro-SemiboldItalic.woff",
       "size": 116848,
-      "hash": "20db443f110f59eacf37cdd30dfdae9857cc5d7d",
-      "sri": "i08kM2LhDIkx3yxzIJ7UZYMjH/M1TK/k5P3ld43IecwzNcwnq72Tr76pNBSPWUjzKofZBPL8CE4RC3pUDcGGNQ=="
+      "hash": "9239b2d9f20078c6b28afd4986a715c608dabfe1",
+      "sri": null
     },
     {
       "path": "app/resources/images/allow-mic.png",
@@ -208,8 +208,8 @@
       "cacheable": false,
       "url": "/resources/images/allow-mic.png",
       "size": 7880,
-      "hash": "4aa85eb56b0e55bdc9fa299f50cf66e30f0e29c1",
-      "sri": "lPL9AazUvxMxVl+ug0EZ4gdFSKGSCmoMT6mLBSiWZE+GPtGSFqNdd1PGzx29flhT93FYhtie03WBTMbPTiRDKg=="
+      "hash": "f9cc7d2ec9ca4ea5f9779a1384497600eb969fcc",
+      "sri": null
     },
     {
       "path": "app/resources/sounds/LeftCall.mp3",
@@ -218,8 +218,8 @@
       "cacheable": false,
       "url": "/resources/sounds/LeftCall.mp3",
       "size": 20257,
-      "hash": "f02ac24ca25d39d64bb557dce36105f3f7d3ada7",
-      "sri": "PuJmRVnLL1gTz16VGCticV4ZpDDSdthznOXKnsV+z0gZ5mg4joLLdjOLXKqLCdTzJW1poEQLiwP2Y6K/5Td1LQ=="
+      "hash": "6f9eaa330a8e2165d02ab89e08a1d02b0750099b",
+      "sri": null
     },
     {
       "path": "app/resources/sounds/Poll.mp3",
@@ -228,8 +228,8 @@
       "cacheable": false,
       "url": "/resources/sounds/Poll.mp3",
       "size": 28338,
-      "hash": "eda30178694204fd2b8a515c83609fafe4588fa6",
-      "sri": "AN+qMwZhGBm0RQFAvjVWkm0jK29xJUHphXYrdbwAQtIgL7FoEdofXDEmHxiuCDdYTJ7pczeWTSRHpjm1cjwCcw=="
+      "hash": "2e7aebc29a5dc46328ad7f5f413b7ec079be5c44",
+      "sri": null
     },
     {
       "path": "app/resources/sounds/ScreenshareOff.mp3",
@@ -238,8 +238,8 @@
       "cacheable": false,
       "url": "/resources/sounds/ScreenshareOff.mp3",
       "size": 40805,
-      "hash": "c297d1df52dbf7b11c9a451a2a27577010dae794",
-      "sri": "LWAml1sjMni6z8kqQGHChf6j2cY7XUATLMW24/UwGSoytjntQmK2B1OBqCRORoSE5QNPNRw7FCEuNfMPJG+yHw=="
+      "hash": "f7c3461a0f9ceed8ff4c6a96da71ed27460ebf63",
+      "sri": null
     },
     {
       "path": "app/resources/sounds/audioSample.mp3",
@@ -248,8 +248,18 @@
       "cacheable": false,
       "url": "/resources/sounds/audioSample.mp3",
       "size": 43885,
-      "hash": "0ff59469dd6edb4db903362893a70173e1e19039",
-      "sri": "CvaglId3d0VQmjmYo2EpGncQQA5zHzZKUK/wefwkEsU8RZxycF2pDJUwna1UmbaFZqn+QHWnCpK6xu0LYjWPcw=="
+      "hash": "34e58acd503c6a63c86ae36bfd1f69a571365876",
+      "sri": null
+    },
+    {
+      "path": "app/resources/sounds/bbb-handRaise.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/resources/sounds/bbb-handRaise.mp3",
+      "size": 6975,
+      "hash": "17b52af06c4a5a5fb2a4b7578aa02ec177d52c4a",
+      "sri": null
     },
     {
       "path": "app/resources/sounds/notify.mp3",
@@ -258,8 +268,8 @@
       "cacheable": false,
       "url": "/resources/sounds/notify.mp3",
       "size": 10702,
-      "hash": "0764cc74f0f3fd7f1e5fd9dc58b3156e9500d892",
-      "sri": "/gB91tkgVcW6SMM8IbJhkua03tej42vcoaEDmURtPJQJK+uOFDsPl9trk4T3x6yoEXroQ8zDJG6yhlR73ByWSA=="
+      "hash": "06203e902b10bce5ce29ab4e63c3f134a54fa5ed",
+      "sri": null
     },
     {
       "path": "app/resources/sounds/silence.mp3",
@@ -268,8 +278,8 @@
       "cacheable": false,
       "url": "/resources/sounds/silence.mp3",
       "size": 34560,
-      "hash": "e81c79fe5dd45d645cbfac35508c0248d6517f1b",
-      "sri": "Qdrs5bAeim7NmPc5pw/X1pyYGeAbQwTsQiTdn4iKynbN/EnD31fLTBehr97wwfGZ19KSehv+ieafzbF/NTFvjA=="
+      "hash": "29e5f004522b5bf3be54650c322df4e320a695fc",
+      "sri": null
     },
     {
       "path": "app/resources/sounds/userJoin.mp3",
@@ -278,8 +288,8 @@
       "cacheable": false,
       "url": "/resources/sounds/userJoin.mp3",
       "size": 10702,
-      "hash": "0764cc74f0f3fd7f1e5fd9dc58b3156e9500d892",
-      "sri": "/gB91tkgVcW6SMM8IbJhkua03tej42vcoaEDmURtPJQJK+uOFDsPl9trk4T3x6yoEXroQ8zDJG6yhlR73ByWSA=="
+      "hash": "06203e902b10bce5ce29ab4e63c3f134a54fa5ed",
+      "sri": null
     },
     {
       "path": "app/resources/images/video-menu/icon-swap.svg",
@@ -288,8 +298,8 @@
       "cacheable": false,
       "url": "/resources/images/video-menu/icon-swap.svg",
       "size": 3551,
-      "hash": "cac6bcfa9ad3735e07143a6e19da7f95ccad2fdb",
-      "sri": "FSqkVueS3ocokLBTRJw3IPBJKzpVT5G57Qq87Ngg+OTOYho34nvFgY6vuU0ct8px8lOx/SSOxoHFpiXHs3TMow=="
+      "hash": "20d171aa21e17aee0edd8f06bb07278311038e1f",
+      "sri": null
     },
     {
       "path": "app/resources/images/video-menu/icon-webcam-off.svg",
@@ -298,8 +308,8 @@
       "cacheable": false,
       "url": "/resources/images/video-menu/icon-webcam-off.svg",
       "size": 2173,
-      "hash": "10186ca0301089453bbb7df8776512bc9816e81e",
-      "sri": "kDUaVGmUB1+TcrxnqH9g1G51FfN4usWvIEt/cKRh1Dd477lzovXT+roaig5Gq/zgOpREdHdHtvXo/8Vs78x5Hg=="
+      "hash": "450e0ee0d663b724e7dbd921dd53424a0ab49917",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/ellipse.png",
@@ -308,8 +318,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/ellipse.png",
       "size": 926,
-      "hash": "e8df45f80801e77d5e6fd0682703446eb26b8f9d",
-      "sri": "KwSTFh5ZgNPKYz56k2YJoveSzOqXQepsFXHSdE3BuN6BwfNrF7vRD5QwHvv6Sw+TwlfAWbE9LDR2ufMNs4OCkg=="
+      "hash": "0623a6e4204e7698c0e7513f22bf624d1d7a3c48",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/ellipse.svg",
@@ -318,8 +328,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/ellipse.svg",
       "size": 3583,
-      "hash": "7af066514cc6b46e8aa1226b984a359ab8b09396",
-      "sri": "7aaCwAo6tPmC0bsPvAt9wEEaeVIZf1mJMtsk0ZuHzZFjMsdjvTS1Dh55PT+NCl7sMqDVWl+sfcnCPBTtJjm+Gw=="
+      "hash": "dfd37be48ccfefc9192155f8c637a28f33eaa286",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/line.png",
@@ -328,8 +338,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/line.png",
       "size": 336,
-      "hash": "297715f921a8664cac4c5e55d92688d43257cfb5",
-      "sri": "vF9RX7tHKOvCJvZGqXWmX/jzDaKyUBrAqoGibfu3SutIpD9lYuTTXXpDpA4B20/ZsMbVM3PecHt0F0RYmIYvWQ=="
+      "hash": "1c7830e549b46530dcabec24cfb41e1c83ccf445",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/line.svg",
@@ -338,8 +348,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/line.svg",
       "size": 3665,
-      "hash": "8fd6f48b6a6deb1931064b6fe27046b48f212433",
-      "sri": "J6ElZcPf6OmjgEeK4+yDDZiOJT2yCb/OWuLnunqO/e8SBNc6RJoH+rAszZIdxo1XujLziOcB6qMsQFM8zNUaLA=="
+      "hash": "869b4ebd67c9d980ef816a8fbad7c6dce08ae664",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/pan-closed.png",
@@ -348,8 +358,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/pan-closed.png",
       "size": 605,
-      "hash": "7e0a5b1a25c38fa834f088f02413ed278addb3af",
-      "sri": "N45G8qJyHBn4nFDr0Qq1DMs6SQ51Sf0IcQ+7n2d6pAUUPgHD0Y+x9/iwGkjTCCQRBmwqjxLAUc1Mr1nXip/X7g=="
+      "hash": "cb2e6f5dbb70704ae77f202ea05704f74a541f2e",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/pan-closed.svg",
@@ -358,8 +368,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/pan-closed.svg",
       "size": 2843,
-      "hash": "5f49d380e51121fa014fbf9c62ef286796655b9e",
-      "sri": "oidT3U5LuEzlwkTep6jTJF5ONXN8nt5FHzswU41AtbgcuhxW3O1u1cxxgaIiiG8ZMbh003EMRnfzYg0CnDR1iw=="
+      "hash": "b06e98de1799f9cf0ed3403633e486f7d00be7cb",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/pan.png",
@@ -368,8 +378,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/pan.png",
       "size": 919,
-      "hash": "ef9463129464dc134c21faf6253630a45bc61a96",
-      "sri": "RuKDfHyls5YnhS7SR6BLlc2JNv0DrSY5+rcXhlMCKpkVoSIrKS0DbTOsN9uOe2heUsf4+EcvDKecebX4Wd2W9Q=="
+      "hash": "0d995965001c2c46448fa323edd29725cc73cae4",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/pan.svg",
@@ -378,8 +388,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/pan.svg",
       "size": 1493,
-      "hash": "5276a558ff2abfa0ddef49a8a36c3837f76937e4",
-      "sri": "rtqOH/Sg2GM05kHnXnOjQAR0BqHC9MiQ4zENrT1X5FK92rJOHQnN3n0fgUqx+bfrc6s2b48DkP5mEX8o+pPRMQ=="
+      "hash": "86e4d29c89203ba26cd061305795e467b5baa3f1",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/pencil.png",
@@ -388,8 +398,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/pencil.png",
       "size": 850,
-      "hash": "9c57667730a966756e7fcbe637848134366d33aa",
-      "sri": "h69jlsgok7eRK85fSZHauwzX5+jy6L0HWlY3j3qtSZQuf8mXTWXMOPtstG/+3jhfwlKdFFrJWifWu0YRgGjSoQ=="
+      "hash": "a4a72af3efeb0993e29ffd5a928e8c083c01d8eb",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/pencil.svg",
@@ -398,8 +408,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/pencil.svg",
       "size": 6791,
-      "hash": "0cee710f088a951ed59d2c22bc9d868726283a4c",
-      "sri": "vIjdFvrnXUUdSZEAQldB/zoMUiXj2O2fCeaBONv6mQi5gbEEopld1zn00TdS1M9Ghe48Eemw7/lNWWcoGbfZbQ=="
+      "hash": "87c25f73427e655f107e7a71e126349dc2144776",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/square.png",
@@ -408,8 +418,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/square.png",
       "size": 345,
-      "hash": "8d6d58db730b921ad4957339a63d4f5fd46c06cf",
-      "sri": "q4f81/2TIZETrknrE1bYL5DUVScRQE8CV79HA3eED0Pt18X6gzTABteRp5anDN0pqCZ5G28TUiV7pIcOVDjv8w=="
+      "hash": "bab7ee3e77cdadacae5307251a03888f80e05da5",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/square.svg",
@@ -418,8 +428,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/square.svg",
       "size": 3564,
-      "hash": "75b3343a78ee9c15bd1947f744e8672b0d76c64b",
-      "sri": "PZvx9VBZWWdiMWlB3XHcu2V14AEndPy+mmq3JTj1jv30tc0tOhlKGDDG7o1NedNgqiJwqwDujPkUhujqGQ85ig=="
+      "hash": "7d0218eb8bbd5a830faa3617bc5d0ea014ee52c7",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/text.png",
@@ -428,8 +438,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/text.png",
       "size": 621,
-      "hash": "b937a97a501247e483aa3c4a3cd2531c76f37c84",
-      "sri": "zL96Ey2z0AvEzVmLqpL94HxFCKgDLeLr9znsIVLoc2bYY9NGtOyy6BnZW+GEMnmcuivp0S/6Bm9sDIEkTwUv0w=="
+      "hash": "a221539b67014adb77fb44ccb7aba7b685aae907",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/text.svg",
@@ -438,8 +448,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/text.svg",
       "size": 9397,
-      "hash": "f39ce20857667035346c7111e110dc76e5509455",
-      "sri": "14XfWIo1RM2d36wld9sm08D1vNopIy/kgD2Vtq+1Z4MN33LOtiEtz2aftdK6UqtPQOx9pVCQN85KVEul/nPVxw=="
+      "hash": "88fd3bd12e9802804fa03cbdf9aecc3b89197c97",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/triangle.png",
@@ -448,8 +458,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/triangle.png",
       "size": 939,
-      "hash": "21e7a26e07b0aa856178ebb0b09ab3585c9caaad",
-      "sri": "/V4wp8EvGrWepuwFU+Hj6lOKlncxlVZf3of6QhwGalWHjggxWmJMw+eBdm2ZxmbF56QFb8Z7RbIOK5NKnt7S3g=="
+      "hash": "3a43a08c457c522704265019fe7cacdab2de419b",
+      "sri": null
     },
     {
       "path": "app/resources/images/whiteboard-cursor/triangle.svg",
@@ -458,8 +468,8 @@
       "cacheable": false,
       "url": "/resources/images/whiteboard-cursor/triangle.svg",
       "size": 3633,
-      "hash": "1dde0d9a682be743e5b9f2d88b4e5776d43a0e27",
-      "sri": "wP5qpDWnEYObMkeyhzqiGkIXdPrhUJLNAa8m54Gx8ok1hx7Qtb+KRxRzwigKFDeCt5jqEPLRHBqjO71ZO/YPvw=="
+      "hash": "e5a4e10cc4fbb331dd0530883b500291c460e484",
+      "sri": null
     },
     {
       "path": "head.html",

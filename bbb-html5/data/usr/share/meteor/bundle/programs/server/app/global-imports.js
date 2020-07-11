@@ -25,7 +25,6 @@ DDP = Package['ddp-client'].DDP;
 DDPServer = Package['ddp-server'].DDPServer;
 LaunchScreen = Package['launch-screen'].LaunchScreen;
 meteorInstall = Package.modules.meteorInstall;
-meteorBabelHelpers = Package['babel-runtime'].meteorBabelHelpers;
 Promise = Package.promise.Promise;
 Autoupdate = Package.autoupdate.Autoupdate;
 
