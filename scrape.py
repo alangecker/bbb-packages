@@ -60,7 +60,7 @@ for pkg in res.decode('utf-8').split('\n\n'):
         tmpdir+'/data.tar.gz' if os.path.isfile(tmpdir+'/data.tar.gz') else tmpdir+'/data.tar', 
         '-C', directory+'/'+name+'/data',
         # '--exclude', '*.jar',
-        '--exclude', '*.class',
+        #'--exclude', '*.class',
         '--exclude', '*.gz',
         '--exclude', '*.swf',
         '--exclude', '*.cache',
