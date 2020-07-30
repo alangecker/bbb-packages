@@ -3,15 +3,15 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2490090,
-  "totalMinifiedGzipBytes": 574672,
+  "totalMinifiedBytes": 2951568,
+  "totalMinifiedGzipBytes": 714233,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
     "packages/mobile-experience.js": 37,
     "packages/modules-runtime.js": 4199,
     "packages/modules.js": [
-      1013773,
+      1474838,
       {
         "node_modules": {
           "meteor": {
@@ -91,9 +91,9 @@
           },
           "lodash": {
             "package.json": 77,
-            "lodash.js": 72083,
+            "lodash.js": 72267,
             "fp.js": 93,
-            "lodash.min.js": 71540,
+            "lodash.min.js": 71652,
             "fp": {
               "_baseConvert.js": 4305,
               "_mapping.js": 6729,
@@ -277,7 +277,9 @@
             "now.js": 81,
             "toNumber.js": 417,
             "each.js": 41,
-            "forEach.js": 158
+            "forEach.js": 158,
+            "escapeRegExp.js": 155,
+            "mergeWith.js": 110
           },
           "browser-bunyan": {
             "package.json": 88,
@@ -332,6 +334,7 @@
               "de.js": 1743,
               "el.js": 1960,
               "en.js": 7276,
+              "eo.js": 1102,
               "es.js": 13703,
               "et.js": 1585,
               "eu.js": 1541,
@@ -363,6 +366,7 @@
               "sl.js": 2115,
               "sr.js": 4091,
               "sv.js": 1740,
+              "te.js": 2181,
               "th.js": 1769,
               "tr.js": 1513,
               "uk.js": 2951,
@@ -810,18 +814,224 @@
               "index.js": 7200
             }
           },
+          "sanitize-html": {
+            "package.json": 95,
+            "dist": {
+              "sanitize-html.js": 238506
+            },
+            "node_modules": {
+              "supports-color": {
+                "package.json": 87,
+                "browser.js": 61
+              },
+              "chalk": {
+                "package.json": 57,
+                "index.js": 2864,
+                "node_modules": {
+                  "supports-color": {
+                    "package.json": 87,
+                    "browser.js": 61
+                  }
+                },
+                "templates.js": 1749
+              },
+              "postcss": {
+                "package.json": 154,
+                "lib": {
+                  "terminal-highlight.js": 12,
+                  "postcss.js": 1093,
+                  "declaration.js": 372,
+                  "node.js": 2802,
+                  "css-syntax-error.js": 2883,
+                  "stringifier.js": 4370,
+                  "stringify.js": 233,
+                  "processor.js": 1061,
+                  "lazy-result.js": 3564,
+                  "map-generator.js": 4463,
+                  "warn-once.js": 175,
+                  "result.js": 937,
+                  "warning.js": 506,
+                  "parse.js": 299,
+                  "parser.js": 6995,
+                  "tokenize.js": 2769,
+                  "comment.js": 375,
+                  "at-rule.js": 777,
+                  "container.js": 6336,
+                  "rule.js": 864,
+                  "list.js": 516,
+                  "root.js": 1111,
+                  "input.js": 1799,
+                  "previous-map.js": 2447,
+                  "vendor.js": 225
+                }
+              }
+            }
+          },
           "meteor-node-stubs": {
-            "package.json": 85,
-            "index.js": 354,
-            "map.json": 946,
             "deps": {
+              "buffer.js": 25,
+              "events.js": 25,
+              "path.js": 33,
+              "fs.js": 12,
+              "querystring.js": 34,
+              "url.js": 22,
               "process.js": 36
             },
             "node_modules": {
+              "buffer": {
+                "package.json": 74,
+                "index.js": 19963
+              },
+              "base64-js": {
+                "package.json": 77,
+                "index.js": 1444
+              },
+              "ieee754": {
+                "package.json": 76,
+                "index.js": 881
+              },
+              "isarray": {
+                "package.json": 75,
+                "index.js": 106
+              },
+              "events": {
+                "package.json": 77,
+                "events.js": 3564
+              },
+              "path-browserify": {
+                "package.json": 83,
+                "index.js": 1964
+              },
+              "querystring-es3": {
+                "package.json": 67,
+                "index.js": 93,
+                "decode.js": 627,
+                "encode.js": 812
+              },
+              "url": {
+                "package.json": 72,
+                "url.js": 7526,
+                "node_modules": {
+                  "punycode": {
+                    "package.json": 79,
+                    "punycode.js": 2694
+                  }
+                },
+                "util.js": 227
+              },
+              "querystring": {
+                "package.json": 63,
+                "index.js": 93,
+                "decode.js": 546,
+                "encode.js": 527
+              },
               "process": {
                 "browser.js": 1686
               }
+            },
+            "package.json": 85,
+            "index.js": 354,
+            "map.json": 946
+          },
+          "domelementtype": {
+            "package.json": 86,
+            "lib": {
+              "index.js": 298
             }
+          },
+          "entities": {
+            "package.json": 80,
+            "lib": {
+              "index.js": 1624,
+              "decode.js": 1138,
+              "maps": {
+                "entities.json": 28751,
+                "legacy.json": 1168,
+                "xml.json": 68,
+                "decode.json": 269
+              },
+              "decode_codepoint.js": 416,
+              "encode.js": 1167
+            }
+          },
+          "dom-serializer": {
+            "package.json": 84,
+            "index.js": 1721,
+            "foreignNames.json": 2674
+          },
+          "domhandler": {
+            "package.json": 82,
+            "lib": {
+              "index.js": 2526,
+              "node.js": 2498
+            }
+          },
+          "domutils": {
+            "package.json": 80,
+            "lib": {
+              "index.js": 274,
+              "stringify.js": 535,
+              "tagtypes.js": 381,
+              "traversal.js": 494,
+              "manipulation.js": 895,
+              "querying.js": 1000,
+              "legacy.js": 1362,
+              "helpers.js": 795
+            }
+          },
+          "escape-string-regexp": {
+            "package.json": 72,
+            "index.js": 170
+          },
+          "ansi-styles": {
+            "package.json": 63,
+            "index.js": 2020
+          },
+          "color-convert": {
+            "package.json": 65,
+            "index.js": 766,
+            "conversions.js": 8565,
+            "route.js": 735
+          },
+          "color-name": {
+            "package.json": 78,
+            "index.js": 3435
+          },
+          "source-map": {
+            "package.json": 85,
+            "source-map.js": 202,
+            "lib": {
+              "source-map-generator.js": 4701,
+              "base64-vlq.js": 537,
+              "base64.js": 369,
+              "util.js": 3279,
+              "array-set.js": 1044,
+              "mapping-list.js": 637,
+              "source-map-consumer.js": 11706,
+              "binary-search.js": 437,
+              "quick-sort.js": 319,
+              "source-node.js": 3650
+            }
+          },
+          "punycode": {
+            "package.json": 79,
+            "punycode.js": 2375
+          },
+          "htmlparser2": {
+            "package.json": 122,
+            "lib": {
+              "WritableStream.js": 12,
+              "index.js": 1023,
+              "Parser.js": 6474,
+              "Tokenizer.js": 13202,
+              "FeedHandler.js": 2483,
+              "CollectingHandler.js": 1100,
+              "MultiplexHandler.js": 1035
+            }
+          },
+          "srcset": {
+            "package.json": 58,
+            "index.js": 739
           }
         }
       }
@@ -1376,7 +1586,7 @@
       {}
     ],
     "app/app.js": [
-      1229925,
+      1230338,
       {
         "imports": {
           "ui": {
@@ -2079,7 +2289,7 @@
                 "component.jsx": 716
               },
               "join-handler": {
-                "component.jsx": 3694
+                "component.jsx": 3899
               },
               "loading-screen": {
                 "component.jsx": 418,
@@ -2124,7 +2334,7 @@
                 "styles.scss.js": 8232
               },
               "screenshare": {
-                "component.jsx": 4226,
+                "component.jsx": 4240,
                 "container.jsx": 938,
                 "service.js": 1567,
                 "styles.scss": 54,
@@ -2210,7 +2420,7 @@
                 "bridge": {
                   "base.js": 781,
                   "kurento.js": 4786,
-                  "sip.js": 11755
+                  "sip.js": 11815
                 }
               }
             },
@@ -2304,7 +2514,7 @@
           "startup": {
             "client": {
               "base.jsx": 6776,
-              "intl.jsx": 4723,
+              "intl.jsx": 4857,
               "logger.js": 1790
             }
           },

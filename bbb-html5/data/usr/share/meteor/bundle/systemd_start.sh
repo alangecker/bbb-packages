@@ -51,7 +51,7 @@ done;
 echo "I'm the master!"
 
 DISTRO=`lsb_release --codename | cut -f2`
-NODE_VERSION=node-v12.13.1-linux-x64
+NODE_VERSION=node-v12.16.1-linux-x64
 if [ "$DISTRO" == "xenial" ]; then
   NODE_VERSION=node-v8.15.1-linux-x64
 fi
