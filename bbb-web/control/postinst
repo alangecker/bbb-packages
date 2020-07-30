@@ -293,11 +293,6 @@ bbb_new_properties() {
 }
 
 bbb_config() {
-        #
-        # At this point. /var/tmp/bigbluebutton.war holds the newer version of BigBlueButton-web
-        # but it's not deployed yet
-        #
-
       if [ -f /tmp/bigbluebutton.properties ]; then
 	      VARS=$(cat /tmp/bigbluebutton.properties | grep = | grep -v \# | sed -e "s/ //g" -e "s/=.*/ /g" | tr -d '\n')
 			  for v in $VARS ; do
@@ -353,9 +348,18 @@ bbb_config() {
 		mv /tmp/turn-stun-servers.xml /tmp/turn-stun-servers.xml_
 	fi
 
+	#
+	# Fix links in welcome text
+	sed -i 's#<a href="event:http://www.bigbluebutton.org/html5">#<a href="https://www.bigbluebutton.org/html5" target="_blank">#g' \
+		$SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
+
+	sed -i 's#<a href="http://docs.bigbluebutton.org/" target="_blank">#<a href="https://docs.bigbluebutton.org/" target="_blank">#g' \
+		$SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
+
+
 	if [ -f /tmp/bigbluebutton.properties ]; then
-    mv /tmp/bigbluebutton.properties /tmp/bigbluebutton.properties_
-  fi
+          mv /tmp/bigbluebutton.properties /tmp/bigbluebutton.properties_
+        fi
 
   if [ ! -L /etc/bigbluebutton/nginx/web.nginx ]; then
     ln -s /etc/bigbluebutton/nginx/web /etc/bigbluebutton/nginx/web.nginx
