@@ -326,7 +326,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "yaml",
-  "version": "1.6.0",
+  "version": "1.10.0",
   "main": "./index.js"
 };
 
@@ -407,7 +407,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "winston",
-  "version": "3.2.1",
+  "version": "3.3.3",
   "main": "./lib/winston"
 };
 
@@ -515,7 +515,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "sanitize-html",
-  "version": "1.27.1",
+  "version": "1.27.2",
   "main": "dist/sanitize-html.js"
 };
 
@@ -542,7 +542,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "axios",
-  "version": "0.19.0",
+  "version": "0.19.2",
   "main": "index.js"
 };
 
@@ -623,7 +623,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "probe-image-size",
-  "version": "4.0.1"
+  "version": "4.1.1"
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -676,7 +676,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "react",
-  "version": "16.8.6",
+  "version": "16.13.1",
   "main": "index.js"
 };
 

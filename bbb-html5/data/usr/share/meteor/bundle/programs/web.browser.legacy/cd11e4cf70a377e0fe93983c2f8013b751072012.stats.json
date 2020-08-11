@@ -3,15 +3,15 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 660299,
-  "totalMinifiedGzipBytes": 181944,
+  "totalMinifiedBytes": 671717,
+  "totalMinifiedGzipBytes": 185260,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
     "packages/mobile-experience.js": 37,
     "packages/modules-runtime.js": 4199,
     "packages/modules.js": [
-      284109,
+      295527,
       {
         "node_modules": {
           "meteor": {
@@ -36,11 +36,11 @@
             }
           },
           "react": {
-            "package.json": 74,
+            "package.json": 75,
             "index.js": 74,
             "cjs": {
-              "react.production.min.js": 6488,
-              "react.development.js": 29
+              "react.production.min.js": 6201,
+              "react.development.js": 27
             }
           },
           "object-assign": {
@@ -58,10 +58,10 @@
             "factoryWithThrowingShims.js": 676
           },
           "react-dom": {
-            "package.json": 174,
+            "package.json": 175,
             "index.js": 287,
             "cjs": {
-              "react-dom.production.min.js": 106015,
+              "react-dom.production.min.js": 116967,
               "react-dom.development.js": 29
             }
           },
@@ -69,9 +69,9 @@
             "package.json": 78,
             "index.js": 78,
             "cjs": {
-              "scheduler.production.min.js": 4556,
-              "scheduler.development.js": 29,
-              "scheduler-tracing.production.min.js": 417,
+              "scheduler.production.min.js": 4602,
+              "scheduler.development.js": 27,
+              "scheduler-tracing.production.min.js": 368,
               "scheduler-tracing.development.js": 27
             },
             "tracing.js": 86
@@ -82,17 +82,19 @@
                 "interopRequireDefault.js": 79,
                 "inheritsLoose.js": 123,
                 "assertThisInitialized.js": 151,
-                "toConsumableArray.js": 148,
-                "arrayWithoutHoles.js": 132,
-                "iterableToArray.js": 153,
-                "nonIterableSpread.js": 112,
-                "typeof.js": 505,
-                "objectSpread.js": 380,
+                "toConsumableArray.js": 190,
+                "arrayWithoutHoles.js": 104,
+                "arrayLikeToArray.js": 134,
+                "iterableToArray.js": 123,
+                "unsupportedIterableToArray.js": 344,
+                "nonIterableSpread.js": 197,
+                "typeof.js": 283,
+                "objectSpread.js": 388,
                 "defineProperty.js": 148,
                 "extends.js": 246,
                 "createClass.js": 251
               },
-              "package.json": 456
+              "package.json": 548
             }
           },
           "react-intl": {
@@ -154,19 +156,19 @@
             "package.json": 138,
             "lib": {
               "locales.js": 12,
-              "main.js": 143,
-              "core.js": 4035,
-              "diff.js": 384,
-              "es5.js": 807,
-              "en.js": 2435
+              "main.js": 192,
+              "core.js": 4139,
+              "diff.js": 651,
+              "es5.js": 872,
+              "en.js": 2934
             },
             "index.js": 104
           },
           "react-is": {
-            "package.json": 77,
+            "package.json": 78,
             "index.js": 77,
             "cjs": {
-              "react-is.production.min.js": 1917,
+              "react-is.production.min.js": 2137,
               "react-is.development.js": 27
             }
           },
@@ -182,10 +184,9 @@
           },
           "intl-format-cache": {
             "package.json": 85,
-            "index.js": 81,
-            "lib": {
-              "memoizer.js": 561,
-              "es5.js": 896
+            "index.js": 73,
+            "dist": {
+              "index.js": 489
             }
           },
           "browser-detect": {
@@ -197,7 +198,7 @@
           "meteor-node-stubs": {
             "package.json": 85,
             "index.js": 354,
-            "map.json": 946,
+            "map.json": 1006,
             "deps": {
               "process.js": 36
             },
