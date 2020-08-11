@@ -132,6 +132,12 @@ exports.expressConfigure = function (hook_name, args, cb) {
     proxy: true,
     cookie: {
       /*
+       * Firefox started enforcing sameSite, see https://github.com/ether/etherpad-lite/issues/3989
+       * for details.  In response we set it based on if SSL certs are set in Etherpad.  Note that if
+       * You use Nginx or so for reverse proxy this may cause problems.  Use Certificate pinning to remedy.
+       */
+      sameSite: "None",
+      /*
        * The automatic express-session mechanism for determining if the
        * application is being served over ssl is similar to the one used for
        * setting the language cookie, which check if one of these conditions is

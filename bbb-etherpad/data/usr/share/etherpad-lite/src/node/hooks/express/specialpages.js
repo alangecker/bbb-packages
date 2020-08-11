@@ -60,6 +60,7 @@ exports.expressCreateServer = function (hook_name, args, cb) {
          * Please note that this will not be compatible with applications being
          * served over http and https at the same time.
          */
+        sameSite: "None",
         secure: (req.protocol === 'https'),
       }
       res.cookie('language', settings.padOptions.lang, cookieOptions);
