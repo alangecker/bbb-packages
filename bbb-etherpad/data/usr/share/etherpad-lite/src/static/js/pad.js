@@ -277,7 +277,7 @@ function handshake()
     else if (!receivedClientVars && obj.type == "CLIENT_VARS")
     {
       //log the message
-      if (window.console) console.log(obj);
+      //if (window.console) console.log(obj);
 
       receivedClientVars = true;
 

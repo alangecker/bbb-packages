@@ -246,6 +246,11 @@ exports.sessionKey = false;
 exports.trustProxy = false;
 
 /*
+ * Force cookie SameSite=None, whether or not force SameSite=None configuration.
+ */
+exports.forceSameSiteNone = false;
+
+/*
  * This setting is used if you need authentication and/or
  * authorization. Note: /admin always requires authentication, and
  * either authorization by a module, or a user with is_admin set

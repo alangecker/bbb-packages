@@ -38,6 +38,16 @@ exports.expressCreateServer = function (hook_name, args, cb) {
     });
   });
 
+  if (settings.forceSameSiteNone) {
+    var sameSite = "None";
+  } else {
+    if (settings.ssl) {
+      var sameSite = "Strict";
+    } else {
+      var sameSite = "Lax";
+    }
+  }
+
   //serve pad.html under /p
   args.app.get('/p/:pad', function(req, res, next)
   {
@@ -60,7 +70,7 @@ exports.expressCreateServer = function (hook_name, args, cb) {
          * Please note that this will not be compatible with applications being
          * served over http and https at the same time.
          */
-        sameSite: "None",
+        sameSite: sameSite,
         secure: (req.protocol === 'https'),
       }
       res.cookie('language', settings.padOptions.lang, cookieOptions);
