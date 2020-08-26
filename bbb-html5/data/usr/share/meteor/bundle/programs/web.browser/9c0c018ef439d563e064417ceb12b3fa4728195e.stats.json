@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2958921,
-  "totalMinifiedGzipBytes": 717988,
+  "totalMinifiedBytes": 2966517,
+  "totalMinifiedGzipBytes": 719744,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1582,7 +1582,7 @@
       {}
     ],
     "app/app.js": [
-      1219565,
+      1227161,
       {
         "imports": {
           "ui": {
@@ -1592,7 +1592,7 @@
                   "user-participants": {
                     "user-list-item": {
                       "user-dropdown": {
-                        "component.jsx": 11729,
+                        "component.jsx": 11737,
                         "styles.scss": 54,
                         "styles.scss.js": 17529
                       },
@@ -1710,10 +1710,10 @@
                   "styles.scss.js": 7307
                 },
                 "chat-dropdown": {
-                  "component.jsx": 2947
+                  "component.jsx": 2971
                 },
-                "component.jsx": 3061,
-                "container.jsx": 2701,
+                "component.jsx": 3101,
+                "container.jsx": 2800,
                 "service.js": 5033,
                 "styles.scss": 54,
                 "styles.scss.js": 4523
@@ -1773,7 +1773,7 @@
                 "slide": {
                   "component.jsx": 542
                 },
-                "component.jsx": 10407,
+                "component.jsx": 10972,
                 "container.jsx": 1917,
                 "service.js": 2607,
                 "styles.scss": 54,
@@ -1865,12 +1865,13 @@
               "video-provider": {
                 "video-list": {
                   "video-list-item": {
-                    "component.jsx": 4984,
+                    "component.jsx": 4856,
                     "container.jsx": 338
                   },
-                  "component.jsx": 5360,
+                  "component.jsx": 6567,
+                  "container.jsx": 696,
                   "styles.scss": 54,
-                  "styles.scss.js": 5836
+                  "styles.scss.js": 6429
                 },
                 "many-users-notify": {
                   "component.jsx": 1923,
@@ -1884,9 +1885,9 @@
                   "styles.scss": 54,
                   "styles.scss.js": 8824
                 },
-                "component.jsx": 14108,
-                "container.jsx": 554,
-                "service.js": 10110
+                "component.jsx": 14762,
+                "container.jsx": 676,
+                "service.js": 13032
               },
               "whiteboard": {
                 "annotation-factory": {
@@ -2053,7 +2054,7 @@
                   "container.jsx": 712,
                   "service.js": 774,
                   "styles.scss": 54,
-                  "styles.scss.js": 4185
+                  "styles.scss.js": 4271
                 },
                 "writer-menu": {
                   "component.jsx": 3126,
@@ -2068,7 +2069,7 @@
               "external-video-player": {
                 "custom-players": {
                   "arc-player.jsx": 2583,
-                  "panopto.jsx": 310
+                  "panopto.jsx": 273
                 },
                 "modal": {
                   "component.jsx": 2698,
@@ -2117,8 +2118,8 @@
                   "component.jsx": 5910,
                   "context.jsx": 2256
                 },
-                "component.jsx": 1420,
-                "container.jsx": 4078,
+                "component.jsx": 1531,
+                "container.jsx": 4087,
                 "service.js": 1646,
                 "styles.scss": 54,
                 "styles.scss.js": 4752
@@ -2293,7 +2294,7 @@
                 "container.jsx": 446,
                 "service.js": 1719,
                 "styles.scss": 54,
-                "styles.scss.js": 4038
+                "styles.scss.js": 3952
               },
               "notifications-bar": {
                 "component.jsx": 638,
@@ -2367,7 +2368,7 @@
                 "styles.scss.js": 803
               },
               "video-preview": {
-                "component.jsx": 11865,
+                "component.jsx": 12353,
                 "container.jsx": 1404,
                 "service.js": 186,
                 "styles.scss": 54,
@@ -2433,7 +2434,7 @@
               "index.js": 183
             },
             "annotations": {
-              "addAnnotation.js": 1492,
+              "addAnnotation.js": 1698,
               "index.js": 219
             },
             "breakouts": {
