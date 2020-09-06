@@ -180,6 +180,14 @@ var padimpexp = (function()
     return false;
   }
 
+  function getSessionToken(location)
+  {
+    var params = (new URL(location)).searchParams;
+    var sessionToken = params.get("sessionToken") || "missing";
+
+    return sessionToken;
+  }
+
   /////
   var pad = undefined;
   var self = {
@@ -199,10 +207,13 @@ var padimpexp = (function()
         $('#importsubmitinput').val(html10n.get("pad.impexp.importbutton"));
       })
 
+      var sessionToken = getSessionToken(document.location);
+      var sessionTokenParam = "?sessionToken=" + sessionToken;
+
       // build the export links
-      $("#exporthtmla").attr("href", pad_root_path + "/export/html");
-      $("#exportetherpada").attr("href", pad_root_path + "/export/etherpad");
-      $("#exportplaina").attr("href", pad_root_path + "/export/txt");
+      $("#exporthtmla").attr("href", pad_root_path + "/export/html" + sessionTokenParam);
+      $("#exportetherpada").attr("href", pad_root_path + "/export/etherpad" + sessionTokenParam);
+      $("#exportplaina").attr("href", pad_root_path + "/export/txt" + sessionTokenParam);
 
       // activate action to import in the form
       $("#importform").attr('action', pad_root_url + "/import");
@@ -220,17 +231,17 @@ var padimpexp = (function()
       {
         $("#exportpdfa").remove();
 
-        $("#exportworda").attr("href", pad_root_path + "/export/doc");
-        $("#exportopena").attr("href", pad_root_path + "/export/odt");
+        $("#exportworda").attr("href", pad_root_path + "/export/doc" + sessionTokenParam);
+        $("#exportopena").attr("href", pad_root_path + "/export/odt" + sessionTokenParam);
 
         $("#importexport").css({"height":"142px"});
         $("#importexportline").css({"height":"142px"});
       }
       else
       {
-        $("#exportworda").attr("href", pad_root_path + "/export/doc");
-        $("#exportpdfa").attr("href", pad_root_path + "/export/pdf");
-        $("#exportopena").attr("href", pad_root_path + "/export/odt");
+        $("#exportworda").attr("href", pad_root_path + "/export/doc" + sessionTokenParam);
+        $("#exportpdfa").attr("href", pad_root_path + "/export/pdf" + sessionTokenParam);
+        $("#exportopena").attr("href", pad_root_path + "/export/odt" + sessionTokenParam);
       }
 
       addImportFrames();

@@ -275,5 +275,5 @@ fi
 ### END DEB-HELPERS.SH ###
 ##########################
 
-stopService bbb-etherpad || echo "bbb-etherpad could not be unregistered or stopped"
+stopService etherpad || echo "etherpad could not be unregistered or stopped"
 

@@ -13,7 +13,7 @@
   "pad.toolbar.undo.title": "Undo (Ctrl+Z)",
   "pad.toolbar.redo.title": "Redo (Ctrl+Y)",
   "pad.toolbar.clearAuthorship.title": "Clear Authorship Colors (Ctrl+Shift+C)",
-  "pad.toolbar.import_export.title": "Import/Export from/to different file formats",
+  "pad.toolbar.import_export.title": "Export to different file formats",
   "pad.toolbar.timeslider.title": "Timeslider",
   "pad.toolbar.savedRevision.title": "Save Revision",
   "pad.toolbar.settings.title": "Settings",
@@ -30,6 +30,8 @@
   "pad.wrongPassword": "Your password was wrong",
 
   "pad.settings.padSettings": "Pad Settings",
+  "pad.settings.about": "About",
+  "pad.settings.poweredBy": "Powered by",
   "pad.settings.myView": "My View",
   "pad.settings.stickychat": "Chat always on screen",
   "pad.settings.chatandusers": "Show Chat and Users",

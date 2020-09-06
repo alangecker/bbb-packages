@@ -180,6 +180,14 @@ function sendClientReady(isReconnect, messageType)
   socket.json.send(msg);
 }
 
+function getSessionToken(location)
+{
+  var params = (new URL(location)).searchParams;
+  var sessionToken = params.get("sessionToken") || "missing";
+
+  return sessionToken;
+}
+
 function handshake()
 {
   var loc = document.location;
@@ -189,10 +197,13 @@ function handshake()
   var url = loc.protocol + "//" + loc.hostname + ":" + port + "/";
   //find out in which subfolder we are
   var resource =  exports.baseURL.substring(1)  + "socket.io";
+  //get session token
+  var sessionToken = getSessionToken(loc);
   //connect
   socket = pad.socket = io.connect(url, {
     // Allow deployers to host Etherpad on a non-root path
     'path': exports.baseURL + "socket.io",
+    'query': "sessionToken=" + sessionToken,
     'resource': resource,
     'reconnectionAttempts': 5,
     'reconnection' : true,
@@ -266,7 +277,7 @@ function handshake()
     else if (!receivedClientVars && obj.type == "CLIENT_VARS")
     {
       //log the message
-      if (window.console) console.log(obj);
+      //if (window.console) console.log(obj);
 
       receivedClientVars = true;
 
