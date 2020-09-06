@@ -1,11 +1,11 @@
 Package: bbb-config
-Version: 1:2.3.0-5
+Version: 1:2.3.0-7
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
 Installed-Size: 2726
-Depends: netcat-openbsd,bbb-html5,bbb-playback-presentation,bbb-freeswitch-core,bbb-fsesl-akka,bbb-apps-akka,bbb-transcode-akka
+Depends: netcat-openbsd,bbb-html5,bbb-playback-presentation,bbb-freeswitch-core,bbb-fsesl-akka,bbb-apps-akka
 Section: default
 Priority: extra
 Homepage: http://bigbluebutton.org/
