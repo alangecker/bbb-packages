@@ -358,6 +358,9 @@
           assetPath = files.convertToStandardPath(assetPath);
           var filePath = path.join(serverDir, fileInfo.assets[assetPath]);
           return files.convertToOSPath(filePath);
+        },
+        getServerDir: function () {
+          return serverDir;
         }
       };
       var wrapParts = ["(function(Npm,Assets"];

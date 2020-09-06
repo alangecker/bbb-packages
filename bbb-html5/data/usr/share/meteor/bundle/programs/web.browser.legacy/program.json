@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "10a18acec85efd7bcd54461f2d748816ccfe8703.js",
+      "path": "0d1e0d297a5f1ba6217a51afb9ade96246f55774.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/10a18acec85efd7bcd54461f2d748816ccfe8703.js?meteor_js_resource=true",
-      "size": 726913,
-      "hash": "10a18acec85efd7bcd54461f2d748816ccfe8703",
-      "sri": "ND+ow8cUpc2qcq4OVkTQnY6C5Ra24F8Bri5pKOUgQMDHloJw9Lcoy2xeAWPJJfV6lW1LatcC1h9Mx8gCmC/Ucg=="
+      "url": "/0d1e0d297a5f1ba6217a51afb9ade96246f55774.js?meteor_js_resource=true",
+      "size": 771186,
+      "hash": "0d1e0d297a5f1ba6217a51afb9ade96246f55774",
+      "sri": "KdHrnJ/nIS1n1oZkhLWqMjQwCESilERyQHKJkbtpJ5vm9w2DCYGhwy5r8r2eP0hOdev/S358V2wPxIKQWOXyzA=="
     },
     {
-      "path": "10a18acec85efd7bcd54461f2d748816ccfe8703.stats.json",
+      "path": "0d1e0d297a5f1ba6217a51afb9ade96246f55774.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/10a18acec85efd7bcd54461f2d748816ccfe8703.stats.json?meteor_js_resource=true",
-      "size": 32362,
-      "hash": "d118fcbc04d33f60249ff22eb0618e6dd1684939",
-      "sri": "Wp+ejGqFQi0T+Euk0VrvD+YeQ9oF3ywyuBXOrUAjq5pDDCwP6YnMvTsfzn7d5k5AKnxk+AWFAkBoBD6IE22FGQ=="
+      "url": "/0d1e0d297a5f1ba6217a51afb9ade96246f55774.stats.json?meteor_js_resource=true",
+      "size": 37027,
+      "hash": "b32ba054ca570cff65c58ce95c56548d65422764",
+      "sri": "hKGSOh81uWA+iE1Dvr74yKU9F7mQeoSry2+gcsKnn7x1rmXgTL4OsHKkp4IX2yJcybqZ0O836xsMG5m4kBhGAg=="
     },
     {
       "path": "5698c061cfba32badc3285de664514e3f4c25d8b.css",
@@ -475,13 +475,13 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "edb41726770534c4b596554b94d166f5776848ae"
+      "hash": "5a5f3de2bb4b685bbbdabfa23cf2262dadedbe36"
     },
     {
       "path": "body.html",
       "where": "internal",
       "type": "body",
-      "hash": "cb95d2f9f21a00ed38f167f61b21298565aeffab"
+      "hash": "5f23636e794a19c8d96465ec9b0fe47f6e3daa1d"
     }
   ]
 }

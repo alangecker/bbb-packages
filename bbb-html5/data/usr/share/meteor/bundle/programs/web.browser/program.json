@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "447336066de6f305390348246a610239fe7e86ef.js",
+      "path": "182f2536dec468523e9df5ffa8ef7b39f03e111e.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/447336066de6f305390348246a610239fe7e86ef.js?meteor_js_resource=true",
-      "size": 2740092,
-      "hash": "447336066de6f305390348246a610239fe7e86ef",
-      "sri": "XWWe8lcwxH7CQXlinOYWd1z9jcq+eF7tukR9y/ZPWNeIuU5KSpwqNGyea/gSZbp4sgbgBpM+0aVb/oQmajR2bA=="
+      "url": "/182f2536dec468523e9df5ffa8ef7b39f03e111e.js?meteor_js_resource=true",
+      "size": 3328620,
+      "hash": "182f2536dec468523e9df5ffa8ef7b39f03e111e",
+      "sri": "OKGFpRG9sba1ddkKRgAEbzlVFfnO2qLW45wKmuDEFsfu1LjMofN3bu+V+Npd3pQ4EaYENZ667obXUDiAFtjxYA=="
     },
     {
-      "path": "447336066de6f305390348246a610239fe7e86ef.stats.json",
+      "path": "182f2536dec468523e9df5ffa8ef7b39f03e111e.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/447336066de6f305390348246a610239fe7e86ef.stats.json?meteor_js_resource=true",
-      "size": 80836,
-      "hash": "3892e2a69579ce65bc126024a94bf2880e8ff777",
-      "sri": "C9n574wTgJCzpSonyCjkn2SYvGSacoQYLiYsxXq6RdC6W/KHyiFtg6xHZtIQ6GrXuCfkP24H12ANpq8kZ9V8dA=="
+      "url": "/182f2536dec468523e9df5ffa8ef7b39f03e111e.stats.json?meteor_js_resource=true",
+      "size": 88367,
+      "hash": "9635b756cf37ed8b24b6e3e8d1f19c10d0713bbd",
+      "sri": "Nk9RoTbnUGestUZainXFnQKuw+vTY+j+W4tHdYOkv9MW1nJCx6+jNDTCsIQv2W4/GKK043Uq0Xn1sW7WaT/twQ=="
     },
     {
       "path": "5698c061cfba32badc3285de664514e3f4c25d8b.css",
@@ -475,13 +475,13 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "edb41726770534c4b596554b94d166f5776848ae"
+      "hash": "5a5f3de2bb4b685bbbdabfa23cf2262dadedbe36"
     },
     {
       "path": "body.html",
       "where": "internal",
       "type": "body",
-      "hash": "cb95d2f9f21a00ed38f167f61b21298565aeffab"
+      "hash": "5f23636e794a19c8d96465ec9b0fe47f6e3daa1d"
     }
   ]
 }

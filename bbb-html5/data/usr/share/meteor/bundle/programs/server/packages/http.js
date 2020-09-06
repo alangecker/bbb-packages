@@ -5,6 +5,7 @@ var Meteor = Package.meteor.Meteor;
 var global = Package.meteor.global;
 var meteorEnv = Package.meteor.meteorEnv;
 var URL = Package.url.URL;
+var URLSearchParams = Package.url.URLSearchParams;
 var meteorInstall = Package.modules.meteorInstall;
 
 /* Package-scope variables */

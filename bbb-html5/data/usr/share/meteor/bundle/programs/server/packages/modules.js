@@ -82,10 +82,11 @@ install("ejson", "meteor/ejson/ejson.js");
 install("diff-sequence", "meteor/diff-sequence/diff.js");
 install("geojson-utils", "meteor/geojson-utils/main.js");
 install("id-map", "meteor/id-map/id-map.js");
-install("random");
+install("random", "meteor/random/main_server.js");
 install("mongo-id", "meteor/mongo-id/id.js");
 install("ordered-dict", "meteor/ordered-dict/ordered_dict.js");
 install("tracker");
+install("mongo-decimal", "meteor/mongo-decimal/decimal.js");
 install("minimongo", "meteor/minimongo/minimongo_server.js");
 install("check", "meteor/check/match.js");
 install("retry", "meteor/retry/retry.js");
@@ -103,7 +104,6 @@ install("webapp", "meteor/webapp/webapp_server.js");
 install("ddp-server");
 install("ddp");
 install("allow-deny");
-install("mongo-decimal", "meteor/mongo-decimal/decimal.js");
 install("binary-heap", "meteor/binary-heap/binary-heap.js");
 install("mongo");
 install("reactive-var");
@@ -113,7 +113,7 @@ install("shell-server", "meteor/shell-server/main.js");
 install("static-html");
 install("tmeasday:check-npm-versions", "meteor/tmeasday:check-npm-versions/check-npm-versions.js");
 install("react-meteor-data", "meteor/react-meteor-data/react-meteor-data.jsx");
-install("url", "meteor/url/url_server.js");
+install("url", "meteor/url/server.js");
 install("http", "meteor/http/httpcall_server.js");
 install("session");
 install("nathantreid:css-modules", "meteor/nathantreid:css-modules/package/main.js");
@@ -249,7 +249,36 @@ module.useNode();
 //                                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                     //
-module.useNode();
+module.exports = {
+  "author": {
+    "name": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/babel/babel/issues"
+  },
+  "dependencies": {
+    "regenerator-runtime": "^0.13.4"
+  },
+  "description": "babel's modular runtime helpers",
+  "devDependencies": {
+    "@babel/helpers": "^7.10.4"
+  },
+  "gitHead": "f7964a9ac51356f7df6404a25b27ba1cffba1ba7",
+  "homepage": "https://babeljs.io/",
+  "license": "MIT",
+  "name": "@babel/runtime",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/babel/babel.git",
+    "directory": "packages/babel-runtime"
+  },
+  "version": "7.10.5"
+};
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }}},"langmap":{"package.json":function module(require,exports,module){
@@ -343,7 +372,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "winston",
-  "version": "3.2.1",
+  "version": "3.3.3",
   "main": "./lib/winston"
 };
 
@@ -441,7 +470,34 @@ module.exports = {
 module.useNode();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"axios":{"package.json":function module(require,exports,module){
+}},"sanitize-html":{"package.json":function module(require,exports,module){
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                  //
+// node_modules/sanitize-html/package.json                                                          //
+//                                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                    //
+module.exports = {
+  "name": "sanitize-html",
+  "version": "1.27.3",
+  "main": "dist/sanitize-html.js"
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"dist":{"sanitize-html.js":function module(require,exports,module){
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                  //
+// node_modules/sanitize-html/dist/sanitize-html.js                                                 //
+//                                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                    //
+module.useNode();
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}}},"axios":{"package.json":function module(require,exports,module){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
@@ -462,6 +518,33 @@ module.exports = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
 // node_modules/axios/index.js                                                                      //
+//                                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                    //
+module.useNode();
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"lodash":{"package.json":function module(require,exports,module){
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                  //
+// node_modules/lodash/package.json                                                                 //
+//                                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                    //
+module.exports = {
+  "name": "lodash",
+  "version": "4.17.19",
+  "main": "lodash.js"
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"lodash.js":function module(require,exports,module){
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                  //
+// node_modules/lodash/lodash.js                                                                    //
 //                                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                     //
@@ -489,33 +572,6 @@ module.exports = {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                  //
 // node_modules/string-hash/index.js                                                                //
-//                                                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                    //
-module.useNode();
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-}},"lodash":{"package.json":function module(require,exports,module){
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                  //
-// node_modules/lodash/package.json                                                                 //
-//                                                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                    //
-module.exports = {
-  "name": "lodash",
-  "version": "4.17.15",
-  "main": "lodash.js"
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-},"lodash.js":function module(require,exports,module){
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                  //
-// node_modules/lodash/lodash.js                                                                    //
 //                                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                     //

@@ -386,10 +386,10 @@ if [ "$DISTRIB_RELEASE" == "16.04" ]; then
 fi
 
 if [ "$DISTRIB_RELEASE" == "18.04" ]; then
-  if [ ! -d /usr/share/node-v12.13.1-linux-x64 ]; then
+  if [ ! -d /usr/share/node-v12.16.1-linux-x64 ]; then
     cd /usr/share
-    tar xfz node-v12.13.1-linux-x64.tar.gz
-    chown -R meteor:meteor node-v12.13.1-linux-x64
+    tar xfz node-v12.16.1-linux-x64.tar.gz
+    chown -R meteor:meteor node-v12.16.1-linux-x64
   fi
 fi
 
@@ -412,6 +412,10 @@ if [ -f /tmp/sip.nginx ]; then
   fi
 fi
 
+if ! grep -q auth_request /etc/bigbluebutton/nginx/sip.nginx; then
+	sed -i 's#}#\n        auth_request /bigbluebutton/connection/checkAuthorization;\n        auth_request_set $auth_status $upstream_status;\n}#g' \
+	       /etc/bigbluebutton/nginx/sip.nginx
+fi
 
 startService bbb-html5 || echo "bbb-html5 service could not be registered or started"
 

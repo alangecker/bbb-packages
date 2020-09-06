@@ -1,6 +1,6 @@
 {
   "format": "site-archive-pre1",
-  "builtBy": "Meteor METEOR@1.9",
+  "builtBy": "Meteor METEOR@1.10.2",
   "programs": [
     {
       "name": "web.browser",
@@ -18,7 +18,7 @@
       "path": "programs/server/boot.js"
     }
   ],
-  "meteorRelease": "METEOR@1.9",
-  "nodeVersion": "12.14.0",
-  "npmVersion": "6.13.4"
+  "meteorRelease": "METEOR@1.10.2",
+  "nodeVersion": "12.16.1",
+  "npmVersion": "6.14.0"
 }
