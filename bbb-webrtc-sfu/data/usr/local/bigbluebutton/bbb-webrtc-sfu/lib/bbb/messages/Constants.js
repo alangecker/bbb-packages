@@ -57,7 +57,7 @@ const config = require('config');
 
         // RedisWrapper events
         REDIS_MESSAGE : "redis_message",
-        WEBSOCKET_MESAGE: "ws_message",
+        WEBSOCKET_MESSAGE: "ws_message",
         GATEWAY_MESSAGE: "gateway_message",
 
         RECORDING_STATUS_REQUEST_MESSAGE_2x: "GetRecordingStatusReqMsg",
@@ -123,6 +123,7 @@ const config = require('config');
         TIMESTAMP: "timestamp",
         VIDEO_WIDTH: "vidWidth",
         VIDEO_HEIGHT: "vidHeight",
+        HAS_AUDIO: "hasAudio",
 
         // Audio
         NAME: "name",
