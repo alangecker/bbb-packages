@@ -3,15 +3,15 @@
 8caf9f1b3d7c9ca127f822b9532ae940  usr/lib/systemd/system/bbb-rap-resque-worker.service
 0660b010ab3468cba3871bc97c98e4b8  usr/lib/systemd/system/bbb-rap-starter.service
 57dc28e37ee6eae4fb2f15b3ee6d6250  usr/lib/systemd/system/bbb_record_core.slice
-07ec766211b7a5d6121315432f4fd000  usr/local/bigbluebutton/core/Gemfile
-caa6cf53834591d80c6d0efeadee6cfa  usr/local/bigbluebutton/core/Gemfile.lock
+9a8a41aa9420ed8bfcb602040f373e7a  usr/local/bigbluebutton/core/Gemfile
+da94d783665058f931207b8ce3a82a0c  usr/local/bigbluebutton/core/Gemfile.lock
 5f99db279fa316d0887c70059cbac865  usr/local/bigbluebutton/core/Rakefile
 fe27cc6008bb20e3b1ff2ca8c2c2cd53  usr/local/bigbluebutton/core/lib/boot.rb
 21cc94c6dac11fa952c3a4e9aeeb4699  usr/local/bigbluebutton/core/lib/custom_hash.rb
 c7ebadded330cb5bcf7f3b55882a8979  usr/local/bigbluebutton/core/lib/recordandplayback/edl/audio.rb
 9199344c40cd5884dc2cb2e68ee83bfc  usr/local/bigbluebutton/core/lib/recordandplayback/edl/video.rb
 f17b82e9ea88763dddae843e1b465ea4  usr/local/bigbluebutton/core/lib/recordandplayback/edl.rb
-c6c0a73a3ddd1839204f01a36a607c28  usr/local/bigbluebutton/core/lib/recordandplayback/events_archiver.rb
+d15fb851e36867ba8d45052b2e620dc8  usr/local/bigbluebutton/core/lib/recordandplayback/events_archiver.rb
 d44e8434d81e4c7afdee01f99bd36b06  usr/local/bigbluebutton/core/lib/recordandplayback/generators/audio.rb
 a370f122dc120227b9d1849e8de3282d  usr/local/bigbluebutton/core/lib/recordandplayback/generators/audio_processor.rb
 baddfc3a39bdc01107aa49650ab1d3e7  usr/local/bigbluebutton/core/lib/recordandplayback/generators/captions.rb
@@ -35,6 +35,8 @@ c9646830f394493f496ac334fc53b43d  usr/local/bigbluebutton/core/scripts/bbb-0.9-r
 c8ffb96d58eb1a6e097fa4f2c6d3669b  usr/local/bigbluebutton/core/scripts/bigbluebutton.yml
 86b04575c369557ebcea5945afd7ed84  usr/local/bigbluebutton/core/scripts/cleanup.rb
 92301925b246c1260ae58134842c3ef4  usr/local/bigbluebutton/core/scripts/post_archive/post_archive.rb.example
+3163c94d43e1ec7aff8aa87584f81f7b  usr/local/bigbluebutton/core/scripts/post_events/post_events.rb.example
+6eacc444428d714ba57e2946186e6412  usr/local/bigbluebutton/core/scripts/post_events/post_events_analytics_callback.rb
 6070f991f3fa0c23faae98fbe35779be  usr/local/bigbluebutton/core/scripts/post_process/post_process.rb.example
 ae7f5cbdb445b3037ef0c6ec86fe887c  usr/local/bigbluebutton/core/scripts/post_publish/post_publish.rb.example
 353fe5e243d774f6c1617ed5354478be  usr/local/bigbluebutton/core/scripts/post_publish/post_publish_recording_ready_callback.rb
@@ -47,4 +49,4 @@ a150f1392860582ef2025e921cf54731  usr/local/bigbluebutton/core/scripts/rap-start
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 3ea92be6da5b63c56ce6408a39cb27e4  usr/local/bigbluebutton/core/scripts/utils/gen_poll_svg
 c8ba295784c49e5fd3cd2533efe8e826  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-a677fcfc5ff0ffd1330b7980a8c12b75  usr/share/doc/bbb-record-core/changelog.gz
+189217886abf6d0e23dafebbcc6ea8d5  usr/share/doc/bbb-record-core/changelog.gz
