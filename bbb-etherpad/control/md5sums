@@ -1,6 +1,6 @@
 0fa34f744782031736fec0cb6b6e972f  etc/bigbluebutton/nginx/notes.nginx
 bda919342ed5c295490a873c906398bd  usr/lib/systemd/system/etherpad.service
-a5a95f495a66b38f5bb59fa23594c30a  usr/share/doc/bbb-etherpad/changelog.gz
+25d7045203f3b981d5d25b4b6d3e20fe  usr/share/doc/bbb-etherpad/changelog.gz
 bae3c70a9f5e317a82d19a8196c6d00d  usr/share/etherpad-lite/CHANGELOG.md
 f6aeff26702d63fe405f164ee98ef326  usr/share/etherpad-lite/CONTRIBUTING.md
 fd9ef771d64068aa0cf0333e8539b25a  usr/share/etherpad-lite/LICENSE
@@ -287,12 +287,12 @@ f703a226f8945dcb388ddd7b3f1e2e84  usr/share/etherpad-lite/node_modules/ecc-jsbn/
 9e9821098513f691419e2dec868d423a  usr/share/etherpad-lite/node_modules/ecc-jsbn/lib/sec.js
 d9c9bfd3c8b392af8de4b3b89b55236f  usr/share/etherpad-lite/node_modules/ecc-jsbn/package.json
 33558e7112dd102c2bdf47aad637ee9c  usr/share/etherpad-lite/node_modules/ecc-jsbn/test.js
-e312fcae99eb59b7e403e51838026ca8  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/.travis.yml
+e9b01856bb2680dbba5aa5f362430abf  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/.travis.yml
 48d9752b4ec23332d9010345c3c2e4fa  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/LICENSE.md
 171fc4deaf56caf6ce1d12baa846150d  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/README.md
 e66902d784c46a250ef4c5846f59319b  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/ep.json
 b27053462d6db07d25839949caa2fad0  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/export.js
-353cc962e45d0a4732594599d31daea1  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/package.json
+c55e1916891e01ce5f1b4fab91709eb5  usr/share/etherpad-lite/node_modules/ep_better_pdf_export/package.json
 6b2ded51d81a4403d8a4bd25fa1e57ee  usr/share/etherpad-lite/node_modules/ep_delete_after_delay_lite/.ep_initialized
 d8c227a365fddf421181cd740391c0a9  usr/share/etherpad-lite/node_modules/ep_delete_after_delay_lite/LICENSE
 198975caf6e65df4cd7535e6cb84e356  usr/share/etherpad-lite/node_modules/ep_delete_after_delay_lite/README.md
@@ -1110,7 +1110,7 @@ e62df7ee79458f947161db54ea09ad4d  usr/share/etherpad-lite/node_modules/yauzl/LIC
 7c53937d42e958021d0387e8026d0a7e  usr/share/etherpad-lite/node_modules/yauzl/README.md
 3f7db1e6ecb8e2f75c1f53512c4eb100  usr/share/etherpad-lite/node_modules/yauzl/index.js
 863df50ca29965c802fba516baddc660  usr/share/etherpad-lite/node_modules/yauzl/package.json
-35e359c84bd75a3e26aa46b8d01c74cd  usr/share/etherpad-lite/settings.json
+def5b45095bada684ec7033147e1b704  usr/share/etherpad-lite/settings.json
 0d30678fc40626fc70de506c6087f5dd  usr/share/etherpad-lite/src/README.md
 96348b6caf4022535bd47dbaf6f70874  usr/share/etherpad-lite/src/ep.json
 6661ee62eab88d995946a4167447ac25  usr/share/etherpad-lite/src/etherpad_icon.svg

@@ -314,7 +314,7 @@
   /*
    * When embedding the pads in an iframe set this to true.
    */
-  "forceSameSiteNone": false,
+  "forceSameSiteNone": true,
 
   /*
    * Privacy: disable IP logging
