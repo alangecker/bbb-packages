@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2966517,
-  "totalMinifiedGzipBytes": 719744,
+  "totalMinifiedBytes": 2969381,
+  "totalMinifiedGzipBytes": 720509,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1582,7 +1582,7 @@
       {}
     ],
     "app/app.js": [
-      1227161,
+      1230025,
       {
         "imports": {
           "ui": {
@@ -1610,8 +1610,8 @@
                       "container.jsx": 1251
                     },
                     "user-options": {
-                      "component.jsx": 7395,
-                      "container.jsx": 2076,
+                      "component.jsx": 7971,
+                      "container.jsx": 2208,
                       "styles.scss": 54,
                       "styles.scss.js": 1457
                     },
@@ -1670,7 +1670,7 @@
                 },
                 "component.jsx": 1250,
                 "container.jsx": 1153,
-                "service.js": 6990,
+                "service.js": 7811,
                 "styles.scss": 54,
                 "styles.scss.js": 4652
               },
@@ -1794,10 +1794,10 @@
                   "sort-user-list": {
                     "component.jsx": 2162
                   },
-                  "component.jsx": 14960,
+                  "component.jsx": 15013,
                   "container.jsx": 417,
                   "styles.scss": 54,
-                  "styles.scss.js": 9749
+                  "styles.scss.js": 9829
                 },
                 "actions-dropdown": {
                   "component.jsx": 4941
@@ -1880,14 +1880,14 @@
                   "styles.scss.js": 26046
                 },
                 "video-button": {
-                  "component.jsx": 1596,
-                  "container.jsx": 980,
+                  "component.jsx": 1816,
+                  "container.jsx": 967,
                   "styles.scss": 54,
                   "styles.scss.js": 8824
                 },
-                "component.jsx": 14762,
+                "component.jsx": 14741,
                 "container.jsx": 676,
-                "service.js": 13032
+                "service.js": 13141
               },
               "whiteboard": {
                 "annotation-factory": {
@@ -2034,7 +2034,7 @@
                   "component.jsx": 1654,
                   "container.jsx": 805
                 },
-                "component.jsx": 6104,
+                "component.jsx": 6097,
                 "container.jsx": 1052,
                 "service.js": 1986,
                 "styles.scss": 54,
@@ -2119,7 +2119,7 @@
                   "context.jsx": 2256
                 },
                 "component.jsx": 1531,
-                "container.jsx": 4087,
+                "container.jsx": 4078,
                 "service.js": 1646,
                 "styles.scss": 54,
                 "styles.scss.js": 4752
@@ -2130,7 +2130,7 @@
                   "styles.scss": 54,
                   "styles.scss.js": 2023
                 },
-                "component.jsx": 4680,
+                "component.jsx": 4778,
                 "styles.scss": 54,
                 "styles.scss.js": 1666
               },
@@ -2329,7 +2329,7 @@
               "screenshare": {
                 "component.jsx": 4240,
                 "container.jsx": 938,
-                "service.js": 1567,
+                "service.js": 1755,
                 "styles.scss": 54,
                 "styles.scss.js": 5394
               },
@@ -2381,7 +2381,7 @@
               },
               "audio-manager": {
                 "error-codes.js": 97,
-                "index.js": 10414
+                "index.js": 10785
               },
               "auth": {
                 "index.js": 4716
@@ -2421,7 +2421,7 @@
               "client": {
                 "bridge": {
                   "index.js": 95,
-                  "kurento.js": 3952,
+                  "kurento.js": 4218,
                   "service.js": 1724
                 }
               },
