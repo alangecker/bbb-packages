@@ -1,14 +1,14 @@
 aa1d65f2884e442513ac86ed6eef522f  etc/bigbluebutton/nginx/screenshare.nginx
 70e1c36d7505ee8d2b97c2731aeda164  etc/bigbluebutton/nginx/verto.nginx
-a401b3092207191a89466e0ca009fe25  usr/share/doc/bbb-apps-screenshare/changelog.gz
+a18c2f004841d5ccbe0bfd8a80fb2676  usr/share/doc/bbb-apps-screenshare/changelog.gz
 b554d6727931c8bba64f7a7c5fffd37e  usr/share/red5/webapps/screenshare/WEB-INF/bbb-redis-messaging.xml
 ea0a6a5fd7b15feba5423bfaf2e06543  usr/share/red5/webapps/screenshare/WEB-INF/classes/application.conf
 ea2ae1a0d667e0f299add78feea636dd  usr/share/red5/webapps/screenshare/WEB-INF/classes/logback-screenshare.xml
 1856f6ab3e8776ca25c81163177562a6  usr/share/red5/webapps/screenshare/WEB-INF/classes/screenshare-app.conf
 c7003cc309c3716a33ee9f51f5d504da  usr/share/red5/webapps/screenshare/WEB-INF/lib/akka-actor_2.12-2.5.19.jar
 2f881aed222a9c57fab0480674da61ec  usr/share/red5/webapps/screenshare/WEB-INF/lib/akka-slf4j_2.12-2.5.19.jar
-52965997582e76074c8d717ebd7eeef3  usr/share/red5/webapps/screenshare/WEB-INF/lib/bbb-common-message_2.12-0.0.1599587813-SNAPSHOT.jar
-e5a134b1d013d57e0fcb9fa8dd0eb86c  usr/share/red5/webapps/screenshare/WEB-INF/lib/bbb-screenshare-akka_2.12-0.0.3.jar
+0f4a2f100747ed4206a1fcfd78c2e602  usr/share/red5/webapps/screenshare/WEB-INF/lib/bbb-common-message_2.12-0.0.1600214585-SNAPSHOT.jar
+02f9192b9a4b8cdd17898e8deea95a1d  usr/share/red5/webapps/screenshare/WEB-INF/lib/bbb-screenshare-akka_2.12-0.0.3.jar
 08c4c1bdf25e2e30c2615bc477c3b36c  usr/share/red5/webapps/screenshare/WEB-INF/lib/commons-pool2-2.8.0.jar
 77370e0a125ed8a196c2ecdb58a6570e  usr/share/red5/webapps/screenshare/WEB-INF/lib/config-1.3.3.jar
 089104cb90d8b4e1aa00b1f5faef0742  usr/share/red5/webapps/screenshare/WEB-INF/lib/gson-2.8.5.jar
