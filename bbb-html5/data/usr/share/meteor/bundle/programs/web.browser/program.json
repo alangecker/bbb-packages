@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "f9a8c85f5736e36c0bbbc52c0afaf383bfb0a300.js",
+      "path": "982375322d29a214765f0c8929117f65f6bd0a15.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/f9a8c85f5736e36c0bbbc52c0afaf383bfb0a300.js?meteor_js_resource=true",
-      "size": 2969381,
-      "hash": "f9a8c85f5736e36c0bbbc52c0afaf383bfb0a300",
-      "sri": "vN9RH3Olg6JG4mX9sHUKoVHbdwS9JYpVd3seStG6DdgFd5AjUhJL4FX1brmq6q1k4YeWpOlK4MEGlfYbQmlWcg=="
+      "url": "/982375322d29a214765f0c8929117f65f6bd0a15.js?meteor_js_resource=true",
+      "size": 2969564,
+      "hash": "982375322d29a214765f0c8929117f65f6bd0a15",
+      "sri": "1tXJdC8Go+6eD31XTaDHiGBRcOls6sQdbfqKK63rStPLSEEYwv91qa39cmk6zuLMfzTtzrRll6hYjM+euxkkpQ=="
     },
     {
-      "path": "f9a8c85f5736e36c0bbbc52c0afaf383bfb0a300.stats.json",
+      "path": "982375322d29a214765f0c8929117f65f6bd0a15.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/f9a8c85f5736e36c0bbbc52c0afaf383bfb0a300.stats.json?meteor_js_resource=true",
+      "url": "/982375322d29a214765f0c8929117f65f6bd0a15.stats.json?meteor_js_resource=true",
       "size": 74195,
-      "hash": "ebc57495bda78fbd7970c7abd1f8f112705a94c7",
-      "sri": "2pdb59f3jutnJtBWgqIxgi3qbxXB9mQTwD6i5GuAVNW1+CwjTKlsKj4xNyrF1W3cX2Vbi+OxqKlYEo7+cDKfDQ=="
+      "hash": "f65aed4698d2ab3c47d9379778d7f615ebcd33c4",
+      "sri": "XbCazFY/ydppnNXh6YhH4JwUp+B8Gm+o4uO/73wEOg5I+OZDY+rYjdq2C+es8pqYiWuEMmEATTm8S5UiuT1C1A=="
     },
     {
       "path": "b02c1e609b497129c953cf5bdab38c10f9dbff0a.css",
@@ -40,16 +40,6 @@
       "size": 192415,
       "hash": "77ac3a196b4db46fdc80bb1f379fb336f2db0230",
       "sri": "UDSyUH1R8PYvcZ2+OJe6J1WFjNIB5t5QAQtJ0C9ZbqvXUJq9fVjY7cysk0G+6/JQK3WvWKz01t9N3ps9LoTmNA=="
-    },
-    {
-      "path": "app/compatibility/bowser.js",
-      "where": "client",
-      "type": "asset",
-      "cacheable": false,
-      "url": "/compatibility/bowser.js",
-      "size": 18325,
-      "hash": "f16f25e7c36aed753ff0f7ffdc9390a878b92a27",
-      "sri": "UMXdIXudNM500NFTPt+6TKFhl1NsTu1Gl2V3EAhvdVcP1i5vkkvTdaXpOd8CIN58h3vuKCGbnIE2GFbqN+spTw=="
     },
     {
       "path": "app/compatibility/kurento-extension.js",
@@ -465,7 +455,7 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "edb41726770534c4b596554b94d166f5776848ae"
+      "hash": "1bb53d810cf017ddf1ef3e307a05e5400aca775f"
     },
     {
       "path": "body.html",

@@ -42,16 +42,6 @@
       "sri": "UDSyUH1R8PYvcZ2+OJe6J1WFjNIB5t5QAQtJ0C9ZbqvXUJq9fVjY7cysk0G+6/JQK3WvWKz01t9N3ps9LoTmNA=="
     },
     {
-      "path": "app/compatibility/bowser.js",
-      "where": "client",
-      "type": "asset",
-      "cacheable": false,
-      "url": "/compatibility/bowser.js",
-      "size": 18325,
-      "hash": "f16f25e7c36aed753ff0f7ffdc9390a878b92a27",
-      "sri": "UMXdIXudNM500NFTPt+6TKFhl1NsTu1Gl2V3EAhvdVcP1i5vkkvTdaXpOd8CIN58h3vuKCGbnIE2GFbqN+spTw=="
-    },
-    {
       "path": "app/compatibility/kurento-extension.js",
       "where": "client",
       "type": "asset",
@@ -465,7 +455,7 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "edb41726770534c4b596554b94d166f5776848ae"
+      "hash": "1bb53d810cf017ddf1ef3e307a05e5400aca775f"
     },
     {
       "path": "body.html",

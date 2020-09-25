@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2969381,
-  "totalMinifiedGzipBytes": 720509,
+  "totalMinifiedBytes": 2969564,
+  "totalMinifiedGzipBytes": 720591,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1582,7 +1582,7 @@
       {}
     ],
     "app/app.js": [
-      1230025,
+      1230208,
       {
         "imports": {
           "ui": {
@@ -1670,7 +1670,7 @@
                 },
                 "component.jsx": 1250,
                 "container.jsx": 1153,
-                "service.js": 7811,
+                "service.js": 7840,
                 "styles.scss": 54,
                 "styles.scss.js": 4652
               },
@@ -2259,7 +2259,7 @@
               },
               "end-meeting-confirmation": {
                 "component.jsx": 1462,
-                "container.jsx": 453,
+                "container.jsx": 685,
                 "styles.scss": 54,
                 "styles.scss.js": 8227
               },
@@ -2368,7 +2368,7 @@
                 "styles.scss.js": 803
               },
               "video-preview": {
-                "component.jsx": 12353,
+                "component.jsx": 12280,
                 "container.jsx": 1404,
                 "service.js": 186,
                 "styles.scss": 54,
@@ -2384,7 +2384,7 @@
                 "index.js": 10785
               },
               "auth": {
-                "index.js": 4716
+                "index.js": 4711
               },
               "network-information": {
                 "index.js": 3628
