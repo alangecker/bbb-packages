@@ -21,7 +21,7 @@ baddfc3a39bdc01107aa49650ab1d3e7  usr/local/bigbluebutton/core/lib/recordandplay
 1667bd18a0d0627bf0cdbe317cf0ffec  usr/local/bigbluebutton/core/lib/recordandplayback/generators/events.rb
 e334d90f4a33f30248434da48525fa49  usr/local/bigbluebutton/core/lib/recordandplayback/generators/presentation.rb
 ff9f04a6f0a82e61d89c350b98564a67  usr/local/bigbluebutton/core/lib/recordandplayback/generators/video.rb
-85d82f2d3241d00e8d4d74064478e896  usr/local/bigbluebutton/core/lib/recordandplayback.rb
+5302cfa3954c8a871e2650a4f5b16ea6  usr/local/bigbluebutton/core/lib/recordandplayback.rb
 c90548172b25b51e410a4d56940cdbe1  usr/local/bigbluebutton/core/scripts/README
 6025d4ac79d986f3170bcf2abdd34125  usr/local/bigbluebutton/core/scripts/archive/archive.rb
 2c61ef73c31de2750f47b483778fbc44  usr/local/bigbluebutton/core/scripts/bbb-0.9-beta-recording-update
@@ -44,5 +44,5 @@ df7d96a3ff6c5ffa1c0dd5010f3bf8ec  usr/local/bigbluebutton/core/scripts/rap-proce
 fbe487149c302a9e1898689572fcf0b3  usr/local/bigbluebutton/core/scripts/rap-sanity-worker.rb
 7f3d5a64675a284726db075e54c8ad6f  usr/local/bigbluebutton/core/scripts/sanity/sanity.rb
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
-c8ba295784c49e5fd3cd2533efe8e826  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-686a98ef549342af01d6d9c5a5e6593c  usr/share/doc/bbb-record-core/changelog.gz
+96714118c4bfd005c2ad2cef4ff9e95b  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
+1a3d6a95fb01eeefe86984638e8d4a59  usr/share/doc/bbb-record-core/changelog.gz
