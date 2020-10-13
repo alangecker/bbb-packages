@@ -1,5 +1,5 @@
 2b91abd67eac19f0fd3e27365ad8f20a  etc/bigbluebutton/bbb-conf/apply-lib.sh
-abefca692a4e9856e1650ca5a5528dc2  etc/bigbluebutton/bigbluebutton-release
+7e4f9ae02b09d0ac77bf0c884fcd2443  etc/bigbluebutton/bigbluebutton-release
 184ae11f3de1bc29b27f476f4bbab785  etc/bigbluebutton/nopdfmark.ps
 a94f7fb088cd4b9ae39bf67fd9fa7c06  etc/cron.daily/bigbluebutton
 f25c9d2399ddb1ae6b56cf901ab62d3d  etc/cron.hourly/bbb-resync-freeswitch
@@ -10,7 +10,7 @@ a8f4e47e37495025e8145a4bed92e62e  usr/share/bigbluebutton/blank/blank-presentati
 2d8c3c408f80030ab4e8bf1c02af56ed  usr/share/bigbluebutton/blank/blank-slide.swf
 b3c208be3b219429bcdb13ca1f979cac  usr/share/bigbluebutton/blank/blank-svg.svg
 ba3ddcef465d28c19663272909c980ab  usr/share/bigbluebutton/blank/blank-thumb.png
-253631498918e9f93b2f17453bc5e27f  usr/share/doc/bbb-config/changelog.gz
+d1876fcd75e822b4a129c3e71c99f1be  usr/share/doc/bbb-config/changelog.gz
 dfd6448df1e1c78edc0887a1dd5c908b  var/bigbluebutton/blank/blank-png.png
 a8f4e47e37495025e8145a4bed92e62e  var/bigbluebutton/blank/blank-presentation.pdf
 2d8c3c408f80030ab4e8bf1c02af56ed  var/bigbluebutton/blank/blank-slide.swf
