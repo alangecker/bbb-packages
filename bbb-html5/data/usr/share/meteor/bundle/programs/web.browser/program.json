@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "982375322d29a214765f0c8929117f65f6bd0a15.js",
+      "path": "0a9d9689f613a611fcb7e94c6d88b3c2fbb44b40.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/982375322d29a214765f0c8929117f65f6bd0a15.js?meteor_js_resource=true",
-      "size": 2969564,
-      "hash": "982375322d29a214765f0c8929117f65f6bd0a15",
-      "sri": "1tXJdC8Go+6eD31XTaDHiGBRcOls6sQdbfqKK63rStPLSEEYwv91qa39cmk6zuLMfzTtzrRll6hYjM+euxkkpQ=="
+      "url": "/0a9d9689f613a611fcb7e94c6d88b3c2fbb44b40.js?meteor_js_resource=true",
+      "size": 2975405,
+      "hash": "0a9d9689f613a611fcb7e94c6d88b3c2fbb44b40",
+      "sri": "/rk94zBwlHj2QBpuRFHhbn3QKe+bagStscUOxVWYtL/pMW2p/QxkdBNSB7Qt/GrMscr6OR8ati08eCEEtphGCw=="
     },
     {
-      "path": "982375322d29a214765f0c8929117f65f6bd0a15.stats.json",
+      "path": "0a9d9689f613a611fcb7e94c6d88b3c2fbb44b40.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/982375322d29a214765f0c8929117f65f6bd0a15.stats.json?meteor_js_resource=true",
-      "size": 74195,
-      "hash": "f65aed4698d2ab3c47d9379778d7f615ebcd33c4",
-      "sri": "XbCazFY/ydppnNXh6YhH4JwUp+B8Gm+o4uO/73wEOg5I+OZDY+rYjdq2C+es8pqYiWuEMmEATTm8S5UiuT1C1A=="
+      "url": "/0a9d9689f613a611fcb7e94c6d88b3c2fbb44b40.stats.json?meteor_js_resource=true",
+      "size": 74231,
+      "hash": "583917780e6754ef3f992c024a34e396c09cf01d",
+      "sri": "zN4l2ZslIEtVprpkJaeDP34uPZDVKZGDaIeP1TzkSTERZLXOkqyqLi10GzwqzCwCLQSR8bhiPZZfWD6qkA19TQ=="
     },
     {
       "path": "b02c1e609b497129c953cf5bdab38c10f9dbff0a.css",
@@ -47,9 +47,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/kurento-extension.js",
-      "size": 29033,
-      "hash": "80d1a242601dc8b6f5bf2f182a1485e5e068d7d6",
-      "sri": "Q0ssucICaApPdb0wziSHZPc+a5ZHZ2amy+DqRnU+UX1pB1gz8gdJWOW2BIpvovoDOf84PZbiNOKCLgxW98C9Jw=="
+      "size": 29155,
+      "hash": "55bbf7ea0072559d7f20e379c07a97c13663ab22",
+      "sri": "3D1lgbjf/n7Hb4D6bXvNkW1cEPVEgQQD75AOnr70tQtrXpjZd/ySlf5kgiJT3bN0G87ocsXqL8awQ0GRN6auVg=="
     },
     {
       "path": "app/compatibility/kurento-utils.js",
@@ -67,9 +67,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/sip.js",
-      "size": 384793,
-      "hash": "1365b74ce553d495068beffefc8973bb18992bd2",
-      "sri": "iyBY5gzSEZiCrqq5bPCwOClqk88iHlEmh9psPKaObCsvjPnncqjfEUsdWvn+GfGGFH70kQk94fYJZx9NhDP6Lw=="
+      "size": 1014081,
+      "hash": "5f9c98ced0f20447f4364082861b7aa3aa117955",
+      "sri": "qlvs7wULF89ufuOgAplUet6Z3b1fOc5+3gDk7yGWAjxqMWw/s4Z21ZQQhx86wv2Y7GvX+Uyzbm+lR83m0JwlmA=="
     },
     {
       "path": "app/svgs/bbb_audio_icon.svg",
@@ -461,7 +461,7 @@
       "path": "body.html",
       "where": "internal",
       "type": "body",
-      "hash": "cb95d2f9f21a00ed38f167f61b21298565aeffab"
+      "hash": "9349e591743861e94a8e375556daf92a43567e3f"
     }
   ]
 }
