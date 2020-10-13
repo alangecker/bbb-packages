@@ -22,9 +22,6 @@ textarea {
 iframe {
   position: absolute
 }
-.readonly .acl-write {
-  display: none;
-}
 
 #users {
   background: #f7f7f7;
