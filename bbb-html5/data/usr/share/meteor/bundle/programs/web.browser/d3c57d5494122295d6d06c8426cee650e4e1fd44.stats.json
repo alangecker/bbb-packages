@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2975405,
-  "totalMinifiedGzipBytes": 721700,
+  "totalMinifiedBytes": 2976203,
+  "totalMinifiedGzipBytes": 721942,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1582,7 +1582,7 @@
       {}
     ],
     "app/app.js": [
-      1236049,
+      1236847,
       {
         "imports": {
           "ui": {
@@ -1968,7 +1968,7 @@
                   "container.jsx": 728,
                   "service.js": 253
                 },
-                "service.js": 3511
+                "service.js": 3702
               },
               "audio": {
                 "audio-controls": {
@@ -1983,7 +1983,7 @@
                   "styles.scss.js": 1122
                 },
                 "audio-modal": {
-                  "component.jsx": 10002,
+                  "component.jsx": 10031,
                   "container.jsx": 2614,
                   "styles.scss": 54,
                   "styles.scss.js": 9860
@@ -2256,7 +2256,7 @@
                 "styles.scss.js": 798
               },
               "cursor": {
-                "service.js": 1265
+                "service.js": 1221
               },
               "end-meeting-confirmation": {
                 "component.jsx": 1462,
@@ -2382,10 +2382,10 @@
               },
               "audio-manager": {
                 "error-codes.js": 97,
-                "index.js": 10921
+                "index.js": 10888
               },
               "auth": {
-                "index.js": 4873
+                "index.js": 4891
               },
               "network-information": {
                 "index.js": 3628
@@ -2414,7 +2414,7 @@
                 "bridge": {
                   "base.js": 862,
                   "kurento.js": 5419,
-                  "sip.js": 14907
+                  "sip.js": 15544
                 }
               }
             },
