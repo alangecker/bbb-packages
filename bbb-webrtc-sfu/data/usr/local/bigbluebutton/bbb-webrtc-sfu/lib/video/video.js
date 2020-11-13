@@ -296,9 +296,11 @@ module.exports = class Video extends BaseProvider {
   }
 
   sendPlayStop () {
-    let userCamEvent =
-      Messaging.generateUserCamBroadcastStoppedEventMessage2x(this.meetingId, this.id, this.id);
-    this.bbbGW.publish(userCamEvent, C.TO_AKKA_APPS_CHAN_2x);
+    const userCamEvent = Messaging.generateUserCamBroadcastStoppedEventMessage2x(
+      this.meetingId,
+      this.bbbUserId,
+      this.id
+    );
 
     this.bbbGW.publish(JSON.stringify({
       connectionId: this.connectionId,
@@ -307,6 +309,8 @@ module.exports = class Video extends BaseProvider {
       id : 'playStop',
       cameraId: this.id,
     }), C.FROM_VIDEO);
+
+    this.bbbGW.publish(userCamEvent, C.TO_AKKA_APPS_CHAN_2x);
   }
 
   /* ======= RECORDING METHODS ======= */
