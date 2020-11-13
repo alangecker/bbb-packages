@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "d3c57d5494122295d6d06c8426cee650e4e1fd44.js",
+      "path": "360dab2bc7fe72fc104370eff8fc6e4d001522d5.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/d3c57d5494122295d6d06c8426cee650e4e1fd44.js?meteor_js_resource=true",
-      "size": 2976203,
-      "hash": "d3c57d5494122295d6d06c8426cee650e4e1fd44",
-      "sri": "gqEe69a24OEEG32yliznth5NebziVSaUtLaO4ovGQqq7mS4q0QVdmQBMDyKWe03U1A6qmCab0hwLrmk6STbRAg=="
+      "url": "/360dab2bc7fe72fc104370eff8fc6e4d001522d5.js?meteor_js_resource=true",
+      "size": 2978622,
+      "hash": "360dab2bc7fe72fc104370eff8fc6e4d001522d5",
+      "sri": "83QXJy9nVFsAzpcB2tJAccPdpFw/wdVrLH7S9Mjadawa/i64OVgs7mTWkEmH5gvvkzEjufHeChso699RKnt0jw=="
     },
     {
-      "path": "d3c57d5494122295d6d06c8426cee650e4e1fd44.stats.json",
+      "path": "360dab2bc7fe72fc104370eff8fc6e4d001522d5.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/d3c57d5494122295d6d06c8426cee650e4e1fd44.stats.json?meteor_js_resource=true",
-      "size": 74231,
-      "hash": "2fc05832d469ef561b1caa46d03d407222e0539b",
-      "sri": "s2x2/Ffj3EBFnBGhIk0tMCb0+6kkqd01sE4E/38IWNmqiOLQYdySUCiTz5CvVGx/+EcKFohFSLpu5Y5QxK9Zkg=="
+      "url": "/360dab2bc7fe72fc104370eff8fc6e4d001522d5.stats.json?meteor_js_resource=true",
+      "size": 74318,
+      "hash": "56411288b0223c3a0113190bfc7c7156618419c4",
+      "sri": "UM666xWnXgKAd+Jb8kw/+fYDxnZKg7mfIxHWwy5mSrRVJikifWAr+19qDnzE7fVIJcNuQ85fsh2r5u3Q0mOctQ=="
     },
     {
       "path": "b02c1e609b497129c953cf5bdab38c10f9dbff0a.css",
@@ -67,9 +67,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/sip.js",
-      "size": 1014081,
-      "hash": "5f9c98ced0f20447f4364082861b7aa3aa117955",
-      "sri": "qlvs7wULF89ufuOgAplUet6Z3b1fOc5+3gDk7yGWAjxqMWw/s4Z21ZQQhx86wv2Y7GvX+Uyzbm+lR83m0JwlmA=="
+      "size": 1014342,
+      "hash": "ffe32167b0872a26681ec0276c2a0734238ea998",
+      "sri": "byXW/d4A/ea4VvnJMpi6lGtZ3dS7EGXxo+p6qU9oPg9T4knw0lyokcJCvadKaHvXUYWV14TgWMC5a2wF3Yobaw=="
     },
     {
       "path": "app/svgs/bbb_audio_icon.svg",

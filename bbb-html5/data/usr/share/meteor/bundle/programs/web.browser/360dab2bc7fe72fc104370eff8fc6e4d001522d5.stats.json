@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.0"
   },
-  "totalMinifiedBytes": 2976203,
-  "totalMinifiedGzipBytes": 721942,
+  "totalMinifiedBytes": 2978622,
+  "totalMinifiedGzipBytes": 722465,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1582,7 +1582,7 @@
       {}
     ],
     "app/app.js": [
-      1236847,
+      1239266,
       {
         "imports": {
           "ui": {
@@ -1762,7 +1762,7 @@
                 },
                 "presentation-uploader": {
                   "component.jsx": 14815,
-                  "container.jsx": 793,
+                  "container.jsx": 1027,
                   "service.js": 3420,
                   "styles.scss": 54,
                   "styles.scss.js": 7916
@@ -2068,7 +2068,7 @@
               },
               "external-video-player": {
                 "custom-players": {
-                  "arc-player.jsx": 2580,
+                  "arc-player.jsx": 2576,
                   "panopto.jsx": 273
                 },
                 "modal": {
@@ -2084,10 +2084,13 @@
                 "styles.scss.js": 2199
               },
               "fallback-errors": {
-                "fallback-presentation": {
-                  "component.jsx": 1142,
+                "fallback-modal": {
+                  "component.jsx": 676
+                },
+                "fallback-view": {
+                  "component.jsx": 1323,
                   "styles.scss": 54,
-                  "styles.scss.js": 2034
+                  "styles.scss.js": 2028
                 }
               },
               "lock-viewers": {
@@ -2168,7 +2171,7 @@
                 },
                 "settings-dropdown": {
                   "component.jsx": 6814,
-                  "container.jsx": 678
+                  "container.jsx": 684
                 },
                 "talking-indicator": {
                   "component.jsx": 1616,
@@ -2274,7 +2277,7 @@
               },
               "fullscreen-button": {
                 "component.jsx": 1354,
-                "container.jsx": 449,
+                "container.jsx": 451,
                 "service.js": 968,
                 "styles.scss": 54,
                 "styles.scss.js": 1711
@@ -2312,13 +2315,13 @@
               "polling": {
                 "component.jsx": 2310,
                 "container.jsx": 1001,
-                "service.js": 457,
+                "service.js": 536,
                 "styles.scss": 54,
                 "styles.scss.js": 3504
               },
               "presentation-pod": {
                 "component.jsx": 504,
-                "container.jsx": 953,
+                "container.jsx": 945,
                 "service.js": 274
               },
               "recording": {
@@ -2414,7 +2417,7 @@
                 "bridge": {
                   "base.js": 862,
                   "kurento.js": 5419,
-                  "sip.js": 15544
+                  "sip.js": 16634
                 }
               }
             },
@@ -2521,7 +2524,7 @@
             "keyCodes.js": 350,
             "logoutRouteHandler.js": 224,
             "mediaElementPlayRetry.js": 311,
-            "safari-webrtc.js": 1496,
+            "safari-webrtc.js": 1637,
             "sdpUtils.js": 4547,
             "slideCalcUtils.js": 630,
             "stats.js": 1985,

@@ -67,9 +67,9 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/sip.js",
-      "size": 1014081,
-      "hash": "5f9c98ced0f20447f4364082861b7aa3aa117955",
-      "sri": "qlvs7wULF89ufuOgAplUet6Z3b1fOc5+3gDk7yGWAjxqMWw/s4Z21ZQQhx86wv2Y7GvX+Uyzbm+lR83m0JwlmA=="
+      "size": 1014342,
+      "hash": "ffe32167b0872a26681ec0276c2a0734238ea998",
+      "sri": "byXW/d4A/ea4VvnJMpi6lGtZ3dS7EGXxo+p6qU9oPg9T4knw0lyokcJCvadKaHvXUYWV14TgWMC5a2wF3Yobaw=="
     },
     {
       "path": "app/svgs/bbb_audio_icon.svg",
