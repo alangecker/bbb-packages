@@ -378,3 +378,6 @@ fi
 if [ -d /var/kurento/screenshare ]; then 
   chmod 0775 /var/kurento/screenshare
 fi
+
+# Load the overrides
+systemctl daemon-reload
