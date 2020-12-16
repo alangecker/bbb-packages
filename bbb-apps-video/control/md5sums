@@ -1,4 +1,4 @@
-9bdca0a2cb146d338560cf09ccb013b7  usr/share/doc/bbb-apps-video/changelog.gz
+3cbbfa2d9805efa7e0ed9b5f81685775  usr/share/doc/bbb-apps-video/changelog.gz
 92d04d6bd8a0235843240bba30d2f091  usr/share/red5/webapps/video/META-INF/MANIFEST.MF
 051989f1692f08a8f1a6e97edd9c6dbb  usr/share/red5/webapps/video/WEB-INF/bbb-redis-messaging.xml
 b563bb8e040fa1089dd923a008ebc9fc  usr/share/red5/webapps/video/WEB-INF/bigbluebutton-video.properties
@@ -31,7 +31,7 @@ d885c25d57c75a287cf096d9f4db7887  usr/share/red5/webapps/video/WEB-INF/classes/o
 7560299a9f405f8375444e00bd15599e  usr/share/red5/webapps/video/WEB-INF/classes/org/bigbluebutton/red5/pubsub/message/ValidateConnTokenRespMsg.class
 c7003cc309c3716a33ee9f51f5d504da  usr/share/red5/webapps/video/WEB-INF/lib/akka-actor_2.12-2.5.19.jar
 04177054e180d09e3998808efa0401c7  usr/share/red5/webapps/video/WEB-INF/lib/aopalliance-1.0.jar
-43c09c26cf87fb90f9d9784442705c7b  usr/share/red5/webapps/video/WEB-INF/lib/bbb-common-message_2.12-0.0.1602199772-SNAPSHOT.jar
+6819ef744f791c246ecca19700b87044  usr/share/red5/webapps/video/WEB-INF/lib/bbb-common-message_2.12-0.0.1607633629-SNAPSHOT.jar
 08c4c1bdf25e2e30c2615bc477c3b36c  usr/share/red5/webapps/video/WEB-INF/lib/commons-pool2-2.8.0.jar
 77370e0a125ed8a196c2ecdb58a6570e  usr/share/red5/webapps/video/WEB-INF/lib/config-1.3.3.jar
 089104cb90d8b4e1aa00b1f5faef0742  usr/share/red5/webapps/video/WEB-INF/lib/gson-2.8.5.jar
