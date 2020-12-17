@@ -11,6 +11,8 @@ StandardOutput=syslog
 StandardError=syslog
 User=meteor
 Group=meteor
+CPUSchedulingPolicy=fifo
+Nice=19
 
 [Install]
 WantedBy=multi-user.target

@@ -417,5 +417,9 @@ if ! grep -q auth_request /etc/bigbluebutton/nginx/sip.nginx; then
 	       /etc/bigbluebutton/nginx/sip.nginx
 fi
 
+chown root:root /usr/lib/systemd/system
+chown root:root /usr/lib/systemd/system/bbb-html5.service
+chown root:root /usr/lib/systemd/system/disable-transparent-huge-pages.service
+
 startService bbb-html5 || echo "bbb-html5 service could not be registered or started"
 

@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.1"
   },
-  "totalMinifiedBytes": 2980180,
-  "totalMinifiedGzipBytes": 722891,
+  "totalMinifiedBytes": 2991380,
+  "totalMinifiedGzipBytes": 725856,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1594,7 +1594,7 @@
       {}
     ],
     "app/app.js": [
-      1239258,
+      1250458,
       {
         "imports": {
           "ui": {
@@ -1877,10 +1877,10 @@
               "video-provider": {
                 "video-list": {
                   "video-list-item": {
-                    "component.jsx": 4856,
+                    "component.jsx": 4897,
                     "container.jsx": 338
                   },
-                  "component.jsx": 6567,
+                  "component.jsx": 7093,
                   "container.jsx": 696,
                   "styles.scss": 54,
                   "styles.scss.js": 6429
@@ -2081,7 +2081,8 @@
               "external-video-player": {
                 "custom-players": {
                   "arc-player.jsx": 2576,
-                  "panopto.jsx": 273
+                  "panopto.jsx": 273,
+                  "peertube.jsx": 2553
                 },
                 "modal": {
                   "component.jsx": 2698,
@@ -2089,7 +2090,7 @@
                   "styles.scss": 54,
                   "styles.scss.js": 10034
                 },
-                "component.jsx": 7343,
+                "component.jsx": 7447,
                 "container.jsx": 531,
                 "service.js": 1224,
                 "styles.scss": 54,
@@ -2397,10 +2398,17 @@
               },
               "audio-manager": {
                 "error-codes.js": 97,
-                "index.js": 10888
+                "index.js": 10894
               },
               "auth": {
                 "index.js": 4891
+              },
+              "bbb-webrtc-sfu": {
+                "broker-base-errors.js": 684,
+                "listenonly-broker.js": 2812,
+                "load-play.js": 340,
+                "sfu-base-broker.js": 3905,
+                "stream-state-service.js": 647
               },
               "network-information": {
                 "index.js": 3628
@@ -2428,8 +2436,8 @@
               "client": {
                 "bridge": {
                   "base.js": 862,
-                  "kurento.js": 5419,
-                  "sip.js": 16491
+                  "kurento.js": 4590,
+                  "sip.js": 16753
                 }
               }
             },

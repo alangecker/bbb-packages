@@ -30,17 +30,14 @@ done;
 
 echo "I'm the master!"
 
-DISTRO=`lsb_release --codename | cut -f2`
-NODE_VERSION=node-v12.16.1-linux-x64
-if [ "$DISTRO" == "xenial" ]; then
-  NODE_VERSION=node-v8.17.0-linux-x64
-fi
+NODE_VERSION=node-v8.17.0-linux-x64
 
 cd /usr/share/meteor/bundle
 export ROOT_URL=http://127.0.0.1/html5client
 export MONGO_OPLOG_URL=mongodb://127.0.1.1/local
 export MONGO_URL=mongodb://127.0.1.1/meteor
 export NODE_ENV=$ENVIRONMENT_TYPE
+export SERVER_WEBSOCKET_COMPRESSION=0
 export BIND_IP=127.0.0.1
 PORT=3000 /usr/share/$NODE_VERSION/bin/node main.js
 
