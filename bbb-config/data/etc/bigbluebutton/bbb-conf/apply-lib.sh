@@ -184,7 +184,6 @@ HERE
   mkdir -p /etc/systemd/system/bbb-webrtc-sfu.service.d
   cat > /etc/systemd/system/bbb-webrtc-sfu.service.d/override.conf << HERE
 [Unit]
-After=
 After=syslog.target network.target freeswitch.service kurento-media-server-8888.service kurento-media-server-8889.service kurento-media-server-8890.service
 HERE
 
@@ -218,7 +217,7 @@ HERE
 }
 
 disableMultipleKurentos() {
-  echo "  - Configuring a single Kurento Media Server for listen only, webcam, and screeshare"
+  echo "  - Configuring a single Kurento Media Server for listen only, webcam, and screenshare"
   systemctl stop kurento-media-server.service
 
   for i in `seq 8888 8890`; do
@@ -271,6 +270,9 @@ source /etc/bigbluebutton/bbb-conf/apply-lib.sh
 #enableHTML5WebcamPagination
 
 #enableMultipleKurentos
+
+# Shorten the FreeSWITCH "you have been muted" and "you have been unmuted" prompts
+# cp -r /etc/bigbluebutton/bbb-conf/sounds /opt/freeswitch/share/freeswitch
 
 HERE
 chmod +x /etc/bigbluebutton/bbb-conf/apply-config.sh

@@ -379,5 +379,9 @@ if [ -d /var/kurento/screenshare ]; then
   chmod 0775 /var/kurento/screenshare
 fi
 
+if [ -f /usr/lib/systemd/system/red5.service ]; then
+  chown root:root /usr/lib/systemd/system/red5.service
+fi
+
 # Load the overrides
 systemctl daemon-reload
