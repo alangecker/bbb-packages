@@ -332,7 +332,7 @@ case "$1" in
   ;;
 esac
 
-
+ldconfig
 if [ -f /.dockerenv ]; then
   # To make it easier to run within Docker, disable IPV6
   sed -i 's/::/0.0.0.0/g' /opt/freeswitch/etc/freeswitch/autoload_configs/event_socket.conf.xml
