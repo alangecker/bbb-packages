@@ -3,6 +3,7 @@ var settings = require('../../utils/Settings');
 var exportHandler = require('../../handler/ExportHandler');
 var importHandler = require('../../handler/ImportHandler');
 var padManager = require("../../db/PadManager");
+var readOnlyManager = require("../../db/ReadOnlyManager");
 
 exports.expressCreateServer = function (hook_name, args, cb) {
   args.app.get('/p/:pad/:rev?/export/:type', async function(req, res, next) {
@@ -23,12 +24,20 @@ exports.expressCreateServer = function (hook_name, args, cb) {
 
     if (await hasPadAccess(req, res)) {
       console.log('req.params.pad', req.params.pad);
-      let exists = await padManager.doesPadExists(req.params.pad);
+      let padId = req.params.pad;
+
+      let readOnlyId = null;
+      if (readOnlyManager.isReadOnlyId(padId)) {
+        readOnlyId = padId;
+        padId = await readOnlyManager.getPadId(readOnlyId);
+      }
+
+      let exists = await padManager.doesPadExists(padId);
       if (!exists) {
         return next();
       }
 
-      exportHandler.doExport(req, res, req.params.pad, req.params.type);
+      exportHandler.doExport(req, res, padId, readOnlyId, req.params.type);
     }
   });
 
