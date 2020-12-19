@@ -1,9 +1,9 @@
 56131ec629809d20221f8abcfb402cf4  etc/bigbluebutton/nginx/presentation.nginx
 ca7dbf9d91a741d62f6960b3df9154ea  usr/local/bigbluebutton/core/scripts/caption/presentation
 f8cd7d4cf87b661a2e8465ecd151e487  usr/local/bigbluebutton/core/scripts/presentation.yml
-472f5d51fd7ceff5ccb2a28696528517  usr/local/bigbluebutton/core/scripts/process/presentation.rb
-7cc632d7aaea1a3a9c3b3600130b3cc0  usr/local/bigbluebutton/core/scripts/publish/presentation.rb
-965d6498d8f47679949e505bddba3e6b  usr/share/doc/bbb-playback-presentation/changelog.gz
+ea8d2dd338a4fa1ee5f2055447b4d36d  usr/local/bigbluebutton/core/scripts/process/presentation.rb
+672938b3fd95661e33b4ea1265d7329b  usr/local/bigbluebutton/core/scripts/publish/presentation.rb
+f0bf22e107aa204af337f12d43eb50ec  usr/share/doc/bbb-playback-presentation/changelog.gz
 d899df82f4b9bd613722fbc58df01b95  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/acornmediaplayer.base.css
 a4e7611323f80843a7e4f457646d4834  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/jquery.acornmediaplayer.js
 ea8e76ae3e6577c57444d2af69b76171  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/themes/access/access-captions-dark.png
@@ -171,7 +171,7 @@ fb5dae610cb75d92ddcc7632de9dd0ee  var/bigbluebutton/playback/presentation/2.0/li
 874d8be9cd6d6b72f1d63a5435edf2c3  var/bigbluebutton/playback/presentation/2.0/lib/pace.min.js
 f40c537cfed1e360cf9939adb3a08946  var/bigbluebutton/playback/presentation/2.0/lib/popcorn-complete.min.js
 c7ae2977dd99b809e1390dc27c64757b  var/bigbluebutton/playback/presentation/2.0/lib/popcorn.chattimeline.js
-1c44030249b7555fd355384f5c72bea4  var/bigbluebutton/playback/presentation/2.0/lib/writing.js
+8d1ef4e707bc16cd11c61db9261cfca6  var/bigbluebutton/playback/presentation/2.0/lib/writing.js
 2200a281f51bad5c8838631797fb4580  var/bigbluebutton/playback/presentation/2.0/logo.png
 1751e253154f78359d06d2b099349f85  var/bigbluebutton/playback/presentation/2.0/playback.css
 65a87f11befc578d150cd0b1f15d2f5e  var/bigbluebutton/playback/presentation/2.0/playback.html
