@@ -3,15 +3,15 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 771186,
-  "totalMinifiedGzipBytes": 209553,
+  "totalMinifiedBytes": 711852,
+  "totalMinifiedGzipBytes": 204049,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
     "packages/mobile-experience.js": 37,
     "packages/modules-runtime.js": 4510,
     "packages/modules.js": [
-      315870,
+      258525,
       {
         "node_modules": {
           "meteor": {
@@ -56,11 +56,7 @@
             "checkPropTypes.js": 136,
             "lib": {
               "ReactPropTypesSecret.js": 96
-            },
-            "package.json": 81,
-            "index.js": 70,
-            "factoryWithTypeCheckers.js": 5645,
-            "factoryWithThrowingShims.js": 678
+            }
           },
           "react-dom": {
             "package.json": 177,
@@ -91,16 +87,16 @@
                 "possibleConstructorReturn.js": 161,
                 "typeof.js": 285,
                 "inheritsLoose.js": 125,
-                "toConsumableArray.js": 192,
-                "arrayWithoutHoles.js": 106,
-                "arrayLikeToArray.js": 136,
-                "iterableToArray.js": 125,
-                "unsupportedIterableToArray.js": 346,
-                "nonIterableSpread.js": 199,
                 "slicedToArray.js": 198,
                 "arrayWithHoles.js": 73,
                 "iterableToArrayLimit.js": 330,
+                "unsupportedIterableToArray.js": 346,
+                "arrayLikeToArray.js": 136,
                 "nonIterableRest.js": 204,
+                "toConsumableArray.js": 192,
+                "arrayWithoutHoles.js": 106,
+                "iterableToArray.js": 125,
+                "nonIterableSpread.js": 199,
                 "objectSpread2.js": 633,
                 "defineProperty.js": 150,
                 "extends.js": 248,
@@ -110,71 +106,77 @@
             }
           },
           "react-intl": {
-            "package.json": 176,
-            "locale-data": {
-              "index.js": 14,
-              "ar.js": 7129,
-              "bg.js": 1904,
-              "cs.js": 2122,
-              "de.js": 1745,
-              "el.js": 1962,
-              "en.js": 7278,
-              "es.js": 13705,
-              "eu.js": 1543,
-              "fa.js": 1722,
-              "fi.js": 1716,
-              "fr.js": 4405,
-              "he.js": 2515,
-              "hi.js": 2009,
-              "hu.js": 1639,
-              "id.js": 1239,
-              "it.js": 1634,
-              "ja.js": 1139,
-              "km.js": 1658,
-              "pl.js": 2216,
-              "pt.js": 3119,
-              "ru.js": 3053,
-              "sv.js": 1742,
-              "tr.js": 1515,
-              "uk.js": 2953,
-              "vi.js": 1291,
-              "zh.js": 5707
-            },
-            "lib": {
-              "index.js": 20388
+            "package.json": 112,
+            "dist": {
+              "index.js": 1272,
+              "components": {
+                "createFormattedComponent.js": 1829,
+                "injectIntl.js": 999,
+                "useIntl.js": 221,
+                "provider.js": 3436,
+                "relative.js": 2902,
+                "plural.js": 378,
+                "message.js": 2274,
+                "html-message.js": 1395
+              },
+              "utils.js": 1702,
+              "formatters": {
+                "number.js": 936,
+                "relativeTime.js": 677,
+                "dateTime.js": 1627,
+                "plural.js": 481,
+                "message.js": 2436,
+                "list.js": 804,
+                "displayName.js": 499
+              }
             }
           },
           "intl-messageformat": {
-            "package.json": 139,
-            "lib": {
-              "locales.js": 14,
-              "main.js": 145,
-              "core.js": 2971,
-              "utils.js": 237,
-              "es5.js": 476,
-              "compiler.js": 2631,
-              "en.js": 273
-            },
-            "index.js": 106
-          },
-          "intl-messageformat-parser": {
-            "package.json": 95,
-            "index.js": 81,
-            "lib": {
-              "parser.js": 10435
+            "package.json": 115,
+            "dist": {
+              "index.js": 214,
+              "core.js": 2611,
+              "formatters.js": 4863
             }
           },
-          "intl-relativeformat": {
-            "package.json": 140,
-            "lib": {
-              "locales.js": 14,
-              "main.js": 194,
-              "core.js": 4143,
-              "diff.js": 653,
-              "es5.js": 874,
-              "en.js": 2936
-            },
-            "index.js": 106
+          "intl-messageformat-parser": {
+            "package.json": 122,
+            "dist": {
+              "index.js": 354,
+              "parser.js": 17519,
+              "types.js": 1076,
+              "normalize.js": 769,
+              "skeleton.js": 5116
+            }
+          },
+          "intl-format-cache": {
+            "package.json": 115,
+            "dist": {
+              "index.js": 699
+            }
+          },
+          "@formatjs": {
+            "intl-utils": {
+              "package.json": 117,
+              "dist": {
+                "index.js": 1219,
+                "diff.js": 1111,
+                "polyfill-utils.js": 3230,
+                "aliases.js": 4635,
+                "parentLocales.js": 2265,
+                "invariant.js": 153,
+                "resolve-locale.js": 3569,
+                "get-canonical-locales.js": 221,
+                "units.js": 907,
+                "number-types.js": 610
+              }
+            }
+          },
+          "hoist-non-react-statics": {
+            "package.json": 120,
+            "dist": {
+              "hoist-non-react-statics.cjs.js": 984
+            }
           },
           "react-is": {
             "package.json": 80,
@@ -184,21 +186,9 @@
               "react-is.development.js": 273
             }
           },
-          "hoist-non-react-statics": {
-            "package.json": 120,
-            "dist": {
-              "hoist-non-react-statics.cjs.js": 663
-            }
-          },
-          "invariant": {
-            "package.json": 104,
-            "browser.js": 385
-          },
-          "intl-format-cache": {
-            "package.json": 109,
-            "index.js": 75,
-            "dist": {
-              "index.js": 495
+          "shallow-equal": {
+            "objects": {
+              "index.js": 279
             }
           },
           "react-device-detect": {
@@ -1175,13 +1165,13 @@
       {}
     ],
     "app/app.js": [
-      5188,
+      3199,
       {
         "imports": {
           "ui": {
             "components": {
               "legacy": {
-                "component.jsx": 4362,
+                "component.jsx": 2373,
                 "styles.css": 265
               }
             }

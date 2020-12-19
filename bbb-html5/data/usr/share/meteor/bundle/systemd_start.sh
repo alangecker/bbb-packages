@@ -2,26 +2,6 @@
 #Allow to run outside of directory
 cd `dirname $0`
 
-if [ -w /sys/kernel/mm/transparent_hugepage/enabled ]; then
-  unameEnabled="$(stat --format '%U' /sys/kernel/mm/transparent_hugepage/enabled)"
-  if [ "x${unameEnabled}" != "xnobody" ]; then
-      echo "never" > /sys/kernel/mm/transparent_hugepage/enabled
-      echo "transparent_hugepage/enabled set to 'never'"
-  else
-      echo "transparent_hugepage/enabled could not be set to 'never'"
-  fi
-fi
-
-if [ -w /sys/kernel/mm/transparent_hugepage/defrag ]; then
-  unameDefrag="$(stat --format '%U' /sys/kernel/mm/transparent_hugepage/defrag)"
-  if [ "x${unameDefrag}" != "xnobody" ]; then
-      echo "never" > /sys/kernel/mm/transparent_hugepage/defrag
-      echo "transparent_hugepage/defrag set to 'never'"
-  else
-      echo "transparent_hugepage/defrag could not be set to 'never'"
-  fi
-fi
-
 # change to start meteor in production (https) or development (http) mode
 ENVIRONMENT_TYPE=production
 
@@ -50,23 +30,27 @@ done;
 
 echo "I'm the master!"
 
-DISTRO=`lsb_release --codename | cut -f2`
-NODE_VERSION=node-v12.16.1-linux-x64
-if [ "$DISTRO" == "xenial" ]; then
-  NODE_VERSION=node-v8.15.1-linux-x64
+cd /usr/share/meteor/bundle
+. ./bbb-html5.conf
+
+if [ -z $1 ]
+then
+  INSTANCE_ID=1
+else
+  INSTANCE_ID=$1
 fi
 
-cd /usr/share/meteor/bundle
-export ROOT_URL=http://127.0.0.1/html5client
+PORT=`echo "3999+$INSTANCE_ID" | bc`
+
+echo $INSTANCE_ID
+export INSTANCE_MAX=$INSTANCE_MAX
+export INSTANCE_ID=$INSTANCE_ID
+export ROOT_URL=http://127.0.0.1/html5client/$INSTANCE_ID
 export MONGO_OPLOG_URL=mongodb://127.0.1.1/local
 export MONGO_URL=mongodb://127.0.1.1/meteor
-export NODE_ENV=$ENVIRONMENT_TYPE
-PORT=3000 /usr/share/$NODE_VERSION/bin/node main.js
-
-
-
-
-
-
-
+export NODE_ENV=production
+export NODE_VERSION=node-v12.16.1-linux-x64
+export SERVER_WEBSOCKET_COMPRESSION=0
+export BIND_IP=127.0.0.1
+PORT=$PORT /usr/share/$NODE_VERSION/bin/node main.js INFO_INSTANCE_ID=$INSTANCE_ID
 

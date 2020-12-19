@@ -264,6 +264,7 @@
       "node_modules": "npm/node_modules",
       "path": "app/global-imports.js",
       "assets": {
+        "config/fallbackLocales.json": "assets/app/config/fallbackLocales.json",
         "config/settings.yml": "assets/app/config/settings.yml",
         "locales/ar.json": "assets/app/locales/ar.json",
         "locales/az.json": "assets/app/locales/az.json",
@@ -289,19 +290,23 @@
         "locales/hi_IN.json": "assets/app/locales/hi_IN.json",
         "locales/hr.json": "assets/app/locales/hr.json",
         "locales/hu_HU.json": "assets/app/locales/hu_HU.json",
-        "locales/hy_AM.json": "assets/app/locales/hy_AM.json",
+        "locales/hy.json": "assets/app/locales/hy.json",
         "locales/id.json": "assets/app/locales/id.json",
         "locales/it_IT.json": "assets/app/locales/it_IT.json",
         "locales/ja.json": "assets/app/locales/ja.json",
         "locales/ja_JP.json": "assets/app/locales/ja_JP.json",
-        "locales/ka_GE.json": "assets/app/locales/ka_GE.json",
+        "locales/ka.json": "assets/app/locales/ka.json",
+        "locales/kk.json": "assets/app/locales/kk.json",
         "locales/km.json": "assets/app/locales/km.json",
         "locales/kn.json": "assets/app/locales/kn.json",
         "locales/ko_KR.json": "assets/app/locales/ko_KR.json",
+        "locales/lo_LA.json": "assets/app/locales/lo_LA.json",
         "locales/lt_LT.json": "assets/app/locales/lt_LT.json",
         "locales/lv.json": "assets/app/locales/lv.json",
+        "locales/mn_MN.json": "assets/app/locales/mn_MN.json",
         "locales/nb_NO.json": "assets/app/locales/nb_NO.json",
         "locales/nl.json": "assets/app/locales/nl.json",
+        "locales/oc.json": "assets/app/locales/oc.json",
         "locales/pl_PL.json": "assets/app/locales/pl_PL.json",
         "locales/pt.json": "assets/app/locales/pt.json",
         "locales/pt_BR.json": "assets/app/locales/pt_BR.json",
@@ -321,7 +326,8 @@
         "locales/vi.json": "assets/app/locales/vi.json",
         "locales/vi_VN.json": "assets/app/locales/vi_VN.json",
         "locales/zh_CN.json": "assets/app/locales/zh_CN.json",
-        "locales/zh_TW.json": "assets/app/locales/zh_TW.json"
+        "locales/zh_TW.json": "assets/app/locales/zh_TW.json",
+        "static/guest-wait/guest-wait.html": "assets/app/static/guest-wait/guest-wait.html"
       }
     },
     {
@@ -329,6 +335,7 @@
       "sourceMap": "app/app.js.map",
       "path": "app/app.js",
       "assets": {
+        "config/fallbackLocales.json": "assets/app/config/fallbackLocales.json",
         "config/settings.yml": "assets/app/config/settings.yml",
         "locales/ar.json": "assets/app/locales/ar.json",
         "locales/az.json": "assets/app/locales/az.json",
@@ -354,19 +361,23 @@
         "locales/hi_IN.json": "assets/app/locales/hi_IN.json",
         "locales/hr.json": "assets/app/locales/hr.json",
         "locales/hu_HU.json": "assets/app/locales/hu_HU.json",
-        "locales/hy_AM.json": "assets/app/locales/hy_AM.json",
+        "locales/hy.json": "assets/app/locales/hy.json",
         "locales/id.json": "assets/app/locales/id.json",
         "locales/it_IT.json": "assets/app/locales/it_IT.json",
         "locales/ja.json": "assets/app/locales/ja.json",
         "locales/ja_JP.json": "assets/app/locales/ja_JP.json",
-        "locales/ka_GE.json": "assets/app/locales/ka_GE.json",
+        "locales/ka.json": "assets/app/locales/ka.json",
+        "locales/kk.json": "assets/app/locales/kk.json",
         "locales/km.json": "assets/app/locales/km.json",
         "locales/kn.json": "assets/app/locales/kn.json",
         "locales/ko_KR.json": "assets/app/locales/ko_KR.json",
+        "locales/lo_LA.json": "assets/app/locales/lo_LA.json",
         "locales/lt_LT.json": "assets/app/locales/lt_LT.json",
         "locales/lv.json": "assets/app/locales/lv.json",
+        "locales/mn_MN.json": "assets/app/locales/mn_MN.json",
         "locales/nb_NO.json": "assets/app/locales/nb_NO.json",
         "locales/nl.json": "assets/app/locales/nl.json",
+        "locales/oc.json": "assets/app/locales/oc.json",
         "locales/pl_PL.json": "assets/app/locales/pl_PL.json",
         "locales/pt.json": "assets/app/locales/pt.json",
         "locales/pt_BR.json": "assets/app/locales/pt_BR.json",
@@ -386,7 +397,8 @@
         "locales/vi.json": "assets/app/locales/vi.json",
         "locales/vi_VN.json": "assets/app/locales/vi_VN.json",
         "locales/zh_CN.json": "assets/app/locales/zh_CN.json",
-        "locales/zh_TW.json": "assets/app/locales/zh_TW.json"
+        "locales/zh_TW.json": "assets/app/locales/zh_TW.json",
+        "static/guest-wait/guest-wait.html": "assets/app/static/guest-wait/guest-wait.html"
       }
     }
   ]

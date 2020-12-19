@@ -1,10 +1,145 @@
-location /html5client {
-  proxy_pass http://127.0.0.1:3000;
+location /html5client/1/ {
+  proxy_pass http://127.0.0.1:4000;
   proxy_http_version 1.1;
   proxy_set_header Upgrade $http_upgrade;
   proxy_set_header Connection "Upgrade";
 }
 
-location /_timesync {
-  proxy_pass http://127.0.0.1:3000;
+location /html5client/2/ {
+  proxy_pass http://127.0.0.1:4001;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
 }
+
+location /html5client/3/ {
+  proxy_pass http://127.0.0.1:4002;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/4/ {
+  proxy_pass http://127.0.0.1:4003;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/5/ {
+  proxy_pass http://127.0.0.1:4004;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/6/ {
+  proxy_pass http://127.0.0.1:4005;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/7/ {
+  proxy_pass http://127.0.0.1:4006;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/8/ {
+  proxy_pass http://127.0.0.1:4007;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/9/ {
+  proxy_pass http://127.0.0.1:4008;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/10/ {
+  proxy_pass http://127.0.0.1:4009;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/11/ {
+  proxy_pass http://127.0.0.1:4010;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/12/ {
+  proxy_pass http://127.0.0.1:4011;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/13/ {
+  proxy_pass http://127.0.0.1:4012;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/14/ {
+  proxy_pass http://127.0.0.1:4013;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/15/ {
+  proxy_pass http://127.0.0.1:4014;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/16/ {
+  proxy_pass http://127.0.0.1:4015;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/17/ {
+  proxy_pass http://127.0.0.1:4016;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/18/ {
+  proxy_pass http://127.0.0.1:4017;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/19/ {
+  proxy_pass http://127.0.0.1:4018;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+location /html5client/20/ {
+  proxy_pass http://127.0.0.1:4019;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+
+
+location /_timesync {
+  proxy_pass http://127.0.0.1:4000;
+}
+

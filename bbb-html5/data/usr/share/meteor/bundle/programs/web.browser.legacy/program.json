@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "0d1e0d297a5f1ba6217a51afb9ade96246f55774.js",
+      "path": "0cb157775130faaefe0c3174e0dc6deb202c126f.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/0d1e0d297a5f1ba6217a51afb9ade96246f55774.js?meteor_js_resource=true",
-      "size": 771186,
-      "hash": "0d1e0d297a5f1ba6217a51afb9ade96246f55774",
-      "sri": "KdHrnJ/nIS1n1oZkhLWqMjQwCESilERyQHKJkbtpJ5vm9w2DCYGhwy5r8r2eP0hOdev/S358V2wPxIKQWOXyzA=="
+      "url": "/0cb157775130faaefe0c3174e0dc6deb202c126f.js?meteor_js_resource=true",
+      "size": 711852,
+      "hash": "0cb157775130faaefe0c3174e0dc6deb202c126f",
+      "sri": "o8vH1ZpfSM0A22PvFrBdPuIBrC1T2eods66wYwid3phZzWLoAoyscMVVdkXEDgf7eScfImlt0NoPQ+A0UC1EfQ=="
     },
     {
-      "path": "0d1e0d297a5f1ba6217a51afb9ade96246f55774.stats.json",
+      "path": "0cb157775130faaefe0c3174e0dc6deb202c126f.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/0d1e0d297a5f1ba6217a51afb9ade96246f55774.stats.json?meteor_js_resource=true",
-      "size": 37027,
-      "hash": "b32ba054ca570cff65c58ce95c56548d65422764",
-      "sri": "hKGSOh81uWA+iE1Dvr74yKU9F7mQeoSry2+gcsKnn7x1rmXgTL4OsHKkp4IX2yJcybqZ0O836xsMG5m4kBhGAg=="
+      "url": "/0cb157775130faaefe0c3174e0dc6deb202c126f.stats.json?meteor_js_resource=true",
+      "size": 36893,
+      "hash": "16ed5fb38325a36b6ee90de9b0859db46d0027bc",
+      "sri": "/jkZrD99gSan6oj8/9ia9duiyi3ikZ2gfoaVdvw99V7pssg0EYxVo9OJ1Fll5L+I12AmmVGiVPIAPnyTImlqZg=="
     },
     {
       "path": "5698c061cfba32badc3285de664514e3f4c25d8b.css",
@@ -42,23 +42,13 @@
       "sri": null
     },
     {
-      "path": "app/compatibility/bowser.js",
-      "where": "client",
-      "type": "asset",
-      "cacheable": false,
-      "url": "/compatibility/bowser.js",
-      "size": 18325,
-      "hash": "ec619fd37d6ac36e1e83e866bb6d4e0d48dd9084",
-      "sri": null
-    },
-    {
       "path": "app/compatibility/kurento-extension.js",
       "where": "client",
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/kurento-extension.js",
-      "size": 29033,
-      "hash": "74cffc506bdc6596b41ba30482876676a7179cc0",
+      "size": 29155,
+      "hash": "88ec0c6e2bd4ee6cb0c823960af83092f27d3ab3",
       "sri": null
     },
     {
@@ -77,8 +67,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/sip.js",
-      "size": 384793,
-      "hash": "842f1ea842c1833fcedf61c0f6a166790b49f3b5",
+      "size": 1014344,
+      "hash": "4e7377e2d67b68c0b36b5e787a561822a991747d",
       "sri": null
     },
     {
@@ -209,6 +199,16 @@
       "url": "/resources/images/allow-mic.png",
       "size": 7880,
       "hash": "f9cc7d2ec9ca4ea5f9779a1384497600eb969fcc",
+      "sri": null
+    },
+    {
+      "path": "app/resources/images/avatar.png",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/resources/images/avatar.png",
+      "size": 14417,
+      "hash": "23ed8a5dca0d4a699970c13c9931aeb71871ef88",
       "sri": null
     },
     {
@@ -475,13 +475,13 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "5a5f3de2bb4b685bbbdabfa23cf2262dadedbe36"
+      "hash": "a5542bb870b3a0b309bdcbff5b9a1b31c752634d"
     },
     {
       "path": "body.html",
       "where": "internal",
       "type": "body",
-      "hash": "5f23636e794a19c8d96465ec9b0fe47f6e3daa1d"
+      "hash": "b4c3e8f282328bd368d0f8fb010210ac5d75f689"
     }
   ]
 }
