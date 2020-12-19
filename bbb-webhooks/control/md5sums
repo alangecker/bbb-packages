@@ -4,7 +4,7 @@ da1a442b7035e56ba5adc7ab24202ad0  usr/lib/systemd/system/bbb-webhooks.service
 d7aa35620d56fe04f7e844278e0b06d9  usr/local/bigbluebutton/bbb-webhooks/.gitignore
 736d2c7660f390c805e83cfbb3ecb25a  usr/local/bigbluebutton/bbb-webhooks/.nvmrc
 e146d30368eb94fc5b178c23c08408b2  usr/local/bigbluebutton/bbb-webhooks/Dockerfile
-c747684871dc9029aaa998f45a4408a4  usr/local/bigbluebutton/bbb-webhooks/README.md
+d654e22c7fd6549c62992e6ba5d89faa  usr/local/bigbluebutton/bbb-webhooks/README.md
 c2665820a6c08c0599b32610c13a918a  usr/local/bigbluebutton/bbb-webhooks/app.js
 8a714c9046bf5ee1a62701ceb5ffe4e5  usr/local/bigbluebutton/bbb-webhooks/application.js
 f5359b82940e30d0d69316865d39b791  usr/local/bigbluebutton/bbb-webhooks/callback_emitter.js
@@ -3193,4 +3193,4 @@ b8b259ff9553bd99dad8bf54244e2a64  usr/local/bigbluebutton/bbb-webhooks/userMappi
 a9599b30eb5872a2d17f068f25e9ac72  usr/local/bigbluebutton/bbb-webhooks/utils.js
 33ac6a44d9c4d7e8ddb1c3692a5ccf2d  usr/local/bigbluebutton/bbb-webhooks/web_hooks.js
 5b6ee49235c8d48948507c533bdaf962  usr/local/bigbluebutton/bbb-webhooks/web_server.js
-556abfe2d4bfb67ce1b748e1d78b3567  usr/share/doc/bbb-webhooks/changelog.gz
+243e40a9d27478c1404ba46c42f70966  usr/share/doc/bbb-webhooks/changelog.gz
