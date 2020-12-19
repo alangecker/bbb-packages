@@ -302,9 +302,11 @@ module.exports = class Video extends BaseProvider {
   }
 
   sendPlayStop () {
-    let userCamEvent =
-      Messaging.generateUserCamBroadcastStoppedEventMessage2x(this.meetingId, this.id, this.id);
-    this.bbbGW.publish(userCamEvent, C.TO_AKKA_APPS_CHAN_2x);
+    const userCamEvent = Messaging.generateUserCamBroadcastStoppedEventMessage2x(
+      this.meetingId,
+      this.bbbUserId,
+      this.id
+    );
 
     this.bbbGW.publish(JSON.stringify({
       connectionId: this.connectionId,
@@ -313,6 +315,8 @@ module.exports = class Video extends BaseProvider {
       id : 'playStop',
       cameraId: this.id,
     }), C.FROM_VIDEO);
+
+    this.bbbGW.publish(userCamEvent, C.TO_AKKA_APPS_CHAN_2x);
   }
 
   /* ======= RECORDING METHODS ======= */
@@ -342,8 +346,8 @@ module.exports = class Video extends BaseProvider {
         const cameraCodec = DEFAULT_MEDIA_SPECS.codec_video_main;
         const recordingName = `${this._cameraProfile}-${this.bbbUserId}`;
         const recordingProfile = (cameraCodec === 'VP8' || cameraCodec === 'ANY')
-          ? C.RECORDING_PROFILE_WEBM
-          : C.RECORDING_PROFILE_MKV;
+          ? C.RECORDING_PROFILE_WEBM_VIDEO_ONLY
+          : C.RECORDING_PROFILE_MKV_VIDEO_ONLY;
         const format = (cameraCodec === 'VP8' || cameraCodec === 'ANY')
           ? C.RECORDING_FORMAT_WEBM
           : C.RECORDING_FORMAT_MKV;

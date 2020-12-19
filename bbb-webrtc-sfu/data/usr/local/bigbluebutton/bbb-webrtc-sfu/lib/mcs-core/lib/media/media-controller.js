@@ -104,7 +104,7 @@ module.exports = class MediaController {
       // Inherit strategy from room unless it was directly specified
       params.strategy = params.strategy || room.strategy;
       const user = this.createUser(room, type, params);
-      Logger.info(LOG_PREFIX, `User ${user.id} joined room ${roomId} as ${type}`);
+      Logger.debug(LOG_PREFIX, `User joined room`, { userId: user.id, roomId, type });
       return user.id;
     } catch (e) {
       throw (this._handleError(e));
@@ -293,7 +293,7 @@ module.exports = class MediaController {
     }
 
     if (!params.ignoreThresholds && this.isAboveMediaThresholds(room, user)) {
-      return reject(this._handleError({
+      throw (this._handleError({
         ...C.ERROR.MEDIA_SERVER_NO_RESOURCES,
         details: `Threshold exceeded. Threshold: ${GLOBAL_MEDIA_THRESHOLD}`,
       }));

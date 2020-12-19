@@ -11,8 +11,10 @@ kurento:
       request_timeout: 30000
       response_timeout: 30000
 # Number of attemps of connecting to the configured kurento instances the first
-# time. Infinity means it tries forever until it's able to connect. Default is 10.
-kurentoStartupRetries: 10
+# time. Infinity means it tries forever until it's able to connect. Default is Infinity.
+kurentoStartupRetries: Infinity
+# Whether to allow Kurento to process mDNS ICE candidates
+kurentoAllowMDNSCandidates: true
 # balancing-strategy: can be either ROUND_ROBIN or MEDIA_TYPE. The MEDIA_TYPE only
 # works properly if you annotated the configured kurento instances in the
 # 'kurento' config parameter with a mediaType field (main|audio|content) which
@@ -33,21 +35,11 @@ maxVideoPort: 33000
 mediaFlowTimeoutDuration: 15000
 mediaStateTimeoutDuration: 30000
 requestQueueTimeout: 15000
-from-screenshare: from-screenshare-sfu
-to-screenshare: to-screenshare-sfu
-from-video: from-video-sfu
-to-video: to-video-sfu
-from-audio: from-audio-sfu
-to-audio: to-audio-sfu
-to-akka: to-akka-apps-redis-channel
-from-akka: from-akka-apps-redis-channel
-to-stream: to-sfu-redis-channel
-from-stream: from-stream-sfu
-to-html5: to-html5-redis-channel
-common-message-version: 2.x
 screenshareKeyframeInterval: 0
 screenshareEnableFlashRTPBridge: false
 screenshareSubscriberSpecSlave: false
+screensharePlayStartEnabled: false
+screenshareServerSideAkkaBroadcast: true
 videoSubscriberSpecSlave: false
 
 recordScreenSharing: true
@@ -77,55 +69,8 @@ freeswitch:
     public:
 log:
   filename: /var/log/bbb-webrtc-sfu/bbb-webrtc-sfu.log
-  level: verbose
-bbb-stream:
-  image_name: bbb-stream
-  container_type: docker
-  bigbluebutton_url: BBBHOST
-  bigbluebutton_secret: BBBSECRET
-  bot_name: BBBBOTNAME
-  bot_join_options:
-    userdata-html5autoswaplayout: false
-    userdata-html5hidepresentation: false
-    bot: true
-    joinViaHtml5: true
-  gop:
-    rnp: 5
-    youtube: 12
-    rtmp: 12
-  k8s:
-    namespace: default
-    template:
-      apiVersion: batch/v1
-      kind: Job
-      metadata:
-        name: bbb-stream-
-      spec:
-        template:
-          spec:
-            containers:
-            - name: bbb-stream-firefox
-              image: gcr.io/PROJECT-ID/bbb-stream
-              env:
-              - name: LINK
-                value: ""
-              - name: OUTPUT
-                value: ""
-              - name: "RTMP"
-                value: "rtmp"
-              - name: "GOP"
-                value: ""
-            restartPolicy: OnFailure
-        backoffLimit: 0
-
-rnp:
-  oauth2:
-    client_id: client_id
-    client_secret: client_secret
-    redirect_uri: redirect_uri
-    host_ip: 0.0.0.0
-    base_url: videornpurl
-
+  level: info
+  stdout: true
 processes:
 - path: ./lib/mcs-core/process.js
 - path: ./lib/screenshare/ScreenshareProcess
@@ -214,8 +159,6 @@ mediaThresholds:
   global: 0
   perRoom: 0
   perUser: 0
-# Whether to append a timestamp to akka-app's message envelopes
-addTimestampToAkkaMessages: true
 # Whether to allow duplicate externalUserId's on join. If allowed, join requests with
 # a externalUserId specified in the optional parameters will associate the new connection
 # with a pre-existing user (if it exists), or create a new one.

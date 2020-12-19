@@ -190,9 +190,10 @@ module.exports = class Audio extends BaseProvider {
     this.clearMediaFlowingTimeout(connectionId);
     this.sendUserConnectedToGlobalAudioMessage(connectionId);
     this.bbbGW.publish(JSON.stringify({
-        connectionId: connectionId,
-        id: "webRTCAudioSuccess",
-        success: "MEDIA_FLOWING"
+      type: 'audio',
+      connectionId: connectionId,
+      id: "webRTCAudioSuccess",
+      success: "MEDIA_FLOWING"
     }), C.FROM_AUDIO);
   };
 
@@ -206,6 +207,7 @@ module.exports = class Audio extends BaseProvider {
     Logger.error(LOG_PREFIX, `Listen only WebRTC media NOT_FLOWING timeout reached`,
       this._getFullLogMetadata(connectionId));
     this.bbbGW.publish(JSON.stringify({
+      type: 'audio',
       connectionId: connectionId,
       id: "webRTCAudioError",
       error: { code: 2211 , reason: errors[2211] },
@@ -248,6 +250,7 @@ module.exports = class Audio extends BaseProvider {
       this._getFullLogMetadata(connectionId));
 
     this.bbbGW.publish(JSON.stringify({
+      type: 'audio',
       connectionId: connectionId,
       id: "webRTCAudioError",
       error: { code: 2211 , reason: errors[2211] },
@@ -312,9 +315,9 @@ module.exports = class Audio extends BaseProvider {
       { ...this._getFullLogMetadata(connectionId), candidate });
 
     this.bbbGW.publish(JSON.stringify({
+      type: 'audio',
       connectionId,
       id : 'iceCandidate',
-      type: 'audio',
       candidate : candidate
     }), C.FROM_AUDIO);
   }
@@ -459,7 +462,7 @@ module.exports = class Audio extends BaseProvider {
     const failOver = () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          return reject(false)
+          return reject(errors.MEDIA_SERVER_REQUEST_TIMEOUT);
         }, GLOBAL_AUDIO_CONNECTION_TIMEOUT);
       });
     };
@@ -555,20 +558,20 @@ module.exports = class Audio extends BaseProvider {
   }
 
   async start (sessionId, connectionId, sdpOffer, userId, userName) {
+    let mcsUserId;
     const isConnected = await this.mcs.waitForConnection();
 
     if (!isConnected) {
-      throw errors.MEDIA_SERVER_OFFLINE;
+      throw this._handleError(LOG_PREFIX, errors.MEDIA_SERVER_OFFLINE, "recv", userId);
     }
-
-    let mcsUserId;
 
     try {
       await this._waitForGlobalAudio();
     } catch (error) {
+      const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
       Logger.error(LOG_PREFIX, `New listen only session failed: GLOBAL_AUDIO unavailable`,
-        { ...this._getPartialLogMetadata(), errorMessage: error.message, errorCode: error.code });
-      throw (this._handleError(LOG_PREFIX, error, "recv", connectionId));
+        { ...this._getPartialLogMetadata(), error: normalizedError });
+      throw normalizedError;
     }
 
     try {

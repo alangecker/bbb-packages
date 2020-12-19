@@ -2,6 +2,9 @@ kurento:
   __name: KURENTO
   __format: json
 
+# Values: ROUND_ROBIN or MEDIA_TYPE
+balancing-strategy: BALANCING_STRATEGY
+
 redisHost: REDIS_HOST
 redisPort: REDIS_PORT
 redisPassword: REDIS_PASSWORD
@@ -26,8 +29,11 @@ freeswitch:
       __format: json
 
 log:
-    level: LOG_LEVEL
-    filename: LOG_FILENAME
+  level: LOG_LEVEL
+  filename: LOG_FILENAME
+  stdout:
+    __name: LOG_STDOUT_ENABLED
+    __format: json
 
 bbb-stream:
   image_name: STREAM_IMAGE_NAME
@@ -65,6 +71,8 @@ conference-media-specs:
   codec_video_main_priority: CODEC_VIDEO_MAIN_PRIO
   codec_video_content: CODEC_VIDEO_CONTENT
   codec_video_content_priority: CODEC_VIDEO_CONTENT_PRIO
+  OPUS:
+    maxaveragebitrate: OPUS_MAX_AVERAGE_BITRATE
 
 videoSubscriberSpecSlave:
   __name: VIDEO_SUBSCRIBER_SLAVE
@@ -72,11 +80,22 @@ videoSubscriberSpecSlave:
 screenshareSubscriberSpecSlave:
   __name: SCREENSHARE_SUBSCRIBER_SLAVE
   __format: json
+screensharePlayStartEnabled:
+  __name: SCREENSHARE_PLAY_START_ENABLED
+  __format: json
+screenshareServerSideAkkaBroadcast:
+  __name: SCREENSHARE_SERVER_AKKA_BROADCAST
+  __format: json
 
 kurentoAllowedCandidateIps:
   __name: KURENTO_ALLOWED_CANDIDATE_IPS
   __format: json
 
-addTimestampToAkkaMessages:
-  __name: AKKA_MSG_TIMESTAMP
+kurentoAllowMDNSCandidates:
+  __name: KURENTO_ALLOW_MDNS
   __format: json
+
+mediaThresholds:
+  global: GLOBAL_MEDIA_THRESHOLD
+  perRoom: ROOM_MEDIA_THRESHOLD
+  perUser: USER_MEDIA_THRESHOLD

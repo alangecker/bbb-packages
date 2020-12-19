@@ -14,8 +14,10 @@ const config = require('config');
         AUDIO: "AUDIO",
         VIDEO: "VIDEO",
         ALL: "ALL",
-        RECORDING_PROFILE_WEBM: 'WEBM_VIDEO_ONLY',
-        RECORDING_PROFILE_MKV: 'MKV_VIDEO_ONLY',
+        RECORDING_PROFILE_WEBM_VIDEO_ONLY: 'WEBM_VIDEO_ONLY',
+        RECORDING_PROFILE_MKV_VIDEO_ONLY: 'MKV_VIDEO_ONLY',
+        RECORDING_PROFILE_WEBM_FULL: 'WEBM',
+        RECORDING_PROFILE_MKV_FULL: 'MKV',
         RECORDING_FORMAT_WEBM: 'webm',
         RECORDING_FORMAT_MKV: 'mkv',
 
@@ -23,7 +25,6 @@ const config = require('config');
         SCREENSHARE_APP:  'screenshare',
         VIDEO_APP: 'video',
         AUDIO_APP: 'audio',
-        STREAM_APP: 'stream',
 
         // SFU requisition roles
         SEND_ROLE: 'send',
@@ -36,24 +37,18 @@ const config = require('config');
 
         // Redis channels
         FROM_BBB_TRANSCODE_SYSTEM_CHAN : "bigbluebutton:from-bbb-transcode:system",
-        FROM_VOICE_CONF_SYSTEM_CHAN: "from-voice-conf-redis-channel",
         TO_BBB_TRANSCODE_SYSTEM_CHAN: "bigbluebutton:to-bbb-transcode:system",
         TO_BBB_MEETING_CHAN: "bigbluebutton:to-bbb-apps:meeting",
         FROM_BBB_MEETING_CHAN: "bigbluebutton:from-bbb-apps:meeting",
         TO_AKKA_APPS_CHAN_2x: "to-akka-apps-redis-channel",
-        FROM_SCREENSHARE: config.get('from-screenshare'),
-        TO_SCREENSHARE: config.get('to-screenshare'),
-        FROM_VIDEO: config.get('from-video'),
-        TO_VIDEO: config.get('to-video'),
-        FROM_AUDIO: config.get('from-audio'),
-        TO_AUDIO: config.get('to-audio'),
-        TO_AKKA_APPS: config.get('to-akka'),
-        FROM_AKKA_APPS: config.get('from-akka'),
-
-        TO_STREAM: config.get('to-stream'),
-        FROM_STREAM: config.get('from-stream'),
-
-        TO_HTML5: config.get('to-html5'),
+        FROM_SCREENSHARE: 'from-screenshare',
+        TO_SCREENSHARE: 'to-sfu-screenshare',
+        FROM_VIDEO: 'from-sfu-video',
+        TO_VIDEO: 'to-sfu-video',
+        FROM_AUDIO: 'from-sfu-audio',
+        TO_AUDIO: 'to-sfu-audio',
+        TO_AKKA_APPS: 'to-akka-apps-redis-channel',
+        FROM_AKKA_APPS: 'from-akka-apps-redis-channel',
 
         // RedisWrapper events
         REDIS_MESSAGE : "redis_message",
@@ -63,11 +58,6 @@ const config = require('config');
         RECORDING_STATUS_REQUEST_MESSAGE_2x: "GetRecordingStatusReqMsg",
         RECORDING_STATUS_REPLY_MESSAGE_2x: "GetRecordingStatusRespMsg",
 
-        MEETING_STREAM_STARTED_MESSAGE_2x: "MeetingStreamStartedMsg",
-        MEETING_STREAM_STOPPED_MESSAGE_2x: "MeetingStreamStoppedMsg",
-
-        MEETING_STREAM_OAUTH2_URL_MESSAGE_2x: "MeetingStreamOAuth2Url",
-        MEETING_STREAM_OAUTH2_DATA_MESSAGE_2x: 'MeetingStreamOAuth2Data',
         // Message identifiers 1x
         START_TRANSCODER_REQUEST: "start_transcoder_request_message",
         START_TRANSCODER_REPLY: "start_transcoder_reply_message",
@@ -167,17 +157,7 @@ const config = require('config');
 
         FILENAME: 'filename',
 
-        STREAM_STATE: 'state',
-        STREAM_STARTED: 'started',
-        STREAM_STOPPED: 'stopped',
-        STREAMING_TYPE: 'streamType',
-        STREAM_OAUTH2_URL: 'oauth2url',
-        STREAM_OAUTH2_KEY: 'streamKey',
-        STREAM_OAUTH2_ID: 'streamId',
-        STREAM_ERROR: 'apiError',
-        STREAMING_STREAM_URL: 'streamUrl',
-
-        // Log prefixes
+      // Log prefixes
         BASE_PROCESS_PREFIX: '[BaseProcess]',
         BASE_MANAGER_PREFIX: '[BaseManager]',
         BASE_PROVIDER_PREFIX: '[BaseProvider]',
@@ -190,9 +170,6 @@ const config = require('config');
         AUDIO_PROCESS_PREFIX: '[AudioProcess]',
         AUDIO_MANAGER_PREFIX: '[AudioManager]',
         AUDIO_PROVIDER_PREFIX: '[AudioProvider]',
-        STREAM_PROCESS_PREFIX: '[StreamProcess]',
-        STREAM_MANAGER_PREFIX: '[StreamManager]',
-        STREAM_PROVIDER_PREFIX: '[StreamProvider]',
 
         // MCS error codes
         MEDIA_SERVER_OFFLINE: 2001,
