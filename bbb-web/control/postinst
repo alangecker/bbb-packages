@@ -344,7 +344,7 @@ bbb_config() {
 	#
 	# Propagate settings for TURN server
 	if [ -f /tmp/turn-stun-servers.xml ]; then
-		cp /tmp/turn-stun-servers.xml $SERVLET_DIR/WEB-INF/classes/sping 
+		cp /tmp/turn-stun-servers.xml $SERVLET_DIR/WEB-INF/classes/spring
 		mv /tmp/turn-stun-servers.xml /tmp/turn-stun-servers.xml_
 	fi
 

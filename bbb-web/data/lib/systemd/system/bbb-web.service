@@ -1,6 +1,7 @@
 [Unit]
 Description=BigBlueButton Web Application
 Requires=network.target
+After=redis.service
 
 [Service]
 Type=simple
