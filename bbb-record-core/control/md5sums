@@ -21,7 +21,7 @@ ff9f04a6f0a82e61d89c350b98564a67  usr/local/bigbluebutton/core/lib/recordandplay
 227548d315f28ff184e6d541cc36dd74  usr/local/bigbluebutton/core/lib/recordandplayback/workers/archive_worker.rb
 c6103a3a946baec417b4bf7c27dcfa3a  usr/local/bigbluebutton/core/lib/recordandplayback/workers/base_worker.rb
 4f84af10e9aaf8e67aa36ca5585bdf14  usr/local/bigbluebutton/core/lib/recordandplayback/workers/captions_worker.rb
-498f77e2f86abeee0a439dad01663a42  usr/local/bigbluebutton/core/lib/recordandplayback/workers/events_worker.rb
+3cfc685da5751566fc29b97e518658b2  usr/local/bigbluebutton/core/lib/recordandplayback/workers/events_worker.rb
 5036dd6b56b0805e82cea5c4e5e4a831  usr/local/bigbluebutton/core/lib/recordandplayback/workers/process_worker.rb
 4431d58fdab3901919b7c9c503f42a43  usr/local/bigbluebutton/core/lib/recordandplayback/workers/publish_worker.rb
 8c317e073f2df7f422a258e53f603a5a  usr/local/bigbluebutton/core/lib/recordandplayback/workers/sanity_worker.rb
@@ -49,4 +49,4 @@ df7d96a3ff6c5ffa1c0dd5010f3bf8ec  usr/local/bigbluebutton/core/scripts/rap-proce
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 3ea92be6da5b63c56ce6408a39cb27e4  usr/local/bigbluebutton/core/scripts/utils/gen_poll_svg
 96714118c4bfd005c2ad2cef4ff9e95b  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-da0526c9a8f982379230eae782d74f1d  usr/share/doc/bbb-record-core/changelog.gz
+d306410bc4c4929b09d009273b311a12  usr/share/doc/bbb-record-core/changelog.gz

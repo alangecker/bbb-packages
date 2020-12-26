@@ -355,7 +355,7 @@ case "$1" in
       mkdir -p /var/bigbluebutton/recording/status/archived
       mkdir -p /var/bigbluebutton/recording/status/processed
       mkdir -p /var/bigbluebutton/recording/status/sanity
-      mkdir -p /var/bigbluebutton/recording/status/ended
+      mkdir -p /var/bigbluebutton/recording/status/published
       chown -R $BBB_USER:$BBB_USER /var/bigbluebutton/recording
 
       mkdir -p /var/bigbluebutton/captions
@@ -409,5 +409,8 @@ if dpkg -l | grep -q nginx; then
   reloadService nginx
 fi
 
-startService bbb-record-core.timer || echo "bbb-record-core could not be registered or started"
+if ! grep -q xenial /etc/lsb-release; then
+  startService bbb-record-core.timer || echo "bbb-record-core could not be registered or started"
+fi
 
+systemctl daemon-reload
