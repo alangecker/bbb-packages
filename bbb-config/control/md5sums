@@ -6,14 +6,14 @@ f25c9d2399ddb1ae6b56cf901ab62d3d  etc/cron.hourly/bbb-resync-freeswitch
 d32a00b9a2669b3fe757b8de3470e358  etc/systemd/system/bbb-apps-akka.service.d/override.conf
 d32a00b9a2669b3fe757b8de3470e358  etc/systemd/system/bbb-fsesl-akka.service.d/override.conf
 d32a00b9a2669b3fe757b8de3470e358  etc/systemd/system/bbb-transcode-akka.service.d/override.conf
-92b5f60171eab1a4c30072625dd0ca2c  usr/bin/bbb-conf
+866ddc1e8a170ea9144e9185b2577c8c  usr/bin/bbb-conf
 1974e669bb615b22538d87dc0569c40a  usr/bin/bbb-record
 dfd6448df1e1c78edc0887a1dd5c908b  usr/share/bigbluebutton/blank/blank-png.png
 a8f4e47e37495025e8145a4bed92e62e  usr/share/bigbluebutton/blank/blank-presentation.pdf
 2d8c3c408f80030ab4e8bf1c02af56ed  usr/share/bigbluebutton/blank/blank-slide.swf
 b3c208be3b219429bcdb13ca1f979cac  usr/share/bigbluebutton/blank/blank-svg.svg
 ba3ddcef465d28c19663272909c980ab  usr/share/bigbluebutton/blank/blank-thumb.png
-30916de1a0889aebbc7dda4d5710c5f3  usr/share/doc/bbb-config/changelog.gz
+486392b6dae004fdc762ab13df4c1553  usr/share/doc/bbb-config/changelog.gz
 dfd6448df1e1c78edc0887a1dd5c908b  var/bigbluebutton/blank/blank-png.png
 a8f4e47e37495025e8145a4bed92e62e  var/bigbluebutton/blank/blank-presentation.pdf
 2d8c3c408f80030ab4e8bf1c02af56ed  var/bigbluebutton/blank/blank-slide.swf
