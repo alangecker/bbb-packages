@@ -3,9 +3,9 @@
 const ws = require('ws');
 const C = require('../bbb/messages/Constants');
 const Logger = require('../utils/Logger');
-const { v4: uuidv4 }= require('uuid');
 
-const LOG_PREFIX = '[WebsocketConnectionManager]';
+// ID counter
+let connectionIDCounter = 0;
 
 module.exports = class WebsocketConnectionManager {
   constructor (server, path) {
@@ -25,18 +25,15 @@ module.exports = class WebsocketConnectionManager {
   }
 
   _onServerResponse (data) {
+    // Here this is the 'ws' instance
     const connectionId = data? data.connectionId : null;
     const ws = this.webSockets[connectionId];
     if (ws) {
       if (data.id === 'close') {
         try {
           ws.close();
-        } catch (error) {
-          Logger.error(LOG_PREFIX, 'WS close failed', {
-            connectionId,
-            errorMessage: error.message,
-            errorCode: error.code
-          });
+        } catch (err) {
+          Logger.warn('[WebsocketConnectionManager] Error on closing WS for', connectionId,  err)
         }
       } else {
         this.sendMessage(ws, data);
@@ -45,20 +42,20 @@ module.exports = class WebsocketConnectionManager {
   }
 
   _onNewConnection (ws) {
-    ws.id = uuidv4();
+    ws.id = connectionIDCounter++;
     this.webSockets[ws.id] = ws;
-    Logger.info(LOG_PREFIX, "WS connection opened", { connectionId: ws.id });
+    Logger.info("[WebsocketConnectionManager] New connection with id [ " + ws.id + " ]");
 
     ws.on('message', (data) => {
       this._onMessage(ws, data);
     });
 
-    ws.on('close', (error) => {
-      this._onClose(ws, error);
+    ws.on('close', (err) => {
+      this._onClose(ws, err);
     });
 
-    ws.on('error', (error) => {
-      this._onError(ws, error);
+    ws.on('error', (err) => {
+      this._onError(ws, err);
     });
   };
 
@@ -69,7 +66,8 @@ module.exports = class WebsocketConnectionManager {
       message = JSON.parse(data);
 
       if (message.id === 'ping') {
-        return this.sendMessage(ws, { id: 'pong' });
+        this.sendMessage(ws, {id: 'pong'});
+        return;
       }
 
       message.connectionId = ws.id;
@@ -86,27 +84,19 @@ module.exports = class WebsocketConnectionManager {
         ws.role = message.role;
       }
     } catch(e) {
-      Logger.error(LOG_PREFIX, "JSON message parse failed", {
-        errorMessage: error.message, errorCode: error.code
-      });
+      Logger.error("  [WebsocketConnectionManager] JSON message parse error " + e);
       message = {};
     }
 
     // Test for empty or invalid JSON
-    // FIXME yuck, maybe this should be reviewed. - prlanzarin
     if (Object.getOwnPropertyNames(message).length !== 0) {
       this.emitter.emit(C.WEBSOCKET_MESSAGE, message);
     }
   }
 
-  _onError (ws, error) {
-    Logger.debug(LOG_PREFIX, "WS error event", {
-      connectionId: ws.id || 'unknown',
-      errorMessage: error.message,
-      errorCode: error.code
-    });
-
-    const message = {
+  _onError (ws, err) {
+    Logger.debug('[WebsocketConnectionManager] Connection error [' + ws.id + ']', err);
+    let message = {
       id: 'error',
       type: ws.route,
       role: ws.role,
@@ -119,10 +109,9 @@ module.exports = class WebsocketConnectionManager {
     delete this.webSockets[ws.id];
   }
 
-  _onClose (ws) {
-    Logger.info(LOG_PREFIX, "WS connection closed", { connectionId: ws.id });
-
-    const message = {
+  _onClose (ws, err) {
+    Logger.info('[WebsocketConnectionManager] Closed connection on [' + ws.id + ']');
+    let message = {
       id: 'close',
       type: ws.route,
       role: ws.role,
@@ -136,23 +125,17 @@ module.exports = class WebsocketConnectionManager {
   }
 
   sendMessage (ws, json) {
+
     if (ws._closeCode === 1000) {
-      Logger.error(LOG_PREFIX, "WS is closed, won't send message", {
-        connectionId: ws ? ws.id : 'unknown',
-        requestId: json.id,
-      });
-      this._onError(ws, new Error('WS closed'));
+      Logger.error("[WebsocketConnectionManager] Websocket closed, not sending");
+      this._onError(ws, "[WebsocketConnectionManager] Error: not opened");
     }
 
     return ws.send(JSON.stringify(json), (error) => {
-      if (error) {
-        Logger.error(LOG_PREFIX, 'WS send failed', {
-          connectionId: ws ? ws.id : 'unknown',
-          errorMessage: error.message,
-          requestId: json.id,
-        });
+      if(error) {
+        Logger.error('[WebsocketConnectionManager] Websocket error "' + error + '" on message "' + json.id + '"');
 
-        return this._onError(ws, error);
+        this._onError(ws, error);
       }
     });
   }

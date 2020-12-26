@@ -462,7 +462,7 @@ module.exports = class Audio extends BaseProvider {
     const failOver = () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          return reject(errors.MEDIA_SERVER_REQUEST_TIMEOUT);
+          return reject(false)
         }, GLOBAL_AUDIO_CONNECTION_TIMEOUT);
       });
     };
@@ -558,20 +558,20 @@ module.exports = class Audio extends BaseProvider {
   }
 
   async start (sessionId, connectionId, sdpOffer, userId, userName) {
-    let mcsUserId;
     const isConnected = await this.mcs.waitForConnection();
 
     if (!isConnected) {
-      throw this._handleError(LOG_PREFIX, errors.MEDIA_SERVER_OFFLINE, "recv", userId);
+      throw errors.MEDIA_SERVER_OFFLINE;
     }
+
+    let mcsUserId;
 
     try {
       await this._waitForGlobalAudio();
     } catch (error) {
-      const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
       Logger.error(LOG_PREFIX, `New listen only session failed: GLOBAL_AUDIO unavailable`,
-        { ...this._getPartialLogMetadata(), error: normalizedError });
-      throw normalizedError;
+        { ...this._getPartialLogMetadata(), errorMessage: error.message, errorCode: error.code });
+      throw (this._handleError(LOG_PREFIX, error, "recv", connectionId));
     }
 
     try {

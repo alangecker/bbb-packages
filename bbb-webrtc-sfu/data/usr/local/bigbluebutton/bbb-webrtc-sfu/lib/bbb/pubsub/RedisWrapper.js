@@ -13,8 +13,6 @@ const Constants = require('../messages/Constants.js');
 const EventEmitter = require('events').EventEmitter;
 const Logger = require('../../utils/Logger');
 
-const LOG_PREFIX = "[RedisWrapper]";
-
 /* Public members */
 
 module.exports = class RedisWrapper extends EventEmitter {
@@ -47,8 +45,9 @@ module.exports = class RedisWrapper extends EventEmitter {
   }
 
   startSubscriber () {
+    let self = this;
     if (this.redisCli) {
-      Logger.warn(LOG_PREFIX, "Redis Client already exists.");
+      Logger.warn("[RedisWrapper] Redis Client already exists");
       return;
     }
 
@@ -66,32 +65,28 @@ module.exports = class RedisWrapper extends EventEmitter {
     });
 
     this.redisCli.on("error", (error) => {
-      Logger.error(LOG_PREFIX, "Redis client error event", {
-        errorMessage: error.message,
-      });
+      Logger.error("[RedisWrapper] Wrapper returned an error", error);
     });
 
-    this.redisCli.on("reconnecting", (event) => {
-      Logger.warn(LOG_PREFIX, "Redis client reconnecting", { event });
+    this.redisCli.on("reconnecting", (msg) => {
+      Logger.warn("[RedisWrapper] Wrapper instance is reconnecting", msg);
       //TODO
     });
 
     this.redisCli.on("psubscribe", (channel, count) => {
-      Logger.debug(LOG_PREFIX, `Redis client subscribed to channel ${channel}`);
+      Logger.info("[RedisWrapper] Successfully subscribed to pattern [" + channel + "]");
     });
 
     this.redisCli.on("pmessage", this._onMessage.bind(this));
 
     if (!this.subpattern) {
-      throw new Error("INVALID_CHANNEL");
+      throw new Error("[RedisWrapper] No subscriber pattern");
     }
 
     this.redisCli.psubscribe(this.subpattern);
 
-    Logger.debug(LOG_PREFIX, "Redis client started", {
-      host: options.host,
-      port: options.port,
-    });
+    Logger.info("[RedisWrapper] Started Redis client at " + options.host + ":" + options.port +
+        " for subscription pattern: " + this.subpattern);
   }
 
   stopRedis (callback) {

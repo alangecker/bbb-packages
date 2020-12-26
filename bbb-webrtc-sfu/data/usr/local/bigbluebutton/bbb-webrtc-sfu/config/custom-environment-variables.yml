@@ -29,11 +29,8 @@ freeswitch:
       __format: json
 
 log:
-  level: LOG_LEVEL
-  filename: LOG_FILENAME
-  stdout:
-    __name: LOG_STDOUT_ENABLED
-    __format: json
+    level: LOG_LEVEL
+    filename: LOG_FILENAME
 
 bbb-stream:
   image_name: STREAM_IMAGE_NAME
@@ -99,3 +96,7 @@ mediaThresholds:
   global: GLOBAL_MEDIA_THRESHOLD
   perRoom: ROOM_MEDIA_THRESHOLD
   perUser: USER_MEDIA_THRESHOLD
+
+addTimestampToAkkaMessages:
+  __name: AKKA_MSG_TIMESTAMP
+  __format: json
