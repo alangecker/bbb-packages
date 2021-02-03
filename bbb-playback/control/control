@@ -1,10 +1,10 @@
 Package: bbb-playback
-Version: 1:2.3.0-3
+Version: 1:2.3.0-5
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 3510
+Installed-Size: 3503
 Depends: bbb-record-core
 Section: default
 Priority: extra
