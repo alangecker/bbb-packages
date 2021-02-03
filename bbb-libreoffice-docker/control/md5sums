@@ -1,5 +1,5 @@
 09d42df07eb8ad1fb6da3471bd1f6a75  lib/systemd/system/bbb-libreoffice@.service
-862de30c6cd96efc5977b534cd923635  usr/share/bbb-libreoffice/docker/Dockerfile
+ebc34cde4bdfc7d3228afd810327504e  usr/share/bbb-libreoffice/docker/Dockerfile
 58d92a841b18b9dfdc4884953f95ee37  usr/share/bbb-libreoffice/docker/bbb-libreoffice-entrypoint.sh
 6631d53af4e2022b0e15d2006980662f  usr/share/bbb-libreoffice/libreoffice_container.sh
-6916b4c89f3a29521cd3657f42e0e5bd  usr/share/doc/bbb-libreoffice-docker/changelog.gz
+ae0defb4e0a981d3d5553c0c99b9b1f4  usr/share/doc/bbb-libreoffice-docker/changelog.gz
