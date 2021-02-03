@@ -373,6 +373,8 @@ case "$1" in
     # Ensure a default port range is setup
     if ! grep -v '^;' /etc/kurento/modules/kurento/BaseRtpEndpoint.conf.ini | grep -q minPort; then
       cat >> /etc/kurento/modules/kurento/BaseRtpEndpoint.conf.ini << HERE
+
+# Added by bbb-webrtc-sfu.postinst $(date)
 minPort=24577
 maxPort=32768
 HERE
