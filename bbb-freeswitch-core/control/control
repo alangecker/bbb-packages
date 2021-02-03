@@ -1,10 +1,10 @@
 Package: bbb-freeswitch-core
-Version: 2:2.3.0-7
+Version: 2:2.3.0-8
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 72293
+Installed-Size: 72302
 Depends: xmlstarlet,libfreetype6,libcurl4,libspeex1,libspeexdsp1,libopus0,libsndfile1,libopusenc0,libopusfile0,liblua5.2-0,libjbig0,libldns2,bbb-freeswitch-sounds
 Section: default
 Priority: extra

@@ -13,7 +13,7 @@ aad4bcf11cf42e92872c4a1b165b4fef  opt/freeswitch/bin/localinfo
 026c994a34c534afc8bc821ed3e35f18  opt/freeswitch/bin/sip-date
 9b9659171dfd426df664346e6d8e0ceb  opt/freeswitch/bin/sip-dig
 9c476158299014753c2a6cfaae52acb7  opt/freeswitch/bin/sip-options
-14ef35f3197673ba972e149bc9a9c27f  opt/freeswitch/bin/stunc
+fde5cc688536231e3fb3302ca2f5e475  opt/freeswitch/bin/stunc
 146648df69328324a03027f294f7a5e3  opt/freeswitch/bin/tone2wav
 6539241da9dfaad5374a946e760de24e  opt/freeswitch/etc/freeswitch/autoload_configs/abstraction.conf.xml
 726f3dab12059ab7b2dd639e5a9f67af  opt/freeswitch/etc/freeswitch/autoload_configs/acl.conf.xml
@@ -95,7 +95,7 @@ d4d8fa1af7726de51b885592a5d9d40f  opt/freeswitch/etc/freeswitch/autoload_configs
 b34cf1f458b83ed1c997bb5978683ef8  opt/freeswitch/etc/freeswitch/autoload_configs/unicall.conf.xml
 bcdd157bdbc0db5bff7f6e47320d1304  opt/freeswitch/etc/freeswitch/autoload_configs/unimrcp.conf.xml
 dca5a017ee6855ac9b0cd417e1d5d425  opt/freeswitch/etc/freeswitch/autoload_configs/v8.conf.xml
-f79150fa96d249b25f3587d2a2552906  opt/freeswitch/etc/freeswitch/autoload_configs/verto.conf.xml
+2f4ec3dab0c7d17d083e0135ec7b4843  opt/freeswitch/etc/freeswitch/autoload_configs/verto.conf.xml
 ccdbac0e57449e6799772b92cacc5986  opt/freeswitch/etc/freeswitch/autoload_configs/voicemail.conf.xml
 60470bc3e63b3a342e166204e7d46dd6  opt/freeswitch/etc/freeswitch/autoload_configs/voicemail_ivr.conf.xml
 4b08c2fb1b458eee3b2431e1ef0c9a6a  opt/freeswitch/etc/freeswitch/autoload_configs/vpx.conf.xml
@@ -333,7 +333,7 @@ f22c5d32f039d3833f2fecb9032ac8f5  opt/freeswitch/lib/freeswitch/mod/mod_sms.la
 fc30d668ecfc3fa0ac64d1851aa70dc3  opt/freeswitch/lib/freeswitch/mod/mod_sndfile.la
 29924a361f7450f8fcc800e81f7c8ef1  opt/freeswitch/lib/freeswitch/mod/mod_sndfile.so
 229f45d6b115a5ff1703b5cc5c1bcccc  opt/freeswitch/lib/freeswitch/mod/mod_sofia.la
-f1969791831b314891e62495f61024ff  opt/freeswitch/lib/freeswitch/mod/mod_sofia.so
+ceea2c547f1213d9c2290a979343f3ed  opt/freeswitch/lib/freeswitch/mod/mod_sofia.so
 66a8eb4465dfde31dfee50dd02cfe5c7  opt/freeswitch/lib/freeswitch/mod/mod_spandsp.la
 1bbfd5c628e76d5d1c230a1d0a96b29b  opt/freeswitch/lib/freeswitch/mod/mod_spandsp.so
 2287687984865c70735b9e9529a52143  opt/freeswitch/lib/freeswitch/mod/mod_syslog.la
@@ -358,9 +358,9 @@ b7ff2f1ac3cd7dd99957ec9a462a076e  opt/freeswitch/lib/libfreeswitch.la
 d2a30f48ec9686ab1dc6373a54b9cc9d  opt/freeswitch/lib/libsofia-sip-ua-glib.a
 8d55f1f2f534aad48dff1e01289f7c14  opt/freeswitch/lib/libsofia-sip-ua-glib.la
 b0706f7ef839d6cd7aa6c65cac785caa  opt/freeswitch/lib/libsofia-sip-ua-glib.so.3.0.0
-d95e679eb07e772a018a52b9d5b7a908  opt/freeswitch/lib/libsofia-sip-ua.a
+88991c07abb9613308c92caf40429259  opt/freeswitch/lib/libsofia-sip-ua.a
 704d039f1ccc943f59d88c9c1cf3cb63  opt/freeswitch/lib/libsofia-sip-ua.la
-a30f2ffebe7c3497524349881bcfc59e  opt/freeswitch/lib/libsofia-sip-ua.so.0.6.0
+956b384fca870fe0e651ce15510b574d  opt/freeswitch/lib/libsofia-sip-ua.so.0.6.0
 d75fcefcd92085810f82e4b31a3895ea  opt/freeswitch/lib/libspandsp.a
 710231dfc0d339c55d5032d67ac1f233  opt/freeswitch/lib/libspandsp.la
 d275ef578810bbc7b21b9a98bec9c94a  opt/freeswitch/lib/libspandsp.so.3.0.0
@@ -433,5 +433,5 @@ f11e41bdc8a118ea03b32fa4d9b2eb5c  opt/freeswitch/share/freeswitch/htdocs/slimtes
 d210b2c08b6dbf35ba6099fcbbf49b8b  opt/freeswitch/var/lib/freeswitch/images/default-avatar.png
 e916e54794a0ac7593903c343b99b0db  opt/freeswitch/var/lib/freeswitch/images/default-mute.png
 b32ddf6c8864c221c101275269a44e2a  usr/local/bin/fs_clibbb
-e5e691e05bac8179a6587825b587063c  usr/share/doc/bbb-freeswitch-core/changelog.gz
+6b1a3ce431405c003dd0e77f22782446  usr/share/doc/bbb-freeswitch-core/changelog.gz
 85eace8f35ade18104b9ac9630dcc4fe  var/freeswitch/meetings/readme.txt

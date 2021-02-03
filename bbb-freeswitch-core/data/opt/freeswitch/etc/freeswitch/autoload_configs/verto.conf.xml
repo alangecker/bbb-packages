@@ -11,7 +11,7 @@
   </settings>
 
   <profiles>
-    <profile name="public-v4">
+    <profile name="default-v4">
       <param name="bind-local" value="$${local_ip_v4}:8081"/>
       <param name="bind-local" value="$${local_ip_v4}:8082" secure="true"/>
       <param name="force-register-domain" value="$${domain}"/>
@@ -23,10 +23,10 @@
       <param name="mcast-ip" value="224.1.1.1"/>
       <param name="mcast-port" value="1337"/>
       <param name="rtp-ip" value="$${local_ip_v4}"/>
-      <!--  <param name="ext-rtp-ip" value=""/> -->
+      <param name="ext-rtp-ip" value="$${external_rtp_ip}"/>
       <param name="local-network" value="localnet.auto"/>
-      <param name="outbound-codec-string" value="opus,vp8"/>
-      <param name="inbound-codec-string" value="opus,vp8"/>
+      <param name="outbound-codec-string" value="opus,h264,vp8"/>
+      <param name="inbound-codec-string" value="opus,h264,vp8"/>
 
       <param name="apply-candidate-acl" value="localnet.auto"/>
       <param name="apply-candidate-acl" value="wan_v4.auto"/>
@@ -36,7 +36,7 @@
       
     </profile>
 
-    <profile name="public-v6">
+    <profile name="default-v6">
       <param name="bind-local" value="[$${local_ip_v6}]:8081"/>
       <param name="bind-local" value="[$${local_ip_v6}]:8082" secure="true"/>
       <param name="force-register-domain" value="$${domain}"/>
@@ -47,8 +47,8 @@
       <param name="blind-reg" value="false"/>
       <param name="rtp-ip" value="$${local_ip_v6}"/>
       <!--  <param name="ext-rtp-ip" value=""/> -->
-      <param name="outbound-codec-string" value="opus,vp8"/>
-      <param name="inbound-codec-string" value="opus,vp8"/>
+      <param name="outbound-codec-string" value="opus,h264,vp8"/>
+      <param name="inbound-codec-string" value="opus,h264,vp8"/>
 
       <param name="apply-candidate-acl" value="wan_v6.auto"/>
       <param name="apply-candidate-acl" value="rfc1918.auto"/>
@@ -60,4 +60,3 @@
     </profile>
   </profiles>
 </configuration>
-
