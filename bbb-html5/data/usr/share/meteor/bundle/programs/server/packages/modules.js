@@ -507,7 +507,7 @@ module.useNode();
                                                                                                     //
 module.exports = {
   "name": "axios",
-  "version": "0.19.2",
+  "version": "0.21.1",
   "main": "index.js"
 };
 

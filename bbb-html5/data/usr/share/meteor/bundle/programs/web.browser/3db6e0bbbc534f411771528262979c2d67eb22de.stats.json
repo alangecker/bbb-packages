@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3043283,
-  "totalMinifiedGzipBytes": 780006,
+  "totalMinifiedBytes": 3055763,
+  "totalMinifiedGzipBytes": 782851,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
@@ -1796,7 +1796,7 @@
       {}
     ],
     "app/app.js": [
-      1185976,
+      1198456,
       {
         "imports": {
           "ui": {
@@ -1884,7 +1884,7 @@
                 },
                 "component.jsx": 1253,
                 "container.jsx": 1155,
-                "service.js": 8757,
+                "service.js": 8891,
                 "styles.scss": 56,
                 "styles.scss.js": 2494
               },
@@ -1894,10 +1894,10 @@
                     "message": {
                       "component.jsx": 2871
                     },
-                    "component.jsx": 4214,
+                    "component.jsx": 4279,
                     "container.jsx": 609,
                     "styles.scss": 56,
-                    "styles.scss.js": 4163
+                    "styles.scss.js": 4188
                   },
                   "component.jsx": 4769,
                   "container.jsx": 573,
@@ -1920,9 +1920,9 @@
                     "container.jsx": 1069
                   },
                   "component.jsx": 5377,
-                  "container.jsx": 729,
+                  "container.jsx": 790,
                   "styles.scss": 56,
-                  "styles.scss.js": 4517
+                  "styles.scss.js": 4527
                 },
                 "chat-dropdown": {
                   "component.jsx": 3259,
@@ -1977,7 +1977,7 @@
                   "container.jsx": 631
                 },
                 "presentation-uploader": {
-                  "component.jsx": 19641,
+                  "component.jsx": 19612,
                   "container.jsx": 1288,
                   "service.js": 3440,
                   "styles.scss": 56,
@@ -1989,9 +1989,9 @@
                 "slide": {
                   "component.jsx": 545
                 },
-                "component.jsx": 14254,
+                "component.jsx": 14302,
                 "container.jsx": 2391,
-                "service.js": 2609,
+                "service.js": 3194,
                 "styles.scss": 56,
                 "styles.scss.js": 3880
               },
@@ -2016,7 +2016,7 @@
                   "styles.scss.js": 10497
                 },
                 "actions-dropdown": {
-                  "component.jsx": 5503,
+                  "component.jsx": 6122,
                   "container.jsx": 531
                 },
                 "desktop-share": {
@@ -2026,12 +2026,12 @@
                   "component.jsx": 1109
                 },
                 "quick-poll-dropdown": {
-                  "component.jsx": 2959,
+                  "component.jsx": 3103,
                   "container.jsx": 366
                 },
                 "component.jsx": 1948,
                 "container.jsx": 1982,
-                "service.js": 1717,
+                "service.js": 1763,
                 "styles.scss": 56,
                 "styles.scss.js": 7077
               },
@@ -2063,7 +2063,7 @@
               "settings": {
                 "submenus": {
                   "application": {
-                    "component.jsx": 6634
+                    "component.jsx": 7934
                   },
                   "base": {
                     "component.jsx": 356
@@ -2077,7 +2077,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4740
                 },
-                "component.jsx": 5034,
+                "component.jsx": 5075,
                 "container.jsx": 524,
                 "service.js": 547,
                 "styles.scss": 56,
@@ -2086,10 +2086,10 @@
               "video-provider": {
                 "video-list": {
                   "video-list-item": {
-                    "component.jsx": 5063,
+                    "component.jsx": 5099,
                     "container.jsx": 340
                   },
-                  "component.jsx": 7299,
+                  "component.jsx": 7346,
                   "container.jsx": 654,
                   "styles.scss": 56,
                   "styles.scss.js": 5918
@@ -2101,14 +2101,14 @@
                   "styles.scss.js": 8357
                 },
                 "video-button": {
-                  "component.jsx": 1702,
+                  "component.jsx": 1693,
                   "container.jsx": 934,
                   "styles.scss": 56,
                   "styles.scss.js": 7844
                 },
                 "component.jsx": 14695,
                 "container.jsx": 717,
-                "service.js": 13147
+                "service.js": 13244
               },
               "whiteboard": {
                 "annotation-factory": {
@@ -2134,7 +2134,7 @@
                     "component.jsx": 2707
                   },
                   "poll": {
-                    "component.jsx": 7423,
+                    "component.jsx": 7440,
                     "styles.scss": 56,
                     "styles.scss.js": 345
                   },
@@ -2153,7 +2153,7 @@
                 },
                 "whiteboard-overlay": {
                   "cursor-listener": {
-                    "component.jsx": 3222
+                    "component.jsx": 3269
                   },
                   "pencil-draw-listener": {
                     "component.jsx": 4873
@@ -2162,7 +2162,7 @@
                     "component.jsx": 5526
                   },
                   "text-draw-listener": {
-                    "component.jsx": 8149
+                    "component.jsx": 8351
                   },
                   "component.jsx": 3965,
                   "container.jsx": 958,
@@ -2243,8 +2243,8 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4436
                 },
-                "container.jsx": 3511,
-                "service.js": 2239
+                "container.jsx": 3643,
+                "service.js": 2371
               },
               "breakout-room": {
                 "breakout-remaining-time": {
@@ -2303,12 +2303,12 @@
                   "peertube.jsx": 2551
                 },
                 "modal": {
-                  "component.jsx": 2732,
+                  "component.jsx": 2709,
                   "container.jsx": 459,
                   "styles.scss": 56,
                   "styles.scss.js": 7013
                 },
-                "component.jsx": 7493,
+                "component.jsx": 7466,
                 "container.jsx": 490,
                 "service.js": 1183,
                 "styles.scss": 56,
@@ -2380,6 +2380,12 @@
                   "styles.scss": 56,
                   "styles.scss.js": 2034
                 },
+                "random-user": {
+                  "component.jsx": 2350,
+                  "container.jsx": 1094,
+                  "styles.scss": 56,
+                  "styles.scss.js": 1246
+                },
                 "remove-user": {
                   "component.jsx": 2042,
                   "styles.scss": 56,
@@ -2424,9 +2430,9 @@
                   "styles.scss": 56,
                   "styles.scss.js": 3842
                 },
-                "component.jsx": 7420,
+                "component.jsx": 7495,
                 "container.jsx": 1149,
-                "service.js": 1325,
+                "service.js": 1423,
                 "styles.scss": 56,
                 "styles.scss.js": 5737
               },
@@ -2463,11 +2469,11 @@
                 "styles.scss.js": 568
               },
               "app": {
-                "component.jsx": 7786,
-                "container.jsx": 3209,
+                "component.jsx": 7956,
+                "container.jsx": 3310,
                 "service.js": 738,
                 "styles.scss": 56,
-                "styles.scss.js": 9663
+                "styles.scss.js": 9692
               },
               "authenticated-handler": {
                 "component.jsx": 1516
@@ -2498,8 +2504,9 @@
                 "styles.scss.js": 2854
               },
               "end-meeting-confirmation": {
-                "component.jsx": 1484,
-                "container.jsx": 687,
+                "component.jsx": 1612,
+                "container.jsx": 784,
+                "service.js": 457,
                 "styles.scss": 56,
                 "styles.scss.js": 5042
               },
@@ -2526,7 +2533,7 @@
               },
               "layout": {
                 "context.jsx": 3477,
-                "layout-manager.jsx": 6372
+                "layout-manager.jsx": 6468
               },
               "loading-screen": {
                 "component.jsx": 421,
@@ -2580,7 +2587,7 @@
                 "styles.scss.js": 7005
               },
               "shortcut-help": {
-                "component.jsx": 4180,
+                "component.jsx": 4292,
                 "service.jsx": 823,
                 "styles.scss": 56,
                 "styles.scss.js": 819
@@ -2622,9 +2629,9 @@
                 "styles.scss.js": 684
               },
               "video-preview": {
-                "component.jsx": 12332,
+                "component.jsx": 13296,
                 "container.jsx": 1406,
-                "service.js": 188,
+                "service.js": 391,
                 "styles.scss": 56,
                 "styles.scss.js": 8112
               }
@@ -2635,7 +2642,7 @@
               },
               "audio-manager": {
                 "error-codes.js": 99,
-                "index.js": 11023
+                "index.js": 11063
               },
               "auth": {
                 "index.js": 5104
@@ -2674,7 +2681,7 @@
                 "bridge": {
                   "base.js": 864,
                   "kurento.js": 4588,
-                  "sip.js": 16755
+                  "sip.js": 18353
                 }
               }
             },
@@ -2771,7 +2778,7 @@
           "startup": {
             "client": {
               "base.jsx": 7427,
-              "intl.jsx": 2454,
+              "intl.jsx": 2223,
               "logger.js": 1852
             }
           },
