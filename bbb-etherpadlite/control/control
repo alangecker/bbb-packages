@@ -1,0 +1,12 @@
+Package: bbb-etherpadlite
+Version: 1:2.3.0-3
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 73094
+Depends: yq,tidy
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: The EtherPad Lite components for BigBlueButton
