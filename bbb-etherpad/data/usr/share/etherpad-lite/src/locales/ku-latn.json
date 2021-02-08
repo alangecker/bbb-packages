@@ -4,9 +4,9 @@
 			"Bikarhêner",
 			"Dilyaramude",
 			"George Animal",
+			"Ghybu",
 			"Gomada",
 			"Mehk63",
-			"Ghybu",
 			"MikaelF"
 		]
 	},
@@ -35,6 +35,7 @@
 	"pad.settings.rtlcheck": "Bila naverok ji raste ber bi çepe be xwendin?",
 	"pad.settings.fontType": "Tîpa nivîsê:",
 	"pad.settings.language": "Ziman:",
+	"pad.settings.about": "Derbar",
 	"pad.importExport.importSuccessful": "Biserketî!",
 	"pad.importExport.exportetherpad": "Etherpad",
 	"pad.importExport.exporthtml": "HTML",
@@ -75,8 +76,5 @@
 	"timeslider.month.december": "kanûna pêşîn",
 	"pad.userlist.entername": "Navê xwe têkeve",
 	"pad.userlist.unnamed": "nenavkirî",
-	"pad.userlist.guest": "Mêvan",
-	"pad.userlist.deny": "Red bike",
-	"pad.userlist.approve": "Bipejirîne",
 	"pad.impexp.copypaste": "Ji kerema xwe re jê bigre û pê ve deyne (Ctrl+c, Ctrl+v)"
 }

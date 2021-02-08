@@ -56,6 +56,13 @@
  *    "password": "${PASSW}"  // if PASSW is not defined would result in password === null
  *    "password": "${PASSW:}" // if PASSW is not defined would result in password === ''
  *
+ *    If you want to use an empty value (null) as default value for a variable,
+ *    simply do not set it, without putting any colons: "${ABIWORD}".
+ *
+ * 3) if you want to use newlines in the default value of a string parameter,
+ *    use "\n" as usual.
+ *
+ *    "defaultPadText" : "${DEFAULT_PAD_TEXT}Line 1\nLine 2"
  */
 {
   /*
@@ -80,10 +87,43 @@
    * - "colibris": the new experimental skin (since Etherpad 1.8), candidate to
    *               become the default in Etherpad 2.0
    */
-  "skinName": "no-skin",
+  "skinName": "bigbluebutton",
 
   /*
-   * IP and port which etherpad should bind at
+   * Skin Variants
+   *
+   * Use the UI skin variants builder at /p/test#skinvariantsbuilder
+   *
+   * For the colibris skin only, you can choose how to render the three main
+   * containers:
+   * - toolbar (top menu with icons)
+   * - editor (containing the text of the pad)
+   * - background (area outside of editor, mostly visible when using page style)
+   *
+   * For each of the 3 containers you can choose 4 color combinations:
+   * super-light, light, dark, super-dark.
+   *
+   * For example, to make the toolbar dark, you will include "dark-toolbar" into
+   * skinVariants.
+   *
+   * You can provide multiple skin variants separated by spaces. Default
+   * skinVariant is "super-light-toolbar super-light-editor light-background".
+   *
+   * For the editor container, you can also make it full width by adding
+   * "full-width-editor" variant (by default editor is rendered as a page, with
+   * a max-width of 900px).
+   */
+  "skinVariants": "super-light-toolbar super-light-editor light-background",
+
+  /*
+   * IP and port which Etherpad should bind at.
+   *
+   * Binding to a Unix socket is also supported: just use an empty string for
+   * the ip, and put the full path to the socket in the port parameter.
+   *
+   * EXAMPLE USING UNIX SOCKET:
+   *    "ip": "",                             // <-- has to be an empty string
+   *    "port" : "/somepath/etherpad.socket", // <-- path to a Unix socket
    */
   "ip": "127.0.0.1",
   "port": 9001,
@@ -140,18 +180,6 @@
    *
    * See: https://github.com/ether/etherpad-lite/wiki/How-to-use-Etherpad-Lite-with-MySQL
    */
-
-  /*
-  "dbType" : "mysql",
-  "dbSettings" : {
-    "user":     "etherpaduser",
-    "host":     "localhost",
-    "port":     3306,
-    "password": "PASSWORD",
-    "database": "etherpad_lite_db",
-    "charset":  "utf8mb4"
-  },
-  */
 
   /*
   "dbType" : "redis",
@@ -236,12 +264,6 @@
   "editOnly": false,
 
   /*
-   * If set to true, those users who have a valid session will automatically be
-   * granted access to password protected pads.
-   */
-  "sessionNoPassword": false,
-
-  /*
    * If true, all css & js will be minified before sending to the client.
    *
    * This will improve the loading performance massively, but makes it difficult
@@ -272,7 +294,7 @@
    * LibreOffice can be used in lieu of Abiword to export pads.
    * Setting it to null disables LibreOffice exporting.
    */
-  "soffice": "/usr/bin/soffice",
+  "soffice": null,
 
   /*
    * Path to the Tidy executable.
@@ -312,9 +334,22 @@
   "trustProxy": true,
 
   /*
-   * When embedding the pads in an iframe set this to true.
+   * Settings controlling the session cookie issued by Etherpad.
    */
-  "forceSameSiteNone": true,
+  "cookie": {
+    /*
+     * Value of the SameSite cookie property. "Lax" is recommended unless
+     * Etherpad will be embedded in an iframe from another site, in which case
+     * this must be set to "None". Note: "None" will not work (the browser will
+     * not send the cookie to Etherpad) unless https is used to access Etherpad
+     * (either directly or via a reverse proxy with "trustProxy" set to true).
+     *
+     * "Strict" is not recommended because it has few security benefits but
+     * significant usability drawbacks vs. "Lax". See
+     * https://stackoverflow.com/q/41841880 for discussion.
+     */
+    "sameSite": "None"
+  },
 
   /*
    * Privacy: disable IP logging
@@ -371,10 +406,22 @@
   },
 
   /*
-   * Users for basic authentication.
+   * User accounts. These accounts are used by:
+   *   - default HTTP basic authentication if no plugin handles authentication
+   *   - some but not all authentication plugins
+   *   - some but not all authorization plugins
    *
-   * is_admin = true gives access to /admin.
-   * If you do not uncomment this, /admin will not be available!
+   * User properties:
+   *   - password: The user's password. Some authentication plugins will ignore
+   *     this.
+   *   - is_admin: true gives access to /admin. Defaults to false. If you do not
+   *     uncomment this, /admin will not be available!
+   *   - readOnly: If true, this user will not be able to create new pads or
+   *     modify existing pads. Defaults to false.
+   *   - canCreate: If this is true and readOnly is false, this user can create
+   *     new pads. Defaults to true.
+   *
+   * Authentication and authorization plugins may define additional properties.
    *
    * WARNING: passwords should not be stored in plaintext in this file.
    *          If you want to mitigate this, please install ep_hash_auth and
@@ -433,7 +480,7 @@
 
   /*
    * Redis publisher plugin configuration.
-   * npm i git+https://git@github.com/pedrobmarin/ep_redis_publisher.git
+   * npm i git+https://git@github.com/mconf/ep_redis_publisher.git
    */
 
   "ep_redis_publisher": {
@@ -442,12 +489,46 @@
   },
 
   /*
-  "ep_redis_publisher": {
-    "host": "localhost",
-    "port": 6379,
-    "password": "PASSWORD"
+   * From Etherpad 1.8.3 onwards, import and export of pads is always rate
+   * limited.
+   *
+   * The default is to allow at most 10 requests per IP in a 90 seconds window.
+   * After that the import/export request is rejected.
+   *
+   * See https://github.com/nfriedly/express-rate-limit for more options
+   */
+  "importExportRateLimiting": {
+    // duration of the rate limit window (milliseconds)
+    "windowMs": 90000,
+
+    // maximum number of requests per IP to allow during the rate limit window
+    "max": 10
   },
-  */
+
+  /*
+   * From Etherpad 1.8.3 onwards, the maximum allowed size for a single imported
+   * file is always bounded.
+   *
+   * File size is specified in bytes. Default is 50 MB.
+   */
+  "importMaxFileSize": 52428800, // 50 * 1024 * 1024
+
+  /*
+   * From Etherpad 1.9.0 onwards, when Etherpad is in production mode commits from individual users are rate limited
+   *
+   * The default is to allow at most 10 changes per IP in a 1 second window.
+   * After that the change is rejected.
+   *
+   * See https://github.com/animir/node-rate-limiter-flexible/wiki/Overall-example#websocket-single-connection-prevent-flooding for more options
+   */
+  "commitRateLimiting": {
+    // duration of the rate limit window (seconds)
+    "duration": 1,
+
+    // maximum number of chanes per IP to allow during the rate limit window
+    "points": 10
+  },
+
 
   /*
    * Toolbar buttons configuration.
@@ -527,5 +608,9 @@
       */
 
       ]
-    } // logconfig
+    }, // logconfig
+
+  /* Override any strings found in locale directories */
+  "customLocaleStrings": {}
 }
+

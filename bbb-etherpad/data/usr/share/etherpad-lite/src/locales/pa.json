@@ -3,9 +3,9 @@
 		"authors": [
 			"Aalam",
 			"Babanwalia",
-			"ਪ੍ਰਚਾਰਕ",
 			"Tow",
-			"ਗੁਰਪ੍ਰੀਤ ਹੁੰਦਲ"
+			"ਗੁਰਪ੍ਰੀਤ ਹੁੰਦਲ",
+			"ਪ੍ਰਚਾਰਕ"
 		]
 	},
 	"index.newPad": "ਨਵਾਂ ਪੈਡ",
@@ -31,9 +31,7 @@
 	"pad.colorpicker.cancel": "ਰੱਦ ਕਰੋ",
 	"pad.loading": "…ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
 	"pad.noCookie": "ਕੂਕੀਜ਼ ਨਹੀਂ ਲੱਭੀਅਾਂ। ਕਿਰਪਾ ਕਰਕੇ ਬ੍ਰਾੳੂਜ਼ਰ ਵਿੱਚ ਕੂਕੀਜ਼ ਲਾਗੂ ਕਰੋ।",
-	"pad.passwordRequired": "ਇਸ ਪੈਡ ਤੱਕ ਅਪੜਨ ਲਈ ਤੁਹਾਨੂੰ ਇੱਕ ਲੰਘ-ਸ਼ਬਦ ਦੀ ਲੋੜ ਹੈ",
 	"pad.permissionDenied": "ਇਹ ਪੈਡ ਵਰਤਨ ਲਈ ਤੁਹਾਨੂੰ ਅਧਿਕਾਰ ਨਹੀਂ ਹਨ",
-	"pad.wrongPassword": "ਤੁਹਾਡਾ ਲੰਘ-ਸ਼ਬਦ ਗਲਤ ਸੀ",
 	"pad.settings.padSettings": "ਪੈਡ ਸੈਟਿੰਗ",
 	"pad.settings.myView": "ਮੇਰੀ ਝਲਕ",
 	"pad.settings.stickychat": "ਹਮੇਸ਼ਾ ਸਕਰੀਨ ਉੱਤੇ ਗੱਲ ਕਰੋ",
@@ -43,8 +41,6 @@
 	"pad.settings.rtlcheck": "ਸਮੱਗਰੀ ਸੱਜੇ ਤੋਂ ਖੱਬੇ ਪੜ੍ਹਨੀ ਹੈ?",
 	"pad.settings.fontType": "ਫੋਂਟ ਕਿਸਮ:",
 	"pad.settings.fontType.normal": "ਸਧਾਰਨ",
-	"pad.settings.fontType.monospaced": "ਮੋਨੋਸਪੇਸ",
-	"pad.settings.globalView": "ਗਲੋਬਲ ਝਲਕ",
 	"pad.settings.language": "ਭਾਸ਼ਾ:",
 	"pad.importExport.import_export": "ਇੰਪੋਰਟ/ਐਕਸਪੋਰਟ",
 	"pad.importExport.import": "ਕੋਈ ਵੀ ਟੈਕਸਟ ਫਾਇਲ ਜਾਂ ਦਸਤਾਵੇਜ਼ ਅੱਪਲੋਡ ਕਰੋ",
@@ -117,9 +113,6 @@
 	"pad.savedrevs.timeslider": "ਤੁਸੀੰ ਸਾੰਭੀਆੰ ਹੋਈਆੰ ਵਰਜਨਾੰ ਸਮਾੰਸਲਾਈਡਰ ਤੇ ਜਾ ਕੇ ਵੇਖ ਸਕਦੇ ਹੋ",
 	"pad.userlist.entername": "ਆਪਣਾ ਨਾਂ ਦਿਉ",
 	"pad.userlist.unnamed": "ਬੇਨਾਮ",
-	"pad.userlist.guest": "ਮਹਿਮਾਨ",
-	"pad.userlist.deny": "ਪਾਬੰਦੀ",
-	"pad.userlist.approve": "ਮਨਜ਼ੂਰ",
 	"pad.editbar.clearcolors": "ਪੂਰੇ ਦਸਾਤਵੇਜ਼ ਉੱਤੇ ਪਰਮਾਣਕਿਤਾ ਰੰਗ ਸਾਫ਼ ਕਰਨੇ ਹਨ?",
 	"pad.impexp.importbutton": "ਹੁਣੇ ਇੰਪੋਰਟ ਕਰੋ",
 	"pad.impexp.importing": "...ਇੰਪੋਰਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",

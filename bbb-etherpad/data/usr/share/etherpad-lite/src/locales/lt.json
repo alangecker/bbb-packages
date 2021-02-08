@@ -2,11 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Eitvys200",
-			"Mantak111",
 			"I-svetaines",
-			"Zygimantus",
+			"Mantak111",
+			"Naktis",
 			"Vogone",
-			"Naktis"
+			"Zygimantus"
 		]
 	},
 	"index.newPad": "Naujas bloknotas",
@@ -32,9 +32,7 @@
 	"pad.colorpicker.cancel": "Atšaukti",
 	"pad.loading": "Įkraunama...",
 	"pad.noCookie": "Slapuko nepavyko rasti. Prašome leisti slapukus interneto naršyklėje!",
-	"pad.passwordRequired": "Jums reikia slaptažodžio kad galėtumėte matyti šį bloknotą",
 	"pad.permissionDenied": "Jūs neturite leidimo patekti į šį bloknotą",
-	"pad.wrongPassword": "Jūsų slaptažodis neteisingas",
 	"pad.settings.padSettings": "Bloknoto nustatymai",
 	"pad.settings.myView": "Mano Vaizdas",
 	"pad.settings.stickychat": "Pokalbiai visada viršuje",
@@ -44,7 +42,6 @@
 	"pad.settings.rtlcheck": "Skaityti turinį iš dešinės į kairę?",
 	"pad.settings.fontType": "Šrifto tipas:",
 	"pad.settings.fontType.normal": "Normalus",
-	"pad.settings.globalView": "Bendras Vaizdas",
 	"pad.settings.language": "Kalba:",
 	"pad.importExport.import_export": "Importuoti/Eksportuoti",
 	"pad.importExport.import": "Įkelkite bet kokį tekstinį failą arba dokumentą",
@@ -121,9 +118,6 @@
 	"pad.savedrevs.timeslider": "Galite peržiūrėti išsaugotas peržiūras apsilankydami laiko slinkiklyje",
 	"pad.userlist.entername": "Įveskite savo vardą",
 	"pad.userlist.unnamed": "bevardis",
-	"pad.userlist.guest": "Svečias",
-	"pad.userlist.deny": "Neigti",
-	"pad.userlist.approve": "Patvirtinti",
 	"pad.editbar.clearcolors": "Išvalyti autorystės spalvas visame dokumente?",
 	"pad.impexp.importbutton": "Importuoti dabar",
 	"pad.impexp.importing": "Importuojama...",

@@ -1,5 +1,7 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": []
+	},
 	"index.newPad": "Novi Pad",
 	"index.createOpenPad": "ili napravite/otvorite pad sledećeg naziva:",
 	"pad.toolbar.bold.title": "Podebljano (Ctrl+B)",
@@ -23,9 +25,7 @@
 	"pad.colorpicker.cancel": "Otkaži",
 	"pad.loading": "Učitavam…",
 	"pad.noCookie": "Kolačić nije pronađen. Molimo da uključite kolačiće u vašem pregledavaču!",
-	"pad.passwordRequired": "Trebate imati lozinku kako biste pristupili ovom padu",
 	"pad.permissionDenied": "Nemate dozvolu da pristupite ovom padu",
-	"pad.wrongPassword": "Vaša lozinka nije ispravna",
 	"pad.settings.padSettings": "Podešavanja pada",
 	"pad.settings.myView": "Moj prikaz",
 	"pad.settings.stickychat": "Ćaskanje uvek na ekranu",
@@ -35,8 +35,6 @@
 	"pad.settings.rtlcheck": "Čitaj sadržaj s desna na levo?",
 	"pad.settings.fontType": "Vrsta fonta:",
 	"pad.settings.fontType.normal": "Normalno",
-	"pad.settings.fontType.monospaced": "Monospace",
-	"pad.settings.globalView": "Globalni prikaz",
 	"pad.settings.language": "Jezik:",
 	"pad.importExport.import_export": "Uvoz/izvoz",
 	"pad.importExport.import": "Otpremite bilo koju tekstualnu datoteku ili dokument",
@@ -113,9 +111,6 @@
 	"pad.savedrevs.timeslider": "Možete videti sačuvane izmene koristeći se vremenskom linijom",
 	"pad.userlist.entername": "Upišite svoje ime",
 	"pad.userlist.unnamed": "neimenovan",
-	"pad.userlist.guest": "Gost",
-	"pad.userlist.deny": "Odbij",
-	"pad.userlist.approve": "Odobri",
 	"pad.editbar.clearcolors": "Očisti autorske boje za celi dokument?",
 	"pad.impexp.importbutton": "Uvezi odmah",
 	"pad.impexp.importing": "Uvozim...",
