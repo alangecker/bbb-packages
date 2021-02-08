@@ -52,5 +52,5 @@ export NODE_ENV=production
 export NODE_VERSION=node-v12.16.1-linux-x64
 export SERVER_WEBSOCKET_COMPRESSION=0
 export BIND_IP=127.0.0.1
-PORT=$PORT /usr/share/$NODE_VERSION/bin/node main.js INFO_INSTANCE_ID=$INSTANCE_ID
+PORT=$PORT /usr/share/$NODE_VERSION/bin/node --max-old-space-size=2048 --max_semi_space_size=128 main.js INFO_INSTANCE_ID=$INSTANCE_ID
 
