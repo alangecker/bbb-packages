@@ -1,6 +1,8 @@
 [Unit]
 Description=BigBlueButton Apps (Akka)
 Requires=network.target
+Wants=redis-server.service
+After=redis-server.service
 
 [Service]
 Type=simple
@@ -21,3 +23,4 @@ LimitNOFILE=1024
 
 [Install]
 WantedBy=multi-user.target
+
