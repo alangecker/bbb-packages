@@ -1,22 +1,30 @@
 #!/bin/bash
-# Start parallel nodejs processes for bbb-html5. Number varies on restrictions file
+# Start parallel nodejs processes for bbb-html5. Number varies on restrictions file bbb-html5-with-roles.conf
 
-source /usr/share/meteor/bundle/bbb-html5.conf
+source /usr/share/meteor/bundle/bbb-html5-with-roles.conf
 
-NEW_INSTANCE_COUNT=1 # default safe value
+MIN_NUMBER_OF_BACKEND_PROCESSES=1
+MAX_NUMBER_OF_BACKEND_PROCESSES=4
+
+MIN_NUMBER_OF_FRONTEND_PROCESSES=0 # 0 means each nodejs process handles both front and backend roles
+MAX_NUMBER_OF_FRONTEND_PROCESSES=8
 
 
-if [ $DESIRED_INSTANCE_COUNT -le $INSTANCE_MAX ]; then
-  if [ $DESIRED_INSTANCE_COUNT -ge $INSTANCE_MIN ]; then
-    NEW_INSTANCE_COUNT=$DESIRED_INSTANCE_COUNT
-  else
-    NEW_INSTANCE_COUNT=$INSTANCE_MIN
-  fi
-else
-  NEW_INSTANCE_COUNT=$INSTANCE_MAX
+# Start backend nodejs processes
+if ((NUMBER_OF_BACKEND_NODEJS_PROCESSES >= MIN_NUMBER_OF_BACKEND_PROCESSES && NUMBER_OF_BACKEND_NODEJS_PROCESSES <= MAX_NUMBER_OF_BACKEND_PROCESSES)); then
+  for ((i = 1 ; i <= NUMBER_OF_BACKEND_NODEJS_PROCESSES ; i++)); do
+    systemctl start bbb-html5-backend@$i
+  done
 fi
 
-for ((i = 1 ; i <= $NEW_INSTANCE_COUNT ; i++)); do
-  systemctl start bbb-html5-worker@$i
-done
+
+# Start frontend nodejs processes
+if ((NUMBER_OF_FRONTEND_NODEJS_PROCESSES >= MIN_NUMBER_OF_FRONTEND_PROCESSES && NUMBER_OF_FRONTEND_NODEJS_PROCESSES <= MAX_NUMBER_OF_FRONTEND_PROCESSES)); then
+  if ((NUMBER_OF_FRONTEND_NODEJS_PROCESSES == 0)); then
+    echo 'Need to modify /etc/bigbluebutton/nginx/bbb-html5.nginx to ensure backend IPs are used'
+  fi
+  for ((i = 1 ; i <= NUMBER_OF_FRONTEND_NODEJS_PROCESSES ; i++)); do
+    systemctl start bbb-html5-frontend@$i
+  done
+fi
 

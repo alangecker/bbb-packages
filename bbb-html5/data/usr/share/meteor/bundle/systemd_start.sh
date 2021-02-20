@@ -1,9 +1,7 @@
 #!/bin/bash -e
-#Allow to run outside of directory
-cd `dirname $0`
 
-# change to start meteor in production (https) or development (http) mode
-ENVIRONMENT_TYPE=production
+#Allow to run outside of directory
+cd $(dirname $0)
 
 echo "Starting mongoDB"
 
@@ -11,7 +9,7 @@ echo "Starting mongoDB"
 MONGO_OK=0
 
 while [ "$MONGO_OK" = "0" ]; do
-    MONGO_OK=`netstat -lan | grep 127.0.1.1 | grep 27017 &> /dev/null && echo 1 || echo 0`
+    MONGO_OK=$(netstat -lan | grep 127.0.1.1 | grep 27017 &> /dev/null && echo 1 || echo 0)
     sleep 1;
 done;
 
@@ -24,14 +22,11 @@ mongo 127.0.1.1 --eval 'rs.initiate({ _id: "rs0", members: [ {_id: 0, host: "127
 echo "Waiting to become a master"
 IS_MASTER="XX"
 while [ "$IS_MASTER" \!= "true" ]; do
-    IS_MASTER=`mongo mongodb://127.0.1.1:27017/ --eval  'db.isMaster().ismaster' | tail -n 1`
+    IS_MASTER=$(mongo mongodb://127.0.1.1:27017/ --eval  'db.isMaster().ismaster' | tail -n 1)
     sleep 0.5;
 done;
 
 echo "I'm the master!"
-
-cd /usr/share/meteor/bundle
-. ./bbb-html5.conf
 
 if [ -z $1 ]
 then
@@ -40,17 +35,18 @@ else
   INSTANCE_ID=$1
 fi
 
-PORT=`echo "3999+$INSTANCE_ID" | bc`
+PORT=$(echo "3999+$INSTANCE_ID" | bc)
 
-echo $INSTANCE_ID
-export INSTANCE_MAX=$INSTANCE_MAX
+echo "instanceId = $INSTANCE_ID   and port = $PORT   and role is backend (in backend file)"
+
 export INSTANCE_ID=$INSTANCE_ID
-export ROOT_URL=http://127.0.0.1/html5client/$INSTANCE_ID
+export BBB_HTML5_ROLE=backend
+export ROOT_URL=http://127.0.0.1/html5client
 export MONGO_OPLOG_URL=mongodb://127.0.1.1/local
 export MONGO_URL=mongodb://127.0.1.1/meteor
 export NODE_ENV=production
 export NODE_VERSION=node-v12.16.1-linux-x64
 export SERVER_WEBSOCKET_COMPRESSION=0
 export BIND_IP=127.0.0.1
-PORT=$PORT /usr/share/$NODE_VERSION/bin/node --max-old-space-size=2048 --max_semi_space_size=128 main.js INFO_INSTANCE_ID=$INSTANCE_ID
+PORT=$PORT /usr/share/$NODE_VERSION/bin/node --max-old-space-size=2048 --max_semi_space_size=128 main.js NODEJS_BACKEND_INSTANCE_ID=$INSTANCE_ID
 
