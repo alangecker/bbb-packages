@@ -1,10 +1,10 @@
 Package: bbb-webhooks
-Version: 1:2.3.0-5
+Version: 1:2.3.0-6
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 18084
+Installed-Size: 17997
 Depends: nodejs,npm,yq
 Section: default
 Priority: extra
