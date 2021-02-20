@@ -3,8 +3,8 @@
 8caf9f1b3d7c9ca127f822b9532ae940  usr/lib/systemd/system/bbb-rap-resque-worker.service
 0660b010ab3468cba3871bc97c98e4b8  usr/lib/systemd/system/bbb-rap-starter.service
 57dc28e37ee6eae4fb2f15b3ee6d6250  usr/lib/systemd/system/bbb_record_core.slice
-9a8a41aa9420ed8bfcb602040f373e7a  usr/local/bigbluebutton/core/Gemfile
-da94d783665058f931207b8ce3a82a0c  usr/local/bigbluebutton/core/Gemfile.lock
+aa11e5c4670316dd70882e25ae4f9752  usr/local/bigbluebutton/core/Gemfile
+cb3d4103566e3995f3d3f474c32dabf1  usr/local/bigbluebutton/core/Gemfile.lock
 5f99db279fa316d0887c70059cbac865  usr/local/bigbluebutton/core/Rakefile
 fe27cc6008bb20e3b1ff2ca8c2c2cd53  usr/local/bigbluebutton/core/lib/boot.rb
 21cc94c6dac11fa952c3a4e9aeeb4699  usr/local/bigbluebutton/core/lib/custom_hash.rb
@@ -49,4 +49,4 @@ df7d96a3ff6c5ffa1c0dd5010f3bf8ec  usr/local/bigbluebutton/core/scripts/rap-proce
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 3ea92be6da5b63c56ce6408a39cb27e4  usr/local/bigbluebutton/core/scripts/utils/gen_poll_svg
 96714118c4bfd005c2ad2cef4ff9e95b  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-858ab82229a75e6c3666e943ab058bee  usr/share/doc/bbb-record-core/changelog.gz
+4d5687db750af0cbfd19467986247301  usr/share/doc/bbb-record-core/changelog.gz
