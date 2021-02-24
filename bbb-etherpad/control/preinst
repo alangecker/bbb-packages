@@ -286,4 +286,7 @@ if [ ! -f /usr/share/etherpad-lite/APIKEY.txt ]; then
   chmod 644 /usr/share/etherpad-lite/APIKEY.txt
 fi
 
+# Needed for upgrade in 2.2
+rm -rf /usr/share/etherpad-lite/node_modules/ep_better_pdf_export
+rm -rf /usr/share/etherpad-lite/node_modules/ep_delete_after_delay_lite
 

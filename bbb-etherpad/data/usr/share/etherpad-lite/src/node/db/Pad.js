@@ -476,7 +476,7 @@ Pad.prototype.remove = async function remove() {
   }
 
   // remove the readonly entries
-  let readonlyID = readOnlyManager.getReadOnlyId(padID);
+  let readonlyID = await readOnlyManager.getReadOnlyId(padID);
 
   db.remove("pad2readonly:" + padID);
   db.remove("readonly2pad:" + readonlyID);
