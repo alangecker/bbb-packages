@@ -11,7 +11,7 @@ public:
     appName: BigBlueButton HTML5 Client
     bbbServerVersion: 2.2
     copyright: "©2020 BigBlueButton Inc."
-    html5ClientBuild: 1114
+    html5ClientBuild: 1140
     helpLink: https://bigbluebutton.org/html5/
     lockOnJoin: true
     cdn: ""
@@ -37,7 +37,7 @@ public:
     # this value to be kept under 12.
     breakoutRoomLimit: 8
     # https://github.com/bigbluebutton/bigbluebutton/pull/10826
-    customHeartbeat: true
+    customHeartbeat: false
     defaultSettings:
       application:
         animations: true
@@ -47,6 +47,25 @@ public:
         userJoinPushAlerts: false
         fallbackLocale: en
         overrideLocale: null
+        #Audio constraints for microphone. Use this to control browser's
+        #filters, such as AGC (Auto Gain Control) , Echo Cancellation,
+        #Noise Supression, etc.
+        #For more deails, see:
+        # https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints
+        #Currently, google chrome sets {ideal: true} for autoGainControl,
+        #echoCancellation and noiseSuppression, if not set.
+        #The accepted value for each constraint is an object of type
+        #https://developer.mozilla.org/en-US/docs/Web/API/ConstrainBoolean
+        #These values are used as initial constraints for every new participant,
+        #and can be changed by user in: Settings > Application > Microphone
+        #Audio Filters.
+        # microphoneConstraints:
+        #   autoGainControl:
+        #     ideal: true
+        #   echoCancellation:
+        #     ideal: true
+        #   noiseSuppression:
+        #     ideal: true
       audio:
         inputDeviceId: undefined
         outputDeviceId: undefined
@@ -99,10 +118,12 @@ public:
     # Valid for video-provider. Time (ms) before its WS connection times out
     # and tries to reconnect.
     wsConnectionTimeout: 4000
+    # Time in milis to wait for the browser to return a gUM call (used in video-preview)
+    gUMTimeout: 20000
     cameraTimeouts:
       # Base camera timeout: used as the camera *sharing* timeout and
       # as the minimum camera subscribe reconnection timeout
-      baseTimeout: 15000
+      baseTimeout: 30000
       # Max timeout: used as the max camera subscribe reconnection timeout. Each
       # subscribe reattempt increases the reconnection timer up to this
       maxTimeout: 60000
@@ -195,7 +216,7 @@ public:
     #   profile: a camera profile id from the cameraProfiles configuration array
     #            that will be applied to all cameras when threshold is hit
     cameraQualityThresholds:
-      enabled: false
+      enabled: true
       thresholds:
         - threshold: 8
           profile: low-u8
@@ -211,7 +232,7 @@ public:
           profile: low-u30
     pagination:
       # whether to globally enable or disable pagination.
-      enabled: false
+      enabled: true
       # how long (in ms) the negotiation will be debounced after a page change.
       pageChangeDebounceTime: 2500
       # video page sizes for DESKTOP endpoints. It stands for the number of SUBSCRIBER streams.
@@ -219,11 +240,11 @@ public:
       # A page size of 0 (zero) means that the page size is unlimited (disabled).
       desktopPageSizes:
         moderator: 0
-        viewer: 5
+        viewer: 0
       # video page sizes for MOBILE endpoints
       mobilePageSizes:
-        moderator: 2
-        viewer: 2
+        moderator: 6
+        viewer: 4
   pingPong:
     clearUsersInSeconds: 180
     pongTimeInSeconds: 15
@@ -294,6 +315,8 @@ public:
     #user activates microphone.
     iceGatheringTimeout: 5000
     sipjsHackViaWs: false
+    # Mute/umute toggle throttle time
+    toggleMuteThrottleTime: 300
     #Websocket keepAlive interval (seconds). You may set this to prevent
     #websocket disconnection in some environments. When set, BBB will send
     #'\r\n\r\n' string through SIP.js's websocket. If not set, default value
@@ -352,6 +375,8 @@ public:
     role_moderator: MODERATOR
     role_viewer: VIEWER
   whiteboard:
+    annotationsQueueProcessInterval: 60
+    cursorInterval: 150
     annotations:
       status:
         start: DRAW_START
@@ -480,6 +505,7 @@ private:
     leak:
       enabled: false
     heapdump:
+      thresholdMb: 1024
       enabled: false
       heapdumpFolderPath: HEAPDUMP_FOLDER
       heapdumpIntervalMs: 3600000

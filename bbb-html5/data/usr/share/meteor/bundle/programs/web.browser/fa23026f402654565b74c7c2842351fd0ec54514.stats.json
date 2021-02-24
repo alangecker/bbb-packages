@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.1"
   },
-  "totalMinifiedBytes": 2991380,
-  "totalMinifiedGzipBytes": 725856,
+  "totalMinifiedBytes": 2997572,
+  "totalMinifiedGzipBytes": 727583,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1594,7 +1594,7 @@
       {}
     ],
     "app/app.js": [
-      1250458,
+      1256650,
       {
         "imports": {
           "ui": {
@@ -1717,7 +1717,7 @@
                     "container.jsx": 1067
                   },
                   "component.jsx": 5185,
-                  "container.jsx": 727,
+                  "container.jsx": 788,
                   "styles.scss": 54,
                   "styles.scss.js": 7307
                 },
@@ -1787,7 +1787,7 @@
                 },
                 "component.jsx": 10972,
                 "container.jsx": 1917,
-                "service.js": 2607,
+                "service.js": 3192,
                 "styles.scss": 54,
                 "styles.scss.js": 10004
               },
@@ -1821,7 +1821,7 @@
                   "component.jsx": 1180
                 },
                 "quick-poll-dropdown": {
-                  "component.jsx": 2458
+                  "component.jsx": 2602
                 },
                 "component.jsx": 2058,
                 "container.jsx": 1980,
@@ -1857,7 +1857,7 @@
               "settings": {
                 "submenus": {
                   "application": {
-                    "component.jsx": 8993
+                    "component.jsx": 10246
                   },
                   "base": {
                     "component.jsx": 354
@@ -1868,7 +1868,7 @@
                   "styles.scss": 54,
                   "styles.scss.js": 5621
                 },
-                "component.jsx": 4529,
+                "component.jsx": 4570,
                 "container.jsx": 522,
                 "service.js": 556,
                 "styles.scss": 54,
@@ -1877,10 +1877,10 @@
               "video-provider": {
                 "video-list": {
                   "video-list-item": {
-                    "component.jsx": 4897,
+                    "component.jsx": 4933,
                     "container.jsx": 338
                   },
-                  "component.jsx": 7093,
+                  "component.jsx": 7140,
                   "container.jsx": 696,
                   "styles.scss": 54,
                   "styles.scss.js": 6429
@@ -1899,7 +1899,7 @@
                 },
                 "component.jsx": 14741,
                 "container.jsx": 676,
-                "service.js": 13141
+                "service.js": 13238
               },
               "whiteboard": {
                 "annotation-factory": {
@@ -1925,7 +1925,7 @@
                     "component.jsx": 2643
                   },
                   "poll": {
-                    "component.jsx": 7360,
+                    "component.jsx": 7377,
                     "styles.scss": 54,
                     "styles.scss.js": 464
                   },
@@ -1944,7 +1944,7 @@
                 },
                 "whiteboard-overlay": {
                   "cursor-listener": {
-                    "component.jsx": 3219
+                    "component.jsx": 3266
                   },
                   "pencil-draw-listener": {
                     "component.jsx": 4869
@@ -1953,7 +1953,7 @@
                     "component.jsx": 5521
                   },
                   "text-draw-listener": {
-                    "component.jsx": 8120
+                    "component.jsx": 8372
                   },
                   "component.jsx": 3998,
                   "container.jsx": 1082,
@@ -2007,7 +2007,7 @@
                 },
                 "audio-test": {
                   "component.jsx": 911,
-                  "container.jsx": 518,
+                  "container.jsx": 563,
                   "styles.scss": 54,
                   "styles.scss.js": 1034
                 },
@@ -2034,8 +2034,8 @@
                   "styles.scss": 54,
                   "styles.scss.js": 4555
                 },
-                "container.jsx": 3457,
-                "service.js": 2165
+                "container.jsx": 3589,
+                "service.js": 2637
               },
               "breakout-room": {
                 "breakout-remaining-time": {
@@ -2092,7 +2092,7 @@
                 },
                 "component.jsx": 7447,
                 "container.jsx": 531,
-                "service.js": 1224,
+                "service.js": 1247,
                 "styles.scss": 54,
                 "styles.scss.js": 2199
               },
@@ -2206,9 +2206,9 @@
                   "styles.scss": 54,
                   "styles.scss.js": 3961
                 },
-                "component.jsx": 7304,
+                "component.jsx": 7379,
                 "container.jsx": 1152,
-                "service.js": 1123,
+                "service.js": 1221,
                 "styles.scss": 54,
                 "styles.scss.js": 8390
               },
@@ -2239,7 +2239,7 @@
                 "container.jsx": 362
               },
               "activity-check": {
-                "component.jsx": 2189,
+                "component.jsx": 2242,
                 "container.jsx": 202,
                 "styles.scss": 54,
                 "styles.scss.js": 687
@@ -2385,9 +2385,9 @@
                 "styles.scss.js": 803
               },
               "video-preview": {
-                "component.jsx": 12280,
+                "component.jsx": 13244,
                 "container.jsx": 1404,
-                "service.js": 186,
+                "service.js": 389,
                 "styles.scss": 54,
                 "styles.scss.js": 11132
               }
@@ -2398,7 +2398,7 @@
               },
               "audio-manager": {
                 "error-codes.js": 97,
-                "index.js": 10894
+                "index.js": 11083
               },
               "auth": {
                 "index.js": 4891
@@ -2437,7 +2437,7 @@
                 "bridge": {
                   "base.js": 862,
                   "kurento.js": 4590,
-                  "sip.js": 16753
+                  "sip.js": 18111
                 }
               }
             },

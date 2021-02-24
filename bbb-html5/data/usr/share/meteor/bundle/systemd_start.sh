@@ -39,12 +39,5 @@ export MONGO_URL=mongodb://127.0.1.1/meteor
 export NODE_ENV=$ENVIRONMENT_TYPE
 export SERVER_WEBSOCKET_COMPRESSION=0
 export BIND_IP=127.0.0.1
-PORT=3000 /usr/share/$NODE_VERSION/bin/node main.js
-
-
-
-
-
-
-
+PORT=3000 /usr/share/$NODE_VERSION/bin/node --max-old-space-size=4096 --max_semi_space_size=128  main.js
 
