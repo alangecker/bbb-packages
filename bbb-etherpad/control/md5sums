@@ -1,6 +1,6 @@
 0fa34f744782031736fec0cb6b6e972f  etc/bigbluebutton/nginx/notes.nginx
 bda919342ed5c295490a873c906398bd  usr/lib/systemd/system/etherpad.service
-8dcb3c837b8cb27858fd430deb5067b1  usr/share/doc/bbb-etherpad/changelog.gz
+2bb1989e24c1467c0f854d922b430629  usr/share/doc/bbb-etherpad/changelog.gz
 bae3c70a9f5e317a82d19a8196c6d00d  usr/share/etherpad-lite/CHANGELOG.md
 f6aeff26702d63fe405f164ee98ef326  usr/share/etherpad-lite/CONTRIBUTING.md
 fd9ef771d64068aa0cf0333e8539b25a  usr/share/etherpad-lite/LICENSE
