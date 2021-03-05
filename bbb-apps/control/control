@@ -1,10 +1,10 @@
 Package: bbb-apps
-Version: 1:2.2.0-51
+Version: 1:2.2.0-55
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 35936
+Installed-Size: 36055
 Depends: bbb-red5
 Section: default
 Priority: extra
