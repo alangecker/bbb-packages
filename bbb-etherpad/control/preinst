@@ -290,10 +290,11 @@ fi
 rm -rf /usr/share/etherpad-lite/node_modules/ep_better_pdf_export
 rm -rf /usr/share/etherpad-lite/node_modules/ep_delete_after_delay_lite
 
-# Ensure to clean out old pads before upgrade
-if systemctl is-active --quiet etherpad; then
-  redis-cli keys pad:* | xargs redis-cli del
-  redis-cli keys sessionstorage:* | xargs redis-cli del
-  redis-cli keys globalAuthor:* | xargs redis-cli del
-  redis-cli keys token2author:* | xargs redis-cli del
-fi
+# Clean out old pads before upgrade
+redis-cli keys pad:*            | xargs -r redis-cli del
+redis-cli keys sessionstorage:* | xargs -r redis-cli del
+redis-cli keys globalAuthor:*   | xargs -r redis-cli del
+redis-cli keys token2author:*   | xargs -r redis-cli del
+redis-cli keys pad2readonly:*   | xargs -r redis-cli del
+redis-cli keys readonly2pad:*   | xargs -r redis-cli del
+redis-cli keys ueberDB:*        | xargs -r redis-cli del
