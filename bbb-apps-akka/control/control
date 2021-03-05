@@ -1,10 +1,10 @@
 Source: bbb-apps-akka
 Package: bbb-apps-akka
-Version: 2.2.0-100
+Version: 2.2.0-103
 Section: java
 Priority: optional
 Architecture: all
-Installed-Size: 37967
+Installed-Size: 38116
 Depends: java8-runtime-headless, bash
 Maintainer: Richard Alam <ritzalam@gmail.com>
 Description: BigBlueButton Apps (Akka)
