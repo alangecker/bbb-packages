@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.4.1"
   },
-  "totalMinifiedBytes": 2997572,
-  "totalMinifiedGzipBytes": 727583,
+  "totalMinifiedBytes": 2997598,
+  "totalMinifiedGzipBytes": 727576,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
@@ -1594,7 +1594,7 @@
       {}
     ],
     "app/app.js": [
-      1256650,
+      1256676,
       {
         "imports": {
           "ui": {
@@ -1953,7 +1953,7 @@
                     "component.jsx": 5521
                   },
                   "text-draw-listener": {
-                    "component.jsx": 8372
+                    "component.jsx": 8388
                   },
                   "component.jsx": 3998,
                   "container.jsx": 1082,
@@ -2064,7 +2064,7 @@
                 "pad": {
                   "component.jsx": 4634,
                   "container.jsx": 712,
-                  "service.js": 774,
+                  "service.js": 724,
                   "styles.scss": 54,
                   "styles.scss.js": 4271
                 },
@@ -2076,7 +2076,7 @@
                 },
                 "component.jsx": 1665,
                 "container.jsx": 345,
-                "service.js": 2471
+                "service.js": 2492
               },
               "external-video-player": {
                 "custom-players": {
@@ -2309,7 +2309,7 @@
               "note": {
                 "component.jsx": 1496,
                 "container.jsx": 446,
-                "service.js": 1719,
+                "service.js": 1758,
                 "styles.scss": 54,
                 "styles.scss.js": 3952
               },
