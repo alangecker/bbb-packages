@@ -316,7 +316,11 @@ case "$1" in
 
     if ! gem -v | grep -q ^3.; then 
       gem update --system --no-document
-      gem install bundler --no-document
+      if grep -q bionic /etc/lsb-release; then
+        gem install bundler -v 2.1.4
+      else
+        gem install bundler --no-document
+      fi
     fi
     
     if hash gem 2>&-; then
@@ -351,7 +355,7 @@ case "$1" in
       mkdir -p /var/bigbluebutton/recording/status/archived
       mkdir -p /var/bigbluebutton/recording/status/processed
       mkdir -p /var/bigbluebutton/recording/status/sanity
-      mkdir -p /var/bigbluebutton/recording/status/ended
+      mkdir -p /var/bigbluebutton/recording/status/published
       chown -R $BBB_USER:$BBB_USER /var/bigbluebutton/recording
 
       mkdir -p /var/bigbluebutton/captions
@@ -393,7 +397,11 @@ case "$1" in
       echo "Error: FreeSWITCH not installed"
     fi
 
-    
+    if [ -f /usr/share/etherpad-lite/APIKEY.txt ]; then 
+      APIKEY=$(cat /usr/share/etherpad-lite/APIKEY.txt)
+      sed -i "s/ETHERPAD_APIKEY/$APIKEY/g" /usr/local/bigbluebutton/core/scripts/bigbluebutton.yml
+    fi
+
   ;;
   
   *)
@@ -405,5 +413,11 @@ if dpkg -l | grep -q nginx; then
   reloadService nginx
 fi
 
-startService bbb-record-core.timer || echo "bbb-record-core could not be registered or started"
+systemctl daemon-reload
 
+if grep -q xenial /etc/lsb-release; then
+  startService bbb-record-core.timer || echo "bbb-record-core could not be registered or started"
+else
+  startService bbb-rap-starter.service || echo "bbb-rap-starter could not be registered or started"
+  startService bbb-rap-resque-worker.service || echo "bbb-rap-resque-worker could not be registered or started"
+fi
