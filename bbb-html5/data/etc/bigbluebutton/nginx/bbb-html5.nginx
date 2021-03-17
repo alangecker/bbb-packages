@@ -1,4 +1,6 @@
-rewrite ^/html5client/(fonts|compatibility|resources|svgs)/(.*) /html5client/$1/$2;
+location /html5client/locales {
+  alias /usr/share/meteor/bundle/programs/web.browser/app/locales;
+}
 
 location /html5client/compatibility {
   alias /usr/share/meteor/bundle/programs/web.browser/app/compatibility;

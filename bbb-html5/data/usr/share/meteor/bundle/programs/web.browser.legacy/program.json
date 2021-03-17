@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "0cb157775130faaefe0c3174e0dc6deb202c126f.js",
+      "path": "0b8e5837c9eb3f4c882f4ac01c77d3310b20696d.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/0cb157775130faaefe0c3174e0dc6deb202c126f.js?meteor_js_resource=true",
-      "size": 711852,
-      "hash": "0cb157775130faaefe0c3174e0dc6deb202c126f",
-      "sri": "o8vH1ZpfSM0A22PvFrBdPuIBrC1T2eods66wYwid3phZzWLoAoyscMVVdkXEDgf7eScfImlt0NoPQ+A0UC1EfQ=="
+      "url": "/0b8e5837c9eb3f4c882f4ac01c77d3310b20696d.js?meteor_js_resource=true",
+      "size": 740180,
+      "hash": "0b8e5837c9eb3f4c882f4ac01c77d3310b20696d",
+      "sri": "05qQ6tC3ZArkbNHMIRJCNBj13thkI0eU9+cgsidqAJeacx4pVbLwWlYpMCG1VbIWHmzGX/iP96arL5jiy0Tbaw=="
     },
     {
-      "path": "0cb157775130faaefe0c3174e0dc6deb202c126f.stats.json",
+      "path": "0b8e5837c9eb3f4c882f4ac01c77d3310b20696d.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/0cb157775130faaefe0c3174e0dc6deb202c126f.stats.json?meteor_js_resource=true",
-      "size": 36893,
-      "hash": "16ed5fb38325a36b6ee90de9b0859db46d0027bc",
-      "sri": "/jkZrD99gSan6oj8/9ia9duiyi3ikZ2gfoaVdvw99V7pssg0EYxVo9OJ1Fll5L+I12AmmVGiVPIAPnyTImlqZg=="
+      "url": "/0b8e5837c9eb3f4c882f4ac01c77d3310b20696d.stats.json?meteor_js_resource=true",
+      "size": 36938,
+      "hash": "202fe8f9638a7ef12298f359fd06989e9367523e",
+      "sri": "7SZUf8XO/z2BFQJ+Djl0DsWiKSWNq1K4W+szencaSj0KfdYMNsDBcqLn/wU9mTOQOFnJr/31zlWT2/TCcgfq3A=="
     },
     {
       "path": "5698c061cfba32badc3285de664514e3f4c25d8b.css",
@@ -42,16 +42,6 @@
       "sri": null
     },
     {
-      "path": "app/compatibility/kurento-extension.js",
-      "where": "client",
-      "type": "asset",
-      "cacheable": false,
-      "url": "/compatibility/kurento-extension.js",
-      "size": 29155,
-      "hash": "88ec0c6e2bd4ee6cb0c823960af83092f27d3ab3",
-      "sri": null
-    },
-    {
       "path": "app/compatibility/kurento-utils.js",
       "where": "client",
       "type": "asset",
@@ -69,6 +59,596 @@
       "url": "/compatibility/sip.js",
       "size": 1014344,
       "hash": "4e7377e2d67b68c0b36b5e787a561822a991747d",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ar.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ar.json",
+      "size": 61219,
+      "hash": "ae334fbd8f01bbe1b1e8058a6f8e53dc68075179",
+      "sri": null
+    },
+    {
+      "path": "app/locales/az.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/az.json",
+      "size": 53153,
+      "hash": "957a0a291877a8faf0f75f5234a234424c8d41ae",
+      "sri": null
+    },
+    {
+      "path": "app/locales/bg_BG.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/bg_BG.json",
+      "size": 59525,
+      "hash": "b2e865b2f55245eeed17ad2b1702afddcad193a2",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ca.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ca.json",
+      "size": 51771,
+      "hash": "ff10a931bc066eedc1df41debb141aa3583bd5e3",
+      "sri": null
+    },
+    {
+      "path": "app/locales/cs_CZ.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/cs_CZ.json",
+      "size": 48187,
+      "hash": "69df163697b26ff4f7b120043c0377bd040d22a6",
+      "sri": null
+    },
+    {
+      "path": "app/locales/da.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/da.json",
+      "size": 49400,
+      "hash": "bf1f85cc067b9469a42beffd79524de4b7d368a0",
+      "sri": null
+    },
+    {
+      "path": "app/locales/de.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/de.json",
+      "size": 56140,
+      "hash": "a7512c3660ca870a2c64991dca7f3366625406f2",
+      "sri": null
+    },
+    {
+      "path": "app/locales/el_GR.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/el_GR.json",
+      "size": 69551,
+      "hash": "2951f63973b065b5d1ef4cd89e0beb0093e798b4",
+      "sri": null
+    },
+    {
+      "path": "app/locales/en.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/en.json",
+      "size": 53363,
+      "hash": "ad85fda837953e8bf1658d62323855eb45c287f3",
+      "sri": null
+    },
+    {
+      "path": "app/locales/eo.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/eo.json",
+      "size": 48676,
+      "hash": "f4834a234e541293ec6cd0ce76ff53b181f07486",
+      "sri": null
+    },
+    {
+      "path": "app/locales/es.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/es.json",
+      "size": 53554,
+      "hash": "d870a022180fcc12a176c9639811f2780d1838bd",
+      "sri": null
+    },
+    {
+      "path": "app/locales/es_ES.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/es_ES.json",
+      "size": 54153,
+      "hash": "d03546545ff3b76616518b76d93294eca06915af",
+      "sri": null
+    },
+    {
+      "path": "app/locales/es_MX.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/es_MX.json",
+      "size": 32370,
+      "hash": "eca10102f9dd41d308019fad35512537f17ed001",
+      "sri": null
+    },
+    {
+      "path": "app/locales/et.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/et.json",
+      "size": 47168,
+      "hash": "c615fa2e831635602b43a0e8e105f1588b94526e",
+      "sri": null
+    },
+    {
+      "path": "app/locales/eu.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/eu.json",
+      "size": 47138,
+      "hash": "1a5576d0691775de22103a424c9b7ee42ef3c030",
+      "sri": null
+    },
+    {
+      "path": "app/locales/fa_IR.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/fa_IR.json",
+      "size": 67851,
+      "hash": "7d41097ded08999379de0fe2908b56c5d90e0fda",
+      "sri": null
+    },
+    {
+      "path": "app/locales/fi.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/fi.json",
+      "size": 37780,
+      "hash": "d79610ef565bcb292ddac7830ac2336bbbe2045f",
+      "sri": null
+    },
+    {
+      "path": "app/locales/fr.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/fr.json",
+      "size": 58001,
+      "hash": "045b1ef97dc700ec1d73ed8127d8278a1c71083c",
+      "sri": null
+    },
+    {
+      "path": "app/locales/gl.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/gl.json",
+      "size": 56895,
+      "hash": "9ab6dafc79f3f73928789c9f45ea9515d63f9c4d",
+      "sri": null
+    },
+    {
+      "path": "app/locales/he.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/he.json",
+      "size": 47329,
+      "hash": "b4c2e4c2f69ef6f0b1329a694997419fd4cbd985",
+      "sri": null
+    },
+    {
+      "path": "app/locales/hi_IN.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/hi_IN.json",
+      "size": 52279,
+      "hash": "28d499ef6d790dde2f3e1b650bae3d0198131a27",
+      "sri": null
+    },
+    {
+      "path": "app/locales/hr.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/hr.json",
+      "size": 16350,
+      "hash": "f3ad762bbe84318ac63c054b9704144c7cd97f7e",
+      "sri": null
+    },
+    {
+      "path": "app/locales/hu_HU.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/hu_HU.json",
+      "size": 52025,
+      "hash": "d6c2572e1ed76c265a580af1acf3e47ef89b00f1",
+      "sri": null
+    },
+    {
+      "path": "app/locales/hy.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/hy.json",
+      "size": 3513,
+      "hash": "d16a933cba5ed712ddcd4de0affb8661b3e8461b",
+      "sri": null
+    },
+    {
+      "path": "app/locales/id.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/id.json",
+      "size": 45971,
+      "hash": "5fd8e9d5c86f15fd7db675a957bf1ae64c1152b2",
+      "sri": null
+    },
+    {
+      "path": "app/locales/it_IT.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/it_IT.json",
+      "size": 51440,
+      "hash": "ee084110ca4afbb25cd31dc7d1a44aa0223b9f49",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ja.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ja.json",
+      "size": 59734,
+      "hash": "97c83075b612c016b9f505b215b52a1e14294321",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ka.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ka.json",
+      "size": 77013,
+      "hash": "c5401020bc70f25d91fe0c3786734d3f837c88a3",
+      "sri": null
+    },
+    {
+      "path": "app/locales/kk.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/kk.json",
+      "size": 277,
+      "hash": "89b121437f0c78b9cc861893a2ab8838fa33cd9a",
+      "sri": null
+    },
+    {
+      "path": "app/locales/km.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/km.json",
+      "size": 64852,
+      "hash": "89f3259089eb3af03de37ae77341be585d33997d",
+      "sri": null
+    },
+    {
+      "path": "app/locales/kn.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/kn.json",
+      "size": 80561,
+      "hash": "4889d5d41d3b4bdfe8e0a8eff5ee369986c7d18e",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ko_KR.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ko_KR.json",
+      "size": 50731,
+      "hash": "9749a8043ccdbb568925079e852cb9a996c76168",
+      "sri": null
+    },
+    {
+      "path": "app/locales/lo_LA.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/lo_LA.json",
+      "size": 3446,
+      "hash": "6da59beec7d3f236b95b65977e9b9b5486bd3823",
+      "sri": null
+    },
+    {
+      "path": "app/locales/lt_LT.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/lt_LT.json",
+      "size": 48731,
+      "hash": "16f180f15912bfd4e3e3938f594d333537a6e6d9",
+      "sri": null
+    },
+    {
+      "path": "app/locales/lv.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/lv.json",
+      "size": 48087,
+      "hash": "6e68bae63c53fd571486dc265f1be80cb38d8dc0",
+      "sri": null
+    },
+    {
+      "path": "app/locales/mn_MN.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/mn_MN.json",
+      "size": 106,
+      "hash": "d613a900b8e6f774db9b7bf1bf75b0b2305d5ee5",
+      "sri": null
+    },
+    {
+      "path": "app/locales/nb_NO.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/nb_NO.json",
+      "size": 44655,
+      "hash": "31996cbed68d159e8ac8d786d73ad30822481ce3",
+      "sri": null
+    },
+    {
+      "path": "app/locales/nl.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/nl.json",
+      "size": 52479,
+      "hash": "2354e29d6629187a4b7e6fde3ee894949769a270",
+      "sri": null
+    },
+    {
+      "path": "app/locales/oc.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/oc.json",
+      "size": 14234,
+      "hash": "af04903c00a9bb0ac221c59c086e63a7ce211214",
+      "sri": null
+    },
+    {
+      "path": "app/locales/pl_PL.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/pl_PL.json",
+      "size": 46316,
+      "hash": "6e62b894cd0361045fcbc5e0b9d84d578f66d75e",
+      "sri": null
+    },
+    {
+      "path": "app/locales/pt.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/pt.json",
+      "size": 53143,
+      "hash": "95d88ca72e714a393398cd601ddb6564071f142e",
+      "sri": null
+    },
+    {
+      "path": "app/locales/pt_BR.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/pt_BR.json",
+      "size": 47560,
+      "hash": "1a8dea51fe9465a9b2e0e462e53ad60f0ae63f92",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ro_RO.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ro_RO.json",
+      "size": 43226,
+      "hash": "334a3de4dc29ada2ec9efbc6f47f250efd071f54",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ru.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ru.json",
+      "size": 63971,
+      "hash": "751ba2c0a2784a877c11b7d4f3a317377b78466a",
+      "sri": null
+    },
+    {
+      "path": "app/locales/ru_RU.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/ru_RU.json",
+      "size": 66908,
+      "hash": "cf8429560f4c38ec14bfc9be08bf266e8200dfc3",
+      "sri": null
+    },
+    {
+      "path": "app/locales/sk_SK.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/sk_SK.json",
+      "size": 47597,
+      "hash": "705397df99008c6a58337a178a9f26ef5de935ff",
+      "sri": null
+    },
+    {
+      "path": "app/locales/sl.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/sl.json",
+      "size": 51303,
+      "hash": "afd16971304e7231cfc0462640d58ffe7303ec52",
+      "sri": null
+    },
+    {
+      "path": "app/locales/sr.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/sr.json",
+      "size": 47334,
+      "hash": "5c9c33af62c0a67de042f23c1de7f73a3b693606",
+      "sri": null
+    },
+    {
+      "path": "app/locales/sv_SE.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/sv_SE.json",
+      "size": 41574,
+      "hash": "73726a7697ca86a4cddb1ddd3a5d2069b5f8c36d",
+      "sri": null
+    },
+    {
+      "path": "app/locales/te.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/te.json",
+      "size": 84751,
+      "hash": "70f40695bfb36f738ec1b510dd4e1de93f821233",
+      "sri": null
+    },
+    {
+      "path": "app/locales/th.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/th.json",
+      "size": 65382,
+      "hash": "c7ffd623f3ec22f08d70333f008497506d56aaf6",
+      "sri": null
+    },
+    {
+      "path": "app/locales/th_TH.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/th_TH.json",
+      "size": 64630,
+      "hash": "886914634145b971c30e6eebbd7b3a4a91d26077",
+      "sri": null
+    },
+    {
+      "path": "app/locales/tr.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/tr.json",
+      "size": 51515,
+      "hash": "0288614d850581716e35bafd7cddddeb84040faf",
+      "sri": null
+    },
+    {
+      "path": "app/locales/tr_TR.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/tr_TR.json",
+      "size": 53829,
+      "hash": "44b057e5520a53537dd1a612a53f65f43cb5f3ea",
+      "sri": null
+    },
+    {
+      "path": "app/locales/uk_UA.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/uk_UA.json",
+      "size": 69251,
+      "hash": "e1d75e2b1ce688f456b5897c056b471f62aa29cb",
+      "sri": null
+    },
+    {
+      "path": "app/locales/vi.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/vi.json",
+      "size": 6540,
+      "hash": "461a22e003e3237c728119f1d1c3482c8b4ca9ed",
+      "sri": null
+    },
+    {
+      "path": "app/locales/vi_VN.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/vi_VN.json",
+      "size": 47410,
+      "hash": "7ebbe699414a2f32c5b396d8d6e2907853405c7c",
+      "sri": null
+    },
+    {
+      "path": "app/locales/zh_CN.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/zh_CN.json",
+      "size": 46408,
+      "hash": "0c20d852d1ef2469f128cb8d77c8a249104ad8a2",
+      "sri": null
+    },
+    {
+      "path": "app/locales/zh_TW.json",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/locales/zh_TW.json",
+      "size": 45933,
+      "hash": "953b6a4ae1e00924af033c8cbb9c6f3d40c29535",
       "sri": null
     },
     {
@@ -262,6 +842,16 @@
       "sri": null
     },
     {
+      "path": "app/resources/sounds/doorbell.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/resources/sounds/doorbell.mp3",
+      "size": 12072,
+      "hash": "4f57dc57722cc090cd2d18620e209b6bcd59d4fe",
+      "sri": null
+    },
+    {
       "path": "app/resources/sounds/notify.mp3",
       "where": "client",
       "type": "asset",
@@ -269,16 +859,6 @@
       "url": "/resources/sounds/notify.mp3",
       "size": 10702,
       "hash": "06203e902b10bce5ce29ab4e63c3f134a54fa5ed",
-      "sri": null
-    },
-    {
-      "path": "app/resources/sounds/silence.mp3",
-      "where": "client",
-      "type": "asset",
-      "cacheable": false,
-      "url": "/resources/sounds/silence.mp3",
-      "size": 34560,
-      "hash": "29e5f004522b5bf3be54650c322df4e320a695fc",
       "sri": null
     },
     {
@@ -475,7 +1055,7 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "a5542bb870b3a0b309bdcbff5b9a1b31c752634d"
+      "hash": "a75a61214618d26c2d787079657e09e151a92900"
     },
     {
       "path": "body.html",

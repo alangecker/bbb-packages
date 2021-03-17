@@ -2,23 +2,23 @@
   "name": "meteor-dev-bundle",
   "private": true,
   "dependencies": {
-    "@babel/parser": "7.9.4",
-    "@types/semver": "5.4.0",
-    "@types/underscore": "1.9.2",
     "fibers": "4.0.3",
     "meteor-promise": "0.8.7",
-    "node-gyp": "3.8.0",
-    "node-pre-gyp": "0.14.0",
     "promise": "8.0.2",
     "reify": "0.20.12",
-    "semver": "5.4.1",
+    "@babel/parser": "7.9.4",
+    "@types/underscore": "1.9.2",
+    "underscore": "1.9.1",
     "source-map-support": "https://github.com/meteor/node-source-map-support/tarball/1912478769d76e5df4c365e147f25896aee6375e",
-    "underscore": "1.9.1"
+    "@types/semver": "5.4.0",
+    "semver": "5.4.1",
+    "node-gyp": "3.8.0",
+    "node-pre-gyp": "0.14.0"
   },
   "devDependencies": {
-    "chalk": "0.5.1",
+    "split2": "2.1.1",
     "multipipe": "1.0.2",
-    "split2": "2.1.1"
+    "chalk": "0.5.1"
   },
   "scripts": {
     "install": "node npm-rebuild.js"
