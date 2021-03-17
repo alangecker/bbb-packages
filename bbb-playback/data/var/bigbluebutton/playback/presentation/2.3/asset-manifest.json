@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/playback/presentation/2.3/static/css/main.4675fccd.chunk.css",
-    "main.js": "/playback/presentation/2.3/static/js/main.6c75e850.chunk.js",
-    "main.js.map": "/playback/presentation/2.3/static/js/main.6c75e850.chunk.js.map",
+    "main.css": "/playback/presentation/2.3/static/css/main.1770217c.chunk.css",
+    "main.js": "/playback/presentation/2.3/static/js/main.c0ab7bd3.chunk.js",
+    "main.js.map": "/playback/presentation/2.3/static/js/main.c0ab7bd3.chunk.js.map",
     "runtime-main.js": "/playback/presentation/2.3/static/js/runtime-main.091763c1.js",
     "runtime-main.js.map": "/playback/presentation/2.3/static/js/runtime-main.091763c1.js.map",
-    "static/js/2.2115afe1.chunk.js": "/playback/presentation/2.3/static/js/2.2115afe1.chunk.js",
-    "static/js/2.2115afe1.chunk.js.map": "/playback/presentation/2.3/static/js/2.2115afe1.chunk.js.map",
+    "static/js/2.740f9c78.chunk.js": "/playback/presentation/2.3/static/js/2.740f9c78.chunk.js",
+    "static/js/2.740f9c78.chunk.js.map": "/playback/presentation/2.3/static/js/2.740f9c78.chunk.js.map",
     "index.html": "/playback/presentation/2.3/index.html",
-    "precache-manifest.e17d83036c40d03001e7573c78f2b96d.js": "/playback/presentation/2.3/precache-manifest.e17d83036c40d03001e7573c78f2b96d.js",
+    "precache-manifest.435cfc09885420f018dc3a3e08740b80.js": "/playback/presentation/2.3/precache-manifest.435cfc09885420f018dc3a3e08740b80.js",
     "service-worker.js": "/playback/presentation/2.3/service-worker.js",
-    "static/css/main.4675fccd.chunk.css.map": "/playback/presentation/2.3/static/css/main.4675fccd.chunk.css.map",
-    "static/js/2.2115afe1.chunk.js.LICENSE.txt": "/playback/presentation/2.3/static/js/2.2115afe1.chunk.js.LICENSE.txt",
+    "static/css/main.1770217c.chunk.css.map": "/playback/presentation/2.3/static/css/main.1770217c.chunk.css.map",
+    "static/js/2.740f9c78.chunk.js.LICENSE.txt": "/playback/presentation/2.3/static/js/2.740f9c78.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/playback/presentation/2.3/static/media/logo.f6c59794.png"
   },
   "entrypoints": [
     "static/js/runtime-main.091763c1.js",
-    "static/js/2.2115afe1.chunk.js",
-    "static/css/main.4675fccd.chunk.css",
-    "static/js/main.6c75e850.chunk.js"
+    "static/js/2.740f9c78.chunk.js",
+    "static/css/main.1770217c.chunk.css",
+    "static/js/main.c0ab7bd3.chunk.js"
   ]
 }
