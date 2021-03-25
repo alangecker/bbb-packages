@@ -3,7 +3,7 @@ import os
 import re
 from tempfile import mkdtemp
 
-repo = "http://ubuntu.bigbluebutton.org/bionic-230-dev/"
+repo = "http://ubuntu.bigbluebutton.org/bionic-230/"
 
 directory = '.'
 existingPkg = os.listdir('deb')
