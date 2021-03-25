@@ -275,7 +275,7 @@ fi
 PROTOCOL=http
 if [ -f $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties ]; then
   SERVER_URL=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}' | tail -n 1)
-  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | grep bigbluebutton.web.serverURL | tail -n 1 | grep -q https; then
+  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | grep ^bigbluebutton.web.serverURL | tail -n 1 | grep -q https; then
     PROTOCOL=https
   fi
 fi
@@ -407,6 +407,7 @@ case "$1" in
       echo "Error: FreeSWITCH not installed"
     fi
 
+    # no longer needed in 2.3+
     if [ -f /usr/share/etherpad-lite/APIKEY.txt ]; then 
       APIKEY=$(cat /usr/share/etherpad-lite/APIKEY.txt)
       sed -i "s/ETHERPAD_APIKEY/$APIKEY/g" /usr/local/bigbluebutton/core/scripts/bigbluebutton.yml
