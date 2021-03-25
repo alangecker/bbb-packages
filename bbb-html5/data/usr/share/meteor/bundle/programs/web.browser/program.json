@@ -2,24 +2,24 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "2691cd608bb5d40a4a635bad8cffb96751b7df95.js",
+      "path": "b66e3d658672e3cdde32ba8fc531e699c8f657a8.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/2691cd608bb5d40a4a635bad8cffb96751b7df95.js?meteor_js_resource=true",
-      "size": 3232731,
-      "hash": "2691cd608bb5d40a4a635bad8cffb96751b7df95",
-      "sri": "8K6WtBaL42MrsuX3ispsANzWZO5IL+qNPTCWKlgtH0p1qxSmoqBbIt3fF02bD2kSmIF8xg47tZ8FXdqhEjAZVA=="
+      "url": "/b66e3d658672e3cdde32ba8fc531e699c8f657a8.js?meteor_js_resource=true",
+      "size": 3241961,
+      "hash": "b66e3d658672e3cdde32ba8fc531e699c8f657a8",
+      "sri": "PmrvQHABnJhGWjNF+wMXHeEZ6sXhvrs8F9Y2q6e5HdSAIoQ4GkcdZaTqOi3Eqh+VPp+RnTuy/pmZWw3wHNtddg=="
     },
     {
-      "path": "2691cd608bb5d40a4a635bad8cffb96751b7df95.stats.json",
+      "path": "b66e3d658672e3cdde32ba8fc531e699c8f657a8.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/2691cd608bb5d40a4a635bad8cffb96751b7df95.stats.json?meteor_js_resource=true",
-      "size": 90781,
-      "hash": "81cb9f4b29d7b7b0e630ad558abc6edb36d340b1",
-      "sri": "0uSt+CJ89Q9I5nyfTspHMbRYvQuf3B//vIOnxauEzyKlutOxnVGkI3HiWgqs5qrSusnfncOkcKblNT3Hk5Jl0Q=="
+      "url": "/b66e3d658672e3cdde32ba8fc531e699c8f657a8.stats.json?meteor_js_resource=true",
+      "size": 90828,
+      "hash": "bf8ebf7340e880ebc9d7ccde1ff6863ca281d4f7",
+      "sri": "2NRHh8i4hXcrA7k0f/tTtwWH+HZ3HKFGXEEiRHsidAbU/Bc3FGflm1AXBz3bsUwfxt9geadszqPW9s9OXWXCTA=="
     },
     {
       "path": "5698c061cfba32badc3285de664514e3f4c25d8b.css",
@@ -47,8 +47,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/kurento-utils.js",
-      "size": 158803,
-      "hash": "6ec99ff8266b58a84c26d9a7c5f9d3fc30171199",
+      "size": 153342,
+      "hash": "ad00584e96b6bfb071d349e5ffbf558eada981f1",
       "sri": null
     },
     {
@@ -127,8 +127,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/de.json",
-      "size": 56140,
-      "hash": "a7512c3660ca870a2c64991dca7f3366625406f2",
+      "size": 58485,
+      "hash": "28093ccb2bb5bf26c5796b90c6f14fe64bcb68fe",
       "sri": null
     },
     {
@@ -147,8 +147,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 53363,
-      "hash": "ad85fda837953e8bf1658d62323855eb45c287f3",
+      "size": 53772,
+      "hash": "a585b8e2c8ae2e9ceb7164e86f93b2232aa51294",
       "sri": null
     },
     {
@@ -247,8 +247,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/gl.json",
-      "size": 56895,
-      "hash": "9ab6dafc79f3f73928789c9f45ea9515d63f9c4d",
+      "size": 58302,
+      "hash": "da1dee23920a8c4c37659190f6469681df57cac5",
       "sri": null
     },
     {
@@ -317,8 +317,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/it_IT.json",
-      "size": 51440,
-      "hash": "ee084110ca4afbb25cd31dc7d1a44aa0223b9f49",
+      "size": 53107,
+      "hash": "b1ea7d71d46ce2be371bf1d935fb16fffc4f1198",
       "sri": null
     },
     {
@@ -327,8 +327,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ja.json",
-      "size": 59734,
-      "hash": "97c83075b612c016b9f505b215b52a1e14294321",
+      "size": 62069,
+      "hash": "67b8093250ddc4c47d21446b85bb64fcc2565c65",
       "sri": null
     },
     {
@@ -497,8 +497,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ru.json",
-      "size": 63971,
-      "hash": "751ba2c0a2784a877c11b7d4f3a317377b78466a",
+      "size": 64307,
+      "hash": "7d3dd983190ece6407ec342e9998a4ca60493af5",
       "sri": null
     },
     {
@@ -607,8 +607,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/uk_UA.json",
-      "size": 69251,
-      "hash": "e1d75e2b1ce688f456b5897c056b471f62aa29cb",
+      "size": 75178,
+      "hash": "d1eddbac53f245eb986f01c9b71e02d1641c1a24",
       "sri": null
     },
     {

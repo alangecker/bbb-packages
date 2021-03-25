@@ -47,8 +47,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/compatibility/kurento-utils.js",
-      "size": 158803,
-      "hash": "6ec99ff8266b58a84c26d9a7c5f9d3fc30171199",
+      "size": 153342,
+      "hash": "ad00584e96b6bfb071d349e5ffbf558eada981f1",
       "sri": null
     },
     {
@@ -127,8 +127,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/de.json",
-      "size": 56140,
-      "hash": "a7512c3660ca870a2c64991dca7f3366625406f2",
+      "size": 58485,
+      "hash": "28093ccb2bb5bf26c5796b90c6f14fe64bcb68fe",
       "sri": null
     },
     {
@@ -147,8 +147,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 53363,
-      "hash": "ad85fda837953e8bf1658d62323855eb45c287f3",
+      "size": 53772,
+      "hash": "a585b8e2c8ae2e9ceb7164e86f93b2232aa51294",
       "sri": null
     },
     {
@@ -247,8 +247,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/gl.json",
-      "size": 56895,
-      "hash": "9ab6dafc79f3f73928789c9f45ea9515d63f9c4d",
+      "size": 58302,
+      "hash": "da1dee23920a8c4c37659190f6469681df57cac5",
       "sri": null
     },
     {
@@ -317,8 +317,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/it_IT.json",
-      "size": 51440,
-      "hash": "ee084110ca4afbb25cd31dc7d1a44aa0223b9f49",
+      "size": 53107,
+      "hash": "b1ea7d71d46ce2be371bf1d935fb16fffc4f1198",
       "sri": null
     },
     {
@@ -327,8 +327,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ja.json",
-      "size": 59734,
-      "hash": "97c83075b612c016b9f505b215b52a1e14294321",
+      "size": 62069,
+      "hash": "67b8093250ddc4c47d21446b85bb64fcc2565c65",
       "sri": null
     },
     {
@@ -497,8 +497,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ru.json",
-      "size": 63971,
-      "hash": "751ba2c0a2784a877c11b7d4f3a317377b78466a",
+      "size": 64307,
+      "hash": "7d3dd983190ece6407ec342e9998a4ca60493af5",
       "sri": null
     },
     {
@@ -607,8 +607,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/uk_UA.json",
-      "size": 69251,
-      "hash": "e1d75e2b1ce688f456b5897c056b471f62aa29cb",
+      "size": 75178,
+      "hash": "d1eddbac53f245eb986f01c9b71e02d1641c1a24",
       "sri": null
     },
     {
