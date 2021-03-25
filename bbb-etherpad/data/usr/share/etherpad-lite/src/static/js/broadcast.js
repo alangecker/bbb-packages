@@ -33,7 +33,7 @@ const hooks = require('./pluginfw/hooks');
 
 // These parameters were global, now they are injected. A reference to the
 // Timeslider controller would probably be more appropriate.
-function loadBroadcastJS(socket, sendSocketMsg, fireWhenAllScriptsAreLoaded, BroadcastSlider) {
+const loadBroadcastJS = (socket, sendSocketMsg, fireWhenAllScriptsAreLoaded, BroadcastSlider) => {
   let goToRevisionIfEnabledCount = 0;
   let changesetLoader = undefined;
 
@@ -468,14 +468,14 @@ function loadBroadcastJS(socket, sendSocketMsg, fireWhenAllScriptsAreLoaded, Bro
 
   BroadcastSlider.onSlider(goToRevisionIfEnabled);
 
-  const dynamicCSS = makeCSSManager('dynamicsyntax');
+  const dynamicCSS = makeCSSManager(document.querySelector('style[title="dynamicsyntax"]').sheet);
   const authorData = {};
 
   const receiveAuthorData = (newAuthorData) => {
     for (const [author, data] of Object.entries(newAuthorData)) {
       const bgcolor = typeof data.colorId === 'number'
         ? clientVars.colorPalette[data.colorId] : data.colorId;
-      if (bgcolor && dynamicCSS) {
+      if (bgcolor) {
         const selector = dynamicCSS.selectorStyle(`.${linestylefilter.getAuthorClassName(author)}`);
         selector.backgroundColor = bgcolor;
         selector.color = (colorutils.luminosity(colorutils.css2triple(bgcolor)) < 0.5)
@@ -488,6 +488,6 @@ function loadBroadcastJS(socket, sendSocketMsg, fireWhenAllScriptsAreLoaded, Bro
   receiveAuthorData(clientVars.collab_client_vars.historicalAuthorData);
 
   return changesetLoader;
-}
+};
 
 exports.loadBroadcastJS = loadBroadcastJS;

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * The DB Module provides a database initalized with the settings
+ * The DB Module provides a database initialized with the settings
  * provided by the settings module
  */
 
@@ -24,6 +24,7 @@
 const ueberDB = require('ueberdb2');
 const settings = require('../utils/Settings');
 const log4js = require('log4js');
+const stats = require('../stats');
 const util = require('util');
 
 // set database settings
@@ -36,7 +37,7 @@ const db =
 exports.db = null;
 
 /**
- * Initalizes the database with the settings provided by the settings module
+ * Initializes the database with the settings provided by the settings module
  * @param {Function} callback
  */
 exports.init = async () => await new Promise((resolve, reject) => {
@@ -48,8 +49,15 @@ exports.init = async () => await new Promise((resolve, reject) => {
       process.exit(1);
     }
 
+    if (db.metrics != null) {
+      for (const [metric, value] of Object.entries(db.metrics)) {
+        if (typeof value !== 'number') continue;
+        stats.gauge(`ueberdb_${metric}`, () => db.metrics[metric]);
+      }
+    }
+
     // everything ok, set up Promise-based methods
-    ['get', 'set', 'findKeys', 'getSub', 'setSub', 'remove', 'doShutdown'].forEach((fn) => {
+    ['get', 'set', 'findKeys', 'getSub', 'setSub', 'remove'].forEach((fn) => {
       exports[fn] = util.promisify(db[fn].bind(db));
     });
 
@@ -73,6 +81,6 @@ exports.init = async () => await new Promise((resolve, reject) => {
 });
 
 exports.shutdown = async (hookName, context) => {
-  await exports.doShutdown();
+  await util.promisify(db.close.bind(db))();
   console.log('Database closed');
 };

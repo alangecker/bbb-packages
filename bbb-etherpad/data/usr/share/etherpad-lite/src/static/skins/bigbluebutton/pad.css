@@ -42,6 +42,10 @@ html {
     padding: none;
 }
 
+.mobile-layout #editorcontainerbox {
+    margin-bottom: 5px;   
+}
+
 .toolbar ul.menu_right li[data-key="savedRevision"] {
     display: none;
 }

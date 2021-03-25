@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Handles the export requests
  */
@@ -25,31 +26,19 @@ const exportEtherpad = require('../utils/ExportEtherpad');
 const fs = require('fs');
 const settings = require('../utils/Settings');
 const os = require('os');
-const hooks = require('ep_etherpad-lite/static/js/pluginfw/hooks');
+const hooks = require('../../static/js/pluginfw/hooks');
 const TidyHtml = require('../utils/TidyHtml');
 const util = require('util');
 
 const fsp_writeFile = util.promisify(fs.writeFile);
 const fsp_unlink = util.promisify(fs.unlink);
 
-let convertor = null;
-
-// load abiword only if it is enabled
-if (settings.abiword != null) {
-  convertor = require('../utils/Abiword');
-}
-
-// Use LibreOffice if an executable has been defined in the settings
-if (settings.soffice != null) {
-  convertor = require('../utils/LibreOffice');
-}
-
 const tempDirectory = os.tmpdir();
 
 /**
  * do a requested export
  */
-async function doExport(req, res, padId, readOnlyId, type) {
+exports.doExport = async (req, res, padId, readOnlyId, type) => {
   // avoid naming the read-only file as the original pad's id
   let fileName = readOnlyId ? readOnlyId : padId;
 
@@ -84,7 +73,7 @@ async function doExport(req, res, padId, readOnlyId, type) {
       const newHTML = await hooks.aCallFirst('exportHTMLSend', html);
       if (newHTML.length) html = newHTML;
       res.send(html);
-      throw 'stop';
+      return;
     }
 
     // else write the html export to a file
@@ -97,25 +86,22 @@ async function doExport(req, res, padId, readOnlyId, type) {
     html = null;
     await TidyHtml.tidy(srcFile);
 
-    // send the convert job to the convertor (abiword, libreoffice, ..)
+    // send the convert job to the converter (abiword, libreoffice, ..)
     const destFile = `${tempDirectory}/etherpad_export_${randNum}.${type}`;
 
     // Allow plugins to overwrite the convert in export process
     const result = await hooks.aCallAll('exportConvert', {srcFile, destFile, req, res});
     if (result.length > 0) {
       // console.log("export handled by plugin", destFile);
-      handledByPlugin = true;
     } else {
-      // @TODO no Promise interface for convertors (yet)
-      await new Promise((resolve, reject) => {
-        convertor.convertFile(srcFile, destFile, type, (err) => {
-          err ? reject('convertFailed') : resolve();
-        });
-      });
+      const converter =
+          settings.soffice != null ? require('../utils/LibreOffice')
+          : settings.abiword != null ? require('../utils/Abiword')
+          : null;
+      await converter.convertFile(srcFile, destFile, type);
     }
 
     // send the file
-    const sendFile = util.promisify(res.sendFile);
     await res.sendFile(destFile, null);
 
     // clean up temporary files
@@ -128,12 +114,4 @@ async function doExport(req, res, padId, readOnlyId, type) {
 
     await fsp_unlink(destFile);
   }
-}
-
-exports.doExport = function (req, res, padId, readOnlyId, type) {
-  doExport(req, res, padId, readOnlyId, type).catch((err) => {
-    if (err !== 'stop') {
-      throw err;
-    }
-  });
 };

@@ -275,7 +275,7 @@ fi
 PROTOCOL=http
 if [ -f $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties ]; then
   SERVER_URL=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}' | tail -n 1)
-  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | grep bigbluebutton.web.serverURL | tail -n 1 | grep -q https; then
+  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | grep ^bigbluebutton.web.serverURL | tail -n 1 | grep -q https; then
     PROTOCOL=https
   fi
 fi
@@ -296,9 +296,9 @@ if [ ! -f /usr/share/etherpad-lite/APIKEY.txt ]; then
   chmod 644 /usr/share/etherpad-lite/APIKEY.txt
 fi
 
-# Needed for upgrade in 2.3
-rm -rf /usr/share/etherpad-lite/node_modules/ep_better_pdf_export
-rm -rf /usr/share/etherpad-lite/node_modules/ep_delete_after_delay_lite
+if [ -d /usr/share/etherpad-lite/node_modules ]; then
+  rm -r /usr/share/etherpad-lite/node_modules
+fi
 
 # Clean out old pads before upgrade
 redis-cli keys pad:*            | xargs -r redis-cli del
@@ -308,4 +308,3 @@ redis-cli keys token2author:*   | xargs -r redis-cli del
 redis-cli keys pad2readonly:*   | xargs -r redis-cli del
 redis-cli keys readonly2pad:*   | xargs -r redis-cli del
 redis-cli keys ueberDB:*        | xargs -r redis-cli del
-

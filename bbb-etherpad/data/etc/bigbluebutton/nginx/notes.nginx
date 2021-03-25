@@ -2,7 +2,7 @@
 location /pad/p/ {
     rewrite /pad/p/(.*) /p/$1 break;
     rewrite ^/pad/p$ /pad/p/ permanent;
-    proxy_pass http://localhost:9001/p;
+    proxy_pass http://127.0.0.1:9001/p;
     proxy_pass_header Server;
     proxy_redirect /p /pad/p;
     proxy_set_header Host $host;
@@ -13,14 +13,14 @@ location /pad/p/ {
     proxy_set_header X-Forwarded-Proto $scheme; # for EP to set secure cookie flag when https is used
     proxy_http_version 1.1;
 
-    auth_request /bigbluebutton/connection/checkAuthorization;
+    auth_request /bigbluebutton/connection/validatePad;
     auth_request_set $auth_status $upstream_status;
 }
 
 location /pad {
     rewrite /pad/(.*) /$1 break;
     rewrite ^/pad$ /pad/ permanent;
-    proxy_pass http://localhost:9001/;
+    proxy_pass http://127.0.0.1:9001/;
     proxy_pass_header Server;
     proxy_redirect / /pad/;
     proxy_set_header Host $host;
@@ -29,14 +29,14 @@ location /pad {
 
 location /pad/socket.io/socket.io.js {
     rewrite /pad/socket.io/socket.io.js /socket.io/socket.io.js break;
-    proxy_pass http://localhost:9001/;
+    proxy_pass http://127.0.0.1:9001/;
     proxy_set_header Host $host;
     proxy_buffering off;
 }
 
 location /pad/socket.io {
     rewrite /pad/socket.io/(.*) /socket.io/$1 break;
-    proxy_pass http://localhost:9001/;
+    proxy_pass http://127.0.0.1:9001/;
     proxy_redirect / /pad/;
     proxy_set_header Host $host;
     proxy_buffering off;
@@ -55,7 +55,7 @@ location /pad/socket.io {
 
 location /static {
     rewrite /static/(.*) /static/$1 break;
-    proxy_pass http://localhost:9001/;
+    proxy_pass http://127.0.0.1:9001/;
     proxy_set_header Host $host;
     proxy_buffering off;
 }

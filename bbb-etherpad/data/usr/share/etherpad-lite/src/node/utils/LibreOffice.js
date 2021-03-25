@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Controls the communication with LibreOffice
  */
@@ -17,17 +18,63 @@
  */
 
 const async = require('async');
-const fs = require('fs');
+const fs = require('fs').promises;
 const log4js = require('log4js');
 const os = require('os');
 const path = require('path');
 const settings = require('./Settings');
 const spawn = require('child_process').spawn;
 
+const libreOfficeLogger = log4js.getLogger('LibreOffice');
+
+const doConvertTask = async (task) => {
+  const tmpDir = os.tmpdir();
+
+  libreOfficeLogger.debug(
+      `Converting ${task.srcFile} to format ${task.type}. The result will be put in ${tmpDir}`);
+  const soffice = spawn(settings.soffice, [
+    '--headless',
+    '--invisible',
+    '--nologo',
+    '--nolockcheck',
+    '--writer',
+    '--convert-to',
+    task.type,
+    task.srcFile,
+    '--outdir',
+    tmpDir,
+  ]);
+  // Soffice/libreoffice is buggy and often hangs.
+  // To remedy this we kill the spawned process after a while.
+  const hangTimeout = setTimeout(() => {
+    soffice.stdin.pause(); // required to kill hanging threads
+    soffice.kill();
+  }, 120000);
+  let stdoutBuffer = '';
+  soffice.stdout.on('data', (data) => { stdoutBuffer += data.toString(); });
+  soffice.stderr.on('data', (data) => { stdoutBuffer += data.toString(); });
+  await new Promise((resolve, reject) => {
+    soffice.on('exit', (code) => {
+      clearTimeout(hangTimeout);
+      if (code !== 0) {
+        const err =
+            new Error(`LibreOffice died with exit code ${code} and message: ${stdoutBuffer}`);
+        libreOfficeLogger.error(err.stack);
+        return reject(err);
+      }
+      resolve();
+    });
+  });
+
+  const filename = path.basename(task.srcFile);
+  const sourceFile = `${filename.substr(0, filename.lastIndexOf('.'))}.${task.fileExtension}`;
+  const sourcePath = path.join(tmpDir, sourceFile);
+  libreOfficeLogger.debug(`Renaming ${sourcePath} to ${task.destFile}`);
+  await fs.rename(sourcePath, task.destFile);
+};
+
 // Conversion tasks will be queued up, so we don't overload the system
 const queue = async.queue(doConvertTask, 1);
-
-const libreOfficeLogger = log4js.getLogger('LibreOffice');
 
 /**
  * Convert a file from one type to another
@@ -37,7 +84,7 @@ const libreOfficeLogger = log4js.getLogger('LibreOffice');
  * @param  {String}     type        The type to convert into
  * @param  {Function}   callback    Standard callback function
  */
-exports.convertFile = function (srcFile, destFile, type, callback) {
+exports.convertFile = async (srcFile, destFile, type) => {
   // Used for the moving of the file, not the conversion
   const fileExtension = type;
 
@@ -56,85 +103,10 @@ exports.convertFile = function (srcFile, destFile, type, callback) {
   // we need to convert to odt first, then to doc
   // to avoid `Error: no export filter for /tmp/xxxx.doc` error
   if (type === 'doc') {
-    queue.push({
-      srcFile,
-      destFile: destFile.replace(/\.doc$/, '.odt'),
-      type: 'odt',
-      callback() {
-        queue.push({srcFile: srcFile.replace(/\.html$/, '.odt'), destFile, type, callback, fileExtension});
-      },
-    });
+    const intermediateFile = destFile.replace(/\.doc$/, '.odt');
+    await queue.pushAsync({srcFile, destFile: intermediateFile, type: 'odt', fileExtension: 'odt'});
+    await queue.pushAsync({srcFile: intermediateFile, destFile, type, fileExtension});
   } else {
-    queue.push({srcFile, destFile, type, callback, fileExtension});
+    await queue.pushAsync({srcFile, destFile, type, fileExtension});
   }
 };
-
-function doConvertTask(task, callback) {
-  const tmpDir = os.tmpdir();
-
-  async.series([
-    /*
-     * use LibreOffice to convert task.srcFile to another format, given in
-     * task.type
-     */
-    function (callback) {
-      libreOfficeLogger.debug(`Converting ${task.srcFile} to format ${task.type}. The result will be put in ${tmpDir}`);
-      const soffice = spawn(settings.soffice, [
-        '--headless',
-        '--invisible',
-        '--nologo',
-        '--nolockcheck',
-        '--writer',
-        '--convert-to',
-        task.type,
-        task.srcFile,
-        '--outdir',
-        tmpDir,
-      ]);
-      // Soffice/libreoffice is buggy and often hangs.
-      // To remedy this we kill the spawned process after a while.
-      const hangTimeout = setTimeout(() => {
-        soffice.stdin.pause(); // required to kill hanging threads
-        soffice.kill();
-      }, 120000);
-
-      let stdoutBuffer = '';
-
-      // Delegate the processing of stdout to another function
-      soffice.stdout.on('data', (data) => {
-        stdoutBuffer += data.toString();
-      });
-
-      // Append error messages to the buffer
-      soffice.stderr.on('data', (data) => {
-        stdoutBuffer += data.toString();
-      });
-
-      soffice.on('exit', (code) => {
-        clearTimeout(hangTimeout);
-        if (code != 0) {
-          // Throw an exception if libreoffice failed
-          return callback(`LibreOffice died with exit code ${code} and message: ${stdoutBuffer}`);
-        }
-
-        // if LibreOffice exited succesfully, go on with processing
-        callback();
-      });
-    },
-
-    // Move the converted file to the correct place
-    function (callback) {
-      const filename = path.basename(task.srcFile);
-      const sourceFilename = `${filename.substr(0, filename.lastIndexOf('.'))}.${task.fileExtension}`;
-      const sourcePath = path.join(tmpDir, sourceFilename);
-      libreOfficeLogger.debug(`Renaming ${sourcePath} to ${task.destFile}`);
-      fs.rename(sourcePath, task.destFile, callback);
-    },
-  ], (err) => {
-    // Invoke the callback for the local queue
-    callback();
-
-    // Invoke the callback for the task
-    task.callback(err);
-  });
-}
