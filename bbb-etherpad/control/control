@@ -1,10 +1,10 @@
 Package: bbb-etherpad
-Version: 1:2.2.0-75
+Version: 1:2.2.0-79
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 73042
+Installed-Size: 73041
 Depends: yq,libreoffice,redis-server,tidy
 Section: default
 Priority: extra

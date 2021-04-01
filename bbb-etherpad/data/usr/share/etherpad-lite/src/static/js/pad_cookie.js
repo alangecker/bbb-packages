@@ -43,11 +43,9 @@ var padcookie = (function()
 
   function setRawCookie(safeText)
   {
-    var expiresDate = new Date();
-    expiresDate.setFullYear(3000);
     var secure = isHttpsScheme() ? ";secure" : "";
     var sameSite = ";sameSite=None";
-    document.cookie = (cookieName + "=" + safeText + ";expires=" + expiresDate.toGMTString() + secure + sameSite);
+    document.cookie = (cookieName + "=" + safeText + secure + sameSite);
   }
 
   function parseCookie(text)

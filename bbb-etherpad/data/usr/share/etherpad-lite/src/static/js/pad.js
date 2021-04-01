@@ -150,12 +150,8 @@ function sendClientReady(isReconnect, messageType)
     document.title = padId.replace(/_+/g, ' ') + " | " + title;
   }
 
-  var token = readCookie("token");
-  if (token == null)
-  {
-    token = "t." + randomString();
-    createCookie("token", token, 60);
-  }
+  token = "t." + randomString();
+  createCookie("token", token);
 
   var sessionID = decodeURIComponent(readCookie("sessionID"));
   var password = readCookie("password");
