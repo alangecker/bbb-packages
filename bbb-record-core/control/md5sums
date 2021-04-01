@@ -27,7 +27,7 @@ c90548172b25b51e410a4d56940cdbe1  usr/local/bigbluebutton/core/scripts/README
 2c61ef73c31de2750f47b483778fbc44  usr/local/bigbluebutton/core/scripts/bbb-0.9-beta-recording-update
 c9646830f394493f496ac334fc53b43d  usr/local/bigbluebutton/core/scripts/bbb-0.9-recording-size
 2310d83aca29c9b1e1f9b92683e07bf1  usr/local/bigbluebutton/core/scripts/bbb-1.1-meeting-tag
-1715cc05ab6c6cf3ecfc9e337919d7bf  usr/local/bigbluebutton/core/scripts/bigbluebutton.yml
+dfcf93ab27e1a412a4507648015fc3b8  usr/local/bigbluebutton/core/scripts/bigbluebutton.yml
 86b04575c369557ebcea5945afd7ed84  usr/local/bigbluebutton/core/scripts/cleanup.rb
 2ae068fbd9a2a3cf68dd8bfac6cfcce3  usr/local/bigbluebutton/core/scripts/events/events.rb
 f3658a2c84782e6aaae7d48784170f43  usr/local/bigbluebutton/core/scripts/post_archive/post_archive.rb.example
@@ -45,4 +45,4 @@ fbe487149c302a9e1898689572fcf0b3  usr/local/bigbluebutton/core/scripts/rap-sanit
 7f3d5a64675a284726db075e54c8ad6f  usr/local/bigbluebutton/core/scripts/sanity/sanity.rb
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 96714118c4bfd005c2ad2cef4ff9e95b  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-4fd285fdca05d6e5a14cc69291c64e16  usr/share/doc/bbb-record-core/changelog.gz
+b52c59d223dc8e94e7f05ee1f0e2cb1b  usr/share/doc/bbb-record-core/changelog.gz
