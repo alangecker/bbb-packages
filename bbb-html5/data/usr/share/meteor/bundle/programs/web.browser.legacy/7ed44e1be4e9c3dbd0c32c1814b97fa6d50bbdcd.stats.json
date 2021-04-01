@@ -3,15 +3,15 @@
     "name": "standard-minifier-js",
     "version": "2.4.1"
   },
-  "totalMinifiedBytes": 673833,
-  "totalMinifiedGzipBytes": 185808,
+  "totalMinifiedBytes": 698791,
+  "totalMinifiedGzipBytes": 188490,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9484,
     "packages/meteor-base.js": 31,
     "packages/mobile-experience.js": 37,
     "packages/modules-runtime.js": 4199,
     "packages/modules.js": [
-      295555,
+      320513,
       {
         "node_modules": {
           "meteor": {
@@ -79,22 +79,23 @@
           "@babel": {
             "runtime": {
               "helpers": {
-                "interopRequireDefault.js": 79,
-                "inheritsLoose.js": 123,
-                "assertThisInitialized.js": 151,
-                "toConsumableArray.js": 190,
-                "arrayWithoutHoles.js": 104,
-                "arrayLikeToArray.js": 134,
-                "iterableToArray.js": 123,
-                "unsupportedIterableToArray.js": 344,
-                "nonIterableSpread.js": 197,
-                "typeof.js": 283,
-                "objectSpread.js": 388,
-                "defineProperty.js": 148,
-                "extends.js": 246,
-                "createClass.js": 251
+                "interopRequireDefault.js": 131,
+                "inheritsLoose.js": 199,
+                "setPrototypeOf.js": 237,
+                "assertThisInitialized.js": 203,
+                "toConsumableArray.js": 254,
+                "arrayWithoutHoles.js": 159,
+                "arrayLikeToArray.js": 186,
+                "iterableToArray.js": 175,
+                "unsupportedIterableToArray.js": 399,
+                "nonIterableSpread.js": 249,
+                "typeof.js": 443,
+                "objectSpread.js": 443,
+                "defineProperty.js": 200,
+                "extends.js": 350,
+                "createClass.js": 303
               },
-              "package.json": 548
+              "package.json": 24315
             }
           },
           "react-intl": {
