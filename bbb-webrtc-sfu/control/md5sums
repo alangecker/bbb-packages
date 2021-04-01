@@ -1,5 +1,5 @@
 de5ea55fee91b1e2e06d48321404db89  etc/bigbluebutton/nginx/webrtc-sfu.nginx
-9e26d6e3a8dd4b13ac16fb424071c83e  etc/cron.hourly/bbb-restart-kms
+2bf10505fe1830cad487f397b107cb8d  etc/cron.hourly/bbb-restart-kms
 d43c6a75ff2c4bfaa0961d9e0aee079f  etc/logrotate.d/bbb-webrtc-sfu.logrotate
 f87c90b708aeddc25949412287c85a3a  usr/lib/systemd/system/bbb-webrtc-sfu.service
 ae6e468121dd05ca9fce8645a703c66d  usr/lib/systemd/system/kurento-media-server.service
@@ -2709,4 +2709,4 @@ b2c72c9b8d5c65e84bc600ef1fa0a4e8  usr/local/bigbluebutton/bbb-webrtc-sfu/node_mo
 07f10c1c55ee5a231bc4df8cafc14f20  usr/local/bigbluebutton/bbb-webrtc-sfu/package-lock.json
 27b2f64985356a65f823f8e06e97267f  usr/local/bigbluebutton/bbb-webrtc-sfu/package.json
 4f5f256abc06a8fab7063f4a8c3492cf  usr/local/bigbluebutton/bbb-webrtc-sfu/server.js
-b1f387b73666845fda5620d3e14946f5  usr/share/doc/bbb-webrtc-sfu/changelog.gz
+7ac9dd166ae98d76f5f83a845f25cfcb  usr/share/doc/bbb-webrtc-sfu/changelog.gz
