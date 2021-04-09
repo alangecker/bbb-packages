@@ -5,7 +5,7 @@
 a6c2afe26d803273b0a1b3c47e73b6d5  usr/share/bbb-web/WEB-INF/classes/ApplicationResources.groovy
 b150c087269afbbb4d6fd5cfb96d2c32  usr/share/bbb-web/WEB-INF/classes/BigBlueButtonFilters.groovy
 ba4359c36195da7e3975d2d17021a083  usr/share/bbb-web/WEB-INF/classes/BuildConfig.groovy
-9204ec759d90d4711917d71b1cbb0865  usr/share/bbb-web/WEB-INF/classes/META-INF/grails.build.info
+735a7ff426f0b7fdabdbc5dcaaafe61c  usr/share/bbb-web/WEB-INF/classes/META-INF/grails.build.info
 1c9f6ad3f885893afbb03140c4764d7c  usr/share/bbb-web/WEB-INF/classes/WEB-INF/freemarker/api-error.ftlx
 416ac2118161634da3f23a4f631b7485  usr/share/bbb-web/WEB-INF/classes/WEB-INF/freemarker/api-errors.ftlx
 15d13086acc0a49ce2089777122cfc2d  usr/share/bbb-web/WEB-INF/classes/WEB-INF/freemarker/api-version.ftlx
@@ -29,9 +29,9 @@ dc340ec9f0b9b643dc758013ad4f2daf  usr/share/bbb-web/WEB-INF/classes/api/error.gs
 a0661b3fd9486c0fd8aad9a55f1f16f2  usr/share/bbb-web/WEB-INF/classes/application.conf
 3bb0c2259a42b93f14ef9d7345e72183  usr/share/bbb-web/WEB-INF/classes/application.groovy
 59e3bdcd7083c2e22436161bcf7bea13  usr/share/bbb-web/WEB-INF/classes/application.yml
-b15127e4bbf694aa14b722687fb6b026  usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
+f3520473830543bfe3b84555287d78fa  usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
 ced3fc81e9a7fd1802f2c83d274f93e1  usr/share/bbb-web/WEB-INF/classes/error.gsp
-82213cc430ef90e432e7995b0b52b622  usr/share/bbb-web/WEB-INF/classes/gsp/views.properties
+9db31bda99fd32666743480e8c814122  usr/share/bbb-web/WEB-INF/classes/gsp/views.properties
 29d8c8ef0ccc68b39d01ea76b38514b1  usr/share/bbb-web/WEB-INF/classes/gsp_bigbluebutton_apierror_gsp.class
 ffe9efe8e590bf11a70bf292d42986be  usr/share/bbb-web/WEB-INF/classes/gsp_bigbluebutton_apierror_gsp_html.data
 90b94c299ec4653ba13097afc1867499  usr/share/bbb-web/WEB-INF/classes/gsp_bigbluebutton_apierror_gsp_linenumbers.data
@@ -267,10 +267,10 @@ eb6f8c1a4caf36647335381138003a8c  usr/share/bbb-web/WEB-INF/classes/org/bigblueb
 72bf2de6de5d92b2a6605602933639c1  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ApiController$_uploadDocuments_closure23.class
 d246b0160da5aae02b6faa1e61641d81  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ApiController$_uploadDocuments_closure24$_closure113.class
 bf0152c9ad840392281d987f92dc261f  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ApiController$_uploadDocuments_closure24.class
-7872a91eda0291fbf62235c510f681c6  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ApiController.class
+0b6aa6452a7e765aded56e6f2465f254  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ApiController.class
 d992e7c9adc81c73328e30a7532072bb  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ConnectionController$_closure1.class
 24c0e348830add9422830278e94561ec  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ConnectionController$_closure2.class
-530ab79709f9aed7582b5c8b8df241a9  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ConnectionController.class
+411f334f12158ae62ae5c9107c5217d5  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/ConnectionController.class
 eb6f72969924347a5f9ece48d3cac3ca  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController$_closure1.class
 95a561d9ae7735e97db161df3cb1a3d6  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController$_closure10.class
 7f64fee48211bfd15b03654d194f3670  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController$_closure11.class
@@ -311,7 +311,7 @@ ec2ebec75b56a58e465cf0920a7ead76  usr/share/bbb-web/WEB-INF/classes/org/bigblueb
 c3ea7782a880443ef2bfd34358335996  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController$_closure7.class
 7c5fdb29b3af1b74d2e8ff336e5e3e23  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController$_closure8.class
 bca945ff93d875c4d4ec25de06c59161  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController$_closure9.class
-d5bc7a273b7d4b81f989e064c73c0619  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController.class
+9c73400e4d047e3ec4324e7723c0c6e4  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/PresentationController.class
 afbc5cc2f76cf846f8044718d036aadd  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController$_closure1.class
 cdc1627d10ea0454adaa4558ed2cd8f3  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController$_closure2.class
 3bc0097a9fb8053031afef59e82e9845  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController$_closure3$_closure7$_closure8.class
@@ -330,7 +330,7 @@ d5d741b995d7c00060574d7cef2e6a55  usr/share/bbb-web/WEB-INF/classes/org/bigblueb
 b2c12f404df3704225cee4f5f661f760  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController$_respondWithError_closure5$_closure14$_closure15.class
 c93f4ec150da8d2846f89c4dd18155a8  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController$_respondWithError_closure5$_closure14.class
 5be2e6323b834c3fa3281d84ee49d9bd  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController$_respondWithError_closure5.class
-d26d44f683935d7f1863dec5f77e76be  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController.class
+67be27e9ca317335954403e516bc7c11  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/controllers/RecordingController.class
 b6b608d83965b2f1c529ec6dde707c5e  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/services/PresentationService$_closure1.class
 47b81713c8c445a759bf98630b0a3577  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/services/PresentationService$_closure10.class
 484b6e42fa53ab447d36fdeb772e9dc9  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/services/PresentationService$_closure11.class
@@ -350,7 +350,7 @@ ef5a1dcd004bbc498b03255aa34a6352  usr/share/bbb-web/WEB-INF/classes/org/bigblueb
 9be87ed69bcdc1f0002b2e8c9cd02252  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/services/PresentationService.class
 e25bcba8d1f1e9db5e4fa6afa5db5250  usr/share/bbb-web/WEB-INF/classes/org/bigbluebutton/web/services/SvgFilter.class
 3dabd39ba4f6b86c3c8d0224aeb86eae  usr/share/bbb-web/WEB-INF/classes/spring/bbb-redis-messaging.xml
-5c3b217cd1a14dc5d46719f5dc4eb955  usr/share/bbb-web/WEB-INF/classes/spring/doc-conversion.xml
+8c440bb9d303f04f834695f4bfb3e704  usr/share/bbb-web/WEB-INF/classes/spring/doc-conversion.xml
 c80fbd2f0e44def18c85a0fcb1c8cd4a  usr/share/bbb-web/WEB-INF/classes/spring/resources.groovy
 01fc8a8eff1f535597be208aeafedd8d  usr/share/bbb-web/WEB-INF/classes/spring/resources.xml
 83a8a959ddc28d13b2fa9aa9b802bf11  usr/share/bbb-web/WEB-INF/classes/spring/turn-stun-servers.xml
@@ -374,8 +374,8 @@ c7003cc309c3716a33ee9f51f5d504da  usr/share/bbb-web/WEB-INF/lib/akka-actor_2.12-
 f3b9907ecb73bc338b7f7022baf495ca  usr/share/bbb-web/WEB-INF/lib/asset-pipeline-core-2.15.1.jar
 3bbd502f0fcd2f02d88cb32f67dabbad  usr/share/bbb-web/WEB-INF/lib/asset-pipeline-grails-2.15.1.jar
 d211e83ce20405b9c9f27e411d161f32  usr/share/bbb-web/WEB-INF/lib/async-3.3.2.jar
-c25e603dbef781455ea705f07a383c04  usr/share/bbb-web/WEB-INF/lib/bbb-common-message_2.12-0.0.1617122460-SNAPSHOT.jar
-c934d8bdb3ad2e7aa52c9b55fe981000  usr/share/bbb-web/WEB-INF/lib/bbb-common-web-0.0.1617122460-SNAPSHOT.jar
+72bbbe3bc9488c509e7333e2ff8d2c0e  usr/share/bbb-web/WEB-INF/lib/bbb-common-message_2.12-0.0.1617753877-SNAPSHOT.jar
+2cf7864da29c7bd9c91d085c0bd82a4f  usr/share/bbb-web/WEB-INF/lib/bbb-common-web-0.0.1617753877-SNAPSHOT.jar
 db49fa2882be2fd18259c859f470a135  usr/share/bbb-web/WEB-INF/lib/cache-4.0.1.jar
 353cf6a2bdba09595ccfa073b78c7fcb  usr/share/bbb-web/WEB-INF/lib/commons-codec-1.10.jar
 f54a8510f834a1a57166970bfc982e94  usr/share/bbb-web/WEB-INF/lib/commons-collections-3.2.2.jar
@@ -637,7 +637,7 @@ eabe4af98753b0163266d7e68bbd32e3  usr/share/bbb-web/assets/grails_logo.png
 f7f9b8e7dc6a2965522549e11bdad8f1  usr/share/bbb-web/assets/main-ae29fbf5e8f2e67263127bab65c86dc7.css.gz
 00a041cb625c1dedcc398bb62a499a1e  usr/share/bbb-web/assets/main.css
 f7f9b8e7dc6a2965522549e11bdad8f1  usr/share/bbb-web/assets/main.css.gz
-5ee6cf7816922c1a2e9e2b094532d862  usr/share/bbb-web/assets/manifest.properties
+73c9743cf865ac86acd6b2b71442a201  usr/share/bbb-web/assets/manifest.properties
 de02487513cda3f9db3d2969608747f8  usr/share/bbb-web/assets/mobile-61b8607741e97aa19553f856bc5da637.css
 86db0bee1acbc1053ef81b614749e74a  usr/share/bbb-web/assets/mobile-61b8607741e97aa19553f856bc5da637.css.gz
 de02487513cda3f9db3d2969608747f8  usr/share/bbb-web/assets/mobile.css
@@ -728,10 +728,10 @@ b23dd7b7a54cdcbf35dfbc5fcf6bc206  usr/share/bbb-web/org/springframework/boot/loa
 ed7bbe08c24cc3db638baa5270932fa4  usr/share/bbb-web/org/springframework/boot/loader/jar/JarURLConnection.class
 75494093ebfcdc16e55fe1853c31b0b4  usr/share/bbb-web/org/springframework/boot/loader/jar/ZipInflaterInputStream.class
 77eb44e3d7cb4263c11537824e1352c7  usr/share/bbb-web/org/springframework/boot/loader/util/SystemPropertyUtils.class
-27d2f7b3e22751560ed6b443dabd4ac4  usr/share/bbb-web/run-prod.sh
-58007d3cd3241aa00a328440ec73b4c8  usr/share/doc/bbb-web/changelog.gz
+3668c5170a85ad02b9033dfff5238e00  usr/share/bbb-web/run-prod.sh
+2292237458c5663e755ff7b487eec8ba  usr/share/doc/bbb-web/changelog.gz
 1c6032441aec11b523e1a7bfa96d60cf  usr/share/prescheck/lib/SparseBitSet-1.2.jar
-b7ca3e34d48739b5417cffb7a95bf110  usr/share/prescheck/lib/bbb-pres-check-0.0.1.jar
+f584e9eb17a712c4e110872811d0a48a  usr/share/prescheck/lib/bbb-pres-check-0.0.1.jar
 5085f186156822fa3a02e55bcd5584a8  usr/share/prescheck/lib/commons-codec-1.13.jar
 4a37023740719b391f10030362c86be6  usr/share/prescheck/lib/commons-collections4-4.4.jar
 3f7237fb56029591b5bdd2698c196220  usr/share/prescheck/lib/commons-compress-1.20.jar
@@ -743,4 +743,4 @@ e9a7c049c62c41c70354669bcd448212  usr/share/prescheck/lib/poi-4.1.2.jar
 c0aa71b597560d29c1d17f7c2adbdff0  usr/share/prescheck/lib/poi-ooxml-4.1.2.jar
 381222563bf1fc4e9c2528acee7f8bf5  usr/share/prescheck/lib/poi-ooxml-schemas-4.1.2.jar
 408902d943e5bd51a4813dae131681a3  usr/share/prescheck/lib/xmlbeans-3.1.0.jar
-12a128ad659c7c8d6f9ebc825f4ca17e  usr/share/prescheck/prescheck.sh
+c7e8add075f4457cdc9eb0aad7e92ec8  usr/share/prescheck/prescheck.sh

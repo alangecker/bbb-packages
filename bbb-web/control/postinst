@@ -398,7 +398,7 @@ bbb_config() {
 # Use this file to override default entries in /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
 #
 
-bigbluebutton.web.serverURL=http://$IP
+bigbluebutton.web.serverURL=https://$IP
 securitySalt=$SECRET
 HERE
     fi
