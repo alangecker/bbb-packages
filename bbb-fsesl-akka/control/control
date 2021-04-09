@@ -1,6 +1,6 @@
 Source: bbb-fsesl-akka
 Package: bbb-fsesl-akka
-Version: 2.3.0-36
+Version: 2.3.0-37
 Section: java
 Priority: optional
 Architecture: all
