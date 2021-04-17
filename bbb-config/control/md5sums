@@ -1,5 +1,5 @@
 20439440242fd5770b3e42319a914ce5  etc/bigbluebutton/bbb-conf/apply-lib.sh
-c143405bbe72246eb7c85a47c98e859a  etc/bigbluebutton/bigbluebutton-release
+0322175fead0da8496262e6f9ce59766  etc/bigbluebutton/bigbluebutton-release
 184ae11f3de1bc29b27f476f4bbab785  etc/bigbluebutton/nopdfmark.ps
 ebc5cf124860ab872361580e49403fe7  etc/cron.daily/bigbluebutton
 f25c9d2399ddb1ae6b56cf901ab62d3d  etc/cron.hourly/bbb-resync-freeswitch
@@ -10,7 +10,7 @@ a8f4e47e37495025e8145a4bed92e62e  usr/share/bigbluebutton/blank/blank-presentati
 2d8c3c408f80030ab4e8bf1c02af56ed  usr/share/bigbluebutton/blank/blank-slide.swf
 b3c208be3b219429bcdb13ca1f979cac  usr/share/bigbluebutton/blank/blank-svg.svg
 ba3ddcef465d28c19663272909c980ab  usr/share/bigbluebutton/blank/blank-thumb.png
-d9fe6c5e552398c1aa85ae90d5ad818f  usr/share/doc/bbb-config/changelog.gz
+d400609ecd13a9a7959059a706a347d0  usr/share/doc/bbb-config/changelog.gz
 dfd6448df1e1c78edc0887a1dd5c908b  var/bigbluebutton/blank/blank-png.png
 a8f4e47e37495025e8145a4bed92e62e  var/bigbluebutton/blank/blank-presentation.pdf
 2d8c3c408f80030ab4e8bf1c02af56ed  var/bigbluebutton/blank/blank-slide.swf
@@ -20,9 +20,9 @@ ba3ddcef465d28c19663272909c980ab  var/bigbluebutton/blank/blank-thumb.png
 9f18afde30751307f09e8b7c0cb3a54d  var/www/bigbluebutton-default/css/bijou.min.css
 008e0bb5ebfa7bc298a042f95944df25  var/www/bigbluebutton-default/css/font-awesome.min.css
 da923b1525dc3c23ec63bf5d136172b9  var/www/bigbluebutton-default/css/style.css
-77e1b292c389df19fccf7379fb324ba8  var/www/bigbluebutton-default/default.pdf
-0030930ead69eab669b06b23dce3d1dc  var/www/bigbluebutton-default/default.pptx
-b9a4f3e43e9d04cd2277118ac6787886  var/www/bigbluebutton-default/favicon.ico
+46dc613ca7dc66d1aa847e1135c4c2bd  var/www/bigbluebutton-default/default.pdf
+e6321fc0c4223f785133a9b830955fd3  var/www/bigbluebutton-default/default.pptx
+b591a12aff228feae97aacaeefb97fad  var/www/bigbluebutton-default/favicon.ico
 0d2717cd5d853e5c765ca032dfd41a4d  var/www/bigbluebutton-default/fonts/FontAwesome.otf
 674f50d287a8c48dc19ba404d20fe713  var/www/bigbluebutton-default/fonts/fontawesome-webfont.eot
 912ec66d7572ff821749319396470bde  var/www/bigbluebutton-default/fonts/fontawesome-webfont.svg
