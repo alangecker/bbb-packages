@@ -1,10 +1,10 @@
 Package: bbb-libreoffice-docker
-Version: 1:2.3.0-22
+Version: 1:2.3.0-43
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 2
+Installed-Size: 0
 Depends: iptables,bbb-record-core
 Section: default
 Priority: extra

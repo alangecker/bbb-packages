@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 ############################
 ### BEGIN DEB-HELPERS.SH ###
@@ -285,14 +285,44 @@ fi
 ### END DEB-HELPERS.SH ###
 ##########################
 
-for i in `seq 1 4` ; do
-        systemctl stop bbb-libreoffice-0${i} 
-        systemctl disable bbb-libreoffice-0${i}
 
-done
+IMAGE_CHECK=`docker image inspect bbb-soffice 2>&1 > /dev/null && echo 1 || echo 0`
+if [ "$IMAGE_CHECK"  == "1" ]; then
+	echo "Removing image bbb-soffice"
+	docker image rm bbb-soffice
+fi
 
-if which docker; then
+
+FOLDER_CHECK=`[ -d /usr/share/bbb-libreoffice-conversion/ ] && echo 1 || echo 0`
+if [ "$FOLDER_CHECK" == "1" ]; then
+	echo "Removing install folder"
+	rm -rf /usr/share/bbb-libreoffice-conversion/
+fi;
+
+
+FILE_SUDOERS_CHECK=`[ -f /etc/sudoers.d/zzz-bbb-docker-libreoffice ] && echo 1 || echo 0`
+if [ "$FILE_SUDOERS_CHECK" == "1" ]; then
+	echo "Removing Sudoers file"
+	rm /etc/sudoers.d/zzz-bbb-docker-libreoffice
+fi;
+
+
+
+# for versions of bbb-libreoffice-docker before bbb 2.3-beta2
+BBB_LIBREOFFICE_SERVICE_EXISTS=`[ systemctl list-units --type service | grep bbb-libreoffice- ] && echo 1 || echo 0`
+if [ "$BBB_LIBREOFFICE_SERVICE_EXISTS" == 1 ]; then
+	for i in `seq 1 4` ; do
+		systemctl stop bbb-libreoffice-0${i} 
+		systemctl disable bbb-libreoffice-0${i}
+	done
+fi
+
+NETWORK_CHECK=`docker network inspect bbb-libreoffice &> /dev/null && echo 1 || echo 0`
+if [ "$NETWORK_CHECK" == "1" ] ; then
+	echo "removing bbb-libreoffice docker network"
 	docker network remove bbb-libreoffice
+else
+	echo "not removing bbb-libreoffice docker network"
 fi
 
 systemctl daemon-reload
