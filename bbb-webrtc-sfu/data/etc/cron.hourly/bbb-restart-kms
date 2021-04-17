@@ -14,7 +14,12 @@ if [ -f /etc/default/bbb-restart-kms ]; then
   source /etc/default/bbb-restart-kms
 fi
 
-users=$(mongo --quiet mongodb://127.0.1.1:27017/meteor --eval "db.users.count()")
+
+if [ "$DISTRIB_CODENAME" != "xenial" ]; then
+  users=$(mongo --quiet mongodb://127.0.1.1:27017/meteor --eval "db.users.count()")
+else
+  users=$(mongo --quiet mongodb://127.0.1.1:27017/meteor --eval "db.users.count({connectionStatus: 'online'})")
+fi
 
 if [ "$users" -eq 0 ]; then
 
