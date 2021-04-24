@@ -2,7 +2,7 @@ de5ea55fee91b1e2e06d48321404db89  etc/bigbluebutton/nginx/webrtc-sfu.nginx
 47a1d5c9c0b10a39e886977f8a841106  etc/cron.hourly/bbb-restart-kms
 d43c6a75ff2c4bfaa0961d9e0aee079f  etc/logrotate.d/bbb-webrtc-sfu.logrotate
 f87c90b708aeddc25949412287c85a3a  usr/lib/systemd/system/bbb-webrtc-sfu.service
-ae6e468121dd05ca9fce8645a703c66d  usr/lib/systemd/system/kurento-media-server.service
+2062203c7952e004c0a28aad8a9aedad  usr/lib/systemd/system/kurento-media-server.service
 cfa2b1c0065e8853b83045670d108edb  usr/local/bigbluebutton/bbb-webrtc-sfu/.dockerignore
 136912871aea496836f21d06a31d3781  usr/local/bigbluebutton/bbb-webrtc-sfu/.gitignore
 a8410ea6fb5b88562dd6c34b070044ca  usr/local/bigbluebutton/bbb-webrtc-sfu/Dockerfile
@@ -88,7 +88,7 @@ ba2b6c0ad191276d44acfe3aa19248dc  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/scr
 d03751fda82acf0d0eacd265b8408b5f  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/utils/emitter.js
 ca30a2ed4343c24dfef757649c6e941c  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/VideoManager.js
 c077d9d2ce3f499591a8a217930d2d00  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/VideoProcess.js
-ba25f42768e5e4d6d443a8981a37bbbb  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/video.js
+825f1272ae11844ebf4619e72fa36c56  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/video.js
 63f731ffccdea47cb6c600b70c866415  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/argparse/CHANGELOG.md
 a2f2590d8d82b0fa2b3e2fc5c69d2b81  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/argparse/LICENSE
 ff0837c07e9f5360d016d95438b424de  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/argparse/README.md
@@ -2705,8 +2705,8 @@ c5729cb0e0ab67775ed7c75c676ca660  usr/local/bigbluebutton/bbb-webrtc-sfu/node_mo
 d93817c7e677b9e4624c370da063c57e  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/xmlbuilder/lib/index.js
 e4a6fa91f1cfce168eae498c15da4547  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/xmlbuilder/package.json
 b2c72c9b8d5c65e84bc600ef1fa0a4e8  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/xmlbuilder/typings/index.d.ts
-270c11b35da3d69140f10180cffbb763  usr/local/bigbluebutton/bbb-webrtc-sfu/opts-global.sh
-3143a9c0e69cf46fc61dbeb81ddc83de  usr/local/bigbluebutton/bbb-webrtc-sfu/package-lock.json
-310dda8a05f189c4ffd16f58a843ac86  usr/local/bigbluebutton/bbb-webrtc-sfu/package.json
+481eb82b797c32dfbee925f545fab5ac  usr/local/bigbluebutton/bbb-webrtc-sfu/opts-global.sh
+151745f38c076f2a3139d0d2ef78e92f  usr/local/bigbluebutton/bbb-webrtc-sfu/package-lock.json
+2e20061555c5a0bce64cba5bdc94b20c  usr/local/bigbluebutton/bbb-webrtc-sfu/package.json
 4f5f256abc06a8fab7063f4a8c3492cf  usr/local/bigbluebutton/bbb-webrtc-sfu/server.js
-f9a4c9056fa8861f6360f6f06b1a2759  usr/share/doc/bbb-webrtc-sfu/changelog.gz
+fd52cffa2108000acb57df10bc64ad62  usr/share/doc/bbb-webrtc-sfu/changelog.gz
