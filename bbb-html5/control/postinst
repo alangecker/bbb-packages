@@ -4,6 +4,8 @@
 ### BEGIN DEB-HELPERS.SH ###
 ############################
 
+# set -x
+
 #
 # Adding service to autostart
 # $1 = service name
@@ -246,9 +248,11 @@ else
   IP=$(hostname -I | sed 's/ .*//g')
 fi
 
-if [ -f /etc/redhat-release ]; then
+if [ -f /etc/redhat-release ] || [ -f /etc/system-release ]; then
   TOMCAT_SERVICE=tomcat
-else
+fi
+
+if [ -f /etc/lsb-release ]; then
   if grep -q bionic /etc/lsb-release; then
     TOMCAT_SERVICE=tomcat8
   else
@@ -386,16 +390,16 @@ fi
 # Setup specific version of node
 
 
-source /etc/lsb-release
+if [ -f /etc/lsb-release ]; then
+  source /etc/lsb-release
+fi
 if [ "$DISTRIB_RELEASE" == "16.04" ]; then
   if [ ! -d /usr/share/node-v8.17.0-linux-x64 ]; then
     cd /usr/share
     tar xfz node-v8.17.0-linux-x64.tar.gz
     chown -R meteor:meteor node-v8.17.0-linux-x64
   fi
-fi
-
-if [ "$DISTRIB_RELEASE" == "18.04" ]; then
+else
   if [ ! -d /usr/share/node-v12.16.1-linux-x64 ]; then
     cd /usr/share
     tar xfz node-v12.16.1-linux-x64.tar.gz
