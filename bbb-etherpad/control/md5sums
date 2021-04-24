@@ -1,6 +1,6 @@
 4aac9b180c7577968fda27d6e6f3c601  etc/bigbluebutton/nginx/notes.nginx
 bda919342ed5c295490a873c906398bd  usr/lib/systemd/system/etherpad.service
-ca8602f20efe0b10f1f045750b1d8149  usr/share/doc/bbb-etherpad/changelog.gz
+8eafb0c8138cba1184f2f034562a270a  usr/share/doc/bbb-etherpad/changelog.gz
 f84f6e30a853562bf99a7608e586b7c6  usr/share/etherpad-lite/CHANGELOG.md
 f6aeff26702d63fe405f164ee98ef326  usr/share/etherpad-lite/CONTRIBUTING.md
 fd9ef771d64068aa0cf0333e8539b25a  usr/share/etherpad-lite/LICENSE
@@ -1595,7 +1595,7 @@ ef4a421a8a4bf89ec65f469676a91f61  usr/share/etherpad-lite/node_modules/wide-alig
 815f2c408219f81bfc71cf9e216480e0  usr/share/etherpad-lite/node_modules/yallist/iterator.js
 63ec1027a42b5d578f02d2c77cd68401  usr/share/etherpad-lite/node_modules/yallist/package.json
 483ea622c4704f6dc92ab509464db95c  usr/share/etherpad-lite/node_modules/yallist/yallist.js
-d66f48833ec3c6d8783b18c67d0958bc  usr/share/etherpad-lite/settings.json
+0174f8fb74c90db51ab461b455fdace9  usr/share/etherpad-lite/settings.json
 0d30678fc40626fc70de506c6087f5dd  usr/share/etherpad-lite/src/README.md
 7f7d17355599a2dcb6a8ca8368e5b114  usr/share/etherpad-lite/src/bin/buildDebian.sh
 990fad00917bb76c5ae7f84feebce5e1  usr/share/etherpad-lite/src/bin/buildForWindows.sh
