@@ -300,96 +300,21 @@ fi
 	docker build -t bbb-soffice docker/
 #fi
 
-#if ! docker network inspect bbb-libreoffice > /dev/null 2>&1; then
-#	docker network create bbb-libreoffice -d bridge --opt com.docker.network.bridge.name=br-soffice
-#fi
-
-if [ 1 == 0 ]; then
-
-mkdir -p /usr/share/bbb-libreoffice-conversion
-cat > /usr/share/bbb-libreoffice-conversion/convert-local.sh<<HERE
-#!/bin/bash
-# Conversion of office files to Pdf using local docker bbb-soffice
-
-# This script receives three params
-# Param 1: Input office file path (e.g. "/tmp/test.odt")
-# Param 2: Output pdf file path (e.g. "/tmp/test.pdf")
-# Param 3: Output format (pdf default)
-
-while [ -z "\$randomDirectoryName" -o -d "/tmp/bbb-libreoffice-conversion/\$randomDirectoryName" ]; do
-        randomDirectoryName=\$(shuf -i 100000000-999999999 -n 1)
-done
-
-#If output format is missing, define PDF
-convertTo="\${3:-pdf}"
-convertToParam="--convert-to \$convertTo"
-
-#If output is html, include param --writer to avoid blank page
-if [ \${1: -5} == ".html" ]
-then
-	convertToParam="\$convertToParam --writer"
-fi
-
-mkdir -p "/tmp/bbb-libreoffice-conversion/"
-chmod 777 "/tmp/bbb-libreoffice-conversion/"
-mkdir "/tmp/bbb-libreoffice-conversion/\$randomDirectoryName/"
-cp "\$1" "/tmp/bbb-libreoffice-conversion/\$randomDirectoryName/file"
-sudo /usr/bin/docker run --rm --network none --env="HOME=/tmp/" -w /tmp/ --user=\$(printf %05d `id -u`) -v "/tmp/bbb-libreoffice-conversion/\$randomDirectoryName/":/data/ --rm bbb-soffice sh -c "/usr/bin/soffice -env:UserInstallation=file:///tmp/ \$convertToParam --outdir /data /data/file"
-cp "/tmp/bbb-libreoffice-conversion/\$randomDirectoryName/file.\$convertTo" "\$2"
-rm -r "/tmp/bbb-libreoffice-conversion/\$randomDirectoryName/"
-
-exit 0
-HERE
-
-
-
-cat > /usr/share/bbb-libreoffice-conversion/convert-remote.sh<<HERE
-#/bin/bash
-# This is a sample script - adjust it per your need
-# 1 - setup a server with JOD-CONVERTER-REST ( docker run --memory 512m --rm -p 8080:8080 eugenmayer/jodconverter:rest )
-# 2 - replace the HOST information in below command with your server host
-
-# This script receives three params
-# Param 1: Input office file path (e.g. "/tmp/test.odt")
-# Param 2: Output pdf file path (e.g. "/tmp/test.pdf")
-# Param 3: Destination Format (pdf default)
-
-#If output format is missing, define PDF
-convertTo="\${3:-pdf}"
-
-curl -X POST "http://127.0.0.1:8080/lool/convert-to/\$convertTo" -H "accept: application/octet-stream" -H "Content-Type: multipart/form-data" -F "data=@\$1" > \$2
-
-exit 0
-HERE
-
-
-cat > /usr/share/bbb-libreoffice-conversion/etherpad-export.sh<<HERE
-#!/bin/bash
-
-#This script is used to enable Etherpad to export to PDF/ODT
-# 1- Edit /usr/share/etherpad-lite/settings.json
-# 2- Set "soffice" config to this script path (default "/usr/share/bbb-libreoffice-conversion/etherpad-export.sh")
-
-/usr/share/bbb-libreoffice-conversion/convert.sh "\$8" "\$(echo \$8 | sed -E -e 's/html|odt/'\$7'/')" \$7
-
-exit 0
-HERE
 
 chmod +x /usr/share/bbb-libreoffice-conversion/convert-local.sh
 chmod +x /usr/share/bbb-libreoffice-conversion/convert-remote.sh
 chmod +x /usr/share/bbb-libreoffice-conversion/etherpad-export.sh
 
-fi
 
 if [ ! -L /usr/share/bbb-libreoffice-conversion/convert.sh ]; then
 	ln -s /usr/share/bbb-libreoffice-conversion/convert-local.sh /usr/share/bbb-libreoffice-conversion/convert.sh
 fi
 
 cat > /etc/sudoers.d/zzz-bbb-docker-libreoffice <<HERE
-bigbluebutton ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-libreoffice-conversion/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to pdf --outdir /data /data/file
-etherpad ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-libreoffice-conversion/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to pdf --writer --outdir /data /data/file
-etherpad ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-libreoffice-conversion/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to odt --writer --outdir /data /data/file
-etherpad ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-libreoffice-conversion/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to doc --outdir /data /data/file
+bigbluebutton ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-soffice-bigbluebutton/tmp.[0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to pdf --outdir /data /data/file
+etherpad ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-soffice-etherpad/tmp.[0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to pdf --writer --outdir /data /data/file
+etherpad ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-soffice-etherpad/tmp.[0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to odt --writer --outdir /data /data/file
+etherpad ALL=(ALL) NOPASSWD: /usr/bin/docker run --rm --network none --env=HOME=/tmp/ -w /tmp/ --user=[0-9][0-9][0-9][0-9][0-9] -v /tmp/bbb-soffice-etherpad/tmp.[0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z][0-9a-zA-Z]/\:/data/ --rm bbb-soffice sh -c /usr/bin/soffice -env\:UserInstallation=file\:///tmp/ --convert-to doc --outdir /data /data/file
 HERE
 
 #for i in `seq 1 4` ; do

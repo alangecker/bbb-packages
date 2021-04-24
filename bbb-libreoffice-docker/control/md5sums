@@ -1,5 +1,5 @@
-11d2c09c560564a13f9abce7bc94941d  usr/share/bbb-libreoffice/docker/Dockerfile
-cd68629b0fca7d10aedfb99c91ca7584  usr/share/bbb-libreoffice-conversion/convert-local.sh
-27cc3d75b5ea3d59eb32c9e4cf92f241  usr/share/bbb-libreoffice-conversion/convert-remote.sh
+a74fe5b27a0f37a5fde0e95b6f7d92b5  usr/share/bbb-libreoffice/docker/Dockerfile
+3a84eccd455b5d946b0c5dbf6a7507e2  usr/share/bbb-libreoffice-conversion/convert-local.sh
+5c9c226a0c9ca262baf5c1f1b3e680a6  usr/share/bbb-libreoffice-conversion/convert-remote.sh
 9323438534d5f85c526d52e9e8b8fa9f  usr/share/bbb-libreoffice-conversion/etherpad-export.sh
-20ad28990d158107b8eabeeec5af35a2  usr/share/doc/bbb-libreoffice-docker/changelog.gz
+d843e762f7c18215d6ae8532f66780a8  usr/share/doc/bbb-libreoffice-docker/changelog.gz
