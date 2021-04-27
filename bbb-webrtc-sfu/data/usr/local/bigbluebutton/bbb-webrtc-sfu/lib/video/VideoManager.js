@@ -13,6 +13,9 @@ const C = require('../bbb/messages/Constants');
 const Logger = require('../utils/Logger');
 const errors = require('../base/errors');
 const config = require('config');
+const Utils = require('../utils/Utils.js');
+
+const VIDEO_MEDIA_SERVER = config.get('videoMediaServer');
 // Unfreeze the config's default media specs
 const DEFAULT_MEDIA_SPECS = config.util.cloneDeep(config.get('conference-media-specs'));
 
@@ -38,14 +41,6 @@ module.exports = class VideoManager extends BaseManager {
     return `${message.connectionId}-${VideoManager.getCameraId(message)}-${VideoManager.getRole(message)}`;
   }
 
-  static addBwToSpec (spec, bitrate) {
-    spec['H264'].as_main = bitrate;
-    spec['H264'].tias_main = (bitrate >>> 0) * 1000;
-    spec['VP8'].as_main = bitrate;
-    spec['VP8'].tias_main = (bitrate >>> 0) * 1000;
-    return spec;
-  }
-
   static getVideoSpecsFromRequest (message) {
     const role = VideoManager.getRole(message);
     // Only apply bitrate cap to publishers.
@@ -54,7 +49,7 @@ module.exports = class VideoManager extends BaseManager {
     const spec = { ...DEFAULT_MEDIA_SPECS };
 
     if (bitrate != null) {
-      VideoManager.addBwToSpec(spec, bitrate);
+      Utils.addBwToSpecMainType(spec, bitrate);
     }
 
     return spec;
@@ -143,7 +138,8 @@ module.exports = class VideoManager extends BaseManager {
       connectionId,
       sdpOffer,
       cameraId,
-      record,
+      record = true,
+      mediaServer = VIDEO_MEDIA_SERVER,
     } = message;
 
     video = this._fetchSession(sessionId);
@@ -166,6 +162,7 @@ module.exports = class VideoManager extends BaseManager {
         userName,
         sessionId,
         record,
+        mediaServer,
       );
       this._sessions[sessionId] = video;
     }
@@ -237,9 +234,13 @@ module.exports = class VideoManager extends BaseManager {
     try {
       await video.processAnswer(answer);
     } catch (error) {
-      console.error(`${this._logPrefix} Answer processing failed`, error);
+      const metadata = video ? video._getLogMetadata() : {};
+      Logger.error(this._logPrefix,  'Answer processing failed', {
+        errorMessage: error.message,
+        errorCode: error.code,
+        metadata,
+      });
     }
-
   }
 
   handlePause (message) {

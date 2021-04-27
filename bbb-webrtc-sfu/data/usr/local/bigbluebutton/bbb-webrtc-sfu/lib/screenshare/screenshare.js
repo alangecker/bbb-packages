@@ -15,8 +15,11 @@ const BaseProvider = require('../base/BaseProvider');
 const config = require('config');
 const errors = require('../base/errors');
 const EventEmitter = require('events').EventEmitter;
+
 const SHOULD_RECORD = config.get('recordScreenSharing');
 const DEFAULT_MEDIA_SPECS = config.get('conference-media-specs');
+// Unfreeze the config's default media specs
+const DEFAULT_MEDIA_SPECS_UNFROZEN = config.util.cloneDeep(config.get('conference-media-specs'));
 const SUBSCRIBER_SPEC_SLAVE = config.has('videoSubscriberSpecSlave')
   ? config.get('videoSubscriberSpecSlave')
   : false;
@@ -28,11 +31,20 @@ const SCREENSHARE_SERVER_AKKA_BROADCAST = config.has(`screenshareServerSideAkkaB
   ? config.get(`screenshareServerSideAkkaBroadcast`)
   : true;
 const PERMISSION_PROBES = config.get('permissionProbes');
-const SCREENSHARE_MEDIA_SERVER = config.get('screenshareMediaServer');
 
 const LOG_PREFIX = "[screenshare]";
 
 module.exports = class Screenshare extends BaseProvider {
+  static getCustomMediaSpec (bitrate) {
+    const spec = { ...DEFAULT_MEDIA_SPECS_UNFROZEN };
+
+    if (bitrate != null) {
+      Utils.addBwToSpecContentType(spec, bitrate);
+    }
+
+    return spec;
+  }
+
   constructor(id, bbbGW, voiceBridge, userId, vh, vw, meetingId, mcs, hasAudio) {
     super(bbbGW);
     this.sfuApp = C.SCREENSHARE_APP;
@@ -452,8 +464,9 @@ module.exports = class Screenshare extends BaseProvider {
     });
   }
 
-  start (sessionId, connectionId, sdpOffer, bbbUserId, role, bbbUserName) {
+  start (connectionId, bbbUserId, role, descriptor, options = {}) {
     return new Promise(async (resolve, reject) => {
+      const { userName: bbbUserName } = options;
       const isConnected = await this.mcs.waitForConnection();
 
       if (!isConnected) {
@@ -464,6 +477,7 @@ module.exports = class Screenshare extends BaseProvider {
       if (SHOULD_RECORD && role === C.SEND_ROLE) {
         this.isRecorded = await this.probeForRecordingStatus(this.meetingId, bbbUserId);
       }
+
       if (role === C.RECV_ROLE) {
         try {
           Logger.info(LOG_PREFIX, `Starting viewer screensharing session`,
@@ -471,10 +485,10 @@ module.exports = class Screenshare extends BaseProvider {
           const sdpAnswer = await this._startViewer(
             connectionId,
             this._voiceBridge,
-            sdpOffer,
+            descriptor,
             bbbUserId,
             this._presenterEndpoint,
-            bbbUserName
+            options,
           );
           return resolve(sdpAnswer);
         }
@@ -482,11 +496,12 @@ module.exports = class Screenshare extends BaseProvider {
           return reject(this._handleError(LOG_PREFIX, err, role, bbbUserId));
         }
       }
+
       if (role === C.SEND_ROLE) {
         try {
           Logger.info(LOG_PREFIX, `Starting presenter screensharing session`,
             this._getFullPresenterLogMetadata(connectionId));
-          const sdpAnswer = await this._startPresenter(sdpOffer, bbbUserId, bbbUserName, connectionId);
+          const sdpAnswer = await this._startPresenter(descriptor, bbbUserId, connectionId, options);
           return resolve(sdpAnswer);
         }
         catch (err) {
@@ -496,7 +511,7 @@ module.exports = class Screenshare extends BaseProvider {
     });
   }
 
-  _startPresenter (sdpOffer, userId, bbbUserName, connectionId) {
+  _startPresenter (descriptor, userId, connectionId, options = {}) {
     return new Promise(async (resolve, reject) => {
       try {
         this.status = C.MEDIA_STARTING;
@@ -504,9 +519,9 @@ module.exports = class Screenshare extends BaseProvider {
         const presenterMCSUserId = await this.mcs.join(
           this._voiceBridge,
           'SFU',
-          { externalUserId: userId, name: bbbUserName, autoLeave: true });
+          { externalUserId: userId, name: options.userName, autoLeave: true });
         this.presenterMCSUserId = presenterMCSUserId;
-        const presenterSdpAnswer = await this._publishPresenterWebRTCStream(sdpOffer);
+        const presenterSdpAnswer = await this._publishPresenterWebRTCStream(descriptor, options);
         await this.mcs.setContentFloor(this._voiceBridge, this._presenterEndpoint);
         resolve(presenterSdpAnswer);
       } catch (error) {
@@ -517,26 +532,33 @@ module.exports = class Screenshare extends BaseProvider {
     });
   }
 
-  async _publishPresenterWebRTCStream (descriptor) {
+  async _publishPresenterWebRTCStream (descriptor, options = {}) {
     try {
+      let mediaSpecs;
+
+      if (options.bitrate) {
+        mediaSpecs = Screenshare.getCustomMediaSpec(options.bitrate);
+      }
+
       // Get the REMB spec to be used. Screenshare uses the default mixed in with
       // the default spec bitrate. Fetching bitrate by the VP8 codec is just an
       // arbitrary choice that makes no difference.
       // The media specs format isn't flexible enough, so that's what we have
       const kurentoRembParams = { ...KURENTO_REMB_PARAMS };
       kurentoRembParams.rembOnConnect = DEFAULT_MEDIA_SPECS.VP8.as_content;
-      const options = {
+      const mcsOptions = {
         descriptor,
         name: this._assembleStreamName('publish', this.userId, this._voiceBridge),
         mediaProfile: 'content',
         kurentoRembParams,
-        adapter: SCREENSHARE_MEDIA_SERVER,
+        adapter: options.mediaServer,
+        mediaSpecs,
       };
 
       const { mediaId, answer } = await this.mcs.publish(
         this.presenterMCSUserId,
         this._voiceBridge,
-        C.WEBRTC, options
+        C.WEBRTC, mcsOptions
       );
 
       this._presenterEndpoint = mediaId;
@@ -582,7 +604,7 @@ module.exports = class Screenshare extends BaseProvider {
     }
   }
 
-  _startViewer(connectionId, voiceBridge, sdpOffer, userId, presenterEndpoint, bbbUserName) {
+  _startViewer(connectionId, voiceBridge, descriptor, userId, presenterEndpoint, options = {}) {
     return new Promise(async (resolve, reject) => {
       let sdpAnswer;
       this._viewersCandidatesQueue[connectionId] = [];
@@ -592,7 +614,7 @@ module.exports = class Screenshare extends BaseProvider {
         const mcsUserId = await this.mcs.join(
           this._voiceBridge,
           'SFU',
-          { externalUserId: userId, name: bbbUserName, autoLeave: true });
+          { externalUserId: userId, name: options.userName, autoLeave: true });
         this._viewerUsers[connectionId] = {
           userId,
           connectionId,
@@ -605,13 +627,13 @@ module.exports = class Screenshare extends BaseProvider {
         // The media specs format isn't flexible enough, so that's what we have
         const kurentoRembParams = { ...KURENTO_REMB_PARAMS };
         kurentoRembParams.rembOnConnect = DEFAULT_MEDIA_SPECS.VP8.as_content;
-        const options = {
-          descriptor: sdpOffer,
+        const mcsOptions = {
+          descriptor,
           name: this._assembleStreamName('subscribe', userId, this._voiceBridge),
           mediaProfile: 'content',
           mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
           kurentoRembParams,
-          adapter: SCREENSHARE_MEDIA_SERVER,
+          adapter: options.mediaServer,
         }
 
         if (this._presenterEndpoint == null) {
@@ -620,7 +642,7 @@ module.exports = class Screenshare extends BaseProvider {
         }
 
         const { mediaId, answer } = await this.mcs.subscribe(mcsUserId,
-          this._presenterEndpoint, C.WEBRTC, options);
+          this._presenterEndpoint, C.WEBRTC, mcsOptions);
         this._viewerEndpoints[connectionId] = mediaId;
         sdpAnswer = answer;
         this.flushCandidatesQueue(this.mcs, [...this._viewersCandidatesQueue[connectionId]], this._viewerEndpoints[connectionId]);

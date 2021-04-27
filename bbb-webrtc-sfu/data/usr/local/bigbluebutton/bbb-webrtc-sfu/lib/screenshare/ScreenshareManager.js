@@ -16,6 +16,7 @@ const errors = require('../base/errors');
 const config = require('config');
 
 const EJECT_ON_USER_LEFT = config.get('ejectOnUserLeft');
+const SCREENSHARE_MEDIA_SERVER = config.get('screenshareMediaServer');
 
 module.exports = class ScreenshareManager extends BaseManager {
   constructor (connectionChannel, additionalChannels, logPrefix) {
@@ -111,7 +112,8 @@ module.exports = class ScreenshareManager extends BaseManager {
       sdpOffer,
       callerName: userId,
       userName,
-      vh = 0, vw = 0, hasAudio,
+      bitrate,
+      vh = 0, vw = 0, hasAudio, mediaServer = SCREENSHARE_MEDIA_SERVER,
     } = message;
 
     let iceQueue, session;
@@ -134,7 +136,13 @@ module.exports = class ScreenshareManager extends BaseManager {
       this._meetings[internalMeetingId] = voiceBridge;
     }
 
-    return session.start(voiceBridge, connectionId, sdpOffer, userId, role, userName)
+    const options = {
+      userName,
+      bitrate,
+      mediaServer,
+    };
+
+    return session.start(connectionId, userId, role, sdpOffer, options)
       .then(sdpAnswer => {
         Logger.debug(this._logPrefix, `Screensharing session started`,
           ScreenshareManager.getMetadataFromMessage(message));
