@@ -8,8 +8,8 @@ cfa2b1c0065e8853b83045670d108edb  usr/local/bigbluebutton/bbb-webrtc-sfu/.docker
 a8410ea6fb5b88562dd6c34b070044ca  usr/local/bigbluebutton/bbb-webrtc-sfu/Dockerfile
 3000208d539ec061b899bce1d9ce9404  usr/local/bigbluebutton/bbb-webrtc-sfu/LICENSE
 33e54314621d9994b5461d20e7b36680  usr/local/bigbluebutton/bbb-webrtc-sfu/README.md
-83f1ddaecb1179f40395b619f5cbde27  usr/local/bigbluebutton/bbb-webrtc-sfu/config/custom-environment-variables.yml
-e576cb51a3a306025a312d7a494da145  usr/local/bigbluebutton/bbb-webrtc-sfu/config/default.example.yml
+6c486cc70a4deb3efc91c70ce0ea11cb  usr/local/bigbluebutton/bbb-webrtc-sfu/config/custom-environment-variables.yml
+51c3e699c0e3a55bcbfa5486c34dae54  usr/local/bigbluebutton/bbb-webrtc-sfu/config/default.example.yml
 d04398eb3ae8227ff1526e78b0eb14e5  usr/local/bigbluebutton/bbb-webrtc-sfu/debug-start.sh
 f40d3c448ec1b969f9b778cdd708280e  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/AudioManager.js
 8c8310f738be8f3fa1ecab15ae06a05f  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/AudioProcess.js
@@ -42,7 +42,7 @@ c4df3c143b9dbc5c0f8be342a553bda0  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/bbb
 233ab78d88fd49d885064d7948c4fd34  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/connection-manager/ConnectionManager.js
 5417b1ec0b0d45487004a6b6728531a4  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/connection-manager/HttpServer.js
 8c15fc444d40f46b87e2c7948b0b2e36  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/connection-manager/MessageValidator.js
-f5a4cd8927a20817c29542aaaee36d9e  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/connection-manager/WebsocketConnectionManager.js
+35eb50783795490d4e4bd73dfe404a7f  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/connection-manager/WebsocketConnectionManager.js
 fa82a13d20b354c586518587a523b580  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/adapter-factory.js
 780808262954523e36861006986f60d2  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/freeswitch/esl-wrapper.js
 5bd04b084607cc3f7313f7256f10a737  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/freeswitch/freeswitch.js
@@ -79,7 +79,7 @@ d03751fda82acf0d0eacd265b8408b5f  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs
 26068a65510c0617782865fd0b0b9407  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/utils/util.js
 35cc11c6af5b8b8f5c1ee530bf3757da  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/process.js
 e431026bbbf88d051f80e84f18f12de6  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/process-wrapper.js
-8b7e295a2ddfa8c92f1773dc8cc03162  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/screenshare/ScreenshareManager.js
+ad101b6f695dba4bf0d2681f82574d56  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/screenshare/ScreenshareManager.js
 2fb7ef29370c0dce64b798af979f5721  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/screenshare/ScreenshareProcess.js
 c607dfb2531b927545004253b788dda2  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/screenshare/screenshare.js
 ef2969b5d1683c0a7893aa5fb0c11fea  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/sfu-module-manager.js
@@ -2706,7 +2706,7 @@ d93817c7e677b9e4624c370da063c57e  usr/local/bigbluebutton/bbb-webrtc-sfu/node_mo
 e4a6fa91f1cfce168eae498c15da4547  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/xmlbuilder/package.json
 b2c72c9b8d5c65e84bc600ef1fa0a4e8  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/xmlbuilder/typings/index.d.ts
 481eb82b797c32dfbee925f545fab5ac  usr/local/bigbluebutton/bbb-webrtc-sfu/opts-global.sh
-b4723a41b9ce1ce9ed44ec40de55d3e0  usr/local/bigbluebutton/bbb-webrtc-sfu/package-lock.json
-42a5de8fb2364736751c5efd563eb243  usr/local/bigbluebutton/bbb-webrtc-sfu/package.json
+e410f8f0dc2cc4426c1a1cfa94871154  usr/local/bigbluebutton/bbb-webrtc-sfu/package-lock.json
+23f2aa1c6584a2059704667ef4a07c5f  usr/local/bigbluebutton/bbb-webrtc-sfu/package.json
 4f5f256abc06a8fab7063f4a8c3492cf  usr/local/bigbluebutton/bbb-webrtc-sfu/server.js
-7e9c6823dc4fbd84e119a62dc5a9fef8  usr/share/doc/bbb-webrtc-sfu/changelog.gz
+4bce490ef2216f553f751ce7a3ddc67c  usr/share/doc/bbb-webrtc-sfu/changelog.gz
