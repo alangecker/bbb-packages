@@ -4,6 +4,8 @@
 ### BEGIN DEB-HELPERS.SH ###
 ############################
 
+# set -x
+
 #
 # Adding service to autostart
 # $1 = service name
@@ -246,9 +248,11 @@ else
   IP=$(hostname -I | sed 's/ .*//g')
 fi
 
-if [ -f /etc/redhat-release ]; then
+if [ -f /etc/redhat-release ] || [ -f /etc/system-release ]; then
   TOMCAT_SERVICE=tomcat
-else
+fi
+
+if [ -f /etc/lsb-release ]; then
   if grep -q bionic /etc/lsb-release; then
     TOMCAT_SERVICE=tomcat8
   else
@@ -324,6 +328,7 @@ case "$1" in
 
     chmod +r $TARGET
 
+  if [ ! -f /etc/system-release ]; then
     if ! gem -v | grep -q ^3.; then 
       gem update --system --no-document
       if grep -q bionic /etc/lsb-release; then
@@ -347,7 +352,14 @@ case "$1" in
       echo "## Could not find gem ##"
       exit 1
     fi
-    
+  fi 
+
+  if [ -f /etc/system-release ]; then
+      gem install bundler --no-document
+      cd /usr/local/bigbluebutton/core
+      /usr/local/bin/bundle
+  fi 
+
     # Run recording link fixup/upgrade script
     # Don't abort on failure; users can manually run it later, too
     if id $BBB_USER > /dev/null 2>&1 ; then
@@ -420,14 +432,19 @@ case "$1" in
   ;;
 esac
 
-if dpkg -l | grep -q nginx; then
+if which nginx > /dev/null; then
   reloadService nginx
 fi
 
 systemctl daemon-reload
 
-if grep -q xenial /etc/lsb-release; then
-  startService bbb-record-core.timer || echo "bbb-record-core could not be registered or started"
+if [ -f /etc/lsb-release ]; then
+  if grep -q xenial /etc/lsb-release; then
+    startService bbb-record-core.timer || echo "bbb-record-core could not be registered or started"
+  else
+    startService bbb-rap-starter.service || echo "bbb-rap-starter could not be registered or started"
+    startService bbb-rap-resque-worker.service || echo "bbb-rap-resque-worker could not be registered or started"
+  fi
 else
   startService bbb-rap-starter.service || echo "bbb-rap-starter could not be registered or started"
   startService bbb-rap-resque-worker.service || echo "bbb-rap-resque-worker could not be registered or started"

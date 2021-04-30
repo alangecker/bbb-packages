@@ -4,6 +4,8 @@
 ### BEGIN DEB-HELPERS.SH ###
 ############################
 
+# set -x
+
 #
 # Adding service to autostart
 # $1 = service name
@@ -246,9 +248,11 @@ else
   IP=$(hostname -I | sed 's/ .*//g')
 fi
 
-if [ -f /etc/redhat-release ]; then
+if [ -f /etc/redhat-release ] || [ -f /etc/system-release ]; then
   TOMCAT_SERVICE=tomcat
-else
+fi
+
+if [ -f /etc/lsb-release ]; then
   if grep -q bionic /etc/lsb-release; then
     TOMCAT_SERVICE=tomcat8
   else
