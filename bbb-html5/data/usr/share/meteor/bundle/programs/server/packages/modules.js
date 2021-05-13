@@ -1302,24 +1302,24 @@ module.useNode();
                                                                                                                        //
 module.exports = {
   "name": "sanitize-html",
-  "version": "1.27.5",
-  "main": "dist/sanitize-html.js"
+  "version": "2.3.3",
+  "main": "index.js"
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-},"dist":{"sanitize-html.js":function module(require,exports,module){
+},"index.js":function module(require,exports,module){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                     //
-// node_modules/sanitize-html/dist/sanitize-html.js                                                                    //
+// node_modules/sanitize-html/index.js                                                                                 //
 //                                                                                                                     //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
 module.useNode();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}}},"axios":{"package.json":function module(require,exports,module){
+}},"axios":{"package.json":function module(require,exports,module){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                     //
