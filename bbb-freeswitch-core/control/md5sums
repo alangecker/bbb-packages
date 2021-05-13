@@ -168,7 +168,7 @@ d563a20e7a24177b9c93b9192f1519e4  opt/freeswitch/lib/freeswitch/mod/mod_skinny.s
 a5428509c73e7fa8c16d55fedc59c00d  opt/freeswitch/lib/freeswitch/mod/mod_sndfile.la
 b0339092129d271ca92af1bb5554a141  opt/freeswitch/lib/freeswitch/mod/mod_sndfile.so
 87c28aaafe47ea413de20879ad24ba01  opt/freeswitch/lib/freeswitch/mod/mod_sofia.la
-01bba1a3da83e2cb6767cfdc905b2e84  opt/freeswitch/lib/freeswitch/mod/mod_sofia.so
+ed8b4f058818f8e06b739ae200bc060d  opt/freeswitch/lib/freeswitch/mod/mod_sofia.so
 116334585224fe01a14a94b40b7d27a8  opt/freeswitch/lib/freeswitch/mod/mod_spandsp.la
 1ac80d797096eea2a97957a68eaf8d1a  opt/freeswitch/lib/freeswitch/mod/mod_spandsp.so
 eac73d7e001705f588effc67d7c671eb  opt/freeswitch/lib/freeswitch/mod/mod_syslog.la
@@ -193,9 +193,9 @@ a97d19cfb7c3f84a1808a0463cdfa4db  opt/freeswitch/lib/libfreeswitch.so.1.0.0
 64bd9dde70659051eedc9f616374c39c  opt/freeswitch/lib/libsofia-sip-ua-glib.a
 8d55f1f2f534aad48dff1e01289f7c14  opt/freeswitch/lib/libsofia-sip-ua-glib.la
 047d51a844f99cceccaef594a480a9b2  opt/freeswitch/lib/libsofia-sip-ua-glib.so.3.0.0
-9a81a5de2fe0fd4522589f1411bbab30  opt/freeswitch/lib/libsofia-sip-ua.a
+cb218fb9f55d3d41c8759534fcb0cced  opt/freeswitch/lib/libsofia-sip-ua.a
 704d039f1ccc943f59d88c9c1cf3cb63  opt/freeswitch/lib/libsofia-sip-ua.la
-8b6a983a8e6c2e114c72120c9e59d350  opt/freeswitch/lib/libsofia-sip-ua.so.0.6.0
+bdd1e78e337496d77d8b30ce69e9f29d  opt/freeswitch/lib/libsofia-sip-ua.so.0.6.0
 8a904f609052b4cf560a2bad2ea8cf25  opt/freeswitch/lib/libspandsp.a
 710231dfc0d339c55d5032d67ac1f233  opt/freeswitch/lib/libspandsp.la
 c07423dc832c167ede3723600c30c4b0  opt/freeswitch/lib/libspandsp.so.3.0.0
@@ -268,5 +268,5 @@ f11e41bdc8a118ea03b32fa4d9b2eb5c  opt/freeswitch/share/freeswitch/htdocs/slimtes
 d210b2c08b6dbf35ba6099fcbbf49b8b  opt/freeswitch/var/lib/freeswitch/images/default-avatar.png
 e916e54794a0ac7593903c343b99b0db  opt/freeswitch/var/lib/freeswitch/images/default-mute.png
 b32ddf6c8864c221c101275269a44e2a  usr/local/bin/fs_clibbb
-5683691796349fb64e542377e478b6d0  usr/share/doc/bbb-freeswitch-core/changelog.gz
+2f6a81362980cdfd1b1cc4cf1101c9a0  usr/share/doc/bbb-freeswitch-core/changelog.gz
 85eace8f35ade18104b9ac9630dcc4fe  var/freeswitch/meetings/readme.txt
