@@ -4,6 +4,8 @@
 ### BEGIN DEB-HELPERS.SH ###
 ############################
 
+# set -x
+
 #
 # Adding service to autostart
 # $1 = service name
@@ -246,9 +248,11 @@ else
   IP=$(hostname -I | sed 's/ .*//g')
 fi
 
-if [ -f /etc/redhat-release ]; then
+if [ -f /etc/redhat-release ] || [ -f /etc/system-release ]; then
   TOMCAT_SERVICE=tomcat
-else
+fi
+
+if [ -f /etc/lsb-release ]; then
   if grep -q bionic /etc/lsb-release; then
     TOMCAT_SERVICE=tomcat8
   else
@@ -262,10 +266,20 @@ else
   SERVLET_DIR=/usr/share/bbb-web
 fi
 
+# Added for 2.3
+BBB_WEB_ETC_CONFIG=/etc/bigbluebutton/bbb-web.properties
+
+if [ -f /etc/lsb-release ]; then
+  source /etc/lsb-release
+  if [ "$DISTRIB_CODENAME" == "xenial" ]; then
+    unset BBB_WEB_ETC_CONFIG
+  fi
+fi
+
 PROTOCOL=http
 if [ -f $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties ]; then
-  SERVER_URL=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}')
-  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | grep bigbluebutton.web.serverURL | grep -q https; then
+  SERVER_URL=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}' | tail -n 1)
+  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | grep ^bigbluebutton.web.serverURL | tail -n 1 | grep -q https; then
     PROTOCOL=https
   fi
 fi
