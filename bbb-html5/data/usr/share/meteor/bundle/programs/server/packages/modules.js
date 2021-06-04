@@ -1221,7 +1221,7 @@ module.useNode();
                                                                                                                        //
 module.exports = {
   "name": "redis",
-  "version": "2.8.0",
+  "version": "3.1.2",
   "main": "./index.js"
 };
 
