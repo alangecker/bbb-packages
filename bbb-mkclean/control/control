@@ -1,0 +1,11 @@
+Package: bbb-mkclean
+Version: 1:0.8.7-4
+License: unknown
+Vendor: none
+Architecture: amd64
+Maintainer: <@14203e3fd1d2>
+Installed-Size: 589
+Section: default
+Priority: extra
+Homepage: http://example.com/no-uri-given
+Description: Clean and optimize Matroska and WebM files
