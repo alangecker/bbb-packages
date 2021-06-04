@@ -39,7 +39,7 @@ c9646830f394493f496ac334fc53b43d  usr/local/bigbluebutton/core/scripts/bbb-0.9-r
 c6eb2b9a347002ee949bd13017e77b72  usr/local/bigbluebutton/core/scripts/post_events/post_events_analytics_callback.rb
 6070f991f3fa0c23faae98fbe35779be  usr/local/bigbluebutton/core/scripts/post_process/post_process.rb.example
 ae7f5cbdb445b3037ef0c6ec86fe887c  usr/local/bigbluebutton/core/scripts/post_publish/post_publish.rb.example
-353fe5e243d774f6c1617ed5354478be  usr/local/bigbluebutton/core/scripts/post_publish/post_publish_recording_ready_callback.rb
+3bfc8422ef3621035e2bad871bfa2293  usr/local/bigbluebutton/core/scripts/post_publish/post_publish_recording_ready_callback.rb
 43836c2a4c3c7cf4fcff438b0b205268  usr/local/bigbluebutton/core/scripts/process/README
 c183d19fd506d6fe89c192908a47f66f  usr/local/bigbluebutton/core/scripts/publish/README
 d1a4308fbe0e5b753131d14bfa76f005  usr/local/bigbluebutton/core/scripts/rap-caption-inbox.rb
@@ -50,4 +50,4 @@ ac3a2e6f23dd5ea1459f53c61a37e559  usr/local/bigbluebutton/core/scripts/rap-start
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 3ea92be6da5b63c56ce6408a39cb27e4  usr/local/bigbluebutton/core/scripts/utils/gen_poll_svg
 96714118c4bfd005c2ad2cef4ff9e95b  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-2d1b1b94b977079ba1406a8b02c5c291  usr/share/doc/bbb-record-core/changelog.gz
+1fbbac14f1c65244be2231f60d296c6e  usr/share/doc/bbb-record-core/changelog.gz
