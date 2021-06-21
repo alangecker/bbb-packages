@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3000989,
-  "totalMinifiedGzipBytes": 743494,
+  "totalMinifiedBytes": 3001882,
+  "totalMinifiedGzipBytes": 743688,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
@@ -1895,7 +1895,7 @@
       {}
     ],
     "app/app.js": [
-      1363815,
+      1364708,
       {
         "imports": {
           "ui": {
@@ -2025,7 +2025,7 @@
                   "styles.scss.js": 4583
                 },
                 "chat-dropdown": {
-                  "component.jsx": 3418,
+                  "component.jsx": 3511,
                   "container.jsx": 736
                 },
                 "chat-logger": {
@@ -2046,7 +2046,7 @@
                     "component.jsx": 4436
                   },
                   "component.jsx": 8149,
-                  "container.jsx": 1560,
+                  "container.jsx": 1640,
                   "service.js": 655,
                   "styles.scss": 56,
                   "styles.scss.js": 5457
@@ -2080,7 +2080,7 @@
                   "container.jsx": 631
                 },
                 "presentation-uploader": {
-                  "component.jsx": 20479,
+                  "component.jsx": 20547,
                   "container.jsx": 1247,
                   "service.js": 3655,
                   "styles.scss": 56,
@@ -2094,7 +2094,7 @@
                 },
                 "component.jsx": 14489,
                 "container.jsx": 2681,
-                "service.js": 2309,
+                "service.js": 2281,
                 "styles.scss": 56,
                 "styles.scss.js": 3850
               },
@@ -2113,10 +2113,10 @@
                   "sort-user-list": {
                     "component.jsx": 2804
                   },
-                  "component.jsx": 17548,
+                  "component.jsx": 18073,
                   "container.jsx": 475,
                   "styles.scss": 56,
-                  "styles.scss.js": 10050
+                  "styles.scss.js": 10230
                 },
                 "actions-dropdown": {
                   "component.jsx": 6320,
@@ -2126,7 +2126,7 @@
                   "component.jsx": 1149
                 },
                 "quick-poll-dropdown": {
-                  "component.jsx": 3431,
+                  "component.jsx": 2962,
                   "container.jsx": 411
                 },
                 "screenshare": {
@@ -2299,7 +2299,7 @@
                     "component.jsx": 2706
                   },
                   "poll": {
-                    "component.jsx": 8005,
+                    "component.jsx": 7887,
                     "styles.scss": 56,
                     "styles.scss.js": 345
                   },
@@ -2467,7 +2467,7 @@
               },
               "layout": {
                 "layout-manager": {
-                  "component.jsx": 8674,
+                  "component.jsx": 8826,
                   "container.jsx": 428
                 },
                 "context.jsx": 3526
@@ -2512,7 +2512,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 2021
                 },
-                "component.jsx": 6696,
+                "component.jsx": 6649,
                 "service.js": 355,
                 "styles.scss": 56,
                 "styles.scss.js": 1454
@@ -2578,16 +2578,16 @@
                   "styles.scss.js": 4100
                 },
                 "live-result": {
-                  "component.jsx": 4031,
+                  "component.jsx": 4071,
                   "service.js": 409,
                   "styles.scss": 56,
                   "styles.scss.js": 4018
                 },
-                "component.jsx": 11849,
-                "container.jsx": 1668,
-                "service.js": 4060,
+                "component.jsx": 11881,
+                "container.jsx": 1686,
+                "service.js": 4089,
                 "styles.scss": 56,
-                "styles.scss.js": 9563
+                "styles.scss.js": 9279
               },
               "toast": {
                 "inject-notify": {
@@ -2628,8 +2628,8 @@
                 "styles.scss.js": 568
               },
               "app": {
-                "component.jsx": 8748,
-                "container.jsx": 3297,
+                "component.jsx": 8818,
+                "container.jsx": 3336,
                 "service.js": 698,
                 "styles.scss": 56,
                 "styles.scss.js": 9512
@@ -2661,7 +2661,7 @@
                 "service.js": 1241
               },
               "debug-window": {
-                "component.jsx": 5280,
+                "component.jsx": 5545,
                 "styles.scss": 56,
                 "styles.scss.js": 3062
               },
@@ -2723,11 +2723,11 @@
                 "component.jsx": 10016
               },
               "polling": {
-                "component.jsx": 4140,
-                "container.jsx": 1017,
+                "component.jsx": 4177,
+                "container.jsx": 1047,
                 "service.js": 665,
                 "styles.scss": 56,
-                "styles.scss.js": 4959
+                "styles.scss.js": 4979
               },
               "presentation-pod": {
                 "component.jsx": 462,
@@ -2760,7 +2760,7 @@
               },
               "status-notifier": {
                 "component.jsx": 4103,
-                "container.jsx": 1127,
+                "container.jsx": 1146,
                 "styles.scss": 56,
                 "styles.scss.js": 2790
               },
@@ -2778,7 +2778,7 @@
                 "styles.scss.js": 5141
               },
               "tooltip": {
-                "bbbtip.css": 263,
+                "bbbtip.css": 240,
                 "component.jsx": 2428,
                 "container.jsx": 345
               },
@@ -2949,7 +2949,7 @@
           "startup": {
             "client": {
               "base.jsx": 7533,
-              "intl.jsx": 2808,
+              "intl.jsx": 2973,
               "logger.js": 1852
             }
           },
