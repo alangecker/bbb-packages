@@ -519,8 +519,8 @@
     // duration of the rate limit window (seconds)
     "duration": 1,
 
-    // maximum number of chanes per IP to allow during the rate limit window
-    "points": 100
+    // maximum number of changes per IP to allow during the rate limit window
+    "points": 120
   },
 
 
