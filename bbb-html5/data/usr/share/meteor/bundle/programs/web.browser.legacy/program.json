@@ -2,34 +2,34 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "c6bfd58b937b2ee8f1bc97fbdbdf6827e5c267b9.js",
+      "path": "0af7bb6ccb90056b33dd688c5e16ae81fc9a0467.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/c6bfd58b937b2ee8f1bc97fbdbdf6827e5c267b9.js?meteor_js_resource=true",
-      "size": 739252,
-      "hash": "c6bfd58b937b2ee8f1bc97fbdbdf6827e5c267b9",
-      "sri": "S2JEfQwgVAorHbcmdRVDG9TMqc7OsYh6FyIfxSflVAeCOvccgb6je56QQURiDDWVkyoSdLLEZRVbEEtZ3AAJgA=="
+      "url": "/0af7bb6ccb90056b33dd688c5e16ae81fc9a0467.js?meteor_js_resource=true",
+      "size": 730908,
+      "hash": "0af7bb6ccb90056b33dd688c5e16ae81fc9a0467",
+      "sri": "n9xvmdCkxoSWrP5Hbi2Wi0qDKGZpepg41CDKLS/A4J1BZw/KNFV+wghgm8EkdIoaouIOpX4/UtqQdbJ78FeGPQ=="
     },
     {
-      "path": "c6bfd58b937b2ee8f1bc97fbdbdf6827e5c267b9.stats.json",
+      "path": "0af7bb6ccb90056b33dd688c5e16ae81fc9a0467.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/c6bfd58b937b2ee8f1bc97fbdbdf6827e5c267b9.stats.json?meteor_js_resource=true",
-      "size": 36910,
-      "hash": "ea87004740e59cf1204758d5ff896eb51334e200",
-      "sri": "Qe09HZjz0rPo/qt3FQNXEpq8p7aSifHaFGLpQ8vVmxnBs3eL8LIIPTa4lbSbob34hM46kWV28jHTtOtfg8rN5A=="
+      "url": "/0af7bb6ccb90056b33dd688c5e16ae81fc9a0467.stats.json?meteor_js_resource=true",
+      "size": 36743,
+      "hash": "564994abd8dbb125ee38f2dcd5a6469242b12fd5",
+      "sri": "LoSCkf48xAhJudurxcy7VNriMqwiIiUuSaAftSRAWWLyX4wgwuUThbYGHFyduCB5XOogJQ1EPHuJwJfvSTTpWg=="
     },
     {
-      "path": "1173d5345440d39716bd274b82d988dbdd7aee72.css",
+      "path": "5c3e0a19baa76e24593ac5ac3303005e07bffa7b.css",
       "where": "client",
       "type": "css",
       "cacheable": true,
-      "url": "/1173d5345440d39716bd274b82d988dbdd7aee72.css?meteor_css_resource=true",
-      "size": 19099,
-      "hash": "1173d5345440d39716bd274b82d988dbdd7aee72",
-      "sri": "s4MY0EoZjocKh0yV3KmhFSoOwqQU9HTK4fqgfURzPeIthIjChdJqy6YaCmmeGUuDBAZZrEHxfSvJGGavJ7MRkQ=="
+      "url": "/5c3e0a19baa76e24593ac5ac3303005e07bffa7b.css?meteor_css_resource=true",
+      "size": 19217,
+      "hash": "5c3e0a19baa76e24593ac5ac3303005e07bffa7b",
+      "sri": "MS191y06ebWoNijK148TBTa+1eGkDKG/J0Wf78AT0RGyEtp0cq967nRfZoCkOJLd5X2xrWX+9Ru5jQv6xKVtuw=="
     },
     {
       "path": "app/compatibility/adapter.js",
@@ -147,8 +147,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/de.json",
-      "size": 60749,
-      "hash": "1ae6c79a61f038b65b2fe0f0f9e9e2577b78ecd2",
+      "size": 60748,
+      "hash": "178765dd3bfbff1cae3149fc6966aeb64dc25bf9",
       "sri": null
     },
     {
@@ -177,8 +177,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 55795,
-      "hash": "a796c511dce0a2518710f71f6a51103d0a52b6b4",
+      "size": 56827,
+      "hash": "921a00b20c7f4aedd14a7e2929088476445f33c7",
       "sri": null
     },
     {
@@ -197,8 +197,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/es.json",
-      "size": 60396,
-      "hash": "bb60bd7d3ad71806318b37f8160b4459e83f2971",
+      "size": 60395,
+      "hash": "aae153c6c773ea725bf14da0fea8bc4b35b1453e",
       "sri": null
     },
     {
@@ -207,8 +207,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/es_ES.json",
-      "size": 60927,
-      "hash": "8c27214aae865e902a5131e3788676d548fd762f",
+      "size": 60926,
+      "hash": "8c5efe5cbf8b4937628d8dbc124023573dc0e6d5",
       "sri": null
     },
     {
@@ -267,8 +267,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/fr.json",
-      "size": 60415,
-      "hash": "6be8443ec1e23c23c167db8397158ef49ac93d8c",
+      "size": 60414,
+      "hash": "2a44844e4e9c1feb3d630070e4c4d05126eaa553",
       "sri": null
     },
     {
@@ -507,8 +507,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/pt_BR.json",
-      "size": 59748,
-      "hash": "124384c7024d9cfe93e31a359bec9f15d9b96a86",
+      "size": 59747,
+      "hash": "ccfe0a94c458366a054eb898ef7cbcbdc403cfae",
       "sri": null
     },
     {

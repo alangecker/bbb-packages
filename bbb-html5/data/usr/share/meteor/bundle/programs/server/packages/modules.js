@@ -119,10 +119,7 @@ install("session");
 install("nathantreid:css-modules", "meteor/nathantreid:css-modules/package/main.js");
 install("rocketchat:streamer");
 install("deps");
-install("cfs:reactive-property");
 install("cfs:reactive-list");
-install("cfs:micro-queue");
-install("cfs:power-queue");
 install("livedata");
 install("hot-code-push");
 install("launch-screen");
@@ -262,15 +259,6 @@ module.exports = {
   },
   "description": "babel's modular runtime helpers",
   "exports": {
-    "./helpers/typeof": [
-      {
-        "node": "./helpers/typeof.js",
-        "import": "./helpers/esm/typeof.js",
-        "default": "./helpers/typeof.js"
-      },
-      "./helpers/typeof.js"
-    ],
-    "./helpers/esm/typeof": "./helpers/esm/typeof.js",
     "./helpers/jsx": [
       {
         "node": "./helpers/jsx.js",
@@ -280,6 +268,33 @@ module.exports = {
       "./helpers/jsx.js"
     ],
     "./helpers/esm/jsx": "./helpers/esm/jsx.js",
+    "./helpers/objectSpread2": [
+      {
+        "node": "./helpers/objectSpread2.js",
+        "import": "./helpers/esm/objectSpread2.js",
+        "default": "./helpers/objectSpread2.js"
+      },
+      "./helpers/objectSpread2.js"
+    ],
+    "./helpers/esm/objectSpread2": "./helpers/esm/objectSpread2.js",
+    "./helpers/typeof": [
+      {
+        "node": "./helpers/typeof.js",
+        "import": "./helpers/esm/typeof.js",
+        "default": "./helpers/typeof.js"
+      },
+      "./helpers/typeof.js"
+    ],
+    "./helpers/esm/typeof": "./helpers/esm/typeof.js",
+    "./helpers/wrapRegExp": [
+      {
+        "node": "./helpers/wrapRegExp.js",
+        "import": "./helpers/esm/wrapRegExp.js",
+        "default": "./helpers/wrapRegExp.js"
+      },
+      "./helpers/wrapRegExp.js"
+    ],
+    "./helpers/esm/wrapRegExp": "./helpers/esm/wrapRegExp.js",
     "./helpers/asyncIterator": [
       {
         "node": "./helpers/asyncIterator.js",
@@ -406,15 +421,6 @@ module.exports = {
       "./helpers/objectSpread.js"
     ],
     "./helpers/esm/objectSpread": "./helpers/esm/objectSpread.js",
-    "./helpers/objectSpread2": [
-      {
-        "node": "./helpers/objectSpread2.js",
-        "import": "./helpers/esm/objectSpread2.js",
-        "default": "./helpers/objectSpread2.js"
-      },
-      "./helpers/objectSpread2.js"
-    ],
-    "./helpers/esm/objectSpread2": "./helpers/esm/objectSpread2.js",
     "./helpers/inherits": [
       {
         "node": "./helpers/inherits.js",
@@ -1045,15 +1051,6 @@ module.exports = {
       "./helpers/classPrivateMethodSet.js"
     ],
     "./helpers/esm/classPrivateMethodSet": "./helpers/esm/classPrivateMethodSet.js",
-    "./helpers/wrapRegExp": [
-      {
-        "node": "./helpers/wrapRegExp.js",
-        "import": "./helpers/esm/wrapRegExp.js",
-        "default": "./helpers/wrapRegExp.js"
-      },
-      "./helpers/wrapRegExp.js"
-    ],
-    "./helpers/esm/wrapRegExp": "./helpers/esm/wrapRegExp.js",
     "./package": "./package.json",
     "./package.json": "./package.json",
     "./regenerator": "./regenerator/index.js",
@@ -1071,7 +1068,7 @@ module.exports = {
     "url": "git+https://github.com/babel/babel.git",
     "directory": "packages/babel-runtime"
   },
-  "version": "7.13.10"
+  "version": "7.14.0"
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1113,7 +1110,7 @@ module.useNode();
                                                                                                                        //
 module.exports = {
   "name": "yaml",
-  "version": "1.10.0",
+  "version": "1.10.2",
   "main": "./index.js"
 };
 
@@ -1265,7 +1262,33 @@ module.exports = {
 module.useNode();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}}},"flat":{"package.json":function module(require,exports,module){
+}}},"queue":{"package.json":function module(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// node_modules/queue/package.json                                                                                     //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+module.exports = {
+  "name": "queue",
+  "version": "6.0.2"
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"index.js":function module(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// node_modules/queue/index.js                                                                                         //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+module.useNode();
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}},"flat":{"package.json":function module(require,exports,module){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                     //
@@ -1468,8 +1491,8 @@ module.useNode();
   "extensions": [
     ".js",
     ".json",
-    ".jsx",
-    ".mjs"
+    ".mjs",
+    ".jsx"
   ]
 });
 

@@ -30,7 +30,7 @@ public:
     appName: BigBlueButton HTML5 Client
     bbbServerVersion: 2.3
     copyright: '©2021 BigBlueButton Inc.'
-    html5ClientBuild: 1783
+    html5ClientBuild: 1271
     helpLink: https://bigbluebutton.org/html5/
     lockOnJoin: true
     cdn: ''
@@ -42,7 +42,6 @@ public:
     allowUserLookup: false
     dynamicGuestPolicy: true
     enableGuestLobbyMessage: true
-    enableNetworkInformation: false
     enableLimitOfViewersInWebcam: false
     enableMultipleCameras: true
     enableTalkingIndicator: true
@@ -171,9 +170,6 @@ public:
       - warning
   externalVideoPlayer:
     enabled: true
-  networkMonitoring:
-    enableNetworkMonitoring: false
-    packetLostThreshold: 10
   kurento:
     wsUrl: HOST
     # Valid for video-provider. Time (ms) before its WS connection times out
@@ -382,6 +378,7 @@ public:
     max_custom: 5
     allowDragAndDropFile: false
     maxTypedAnswerLength: 45
+    chatMessage: true
   captions:
     enabled: true
     enableDictation: false
@@ -417,6 +414,7 @@ public:
       chat_poll_result: PUBLIC_CHAT_POLL_RESULT
     typingIndicator:
       enabled: true
+    moderatorChatEmphasized: true
   note:
     enabled: true
     url: ETHERPAD_HOST
@@ -533,6 +531,7 @@ public:
       moderator: false
       mobile: true
       guest: true
+      sharingWebcam: true
   whiteboard:
     annotationsQueueProcessInterval: 60
     cursorInterval: 150

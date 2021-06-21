@@ -236,16 +236,7 @@
       "path": "packages/deps.js"
     },
     {
-      "path": "packages/cfs_reactive-property.js"
-    },
-    {
       "path": "packages/cfs_reactive-list.js"
-    },
-    {
-      "path": "packages/cfs_micro-queue.js"
-    },
-    {
-      "path": "packages/cfs_power-queue.js"
     },
     {
       "path": "packages/livedata.js"
