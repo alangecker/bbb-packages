@@ -43,4 +43,4 @@ b09d81bc51516b5e4260dd45cc2c43a7  usr/local/bigbluebutton/core/playback/screensh
 c489bf7b9863afeabde3de0b3c709417  usr/local/bigbluebutton/core/scripts/process/screenshare.rb
 7ad1788ff1628a8b8db5c9a135c801e8  usr/local/bigbluebutton/core/scripts/publish/screenshare.rb
 86c10b74384cc8ea7b7b832e305b3ea9  usr/local/bigbluebutton/core/scripts/screenshare.yml
-a080c1a7a95ec7605b8fb98d476ab34d  usr/share/doc/bbb-playback-screenshare/changelog.gz
+d584ff610abf30dac2fd812bfc3f9659  usr/share/doc/bbb-playback-screenshare/changelog.gz
