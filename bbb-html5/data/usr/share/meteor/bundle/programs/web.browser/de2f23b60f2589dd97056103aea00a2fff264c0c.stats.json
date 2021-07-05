@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3001882,
-  "totalMinifiedGzipBytes": 743688,
+  "totalMinifiedBytes": 3005886,
+  "totalMinifiedGzipBytes": 744845,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
@@ -1895,7 +1895,7 @@
       {}
     ],
     "app/app.js": [
-      1364708,
+      1368712,
       {
         "imports": {
           "ui": {
@@ -2017,7 +2017,7 @@
                 "message-form": {
                   "typing-indicator": {
                     "component.jsx": 1616,
-                    "container.jsx": 1069
+                    "container.jsx": 1086
                   },
                   "component.jsx": 5366,
                   "container.jsx": 786,
@@ -2031,7 +2031,7 @@
                 "chat-logger": {
                   "ChatLogger.js": 527
                 },
-                "component.jsx": 3565,
+                "component.jsx": 3583,
                 "container.jsx": 5523,
                 "service.js": 5437,
                 "styles.scss": 56,
@@ -2094,7 +2094,7 @@
                 },
                 "component.jsx": 14489,
                 "container.jsx": 2681,
-                "service.js": 2281,
+                "service.js": 2425,
                 "styles.scss": 56,
                 "styles.scss.js": 3850
               },
@@ -2126,7 +2126,7 @@
                   "component.jsx": 1149
                 },
                 "quick-poll-dropdown": {
-                  "component.jsx": 2962,
+                  "component.jsx": 3120,
                   "container.jsx": 411
                 },
                 "screenshare": {
@@ -2299,7 +2299,7 @@
                     "component.jsx": 2706
                   },
                   "poll": {
-                    "component.jsx": 7887,
+                    "component.jsx": 7911,
                     "styles.scss": 56,
                     "styles.scss.js": 345
                   },
@@ -2330,7 +2330,7 @@
                     "component.jsx": 5526
                   },
                   "shape-pointer-listener": {
-                    "component.jsx": 6379
+                    "component.jsx": 6397
                   },
                   "text-draw-listener": {
                     "component.jsx": 8333
@@ -2405,7 +2405,7 @@
               },
               "components-data": {
                 "chat-context": {
-                  "adapter.jsx": 2449,
+                  "adapter.jsx": 2475,
                   "context.jsx": 5566
                 },
                 "group-chat-context": {
@@ -2414,7 +2414,7 @@
                 },
                 "users-context": {
                   "adapter.jsx": 952,
-                  "context.jsx": 1829
+                  "context.jsx": 1845
                 }
               },
               "connection-status": {
@@ -2467,7 +2467,7 @@
               },
               "layout": {
                 "layout-manager": {
-                  "component.jsx": 8826,
+                  "component.jsx": 8830,
                   "container.jsx": 428
                 },
                 "context.jsx": 3526
@@ -2583,9 +2583,9 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4018
                 },
-                "component.jsx": 11881,
+                "component.jsx": 11879,
                 "container.jsx": 1686,
-                "service.js": 4089,
+                "service.js": 4125,
                 "styles.scss": 56,
                 "styles.scss.js": 9279
               },
@@ -2629,7 +2629,7 @@
               },
               "app": {
                 "component.jsx": 8818,
-                "container.jsx": 3336,
+                "container.jsx": 3424,
                 "service.js": 698,
                 "styles.scss": 56,
                 "styles.scss.js": 9512
@@ -2808,10 +2808,10 @@
               },
               "audio-manager": {
                 "error-codes.js": 99,
-                "index.js": 11897
+                "index.js": 12981
               },
               "auth": {
-                "index.js": 4470
+                "index.js": 4497
               },
               "bbb-webrtc-sfu": {
                 "broker-base-errors.js": 844,
@@ -2847,8 +2847,8 @@
               "client": {
                 "bridge": {
                   "base.js": 864,
-                  "kurento.js": 4519,
-                  "sip.js": 20815
+                  "kurento.js": 5034,
+                  "sip.js": 22141
                 }
               }
             },
@@ -2964,7 +2964,7 @@
             "keyCodes.js": 352,
             "logoutRouteHandler.js": 226,
             "mediaElementPlayRetry.js": 313,
-            "sdpUtils.js": 4549,
+            "sdpUtils.js": 5054,
             "slideCalcUtils.js": 632,
             "stats.js": 2245,
             "statuses.js": 256
