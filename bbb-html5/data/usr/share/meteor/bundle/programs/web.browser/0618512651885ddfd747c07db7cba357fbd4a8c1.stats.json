@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3005893,
-  "totalMinifiedGzipBytes": 744850,
+  "totalMinifiedBytes": 3008080,
+  "totalMinifiedGzipBytes": 745451,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
@@ -1895,7 +1895,7 @@
       {}
     ],
     "app/app.js": [
-      1368719,
+      1370906,
       {
         "imports": {
           "ui": {
@@ -1923,7 +1923,7 @@
                       "container.jsx": 1280
                     },
                     "user-options": {
-                      "component.jsx": 8725,
+                      "component.jsx": 8813,
                       "container.jsx": 2357,
                       "styles.scss": 56,
                       "styles.scss.js": 1455
@@ -1984,7 +1984,7 @@
                 },
                 "component.jsx": 1266,
                 "container.jsx": 1153,
-                "service.js": 9659,
+                "service.js": 9726,
                 "styles.scss": 56,
                 "styles.scss.js": 2494
               },
@@ -2156,7 +2156,7 @@
                   "styles.scss.js": 1022
                 },
                 "audio-modal": {
-                  "component.jsx": 9876,
+                  "component.jsx": 9913,
                   "container.jsx": 2670,
                   "service.js": 1490,
                   "styles.scss": 56,
@@ -2270,9 +2270,9 @@
                   "styles.scss": 56,
                   "styles.scss.js": 10096
                 },
-                "component.jsx": 13813,
+                "component.jsx": 13907,
                 "container.jsx": 717,
-                "service.js": 13977,
+                "service.js": 14099,
                 "stream-sorting.js": 1503
               },
               "whiteboard": {
@@ -2387,7 +2387,7 @@
               },
               "captions": {
                 "pad": {
-                  "component.jsx": 4728,
+                  "component.jsx": 5131,
                   "container.jsx": 715,
                   "service.js": 671,
                   "styles.scss": 56,
@@ -2497,11 +2497,11 @@
                   "styles.scss.js": 953
                 },
                 "webcam-draggable-overlay": {
-                  "component.jsx": 7608,
+                  "component.jsx": 7660,
                   "context.jsx": 1854
                 },
-                "component.jsx": 1984,
-                "container.jsx": 3313,
+                "component.jsx": 2024,
+                "container.jsx": 3374,
                 "service.js": 1635,
                 "styles.scss": 56,
                 "styles.scss.js": 6217
@@ -2512,7 +2512,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 2021
                 },
-                "component.jsx": 6649,
+                "component.jsx": 7534,
                 "service.js": 355,
                 "styles.scss": 56,
                 "styles.scss.js": 1454
@@ -2709,7 +2709,7 @@
               "note": {
                 "component.jsx": 1789,
                 "container.jsx": 448,
-                "service.js": 2025,
+                "service.js": 2036,
                 "styles.scss": 56,
                 "styles.scss.js": 2766
               },
@@ -2727,7 +2727,7 @@
                 "container.jsx": 1047,
                 "service.js": 665,
                 "styles.scss": 56,
-                "styles.scss.js": 4979
+                "styles.scss.js": 4768
               },
               "presentation-pod": {
                 "component.jsx": 462,
@@ -2808,10 +2808,10 @@
               },
               "audio-manager": {
                 "error-codes.js": 99,
-                "index.js": 12981
+                "index.js": 13015
               },
               "auth": {
-                "index.js": 4497
+                "index.js": 4526
               },
               "bbb-webrtc-sfu": {
                 "broker-base-errors.js": 844,
@@ -2847,8 +2847,8 @@
               "client": {
                 "bridge": {
                   "base.js": 864,
-                  "kurento.js": 5034,
-                  "sip.js": 22141
+                  "kurento.js": 5129,
+                  "sip.js": 22288
                 }
               }
             },
@@ -2857,7 +2857,7 @@
                 "bridge": {
                   "errors.js": 843,
                   "index.js": 97,
-                  "kurento.js": 5296,
+                  "kurento.js": 5391,
                   "service.js": 2946
                 }
               },
@@ -2948,7 +2948,7 @@
           },
           "startup": {
             "client": {
-              "base.jsx": 7533,
+              "base.jsx": 7671,
               "intl.jsx": 2973,
               "logger.js": 1852
             }
