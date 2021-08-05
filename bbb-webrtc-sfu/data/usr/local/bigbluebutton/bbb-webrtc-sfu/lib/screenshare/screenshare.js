@@ -14,7 +14,6 @@ const Logger = require('../utils/Logger');
 const BaseProvider = require('../base/BaseProvider');
 const config = require('config');
 const errors = require('../base/errors');
-const EventEmitter = require('events').EventEmitter;
 
 const SHOULD_RECORD = config.get('recordScreenSharing');
 const DEFAULT_MEDIA_SPECS = config.get('conference-media-specs');
@@ -31,6 +30,7 @@ const SCREENSHARE_SERVER_AKKA_BROADCAST = config.has(`screenshareServerSideAkkaB
   ? config.get(`screenshareServerSideAkkaBroadcast`)
   : true;
 const PERMISSION_PROBES = config.get('permissionProbes');
+const MEDIA_FLOW_TIMEOUT_DURATION = config.get('mediaFlowTimeoutDuration');
 
 const LOG_PREFIX = "[screenshare]";
 
@@ -70,6 +70,7 @@ module.exports = class Screenshare extends BaseProvider {
     this._startRecordingEventFired = false;
     this._stopRecordingEventFired = false;
     this.hasAudio = hasAudio;
+    this._mediaFlowingTimeouts = {};
     this.handleMCSCoreDisconnection = this.handleMCSCoreDisconnection.bind(this);
     this.mcs.on(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
   }
@@ -190,10 +191,40 @@ module.exports = class Screenshare extends BaseProvider {
 
   /* ======= MEDIA STATE HANDLERS ======= */
 
-  _onPresenterWebRTCMediaFlowing (connectionId) {
-    Logger.info(LOG_PREFIX, "Presenter WebRTC session is FLOWING",
+  setMediaFlowingTimeout (connectionId) {
+    if (!this._mediaFlowingTimeouts[connectionId]) {
+      Logger.debug(LOG_PREFIX, `Presenter NOT_FLOWING timeout set`,
+        { ...this._getFullPresenterLogMetadata(connectionId), MEDIA_FLOW_TIMEOUT_DURATION });
+      this._mediaFlowingTimeouts[connectionId] = setTimeout(() => {
+        this._onPresenterMediaNotFlowingTimeout(connectionId);
+      }, MEDIA_FLOW_TIMEOUT_DURATION);
+    }
+  }
+
+  clearMediaFlowingTimeout (connectionId) {
+    if (this._mediaFlowingTimeouts[connectionId]) {
+      Logger.debug(LOG_PREFIX, `clearMediaFlowingTimeout for presenter ${connectionId}`,
         this._getFullPresenterLogMetadata(connectionId));
+      clearTimeout(this._mediaFlowingTimeouts[connectionId]);
+      delete this._mediaFlowingTimeouts[connectionId]
+    }
+  }
+
+  _onPresenterMediaNotFlowingTimeout (connectionId) {
+    Logger.error(LOG_PREFIX, `Presenter WebRTC media NOT_FLOWING timeout reached`,
+      this._getFullPresenterLogMetadata(connectionId));
+    this.sendToClient({
+      type: C.SCREENSHARE_APP,
+      id : 'stopSharing',
+      connectionId,
+      error: { code: 2211 , reason: errors[2211] },
+    }, C.FROM_SCREENSHARE);
+  };
+
+  _onPresenterMediaFlowing (connectionId) {
     if (!this._rtmpBroadcastStarted) {
+      Logger.info(LOG_PREFIX, "Presenter WebRTC session began FLOWING",
+        this._getFullPresenterLogMetadata(connectionId));
       this._startRtmpBroadcast(this.meetingId);
       if (this.status != C.MEDIA_STARTED) {
         if (this.isRecorded) {
@@ -203,12 +234,14 @@ module.exports = class Screenshare extends BaseProvider {
         this.sendPlayStart(C.SEND_ROLE, connectionId);
       }
     }
+
+    this.clearMediaFlowingTimeout(connectionId);
   };
 
-  _onPresenterWebRTCMediaNotFlowing (connectionId) {
-    Logger.warn(LOG_PREFIX, `Presenter WebRTC session is NOT_FLOWING`,
+  _onPresenterMediaNotFlowing (connectionId) {
+    Logger.debug(LOG_PREFIX, `Presenter WebRTC session is NOT_FLOWING`,
       this._getFullPresenterLogMetadata(connectionId));
-    // TODO properly implement a handler when we have a client-side reconnection procedure
+    this.setMediaFlowingTimeout(connectionId);
   }
 
   sendPlayStart (role, connectionId) {
@@ -223,18 +256,18 @@ module.exports = class Screenshare extends BaseProvider {
   }
 
   _onViewerWebRTCMediaFlowing (connectionId) {
-    Logger.info(LOG_PREFIX, `Viewer WebRTC session is FLOWING`,
-      this._getFullViewerLogMetadata(connectionId));
     const viewerUser = this._viewerUsers[connectionId];
 
     if (viewerUser && !viewerUser.started) {
+      Logger.info(LOG_PREFIX, `Viewer WebRTC session began FLOWING`,
+        this._getFullViewerLogMetadata(connectionId));
       this.sendPlayStart(C.RECV_ROLE, connectionId);
       viewerUser.started = true;
     }
   }
 
   _onViewerWebRTCMediaNotFlowing (connectionId) {
-    Logger.warn(LOG_PREFIX, `Viewer WebRTC session is NOT_FLOWING`,
+    Logger.debug(LOG_PREFIX, `Viewer WebRTC session is NOT_FLOWING`,
       this._getFullViewerLogMetadata(connectionId));
     // TODO properly implement a handler when we have a client-side reconnection procedure
   }
@@ -346,9 +379,11 @@ module.exports = class Screenshare extends BaseProvider {
       case "MediaFlowOutStateChange":
       case "MediaFlowInStateChange":
         if (details === 'NOT_FLOWING' && this.status !== C.MEDIA_PAUSED) {
-          Logger.warn(LOG_PREFIX, `Recording media STOPPED FLOWING on endpoint ${endpoint}`,
+          Logger.debug(LOG_PREFIX, `Recording media STOPPED FLOWING on endpoint ${endpoint}`,
             this._getFullPresenterLogMetadata(this._connectionId));
         } else if (details === 'FLOWING') {
+          Logger.debug(LOG_PREFIX, `Recording media STARTED FLOWING on endpoint ${endpoint}`,
+            this._getFullPresenterLogMetadata(this._connectionId));
           if (!this._startRecordingEventFired) {
             const { timestampHR, timestampUTC } = state;
             this.sendStartShareEvent(timestampHR, timestampUTC);
@@ -461,7 +496,6 @@ module.exports = class Screenshare extends BaseProvider {
 
   start (connectionId, bbbUserId, role, descriptor, options = {}) {
     return new Promise(async (resolve, reject) => {
-      const { userName: bbbUserName } = options;
       const isConnected = await this.mcs.waitForConnection();
 
       if (!isConnected) {
@@ -514,7 +548,7 @@ module.exports = class Screenshare extends BaseProvider {
         const presenterMCSUserId = await this.mcs.join(
           this._voiceBridge,
           'SFU',
-          { externalUserId: userId, name: options.userName, autoLeave: true });
+          { externalUserId: userId, autoLeave: true });
         this.presenterMCSUserId = presenterMCSUserId;
         const presenterSdpAnswer = await this._publishPresenterWebRTCStream(descriptor, options);
         await this.mcs.setContentFloor(this._voiceBridge, this._presenterEndpoint);
@@ -563,8 +597,8 @@ module.exports = class Screenshare extends BaseProvider {
           event,
           this._presenterEndpoint,
           this._connectionId,
-          this._onPresenterWebRTCMediaFlowing.bind(this),
-          this._onPresenterWebRTCMediaNotFlowing.bind(this)
+          this._onPresenterMediaFlowing.bind(this),
+          this._onPresenterMediaNotFlowing.bind(this)
         );
       });
 
@@ -609,7 +643,7 @@ module.exports = class Screenshare extends BaseProvider {
         const mcsUserId = await this.mcs.join(
           this._voiceBridge,
           'SFU',
-          { externalUserId: userId, name: options.userName, autoLeave: true });
+          { externalUserId: userId, autoLeave: true });
         this._viewerUsers[connectionId] = {
           userId,
           connectionId,
@@ -832,6 +866,7 @@ module.exports = class Screenshare extends BaseProvider {
       this._candidatesQueue = null;
       this.status = C.MEDIA_STOPPED;
       this.clearSessionListeners();
+      this.clearMediaFlowingTimeout(this._connectionId);
       resolve();
     });
   }

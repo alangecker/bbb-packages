@@ -29,7 +29,6 @@ module.exports = class Video extends BaseProvider {
     mcs,
     voiceBridge,
     bbbUserId,
-    bbbUserName,
     managerSessionId,
     record,
     mediaServer,
@@ -39,7 +38,6 @@ module.exports = class Video extends BaseProvider {
     this.mcs = mcs;
     this.id = cameraId;
     this.bbbUserId = bbbUserId;
-    this.bbbUserName = bbbUserName;
     this.connectionId = connectionId;
     this.meetingId = meetingId;
     this.voiceBridge = voiceBridge;
@@ -238,7 +236,7 @@ module.exports = class Video extends BaseProvider {
       case "MediaFlowInStateChange":
         if (details === 'NOT_FLOWING' && this.status !== C.MEDIA_PAUSED) {
           if (!this.notFlowingTimeout) {
-            Logger.warn(LOG_PREFIX, "Media NOT_FLOWING, setting a timeout", this._getLogMetadata());
+            Logger.debug(LOG_PREFIX, "Media NOT_FLOWING, setting a timeout", this._getLogMetadata());
             this.notFlowingTimeout = setTimeout(() => {
               if (this.shared) {
                 Logger.warn(LOG_PREFIX, "Media NOT_FLOWING timeout hit, stopping media",
@@ -247,7 +245,7 @@ module.exports = class Video extends BaseProvider {
                 clearTimeout(this.notFlowingTimeout);
                 delete this.notFlowingTimeout;
               }
-            }, config.get('mediaFlowTimeoutDuration') + Utils.randomTimeout(-2000, 2000));
+            }, config.get('mediaFlowTimeoutDuration'));
           }
         }
         else if (details === 'FLOWING') {
@@ -502,7 +500,7 @@ module.exports = class Video extends BaseProvider {
           const userId = await this.mcs.join(
             this.voiceBridge,
             'SFU',
-            { externalUserId: this.bbbUserId, name: this.bbbUserName, autoLeave: true });
+            { externalUserId: this.bbbUserId, autoLeave: true });
           this.userId = userId;
           const sdpAnswer = await this._addMCSMedia(C.WEBRTC, sdpOffer, mediaSpecs);
           // Status to indicate that the brokering with mcs-core was succesfull.

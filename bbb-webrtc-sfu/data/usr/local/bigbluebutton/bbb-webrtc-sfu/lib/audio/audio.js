@@ -56,7 +56,7 @@ module.exports = class Audio extends BaseProvider {
   }
 
   _getFullLogMetadata (connectionId) {
-    const { userId, userName } = this.getUser(connectionId, true) || {};
+    const { userId } = this.getUser(connectionId, true) || {};
     const { mcsUserId, mediaId } = this.audioEndpoints[connectionId] || {};
     return {
       roomId: this.voiceBridge,
@@ -204,7 +204,7 @@ module.exports = class Audio extends BaseProvider {
   /* ======= MEDIA TIMEOUT HANDLERS ===== */
 
   _onSubscriberMediaFlowing (connectionId) {
-    Logger.info(LOG_PREFIX, `Listen only WebRTC media is FLOWING`,
+    Logger.debug(LOG_PREFIX, `Listen only WebRTC media is FLOWING`,
       this._getFullLogMetadata(connectionId));
     this.clearMediaFlowingTimeout(connectionId);
     this.sendUserConnectedToGlobalAudioMessage(connectionId);
@@ -217,7 +217,7 @@ module.exports = class Audio extends BaseProvider {
   };
 
   _onSubscriberMediaNotFlowing (connectionId) {
-    Logger.warn(LOG_PREFIX, `Listen only WebRTC media is NOT_FLOWING`,
+    Logger.debug(LOG_PREFIX, `Listen only WebRTC media is NOT_FLOWING`,
       this._getFullLogMetadata(connectionId));
     this.setMediaFlowingTimeout(connectionId);
   }
@@ -235,7 +235,7 @@ module.exports = class Audio extends BaseProvider {
 
   setMediaFlowingTimeout (connectionId) {
     if (!this._mediaFlowingTimeouts[connectionId]) {
-      Logger.warn(LOG_PREFIX, `Listen only NOT_FLOWING timeout set`,
+      Logger.debug(LOG_PREFIX, `Listen only NOT_FLOWING timeout set`,
         { ...this._getFullLogMetadata(connectionId), MEDIA_FLOW_TIMEOUT_DURATION });
       this._mediaFlowingTimeouts[connectionId] = setTimeout(() => {
         this._onSubscriberMediaNotFlowingTimeout(connectionId);
@@ -604,7 +604,7 @@ module.exports = class Audio extends BaseProvider {
       mcsUserId = await this.mcs.join(
         this.voiceBridge,
         'SFU',
-        { externalUserId: userId, name: userName , autoLeave: true }
+        { externalUserId: userId, autoLeave: true }
       );
     } catch (error) {
       const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
@@ -612,7 +612,6 @@ module.exports = class Audio extends BaseProvider {
         ...this._getPartialLogMetadata(),
         connectionId,
         userId,
-        userName,
         error: normalizedError
       });
       throw normalizedError;
@@ -633,7 +632,6 @@ module.exports = class Audio extends BaseProvider {
         ...this._getPartialLogMetadata(),
         connectionId,
         userId,
-        userName,
         error: normalizedError
       });
 
