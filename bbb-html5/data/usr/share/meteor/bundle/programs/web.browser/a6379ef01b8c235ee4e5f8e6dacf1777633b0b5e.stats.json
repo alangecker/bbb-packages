@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3008080,
-  "totalMinifiedGzipBytes": 745451,
+  "totalMinifiedBytes": 3008900,
+  "totalMinifiedGzipBytes": 745666,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
@@ -1895,7 +1895,7 @@
       {}
     ],
     "app/app.js": [
-      1370906,
+      1371726,
       {
         "imports": {
           "ui": {
@@ -2373,7 +2373,7 @@
                 },
                 "component.jsx": 7026,
                 "container.jsx": 1186,
-                "service.js": 2274,
+                "service.js": 2312,
                 "styles.scss": 56,
                 "styles.scss.js": 7614
               },
@@ -2387,7 +2387,7 @@
               },
               "captions": {
                 "pad": {
-                  "component.jsx": 5131,
+                  "component.jsx": 5241,
                   "container.jsx": 715,
                   "service.js": 671,
                   "styles.scss": 56,
@@ -2497,7 +2497,7 @@
                   "styles.scss.js": 953
                 },
                 "webcam-draggable-overlay": {
-                  "component.jsx": 7660,
+                  "component.jsx": 7703,
                   "context.jsx": 1854
                 },
                 "component.jsx": 2024,
@@ -2629,7 +2629,7 @@
               },
               "app": {
                 "component.jsx": 8818,
-                "container.jsx": 3424,
+                "container.jsx": 3489,
                 "service.js": 698,
                 "styles.scss": 56,
                 "styles.scss.js": 9512
@@ -2645,7 +2645,7 @@
               },
               "breakout-join-confirmation": {
                 "component.jsx": 3759,
-                "container.jsx": 965,
+                "container.jsx": 1003,
                 "styles.scss": 56,
                 "styles.scss.js": 481
               },
@@ -2765,7 +2765,7 @@
                 "styles.scss.js": 2790
               },
               "subscriptions": {
-                "component.jsx": 2579
+                "component.jsx": 2626
               },
               "switch": {
                 "component.jsx": 1896,
@@ -2848,7 +2848,7 @@
                 "bridge": {
                   "base.js": 864,
                   "kurento.js": 5129,
-                  "sip.js": 22288
+                  "sip.js": 22563
                 }
               }
             },
@@ -2949,7 +2949,7 @@
           "startup": {
             "client": {
               "base.jsx": 7671,
-              "intl.jsx": 2973,
+              "intl.jsx": 3177,
               "logger.js": 1852
             }
           },
