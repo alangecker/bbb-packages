@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/playback/presentation/2.3/static/css/main.8563d353.chunk.css",
-    "main.js": "/playback/presentation/2.3/static/js/main.e73357c8.chunk.js",
-    "main.js.map": "/playback/presentation/2.3/static/js/main.e73357c8.chunk.js.map",
+    "main.css": "/playback/presentation/2.3/static/css/main.4a23bd2f.chunk.css",
+    "main.js": "/playback/presentation/2.3/static/js/main.7cbff013.chunk.js",
+    "main.js.map": "/playback/presentation/2.3/static/js/main.7cbff013.chunk.js.map",
     "runtime-main.js": "/playback/presentation/2.3/static/js/runtime-main.9cfc70da.js",
     "runtime-main.js.map": "/playback/presentation/2.3/static/js/runtime-main.9cfc70da.js.map",
-    "static/js/2.feda395b.chunk.js": "/playback/presentation/2.3/static/js/2.feda395b.chunk.js",
-    "static/js/2.feda395b.chunk.js.map": "/playback/presentation/2.3/static/js/2.feda395b.chunk.js.map",
+    "static/js/2.920cbc98.chunk.js": "/playback/presentation/2.3/static/js/2.920cbc98.chunk.js",
+    "static/js/2.920cbc98.chunk.js.map": "/playback/presentation/2.3/static/js/2.920cbc98.chunk.js.map",
     "index.html": "/playback/presentation/2.3/index.html",
-    "static/css/main.8563d353.chunk.css.map": "/playback/presentation/2.3/static/css/main.8563d353.chunk.css.map",
-    "static/js/2.feda395b.chunk.js.LICENSE.txt": "/playback/presentation/2.3/static/js/2.feda395b.chunk.js.LICENSE.txt",
+    "static/css/main.4a23bd2f.chunk.css.map": "/playback/presentation/2.3/static/css/main.4a23bd2f.chunk.css.map",
+    "static/js/2.920cbc98.chunk.js.LICENSE.txt": "/playback/presentation/2.3/static/js/2.920cbc98.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/playback/presentation/2.3/static/media/logo.874db01b.png"
   },
   "entrypoints": [
     "static/js/runtime-main.9cfc70da.js",
-    "static/js/2.feda395b.chunk.js",
-    "static/css/main.8563d353.chunk.css",
-    "static/js/main.e73357c8.chunk.js"
+    "static/js/2.920cbc98.chunk.js",
+    "static/css/main.4a23bd2f.chunk.css",
+    "static/js/main.7cbff013.chunk.js"
   ]
 }
