@@ -3,15 +3,15 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3078780,
-  "totalMinifiedGzipBytes": 756505,
+  "totalMinifiedBytes": 3684302,
+  "totalMinifiedGzipBytes": 900593,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
     "packages/mobile-experience.js": 37,
     "packages/modules-runtime.js": 4269,
     "packages/modules.js": [
-      1384834,
+      1879650,
       {
         "node_modules": {
           "meteor": {
@@ -46,12 +46,6 @@
               "index.mjs": 927
             },
             "package.json": 104
-          },
-          "reconnecting-websocket": {
-            "dist": {
-              "reconnecting-websocket.mjs": 8989
-            },
-            "package.json": 164
           },
           "tippy.js": {
             "animations": {
@@ -131,6 +125,32 @@
                 "arrayWithHoles.js": 125,
                 "iterableToArrayLimit.js": 386,
                 "nonIterableRest.js": 256,
+                "esm": {
+                  "extends.js": 251,
+                  "objectWithoutProperties.js": 355,
+                  "objectWithoutPropertiesLoose.js": 178,
+                  "typeof.js": 277,
+                  "defineProperty.js": 164,
+                  "createClass.js": 267,
+                  "inheritsLoose.js": 188,
+                  "setPrototypeOf.js": 138,
+                  "assertThisInitialized.js": 167,
+                  "toConsumableArray.js": 318,
+                  "arrayWithoutHoles.js": 148,
+                  "arrayLikeToArray.js": 150,
+                  "iterableToArray.js": 158,
+                  "unsupportedIterableToArray.js": 388,
+                  "nonIterableSpread.js": 213,
+                  "classCallCheck.js": 138,
+                  "slicedToArray.js": 324,
+                  "arrayWithHoles.js": 87,
+                  "iterableToArrayLimit.js": 348,
+                  "nonIterableRest.js": 218,
+                  "toArray.js": 313,
+                  "inherits.js": 328,
+                  "possibleConstructorReturn.js": 240,
+                  "getPrototypeOf.js": 175
+                },
                 "interopRequireDefault.js": 133
               },
               "package.json": 24316
@@ -544,6 +564,55 @@
               "writer.js": 1256
             }
           },
+          "wasm-check": {
+            "package.json": 117,
+            "dist": {
+              "wasm-check.min.js": 1865
+            }
+          },
+          "meteor-node-stubs": {
+            "deps": {
+              "path.js": 35,
+              "fs.js": 14,
+              "url.js": 24,
+              "process.js": 38
+            },
+            "node_modules": {
+              "path-browserify": {
+                "package.json": 85,
+                "index.js": 4173
+              },
+              "url": {
+                "package.json": 74,
+                "url.js": 7530,
+                "node_modules": {
+                  "punycode": {
+                    "package.json": 81,
+                    "punycode.js": 2704
+                  }
+                },
+                "util.js": 229
+              },
+              "querystring": {
+                "package.json": 65,
+                "index.js": 95,
+                "decode.js": 548,
+                "encode.js": 533
+              },
+              "process": {
+                "browser.js": 1688
+              }
+            },
+            "package.json": 87,
+            "index.js": 358,
+            "map.json": 1008
+          },
+          "eventemitter2": {
+            "package.json": 97,
+            "lib": {
+              "eventemitter2.js": 9810
+            }
+          },
           "react-modal": {
             "package.json": 111,
             "lib": {
@@ -705,6 +774,850 @@
               "clsx.m.js": 380
             }
           },
+          "@material-ui": {
+            "core": {
+              "Menu": {
+                "package.json": 60
+              },
+              "esm": {
+                "Menu": {
+                  "index.js": 57,
+                  "Menu.js": 2505
+                },
+                "styles": {
+                  "withStyles.js": 260,
+                  "defaultTheme.js": 97,
+                  "createTheme.js": 1347,
+                  "createBreakpoints.js": 1025,
+                  "createMixins.js": 913,
+                  "createPalette.js": 3400,
+                  "colorManipulator.js": 2765,
+                  "createTypography.js": 1548,
+                  "shadows.js": 1581,
+                  "shape.js": 60,
+                  "createSpacing.js": 564,
+                  "transitions.js": 1073,
+                  "zIndex.js": 140,
+                  "useTheme.js": 221,
+                  "index.js": 835,
+                  "createMuiStrictModeTheme.js": 308,
+                  "createStyles.js": 131,
+                  "makeStyles.js": 322,
+                  "responsiveFontSizes.js": 1187,
+                  "cssUtils.js": 1179,
+                  "styled.js": 294,
+                  "withTheme.js": 175
+                },
+                "colors": {
+                  "common.js": 71,
+                  "grey.js": 244,
+                  "indigo.js": 244,
+                  "pink.js": 244,
+                  "red.js": 244,
+                  "orange.js": 244,
+                  "blue.js": 244,
+                  "green.js": 244,
+                  "index.js": 826,
+                  "purple.js": 244,
+                  "deepPurple.js": 244,
+                  "lightBlue.js": 244,
+                  "cyan.js": 244,
+                  "teal.js": 244,
+                  "lightGreen.js": 244,
+                  "lime.js": 244,
+                  "yellow.js": 244,
+                  "amber.js": 244,
+                  "deepOrange.js": 244,
+                  "brown.js": 244,
+                  "blueGrey.js": 244
+                },
+                "Popover": {
+                  "index.js": 60,
+                  "Popover.js": 4869
+                },
+                "utils": {
+                  "debounce.js": 329,
+                  "ownerDocument.js": 94,
+                  "ownerWindow.js": 148,
+                  "createChainedFunction.js": 313,
+                  "deprecatedPropType.js": 91,
+                  "setRef.js": 103,
+                  "useForkRef.js": 233,
+                  "useEventCallback.js": 287,
+                  "getScrollbarSize.js": 313,
+                  "useIsFocusVisible.js": 1304,
+                  "isMuiElement.js": 157,
+                  "index.js": 902,
+                  "capitalize.js": 215,
+                  "createSvgIcon.js": 327,
+                  "requirePropFactory.js": 95,
+                  "unsupportedProp.js": 84,
+                  "useControlled.js": 295,
+                  "unstable_useId.js": 234,
+                  "scrollLeft.js": 744
+                },
+                "Modal": {
+                  "index.js": 110,
+                  "Modal.js": 3852,
+                  "ModalManager.js": 3253,
+                  "SimpleBackdrop.js": 701
+                },
+                "Portal": {
+                  "index.js": 59,
+                  "Portal.js": 951
+                },
+                "Unstable_TrapFocus": {
+                  "index.js": 71,
+                  "Unstable_TrapFocus.js": 1770
+                },
+                "Grow": {
+                  "index.js": 57,
+                  "Grow.js": 2633
+                },
+                "transitions": {
+                  "utils.js": 266
+                },
+                "Paper": {
+                  "index.js": 58,
+                  "Paper.js": 1208
+                },
+                "MenuList": {
+                  "index.js": 61,
+                  "MenuList.js": 3282
+                },
+                "List": {
+                  "index.js": 57,
+                  "List.js": 1064,
+                  "ListContext.js": 101
+                },
+                "MenuItem": {
+                  "index.js": 61,
+                  "MenuItem.js": 1365
+                },
+                "ListItem": {
+                  "index.js": 61,
+                  "ListItem.js": 3246
+                },
+                "ButtonBase": {
+                  "index.js": 63,
+                  "ButtonBase.js": 4396,
+                  "TouchRipple.js": 4011,
+                  "Ripple.js": 800
+                },
+                "index.js": 10853,
+                "SvgIcon": {
+                  "index.js": 60,
+                  "SvgIcon.js": 1793
+                },
+                "Accordion": {
+                  "index.js": 62,
+                  "Accordion.js": 2769,
+                  "AccordionContext.js": 101
+                },
+                "Collapse": {
+                  "index.js": 61,
+                  "Collapse.js": 3506
+                },
+                "AccordionActions": {
+                  "index.js": 69,
+                  "AccordionActions.js": 782
+                },
+                "AccordionDetails": {
+                  "index.js": 69,
+                  "AccordionDetails.js": 656
+                },
+                "AccordionSummary": {
+                  "index.js": 69,
+                  "AccordionSummary.js": 2192
+                },
+                "IconButton": {
+                  "index.js": 63,
+                  "IconButton.js": 2399
+                },
+                "AppBar": {
+                  "index.js": 59,
+                  "AppBar.js": 1731
+                },
+                "Avatar": {
+                  "index.js": 59,
+                  "Avatar.js": 2034
+                },
+                "internal": {
+                  "svg-icons": {
+                    "Person.js": 283,
+                    "MoreHoriz.js": 324,
+                    "CheckBoxOutlineBlank.js": 278,
+                    "CheckBox.js": 307,
+                    "IndeterminateCheckBox.js": 282,
+                    "Cancel.js": 349,
+                    "ArrowDropDown.js": 195,
+                    "RadioButtonUnchecked.js": 312,
+                    "RadioButtonChecked.js": 357,
+                    "CheckCircle.js": 265,
+                    "Warning.js": 225,
+                    "KeyboardArrowLeft.js": 235,
+                    "KeyboardArrowRight.js": 234,
+                    "ArrowDownward.js": 243
+                  },
+                  "SwitchBase.js": 2052,
+                  "animate.js": 646
+                },
+                "Backdrop": {
+                  "index.js": 61,
+                  "Backdrop.js": 1119
+                },
+                "Fade": {
+                  "index.js": 57,
+                  "Fade.js": 2045
+                },
+                "Badge": {
+                  "index.js": 58,
+                  "Badge.js": 5439
+                },
+                "BottomNavigation": {
+                  "index.js": 69,
+                  "BottomNavigation.js": 1140
+                },
+                "BottomNavigationAction": {
+                  "index.js": 75,
+                  "BottomNavigationAction.js": 1735
+                },
+                "Box": {
+                  "index.js": 86,
+                  "Box.js": 443
+                },
+                "Breadcrumbs": {
+                  "index.js": 64,
+                  "Breadcrumbs.js": 2093,
+                  "BreadcrumbCollapsed.js": 1060
+                },
+                "Typography": {
+                  "index.js": 63,
+                  "Typography.js": 2339
+                },
+                "Button": {
+                  "index.js": 59,
+                  "Button.js": 5713
+                },
+                "ButtonGroup": {
+                  "index.js": 64,
+                  "ButtonGroup.js": 3925
+                },
+                "Card": {
+                  "index.js": 57,
+                  "Card.js": 690
+                },
+                "CardActionArea": {
+                  "index.js": 67,
+                  "CardActionArea.js": 1258
+                },
+                "CardActions": {
+                  "index.js": 64,
+                  "CardActions.js": 751
+                },
+                "CardContent": {
+                  "index.js": 64,
+                  "CardContent.js": 678
+                },
+                "CardHeader": {
+                  "index.js": 63,
+                  "CardHeader.js": 1581
+                },
+                "CardMedia": {
+                  "index.js": 62,
+                  "CardMedia.js": 1100
+                },
+                "Checkbox": {
+                  "index.js": 61,
+                  "Checkbox.js": 2310
+                },
+                "FormControl": {
+                  "useFormControl.js": 171,
+                  "FormControlContext.js": 168,
+                  "formControlState.js": 188,
+                  "index.js": 120,
+                  "FormControl.js": 2334
+                },
+                "Chip": {
+                  "index.js": 57,
+                  "Chip.js": 6744
+                },
+                "CircularProgress": {
+                  "index.js": 69,
+                  "CircularProgress.js": 2727
+                },
+                "ClickAwayListener": {
+                  "index.js": 70,
+                  "ClickAwayListener.js": 1828
+                },
+                "Container": {
+                  "index.js": 62,
+                  "Container.js": 1788
+                },
+                "CssBaseline": {
+                  "index.js": 64,
+                  "CssBaseline.js": 982
+                },
+                "Dialog": {
+                  "index.js": 59,
+                  "Dialog.js": 4507
+                },
+                "DialogActions": {
+                  "index.js": 66,
+                  "DialogActions.js": 795
+                },
+                "DialogContent": {
+                  "index.js": 66,
+                  "DialogContent.js": 915
+                },
+                "DialogContentText": {
+                  "index.js": 70,
+                  "DialogContentText.js": 502
+                },
+                "DialogTitle": {
+                  "index.js": 64,
+                  "DialogTitle.js": 818
+                },
+                "Divider": {
+                  "index.js": 60,
+                  "Divider.js": 1427
+                },
+                "Drawer": {
+                  "index.js": 59,
+                  "Drawer.js": 3103
+                },
+                "Slide": {
+                  "index.js": 58,
+                  "Slide.js": 3447
+                },
+                "ExpansionPanel": {
+                  "index.js": 67,
+                  "ExpansionPanel.js": 2789,
+                  "ExpansionPanelContext.js": 101
+                },
+                "ExpansionPanelActions": {
+                  "index.js": 74,
+                  "ExpansionPanelActions.js": 792
+                },
+                "ExpansionPanelDetails": {
+                  "index.js": 74,
+                  "ExpansionPanelDetails.js": 666
+                },
+                "ExpansionPanelSummary": {
+                  "index.js": 74,
+                  "ExpansionPanelSummary.js": 2190
+                },
+                "Fab": {
+                  "index.js": 56,
+                  "Fab.js": 3011
+                },
+                "FilledInput": {
+                  "index.js": 64,
+                  "FilledInput.js": 3279
+                },
+                "InputBase": {
+                  "index.js": 62,
+                  "InputBase.js": 6324,
+                  "utils.js": 339
+                },
+                "TextareaAutosize": {
+                  "index.js": 69,
+                  "TextareaAutosize.js": 2255
+                },
+                "FormControlLabel": {
+                  "index.js": 69,
+                  "FormControlLabel.js": 1889
+                },
+                "FormGroup": {
+                  "index.js": 62,
+                  "FormGroup.js": 707
+                },
+                "FormHelperText": {
+                  "index.js": 67,
+                  "FormHelperText.js": 1645
+                },
+                "FormLabel": {
+                  "index.js": 62,
+                  "FormLabel.js": 1708
+                },
+                "Grid": {
+                  "index.js": 57,
+                  "Grid.js": 3999
+                },
+                "GridList": {
+                  "index.js": 61,
+                  "GridList.js": 1204
+                },
+                "GridListTile": {
+                  "index.js": 65,
+                  "GridListTile.js": 2051
+                },
+                "GridListTileBar": {
+                  "index.js": 68,
+                  "GridListTileBar.js": 1893
+                },
+                "Hidden": {
+                  "index.js": 59,
+                  "Hidden.js": 1005,
+                  "HiddenJs.js": 1022,
+                  "HiddenCss.js": 1196
+                },
+                "withWidth": {
+                  "index.js": 96,
+                  "withWidth.js": 1618
+                },
+                "useMediaQuery": {
+                  "index.js": 66,
+                  "useMediaQuery.js": 902
+                },
+                "Icon": {
+                  "index.js": 57,
+                  "Icon.js": 1464
+                },
+                "ImageList": {
+                  "index.js": 62,
+                  "ImageList.js": 1313
+                },
+                "ImageListItem": {
+                  "index.js": 66,
+                  "ImageListItem.js": 2047
+                },
+                "ImageListItemBar": {
+                  "index.js": 69,
+                  "ImageListItemBar.js": 1966
+                },
+                "Input": {
+                  "index.js": 58,
+                  "Input.js": 2220
+                },
+                "InputAdornment": {
+                  "index.js": 67,
+                  "InputAdornment.js": 1552
+                },
+                "InputLabel": {
+                  "index.js": 63,
+                  "InputLabel.js": 2202
+                },
+                "LinearProgress": {
+                  "index.js": 67,
+                  "LinearProgress.js": 3872
+                },
+                "Link": {
+                  "index.js": 57,
+                  "Link.js": 1935
+                },
+                "ListItemAvatar": {
+                  "index.js": 67,
+                  "ListItemAvatar.js": 772
+                },
+                "ListItemIcon": {
+                  "index.js": 65,
+                  "ListItemIcon.js": 843
+                },
+                "ListItemSecondaryAction": {
+                  "index.js": 76,
+                  "ListItemSecondaryAction.js": 706
+                },
+                "ListItemText": {
+                  "index.js": 65,
+                  "ListItemText.js": 1468
+                },
+                "ListSubheader": {
+                  "index.js": 66,
+                  "ListSubheader.js": 1369
+                },
+                "MobileStepper": {
+                  "index.js": 66,
+                  "MobileStepper.js": 2017
+                },
+                "NativeSelect": {
+                  "index.js": 65,
+                  "NativeSelect.js": 2211,
+                  "NativeSelectInput.js": 876
+                },
+                "NoSsr": {
+                  "index.js": 58,
+                  "NoSsr.js": 471
+                },
+                "OutlinedInput": {
+                  "index.js": 66,
+                  "OutlinedInput.js": 2460,
+                  "NotchedOutline.js": 2204
+                },
+                "Popper": {
+                  "index.js": 59,
+                  "Popper.js": 2685
+                },
+                "Radio": {
+                  "index.js": 58,
+                  "Radio.js": 2064,
+                  "RadioButtonIcon.js": 1049
+                },
+                "RadioGroup": {
+                  "useRadioGroup.js": 170,
+                  "RadioGroupContext.js": 99,
+                  "index.js": 117,
+                  "RadioGroup.js": 1259
+                },
+                "RootRef": {
+                  "index.js": 60,
+                  "RootRef.js": 1667
+                },
+                "Select": {
+                  "index.js": 59,
+                  "Select.js": 2188,
+                  "SelectInput.js": 5160
+                },
+                "Slider": {
+                  "index.js": 59,
+                  "Slider.js": 11648,
+                  "ValueLabel.js": 1219
+                },
+                "Snackbar": {
+                  "index.js": 61,
+                  "Snackbar.js": 3895
+                },
+                "SnackbarContent": {
+                  "index.js": 68,
+                  "SnackbarContent.js": 1442
+                },
+                "Step": {
+                  "index.js": 57,
+                  "Step.js": 1457
+                },
+                "StepButton": {
+                  "index.js": 63,
+                  "StepButton.js": 1400
+                },
+                "StepLabel": {
+                  "index.js": 62,
+                  "StepLabel.js": 2180
+                },
+                "StepIcon": {
+                  "index.js": 61,
+                  "StepIcon.js": 1299
+                },
+                "StepConnector": {
+                  "index.js": 66,
+                  "StepConnector.js": 1417
+                },
+                "StepContent": {
+                  "index.js": 64,
+                  "StepContent.js": 1361
+                },
+                "Stepper": {
+                  "index.js": 60,
+                  "Stepper.js": 1505
+                },
+                "SwipeableDrawer": {
+                  "index.js": 68,
+                  "SwipeableDrawer.js": 6975,
+                  "SwipeArea.js": 1093
+                },
+                "Switch": {
+                  "index.js": 59,
+                  "Switch.js": 3476
+                },
+                "Tab": {
+                  "index.js": 56,
+                  "Tab.js": 2627
+                },
+                "Table": {
+                  "index.js": 58,
+                  "Table.js": 1300,
+                  "TableContext.js": 99,
+                  "Tablelvl2Context.js": 99
+                },
+                "TableBody": {
+                  "index.js": 62,
+                  "TableBody.js": 817
+                },
+                "TableCell": {
+                  "index.js": 62,
+                  "TableCell.js": 2653
+                },
+                "TableContainer": {
+                  "index.js": 67,
+                  "TableContainer.js": 666
+                },
+                "TableFooter": {
+                  "index.js": 64,
+                  "TableFooter.js": 824
+                },
+                "TableHead": {
+                  "index.js": 62,
+                  "TableHead.js": 820
+                },
+                "TablePagination": {
+                  "index.js": 68,
+                  "TablePagination.js": 3443,
+                  "TablePaginationActions.js": 1265
+                },
+                "Toolbar": {
+                  "index.js": 60,
+                  "Toolbar.js": 1083
+                },
+                "TableRow": {
+                  "index.js": 61,
+                  "TableRow.js": 1232
+                },
+                "TableSortLabel": {
+                  "index.js": 67,
+                  "TableSortLabel.js": 1704
+                },
+                "Tabs": {
+                  "index.js": 57,
+                  "Tabs.js": 6770,
+                  "ScrollbarSize.js": 859,
+                  "TabIndicator.js": 1006
+                },
+                "TabScrollButton": {
+                  "index.js": 68,
+                  "TabScrollButton.js": 1177
+                },
+                "TextField": {
+                  "index.js": 62,
+                  "TextField.js": 2822
+                },
+                "Tooltip": {
+                  "index.js": 60,
+                  "Tooltip.js": 8115
+                },
+                "useScrollTrigger": {
+                  "index.js": 69,
+                  "useScrollTrigger.js": 936
+                },
+                "withMobileDialog": {
+                  "index.js": 69,
+                  "withMobileDialog.js": 485
+                },
+                "Zoom": {
+                  "index.js": 57,
+                  "Zoom.js": 2078
+                }
+              },
+              "node_modules": {
+                "react-transition-group": {
+                  "package.json": 118,
+                  "esm": {
+                    "index.js": 340,
+                    "CSSTransition.js": 2917,
+                    "Transition.js": 4206,
+                    "config.js": 49,
+                    "utils": {
+                      "PropTypes.js": 137,
+                      "ChildMapping.js": 1293
+                    },
+                    "TransitionGroupContext.js": 99,
+                    "ReplaceTransition.js": 2143,
+                    "TransitionGroup.js": 1838,
+                    "SwitchTransition.js": 2209
+                  }
+                },
+                "dom-helpers": {
+                  "addClass": {
+                    "package.json": 112
+                  },
+                  "esm": {
+                    "addClass.js": 276,
+                    "hasClass.js": 177,
+                    "removeClass.js": 342
+                  },
+                  "removeClass": {
+                    "package.json": 121
+                  }
+                },
+                "popper.js": {
+                  "package.json": 122,
+                  "dist": {
+                    "esm": {
+                      "popper.js": 22400
+                    }
+                  }
+                }
+              },
+              "MenuItem": {
+                "package.json": 64
+              },
+              "package.json": 114
+            },
+            "utils": {
+              "package.json": 115,
+              "esm": {
+                "index.js": 588,
+                "chainPropTypes.js": 91,
+                "deepmerge.js": 498,
+                "elementAcceptingRef.js": 703,
+                "elementTypeAcceptingRef.js": 630,
+                "exactProp.js": 259,
+                "formatMuiErrorMessage.js": 272,
+                "getDisplayName.js": 760,
+                "HTMLElementType.js": 86,
+                "ponyfillGlobal.js": 161,
+                "refType.js": 121
+              }
+            },
+            "styles": {
+              "package.json": 116,
+              "esm": {
+                "index.js": 1254,
+                "createGenerateClassName": {
+                  "index.js": 76,
+                  "createGenerateClassName.js": 740
+                },
+                "ThemeProvider": {
+                  "nested.js": 125,
+                  "index.js": 66,
+                  "ThemeProvider.js": 652
+                },
+                "createStyles": {
+                  "index.js": 65,
+                  "createStyles.js": 67
+                },
+                "getThemeProps": {
+                  "index.js": 66,
+                  "getThemeProps.js": 195
+                },
+                "jssPreset": {
+                  "index.js": 62,
+                  "jssPreset.js": 525
+                },
+                "makeStyles": {
+                  "index.js": 63,
+                  "makeStyles.js": 3239,
+                  "multiKeyStore.js": 236,
+                  "indexCounter.js": 83
+                },
+                "mergeClasses": {
+                  "index.js": 65,
+                  "mergeClasses.js": 418
+                },
+                "useTheme": {
+                  "index.js": 61,
+                  "useTheme.js": 177,
+                  "ThemeContext.js": 107
+                },
+                "StylesProvider": {
+                  "index.js": 106,
+                  "StylesProvider.js": 1139
+                },
+                "getStylesCreator": {
+                  "index.js": 69,
+                  "getStylesCreator.js": 543,
+                  "noopTheme.js": 46
+                },
+                "ServerStyleSheets": {
+                  "index.js": 70,
+                  "ServerStyleSheets.js": 1073
+                },
+                "styled": {
+                  "index.js": 59,
+                  "styled.js": 1408
+                },
+                "withStyles": {
+                  "index.js": 63,
+                  "withStyles.js": 1140
+                },
+                "withTheme": {
+                  "index.js": 96,
+                  "withTheme.js": 769
+                }
+              }
+            },
+            "system": {
+              "package.json": 116,
+              "esm": {
+                "index.js": 938,
+                "borders.js": 710,
+                "style.js": 693,
+                "responsivePropType.js": 93,
+                "breakpoints.js": 1078,
+                "merge.js": 139,
+                "compose.js": 419,
+                "styleFunctionSx.js": 755,
+                "display.js": 480,
+                "flexbox.js": 706,
+                "grid.js": 724,
+                "palette.js": 284,
+                "positions.js": 366,
+                "shadows.js": 128,
+                "sizing.js": 677,
+                "spacing.js": 1515,
+                "memoize.js": 126,
+                "typography.js": 538
+              }
+            }
+          },
+          "jss-plugin-rule-value-function": {
+            "package.json": 187,
+            "dist": {
+              "jss-plugin-rule-value-function.esm.js": 572
+            }
+          },
+          "tiny-warning": {
+            "package.json": 132,
+            "dist": {
+              "tiny-warning.esm.js": 177
+            }
+          },
+          "jss": {
+            "package.json": 106,
+            "dist": {
+              "jss.esm.js": 22107
+            }
+          },
+          "is-in-browser": {
+            "package.json": 112,
+            "dist": {
+              "module.js": 427
+            }
+          },
+          "jss-plugin-global": {
+            "package.json": 148,
+            "dist": {
+              "jss-plugin-global.esm.js": 1897
+            }
+          },
+          "jss-plugin-nested": {
+            "package.json": 148,
+            "dist": {
+              "jss-plugin-nested.esm.js": 1047
+            }
+          },
+          "jss-plugin-camel-case": {
+            "package.json": 160,
+            "dist": {
+              "jss-plugin-camel-case.esm.js": 528
+            }
+          },
+          "hyphenate-style-name": {
+            "package.json": 112,
+            "index.js": 206
+          },
+          "jss-plugin-default-unit": {
+            "package.json": 166,
+            "dist": {
+              "jss-plugin-default-unit.esm.js": 3337
+            }
+          },
+          "jss-plugin-vendor-prefixer": {
+            "package.json": 175,
+            "dist": {
+              "jss-plugin-vendor-prefixer.esm.js": 616
+            }
+          },
+          "css-vendor": {
+            "package.json": 130,
+            "dist": {
+              "css-vendor.esm.js": 4902
+            }
+          },
+          "jss-plugin-props-sort": {
+            "package.json": 160,
+            "dist": {
+              "jss-plugin-props-sort.esm.js": 278
+            }
+          },
           "react-tether": {
             "package.json": 93,
             "lib": {
@@ -809,6 +1722,18 @@
           "invariant": {
             "package.json": 104,
             "browser.js": 385
+          },
+          "react-draggable": {
+            "package.json": 134,
+            "dist": {
+              "react-draggable.js": 23541
+            }
+          },
+          "reconnecting-websocket": {
+            "package.json": 166,
+            "dist": {
+              "reconnecting-websocket-mjs.js": 10013
+            }
           },
           "react-render-in-browser": {
             "package.json": 100,
@@ -1133,12 +2058,6 @@
             "package.json": 87,
             "wildemitter.js": 1490
           },
-          "react-draggable": {
-            "package.json": 134,
-            "dist": {
-              "react-draggable.js": 23541
-            }
-          },
           "sanitize-html": {
             "package.json": 83,
             "index.js": 7868,
@@ -1262,43 +2181,6 @@
               "quick-sort.js": 491,
               "source-node.js": 3664
             }
-          },
-          "meteor-node-stubs": {
-            "deps": {
-              "path.js": 35,
-              "url.js": 24,
-              "fs.js": 14,
-              "process.js": 38
-            },
-            "node_modules": {
-              "path-browserify": {
-                "package.json": 85,
-                "index.js": 4173
-              },
-              "url": {
-                "package.json": 74,
-                "url.js": 7530,
-                "node_modules": {
-                  "punycode": {
-                    "package.json": 81,
-                    "punycode.js": 2704
-                  }
-                },
-                "util.js": 229
-              },
-              "querystring": {
-                "package.json": 65,
-                "index.js": 95,
-                "decode.js": 548,
-                "encode.js": 533
-              },
-              "process": {
-                "browser.js": 1688
-              }
-            },
-            "package.json": 87,
-            "index.js": 358,
-            "map.json": 1008
           },
           "nanoid": {
             "non-secure": {
@@ -1893,7 +2775,7 @@
       {}
     ],
     "app/app.js": [
-      1447094,
+      1557800,
       {
         "imports": {
           "ui": {
@@ -1903,25 +2785,25 @@
                   "user-participants": {
                     "user-list-item": {
                       "user-dropdown": {
-                        "component.jsx": 12360,
+                        "component.jsx": 11635,
                         "styles.scss": 56,
-                        "styles.scss.js": 5223
+                        "styles.scss.js": 5618
                       },
                       "user-name": {
                         "component.jsx": 2491,
                         "styles.scss": 56,
-                        "styles.scss.js": 1229
+                        "styles.scss.js": 1222
                       },
                       "component.jsx": 1758,
                       "container.jsx": 1529
                     },
                     "user-options": {
-                      "component.jsx": 8524,
-                      "container.jsx": 2357,
+                      "component.jsx": 9142,
+                      "container.jsx": 2542,
                       "styles.scss": 56,
                       "styles.scss.js": 1455
                     },
-                    "component.jsx": 4156,
+                    "component.jsx": 4374,
                     "container.jsx": 600
                   },
                   "breakout-room": {
@@ -1932,7 +2814,7 @@
                     "container.jsx": 684
                   },
                   "user-messages": {
-                    "component.jsx": 2367,
+                    "component.jsx": 2388,
                     "container.jsx": 852
                   },
                   "user-notes": {
@@ -1948,7 +2830,7 @@
                   "component.jsx": 2192,
                   "container.jsx": 1436,
                   "styles.scss": 56,
-                  "styles.scss.js": 13166
+                  "styles.scss.js": 13205
                 },
                 "chat-list-item": {
                   "chat-avatar": {
@@ -1960,9 +2842,9 @@
                     "styles.scss.js": 635
                   },
                   "chat-unread-messages": {
-                    "component.jsx": 919
+                    "component.jsx": 1225
                   },
-                  "component.jsx": 3034,
+                  "component.jsx": 3074,
                   "container.jsx": 563,
                   "styles.scss": 56,
                   "styles.scss.js": 2985
@@ -1977,7 +2859,7 @@
                 },
                 "component.jsx": 1266,
                 "container.jsx": 1249,
-                "service.js": 9869,
+                "service.js": 9945,
                 "styles.scss": 56,
                 "styles.scss.js": 2494
               },
@@ -2007,9 +2889,9 @@
                 "message-form": {
                   "typing-indicator": {
                     "component.jsx": 1616,
-                    "container.jsx": 997
+                    "container.jsx": 1014
                   },
-                  "component.jsx": 5400,
+                  "component.jsx": 5387,
                   "container.jsx": 908,
                   "styles.scss": 56,
                   "styles.scss.js": 4583
@@ -2021,9 +2903,9 @@
                 "chat-logger": {
                   "ChatLogger.js": 527
                 },
-                "component.jsx": 3587,
+                "component.jsx": 3605,
                 "container.jsx": 5625,
-                "service.js": 5324,
+                "service.js": 5388,
                 "styles.scss": 56,
                 "styles.scss.js": 3351
               },
@@ -2035,7 +2917,7 @@
                     },
                     "component.jsx": 4436
                   },
-                  "component.jsx": 8149,
+                  "component.jsx": 8183,
                   "container.jsx": 1643,
                   "service.js": 655,
                   "styles.scss": 56,
@@ -2061,11 +2943,11 @@
                   "styles.scss.js": 1669
                 },
                 "presentation-area": {
-                  "component.jsx": 368,
+                  "component.jsx": 292,
                   "container.jsx": 402
                 },
                 "presentation-close-button": {
-                  "component.jsx": 658,
+                  "component.jsx": 692,
                   "styles.scss": 56,
                   "styles.scss.js": 393
                 },
@@ -2086,9 +2968,9 @@
                 "slide": {
                   "component.jsx": 545
                 },
-                "component.jsx": 15139,
-                "container.jsx": 3044,
-                "service.js": 2281,
+                "component.jsx": 15656,
+                "container.jsx": 3190,
+                "service.js": 2425,
                 "styles.scss": 56,
                 "styles.scss.js": 3836
               },
@@ -2107,28 +2989,28 @@
                   "sort-user-list": {
                     "component.jsx": 2804
                   },
-                  "component.jsx": 18073,
-                  "container.jsx": 475,
+                  "component.jsx": 20381,
+                  "container.jsx": 591,
                   "styles.scss": 56,
-                  "styles.scss.js": 10230
+                  "styles.scss.js": 10509
                 },
                 "actions-dropdown": {
                   "component.jsx": 6326,
                   "container.jsx": 1001
                 },
                 "presentation-options": {
-                  "component.jsx": 1149
+                  "component.jsx": 1183
                 },
                 "quick-poll-dropdown": {
-                  "component.jsx": 3023,
+                  "component.jsx": 3181,
                   "container.jsx": 654
                 },
                 "screenshare": {
                   "component.jsx": 4782,
                   "container.jsx": 664
                 },
-                "component.jsx": 2434,
-                "container.jsx": 2192,
+                "component.jsx": 2561,
+                "container.jsx": 2449,
                 "service.js": 1883,
                 "styles.scss": 56,
                 "styles.scss.js": 9312
@@ -2136,10 +3018,10 @@
               "audio": {
                 "audio-controls": {
                   "input-stream-live-selector": {
-                    "component.jsx": 5568,
+                    "component.jsx": 5635,
                     "container.jsx": 614
                   },
-                  "component.jsx": 3999,
+                  "component.jsx": 4002,
                   "container.jsx": 2895,
                   "styles.scss": 56,
                   "styles.scss.js": 11797
@@ -2150,7 +3032,7 @@
                   "styles.scss.js": 1022
                 },
                 "audio-modal": {
-                  "component.jsx": 9876,
+                  "component.jsx": 9913,
                   "container.jsx": 2670,
                   "service.js": 1490,
                   "styles.scss": 56,
@@ -2212,16 +3094,16 @@
                   "component.jsx": 1204
                 },
                 "trigger": {
-                  "component.jsx": 1350
+                  "component.jsx": 1699
                 },
-                "component.jsx": 5537,
+                "component.jsx": 5518,
                 "styles.scss": 56,
                 "styles.scss.js": 15758
               },
               "settings": {
                 "submenus": {
                   "application": {
-                    "component.jsx": 9043
+                    "component.jsx": 11404
                   },
                   "base": {
                     "component.jsx": 356
@@ -2235,8 +3117,8 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4487
                 },
-                "component.jsx": 6113,
-                "container.jsx": 601,
+                "component.jsx": 6215,
+                "container.jsx": 838,
                 "service.js": 717,
                 "styles.scss": 56,
                 "styles.scss.js": 2882
@@ -2244,19 +3126,19 @@
               "video-provider": {
                 "video-list": {
                   "video-list-item": {
-                    "component.jsx": 5787,
-                    "container.jsx": 382
+                    "component.jsx": 5900,
+                    "container.jsx": 895
                   },
-                  "component.jsx": 7450,
-                  "container.jsx": 712,
+                  "component.jsx": 8047,
+                  "container.jsx": 1058,
                   "styles.scss": 56,
-                  "styles.scss.js": 12496
+                  "styles.scss.js": 12651
                 },
                 "many-users-notify": {
                   "component.jsx": 1925,
                   "container.jsx": 1259,
                   "styles.scss": 56,
-                  "styles.scss.js": 8826
+                  "styles.scss.js": 9005
                 },
                 "video-button": {
                   "component.jsx": 1684,
@@ -2264,10 +3146,10 @@
                   "styles.scss": 56,
                   "styles.scss.js": 10096
                 },
-                "component.jsx": 13800,
-                "container.jsx": 717,
-                "service.js": 14105,
-                "stream-sorting.js": 1503
+                "component.jsx": 15587,
+                "container.jsx": 823,
+                "service.js": 14317,
+                "stream-sorting.js": 1522
               },
               "whiteboard": {
                 "annotation-factory": {
@@ -2293,7 +3175,7 @@
                     "component.jsx": 2706
                   },
                   "poll": {
-                    "component.jsx": 7887,
+                    "component.jsx": 7911,
                     "styles.scss": 56,
                     "styles.scss.js": 345
                   },
@@ -2324,7 +3206,7 @@
                     "component.jsx": 5526
                   },
                   "shape-pointer-listener": {
-                    "component.jsx": 6379
+                    "component.jsx": 6397
                   },
                   "text-draw-listener": {
                     "component.jsx": 8333
@@ -2362,26 +3244,29 @@
                   "container.jsx": 2081
                 },
                 "invitation": {
-                  "component.jsx": 1729,
+                  "component.jsx": 1668,
                   "container.jsx": 763
                 },
-                "component.jsx": 10053,
+                "component.jsx": 10186,
                 "container.jsx": 1441,
-                "service.js": 2490,
+                "service.js": 2443,
                 "styles.scss": 56,
-                "styles.scss.js": 8263
+                "styles.scss.js": 8444
               },
               "button": {
                 "base": {
                   "component.jsx": 3480
                 },
-                "component.jsx": 2506,
+                "button-emoji": {
+                  "ButtonEmoji.jsx": 808
+                },
+                "component.jsx": 2972,
                 "styles.scss": 56,
-                "styles.scss.js": 15158
+                "styles.scss.js": 15965
               },
               "captions": {
                 "pad": {
-                  "component.jsx": 4651,
+                  "component.jsx": 5164,
                   "container.jsx": 1078,
                   "service.js": 671,
                   "styles.scss": 56,
@@ -2399,7 +3284,7 @@
               },
               "components-data": {
                 "chat-context": {
-                  "adapter.jsx": 2449,
+                  "adapter.jsx": 2574,
                   "context.jsx": 5566
                 },
                 "group-chat-context": {
@@ -2408,7 +3293,7 @@
                 },
                 "users-context": {
                   "adapter.jsx": 952,
-                  "context.jsx": 1829
+                  "context.jsx": 1845
                 }
               },
               "connection-status": {
@@ -2435,7 +3320,7 @@
                 "custom-players": {
                   "arc-player.jsx": 2577,
                   "panopto.jsx": 273,
-                  "peertube.jsx": 2511
+                  "peertube.jsx": 2502
                 },
                 "modal": {
                   "component.jsx": 2709,
@@ -2443,11 +3328,16 @@
                   "styles.scss": 56,
                   "styles.scss.js": 6955
                 },
-                "component.jsx": 8038,
+                "volume-slider": {
+                  "component.js": 1341,
+                  "styles.scss": 56,
+                  "styles.scss.js": 4184
+                },
+                "component.jsx": 9652,
                 "container.jsx": 762,
                 "service.js": 1214,
                 "styles.scss": 56,
-                "styles.scss.js": 748
+                "styles.scss.js": 4416
               },
               "fallback-errors": {
                 "fallback-modal": {
@@ -2461,20 +3351,21 @@
               },
               "layout": {
                 "context": {
-                  "context.jsx": 11648,
-                  "initState.js": 2244
+                  "context.jsx": 12569,
+                  "initState.js": 2394
                 },
                 "layout-manager": {
-                  "component.jsx": 7320,
+                  "component.jsx": 7264,
                   "container.jsx": 428,
-                  "customLayout.jsx": 12291,
-                  "presentationFocusLayout.jsx": 9056,
-                  "smartLayout.jsx": 9336,
-                  "videoFocusLayout.jsx": 9127
+                  "customLayout.jsx": 14358,
+                  "presentationFocusLayout.jsx": 10632,
+                  "smartLayout.jsx": 11032,
+                  "videoFocusLayout.jsx": 10775
                 },
                 "context.jsx": 3621,
-                "defaultValues.js": 874,
-                "enums.js": 3106,
+                "defaultValues.js": 969,
+                "enums.js": 3290,
+                "service.js": 149,
                 "utils.js": 1005
               },
               "lock-viewers": {
@@ -2502,12 +3393,12 @@
                   "styles.scss.js": 953
                 },
                 "webcam-draggable-overlay": {
-                  "component.jsx": 7554,
+                  "component.jsx": 7615,
                   "context.jsx": 1854
                 },
-                "component.jsx": 1812,
-                "container.jsx": 3266,
-                "service.js": 1635,
+                "component.jsx": 1852,
+                "container.jsx": 2744,
+                "service.js": 1734,
                 "styles.scss": 56,
                 "styles.scss.js": 6217
               },
@@ -2517,7 +3408,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 2021
                 },
-                "component.jsx": 6649,
+                "component.jsx": 8041,
                 "service.js": 355,
                 "styles.scss": 56,
                 "styles.scss.js": 1454
@@ -2564,7 +3455,7 @@
                   "container.jsx": 768
                 },
                 "talking-indicator": {
-                  "component.jsx": 1965,
+                  "component.jsx": 1915,
                   "container.jsx": 1667,
                   "service.js": 159,
                   "styles.scss": 56,
@@ -2588,9 +3479,9 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4018
                 },
-                "component.jsx": 12808,
-                "container.jsx": 1940,
-                "service.js": 4093,
+                "component.jsx": 12998,
+                "container.jsx": 1966,
+                "service.js": 4133,
                 "styles.scss": 56,
                 "styles.scss.js": 9913
               },
@@ -2601,11 +3492,11 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4885
                 },
-                "component.jsx": 6654,
-                "container.jsx": 1024,
-                "service.js": 2481,
+                "component.jsx": 7671,
+                "container.jsx": 1203,
+                "service.js": 2464,
                 "styles.scss": 56,
-                "styles.scss.js": 7432
+                "styles.scss.js": 8848
               },
               "toast": {
                 "inject-notify": {
@@ -2615,6 +3506,18 @@
                 "container.jsx": 565,
                 "styles.scss": 56,
                 "styles.scss.js": 6717
+              },
+              "video-preview": {
+                "virtual-background": {
+                  "component.jsx": 2594,
+                  "styles.scss": 56,
+                  "styles.scss.js": 8518
+                },
+                "component.jsx": 15598,
+                "container.jsx": 1188,
+                "service.js": 2204,
+                "styles.scss": 56,
+                "styles.scss.js": 7902
               },
               "waiting-users": {
                 "alert": {
@@ -2635,6 +3538,18 @@
                 "styles.scss": 56,
                 "styles.scss.js": 8501
               },
+              "webcam": {
+                "drop-areas": {
+                  "component.jsx": 468,
+                  "container.jsx": 373,
+                  "styles.scss": 56,
+                  "styles.scss.js": 1149
+                },
+                "component.jsx": 3297,
+                "container.jsx": 1809,
+                "styles.scss": 56,
+                "styles.scss.js": 704
+              },
               "about": {
                 "component.jsx": 1176,
                 "container.jsx": 364
@@ -2645,19 +3560,22 @@
                 "styles.scss": 56,
                 "styles.scss.js": 568
               },
+              "activity-report": {
+                "service.js": 679
+              },
               "app": {
-                "component.jsx": 11341,
-                "container.jsx": 3921,
+                "component.jsx": 12942,
+                "container.jsx": 4356,
                 "service.js": 698,
                 "styles.scss": 56,
-                "styles.scss.js": 9649
+                "styles.scss.js": 9669
               },
               "authenticated-handler": {
                 "component.jsx": 1516
               },
               "banner-bar": {
-                "component.jsx": 440,
-                "container.jsx": 272,
+                "component.jsx": 624,
+                "container.jsx": 662,
                 "styles.scss": 56,
                 "styles.scss.js": 440
               },
@@ -2679,7 +3597,7 @@
                 "service.js": 1241
               },
               "debug-window": {
-                "component.jsx": 6963,
+                "component.jsx": 5545,
                 "styles.scss": 56,
                 "styles.scss.js": 3062
               },
@@ -2699,8 +3617,8 @@
                 "styles.scss.js": 1290
               },
               "fullscreen-button": {
-                "component.jsx": 1459,
-                "container.jsx": 409,
+                "component.jsx": 1776,
+                "container.jsx": 748,
                 "service.js": 1042,
                 "styles.scss": 56,
                 "styles.scss.js": 1608
@@ -2719,6 +3637,11 @@
               "locales-dropdown": {
                 "component.jsx": 1060
               },
+              "menu": {
+                "component.jsx": 3028,
+                "styles.scss": 56,
+                "styles.scss.js": 1981
+              },
               "muted-alert": {
                 "component.jsx": 2951,
                 "styles.scss": 56,
@@ -2727,18 +3650,18 @@
               "note": {
                 "component.jsx": 1882,
                 "container.jsx": 730,
-                "service.js": 2091,
+                "service.js": 2102,
                 "styles.scss": 56,
                 "styles.scss.js": 2765
               },
               "notifications-bar": {
                 "component.jsx": 640,
-                "container.jsx": 4015,
+                "container.jsx": 4370,
                 "styles.scss": 56,
                 "styles.scss.js": 1877
               },
               "panel-manager": {
-                "component.jsx": 9139
+                "component.jsx": 8977
               },
               "polling": {
                 "component.jsx": 4403,
@@ -2758,6 +3681,11 @@
                 "styles.scss": 56,
                 "styles.scss.js": 4988
               },
+              "reload-button": {
+                "component.js": 702,
+                "styles.scss": 56,
+                "styles.scss.js": 297
+              },
               "shortcut-help": {
                 "component.jsx": 4747,
                 "service.jsx": 823,
@@ -2765,11 +3693,11 @@
                 "styles.scss.js": 819
               },
               "sidebar-content": {
-                "component.jsx": 2238,
+                "component.jsx": 2424,
                 "container.jsx": 517
               },
               "sidebar-navigation": {
-                "component.jsx": 1440,
+                "component.jsx": 1502,
                 "container.jsx": 467
               },
               "status-notifier": {
@@ -2779,7 +3707,7 @@
                 "styles.scss.js": 2790
               },
               "subscriptions": {
-                "component.jsx": 2583
+                "component.jsx": 2680
               },
               "switch": {
                 "component.jsx": 1896,
@@ -2793,7 +3721,7 @@
               },
               "tooltip": {
                 "bbbtip.css": 240,
-                "component.jsx": 2441,
+                "component.jsx": 3040,
                 "container.jsx": 345
               },
               "user-avatar": {
@@ -2807,29 +3735,27 @@
                 "service.js": 152,
                 "styles.scss": 56,
                 "styles.scss.js": 684
-              },
-              "video-preview": {
-                "component.jsx": 13297,
-                "container.jsx": 1348,
-                "service.js": 766,
-                "styles.scss": 56,
-                "styles.scss.js": 7902
-              },
-              "webcam": {
-                "component.jsx": 263,
-                "container.jsx": 341
               }
             },
             "services": {
+              "virtual-background": {
+                "tflite": {
+                  "tflite-simd.js": 12302,
+                  "tflite.js": 12293
+                },
+                "TimeWorker.js": 665,
+                "index.js": 5607,
+                "service.js": 1827
+              },
               "api": {
                 "index.js": 691
               },
               "audio-manager": {
                 "error-codes.js": 99,
-                "index.js": 11897
+                "index.js": 13015
               },
               "auth": {
-                "index.js": 4470
+                "index.js": 4526
               },
               "bbb-webrtc-sfu": {
                 "broker-base-errors.js": 844,
@@ -2854,6 +3780,9 @@
               },
               "users-settings": {
                 "index.js": 283
+              },
+              "webrtc-base": {
+                "bbb-video-stream.js": 2265
               }
             }
           },
@@ -2862,8 +3791,8 @@
               "client": {
                 "bridge": {
                   "base.js": 864,
-                  "kurento.js": 4519,
-                  "sip.js": 20815
+                  "kurento.js": 5129,
+                  "sip.js": 22288
                 }
               }
             },
@@ -2872,7 +3801,7 @@
                 "bridge": {
                   "errors.js": 843,
                   "index.js": 97,
-                  "kurento.js": 5296,
+                  "kurento.js": 5417,
                   "service.js": 2946
                 }
               },
@@ -2957,7 +3886,7 @@
           },
           "startup": {
             "client": {
-              "base.jsx": 8201,
+              "base.jsx": 8324,
               "intl.jsx": 2973,
               "logger.js": 1852
             }
@@ -2972,8 +3901,9 @@
             "ios-webview-audio-polyfills.js": 1822,
             "keyCodes.js": 352,
             "logoutRouteHandler.js": 226,
+            "media-stream-utils.js": 602,
             "mediaElementPlayRetry.js": 313,
-            "sdpUtils.js": 4549,
+            "sdpUtils.js": 5058,
             "slideCalcUtils.js": 632,
             "stats.js": 2041,
             "statuses.js": 256

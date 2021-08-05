@@ -257,6 +257,8 @@
       "assets": {
         "config/fallbackLocales.json": "assets/app/config/fallbackLocales.json",
         "config/settings.yml": "assets/app/config/settings.yml",
+        "wasm/tflite-simd.wasm": "assets/app/wasm/tflite-simd.wasm",
+        "wasm/tflite.wasm": "assets/app/wasm/tflite.wasm",
         "static/guest-wait/guest-wait.html": "assets/app/static/guest-wait/guest-wait.html"
       }
     },
@@ -267,6 +269,8 @@
       "assets": {
         "config/fallbackLocales.json": "assets/app/config/fallbackLocales.json",
         "config/settings.yml": "assets/app/config/settings.yml",
+        "wasm/tflite-simd.wasm": "assets/app/wasm/tflite-simd.wasm",
+        "wasm/tflite.wasm": "assets/app/wasm/tflite.wasm",
         "static/guest-wait/guest-wait.html": "assets/app/static/guest-wait/guest-wait.html"
       }
     }
