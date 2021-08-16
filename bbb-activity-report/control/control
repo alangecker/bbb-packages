@@ -1,10 +1,10 @@
 Package: bbb-activity-report
-Version: 1:2.4.0-8
+Version: 1:2.4.0-10
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 894
+Installed-Size: 938
 Depends: unzip, nginx
 Section: default
 Priority: extra
