@@ -247,17 +247,23 @@ module.useNode();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
 module.exports = {
-  "author": {
-    "name": "Sebastian McKenzie",
-    "email": "sebmck@gmail.com"
+  "name": "@babel/runtime",
+  "version": "7.14.0",
+  "description": "babel's modular runtime helpers",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
   },
-  "bugs": {
-    "url": "https://github.com/babel/babel/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/babel/babel.git",
+    "directory": "packages/babel-runtime"
   },
+  "homepage": "https://babel.dev/docs/en/next/babel-runtime",
+  "author": "Sebastian McKenzie <sebmck@gmail.com>",
   "dependencies": {
     "regenerator-runtime": "^0.13.4"
   },
-  "description": "babel's modular runtime helpers",
   "exports": {
     "./helpers/jsx": [
       {
@@ -1056,19 +1062,7 @@ module.exports = {
     "./regenerator": "./regenerator/index.js",
     "./regenerator/*.js": "./regenerator/*.js",
     "./regenerator/": "./regenerator/"
-  },
-  "homepage": "https://babel.dev/docs/en/next/babel-runtime",
-  "license": "MIT",
-  "name": "@babel/runtime",
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/babel/babel.git",
-    "directory": "packages/babel-runtime"
-  },
-  "version": "7.14.0"
+  }
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
