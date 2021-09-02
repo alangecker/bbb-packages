@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3009442,
-  "totalMinifiedGzipBytes": 745783,
+  "totalMinifiedBytes": 3018514,
+  "totalMinifiedGzipBytes": 748313,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
@@ -1895,7 +1895,7 @@
       {}
     ],
     "app/app.js": [
-      1372268,
+      1381340,
       {
         "imports": {
           "ui": {
@@ -1980,7 +1980,7 @@
                 "custom-logo": {
                   "component.jsx": 323,
                   "styles.scss": 56,
-                  "styles.scss.js": 601
+                  "styles.scss.js": 614
                 },
                 "component.jsx": 1266,
                 "container.jsx": 1153,
@@ -2197,7 +2197,7 @@
                   "styles.scss.js": 3740
                 },
                 "container.jsx": 4606,
-                "service.js": 2982
+                "service.js": 3008
               },
               "dropdown": {
                 "list": {
@@ -2270,9 +2270,9 @@
                   "styles.scss": 56,
                   "styles.scss.js": 10096
                 },
-                "component.jsx": 13907,
+                "component.jsx": 13923,
                 "container.jsx": 717,
-                "service.js": 14099,
+                "service.js": 14701,
                 "stream-sorting.js": 1503
               },
               "whiteboard": {
@@ -2430,12 +2430,12 @@
                   "styles.scss.js": 1686
                 },
                 "modal": {
-                  "component.jsx": 5667,
+                  "component.jsx": 9489,
                   "container.jsx": 612,
                   "styles.scss": 56,
-                  "styles.scss.js": 11525
+                  "styles.scss.js": 12253
                 },
-                "service.js": 3813
+                "service.js": 5689
               },
               "external-video-player": {
                 "custom-players": {
@@ -2743,7 +2743,7 @@
               "screenshare": {
                 "component.jsx": 5240,
                 "container.jsx": 754,
-                "service.js": 2481,
+                "service.js": 2700,
                 "styles.scss": 56,
                 "styles.scss.js": 6827
               },
@@ -2808,7 +2808,7 @@
               },
               "audio-manager": {
                 "error-codes.js": 99,
-                "index.js": 13015
+                "index.js": 14577
               },
               "auth": {
                 "index.js": 4526
@@ -2847,8 +2847,8 @@
               "client": {
                 "bridge": {
                   "base.js": 864,
-                  "kurento.js": 5129,
-                  "sip.js": 22563
+                  "kurento.js": 5157,
+                  "sip.js": 22598
                 }
               }
             },
@@ -2857,7 +2857,7 @@
                 "bridge": {
                   "errors.js": 843,
                   "index.js": 97,
-                  "kurento.js": 5391,
+                  "kurento.js": 5536,
                   "service.js": 2946
                 }
               },
