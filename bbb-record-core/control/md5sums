@@ -8,14 +8,14 @@
 5f99db279fa316d0887c70059cbac865  usr/local/bigbluebutton/core/Rakefile
 fe27cc6008bb20e3b1ff2ca8c2c2cd53  usr/local/bigbluebutton/core/lib/boot.rb
 21cc94c6dac11fa952c3a4e9aeeb4699  usr/local/bigbluebutton/core/lib/custom_hash.rb
-c776490ba1ecbb689e1f3c07c5aab1a9  usr/local/bigbluebutton/core/lib/recordandplayback/edl/audio.rb
-929b743a1060c6db7f2abf12f5369dc5  usr/local/bigbluebutton/core/lib/recordandplayback/edl/video.rb
+2c8afbc6b312f367681d7c3741648eaa  usr/local/bigbluebutton/core/lib/recordandplayback/edl/audio.rb
+7281ba2c02251deb107893dbe2d82789  usr/local/bigbluebutton/core/lib/recordandplayback/edl/video.rb
 1041a621fb2bc835a7750f222c2f7c52  usr/local/bigbluebutton/core/lib/recordandplayback/edl.rb
 47f436608491c007b6cd0cfc0732b78d  usr/local/bigbluebutton/core/lib/recordandplayback/events_archiver.rb
 fc4f037f974e1fb4ac45df048adc1b81  usr/local/bigbluebutton/core/lib/recordandplayback/generators/audio.rb
-6a3b64d19a3dc7e7f76af858741aa7e6  usr/local/bigbluebutton/core/lib/recordandplayback/generators/audio_processor.rb
+373df17c299c2b8e092611070f920ad0  usr/local/bigbluebutton/core/lib/recordandplayback/generators/audio_processor.rb
 baddfc3a39bdc01107aa49650ab1d3e7  usr/local/bigbluebutton/core/lib/recordandplayback/generators/captions.rb
-5e0b01408c212baa4d0602b65c2c0829  usr/local/bigbluebutton/core/lib/recordandplayback/generators/events.rb
+926fcf2140d061c866c54a145a021da0  usr/local/bigbluebutton/core/lib/recordandplayback/generators/events.rb
 13b5651524cfee934bf8c2d02f528ecf  usr/local/bigbluebutton/core/lib/recordandplayback/generators/presentation.rb
 c6e6eb43b17b75d3bb52e89d6daf3116  usr/local/bigbluebutton/core/lib/recordandplayback/generators/video.rb
 d604a471f4a49cd0e88c51ae7d5ad9c8  usr/local/bigbluebutton/core/lib/recordandplayback/workers/archive_worker.rb
@@ -50,4 +50,4 @@ ac3a2e6f23dd5ea1459f53c61a37e559  usr/local/bigbluebutton/core/scripts/rap-start
 6eb3de705a6a2f37beee74cb542106f5  usr/local/bigbluebutton/core/scripts/utils/captions.rb
 3ea92be6da5b63c56ce6408a39cb27e4  usr/local/bigbluebutton/core/scripts/utils/gen_poll_svg
 96714118c4bfd005c2ad2cef4ff9e95b  usr/local/bigbluebutton/core/scripts/utils/gen_webvtt
-1fbbac14f1c65244be2231f60d296c6e  usr/share/doc/bbb-record-core/changelog.gz
+4ffd2b9afe8a1758438dc90ae5a39464  usr/share/doc/bbb-record-core/changelog.gz
