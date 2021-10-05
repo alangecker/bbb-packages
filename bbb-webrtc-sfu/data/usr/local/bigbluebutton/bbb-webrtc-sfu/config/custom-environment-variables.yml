@@ -14,6 +14,7 @@ clientHost: CLIENT_HOST
 mcs-port: MCS_PORT
 mcs-host: MCS_HOST
 mcs-address: MCS_ADDRESS
+mcsUserEjectionTimer: MCS_USER_EJECTION_TIMER
 
 freeswitch:
     ip: FREESWITCH_CONN_IP
@@ -86,6 +87,10 @@ kurentoRemoveRembRtcpFb:
   __name: KURENTO_REMOVE_REMB_RTCPFB
   __format: json
 
+kurentoAllowMediaTypeMix:
+  __name: KURENTO_ALLOW_MEDIATYPE_MIX
+  __format: json
+
 mediaThresholds:
   global: GLOBAL_MEDIA_THRESHOLD
   perRoom: ROOM_MEDIA_THRESHOLD
@@ -99,22 +104,47 @@ permissionProbes:
   __name: PERMISSION_PROBES
   __format: json
 
+media-server-adapters:
+  __name: MEDIA_SERVER_ADAPTERS
+  __format: json
+
 videoMediaServer: VIDEO_MEDIA_SERVER
 screenshareMediaServer: SCREENSHARE_MEDIA_SERVER
 audioMediaServer: AUDIO_MEDIA_SERVER
+listenOnlyGlobalAudioMode: GLOBAL_AUDIO_MODE
+
+listenOnlyIgnoreMediaThresholds:
+  __name: LISTENONLY_IGNORE_MEDIA_THRESHOLDS
+  __format: json
+
+videoIgnoreMediaThresholds:
+  __name: VIDEO_IGNORE_MEDIA_THRESHOLDS
+  __format: json
+
+screenshareIgnoreMediaThresholds:
+  __name: SCREENSHARE_IGNORE_MEDIA_THRESHOLDS
+  __format: json
 
 prometheus:
-  enabled: MCS_PROM_ENABLED
+  enabled:
+    __name: MCS_PROM_ENABLED
+    __format: json
+  collectDefaultMetrics:
+    __name: MCS_PROM_DEFAULT_MTS
+    __format: json
   host: MCS_PROM_HOST
   port: MCS_PROM_PORT
   path: MCS_PROM_PATH
-  collectDefaultMetrics: MCS_PROM_DEFAULT_MTS
 
 mediasoup:
   workers: MS_WORKERS
   worker:
-    rtcMinPort: MS_RTC_MIN
-    rtcMaxPort: MS_RTC_MAX
+    rtcMinPort:
+      __name: MS_RTC_MIN
+      __format: json
+    rtcMaxPort:
+      __name: MS_RTC_MAX
+      __format: json
     dtlsCertificateFile: MS_DTLS_CERT
     dtlsPrivateKeyFile: MS_DTLS_KEY
   webrtc:
@@ -124,4 +154,7 @@ mediasoup:
   plainRtp:
     listenIp:
       __name: MS_RTP_LISTEN_IP
+      __format: json
+    comedia:
+      __name: MS_COMEDIA
       __format: json

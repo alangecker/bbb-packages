@@ -420,7 +420,6 @@ module.exports = class MediaSession {
   }
 
   _handleError (error) {
-    this._status = C.STATUS.STOPPED;
     return handleError(LOG_PREFIX, error);
   }
 
@@ -453,6 +452,10 @@ module.exports = class MediaSession {
     this._mediaProfile = options.mediaProfile;
     // Media specs for the media. If not specified, falls back to the default
     this.mediaSpecs = options.mediaSpecs? options.mediaSpecs : {...MEDIA_SPECS};
+    // API-specified media profiles (audio|video|content: 'string'|boolean =>
+    // 'recvonly'|'sendonly'|'sendrecv'|true|false
     this.profiles = options.profiles || DEFAULT_PROFILES;
+    // Whether this media session should be ignored by the media limiter
+    this.ignoreThresholds = options.ignoreThresholds || false;
   }
 }

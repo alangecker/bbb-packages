@@ -31,6 +31,9 @@ const SCREENSHARE_SERVER_AKKA_BROADCAST = config.has(`screenshareServerSideAkkaB
   : true;
 const PERMISSION_PROBES = config.get('permissionProbes');
 const MEDIA_FLOW_TIMEOUT_DURATION = config.get('mediaFlowTimeoutDuration');
+const IGNORE_THRESHOLDS = config.has('screenshareIgnoreMediaThresholds')
+  ? config.get('screenshareIgnoreMediaThresholds')
+  : false;
 
 const LOG_PREFIX = "[screenshare]";
 
@@ -43,6 +46,28 @@ module.exports = class Screenshare extends BaseProvider {
     }
 
     return spec;
+  }
+
+  static buildSubscriberMCSOptions (descriptor, streamName, hasAudio, adapter) {
+    // Get the REMB spec to be used. Screenshare uses the default mixed in with
+    // the default spec bitrate. Fetching bitrate by the VP8 codec is just an
+    // arbitrary choice that makes no difference.
+    // The media specs format isn't flexible enough, so that's what we have
+    const kurentoRembParams = { ...KURENTO_REMB_PARAMS };
+    kurentoRembParams.rembOnConnect = DEFAULT_MEDIA_SPECS.VP8.as_content;
+    return {
+      descriptor,
+      name: streamName,
+      mediaProfile: 'content',
+      mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
+      kurentoRembParams,
+      profiles: {
+        content: 'recvonly',
+        audio: hasAudio ? 'recvonly' : undefined,
+      },
+      adapter,
+      ignoreThresholds: IGNORE_THRESHOLDS,
+    }
   }
 
   constructor(id, bbbGW, voiceBridge, userId, vh, vw, meetingId, mcs, hasAudio) {
@@ -129,7 +154,7 @@ module.exports = class Screenshare extends BaseProvider {
 
   /* ======= ICE HANDLERS ======= */
 
-  async onIceCandidate (candidate, role, userId, connectionId) {
+  async onIceCandidate (candidate, role, connectionId) {
     switch (role) {
       case C.SEND_ROLE:
         if (this._presenterEndpoint) {
@@ -582,6 +607,7 @@ module.exports = class Screenshare extends BaseProvider {
         kurentoRembParams,
         adapter: options.mediaServer,
         mediaSpecs,
+        ignoreThresholds: IGNORE_THRESHOLDS,
       };
 
       const { mediaId, answer } = await this.mcs.publish(
@@ -650,20 +676,10 @@ module.exports = class Screenshare extends BaseProvider {
           started: false,
         };
 
-        // Get the REMB spec to be used. Screenshare uses the default mixed in with
-        // the default spec bitrate. Fetching bitrate by the VP8 codec is just an
-        // arbitrary choice that makes no difference.
-        // The media specs format isn't flexible enough, so that's what we have
-        const kurentoRembParams = { ...KURENTO_REMB_PARAMS };
-        kurentoRembParams.rembOnConnect = DEFAULT_MEDIA_SPECS.VP8.as_content;
-        const mcsOptions = {
-          descriptor,
-          name: this._assembleStreamName('subscribe', userId, this._voiceBridge),
-          mediaProfile: 'content',
-          mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
-          kurentoRembParams,
-          adapter: options.mediaServer,
-        }
+        const streamName = this._assembleStreamName('subscribe', userId, this._voiceBridge);
+        const mcsOptions = Screenshare.buildSubscriberMCSOptions(
+          descriptor, streamName, this.hasAudio, options.mediaServer,
+        );
 
         if (this._presenterEndpoint == null) {
           const floor = await this._fetchContentFloor();
@@ -709,6 +725,22 @@ module.exports = class Screenshare extends BaseProvider {
       this.bbbGW.publish(dsrbstam, C.TO_AKKA_APPS);
       this._rtmpBroadcastStarted = true;
       Logger.debug(LOG_PREFIX, "Sent startRtmpBroadcast", this._getPartialLogMetadata());
+    }
+  }
+
+  processAnswer (answer, role, userId, connectionId) {
+    const endpoint = this._viewerEndpoints[connectionId];
+    if (endpoint) {
+      const streamName = this._assembleStreamName('subscribe', userId, this._voiceBridge);
+      // If we don't include the cslides spec mcs-core will misread it as a plain
+      // video stream...
+      const answerWithCSlides = answer + "a=content:slides\r\n";
+      const mcsOptions = {
+        mediaId: endpoint,
+        ...Screenshare.buildSubscriberMCSOptions(answerWithCSlides, this.hasAudio, streamName),
+      };
+
+      return this.mcs.subscribe(userId, this._presenterEndpoint, C.WEBRTC, mcsOptions);
     }
   }
 

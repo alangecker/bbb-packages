@@ -1,4 +1,21 @@
 const C = require('../constants/constants.js');
+const crypto = require('crypto');
+const { v4: uuidv4 }= require('uuid');
+
+const _getRandomU32 = () => {
+  return new Promise((resolve, reject) => {
+    // 32-bit id
+    crypto.randomBytes(4, (error, buffer) => {
+      if (error) return reject(error);
+      try {
+        const rId = buffer.readUInt32BE(0);
+        return resolve(rId);
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  });
+}
 
 module.exports = {
   shouldSendCandidate: (candidate, acl = []) => {
@@ -52,5 +69,13 @@ module.exports = {
         return descriptor;
         break;
     }
-  }
+  },
+
+  getNewSsrcId: () => {
+    return _getRandomU32();
+  },
+
+  getNewCNAME: () => {
+    return uuidv4().substr(0, 8);
+  },
 };

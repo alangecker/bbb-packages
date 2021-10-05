@@ -187,12 +187,38 @@ module.exports = class ScreenshareManager extends BaseManager {
       });
   }
 
+  handleSubscriberAnswer (message) {
+    const {
+      voiceBridge,
+      answer,
+      role,
+      callerName: userId,
+      connectionId,
+    } = message;
+
+    const session = this._fetchSession(voiceBridge);
+
+    if (session && session.constructor === Screenshare) {
+      const metadata = ScreenshareManager.getMetadataFromMessage(message);
+      session.processAnswer(answer, role, userId, connectionId).then(() => {
+        Logger.debug(this._logPrefix, 'Screensharing remote description processed',
+          metadata
+        );
+      }).catch(error => {
+        Logger.error(this._logPrefix,  'Remote description processing failed', {
+          errorMessage: error.message,
+          errorCode: error.code,
+          metadata,
+        });
+      });
+    }
+  }
+
   handleIceCandidate (message) {
     const {
       voiceBridge,
       candidate,
       role,
-      callerName: userId,
       connectionId,
     } = message;
 
@@ -202,31 +228,12 @@ module.exports = class ScreenshareManager extends BaseManager {
     iceQueue = this._fetchIceQueue(voiceBridge);
 
     if (session && session.constructor === Screenshare) {
-      session.onIceCandidate(candidate, role, userId, connectionId);
+      session.onIceCandidate(candidate, role, connectionId);
       Logger.debug(this._logPrefix, "Screensharing ICE candidate added",
         ScreenshareManager.getMetadataFromMessage(message));
     } else {
       iceQueue.push(candidate);
     }
-  }
-
-  handleStop (message) {
-    const {
-      voiceBridge,
-    } = message;
-
-    this._stopSession(voiceBridge).then(() => {
-      this._deleteIceQueue(voiceBridge);
-      Logger.info(this._logPrefix, "Screensharing session destroyed",
-        ScreenshareManager.getMetadataFromMessage(message));
-    }).catch(error => {
-      this._deleteIceQueue(voiceBridge);
-      Logger.error(this._logPrefix, `Screensharing session stop failed`, {
-          errorMessage: error.message,
-          errorCode: error.code,
-          ...ScreenshareManager.getMetadataFromMessage(message)
-        });
-    });
   }
 
   handleClose (message) {
@@ -256,9 +263,8 @@ module.exports = class ScreenshareManager extends BaseManager {
         queue.push(() => { return this.handleStart(message) });
         break;
 
-      case 'stop':
-        queue = this._fetchLifecycleQueue(ScreenshareManager._getLifecycleQueueId(message));
-        queue.push(() => { return this.handleStop(message) });
+      case 'subscriberAnswer':
+        this.handleSubscriberAnswer(message);
         break;
 
       case 'iceCandidate':

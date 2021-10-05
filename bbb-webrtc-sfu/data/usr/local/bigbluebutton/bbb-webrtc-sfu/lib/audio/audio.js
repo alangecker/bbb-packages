@@ -14,11 +14,17 @@ const GLOBAL_AUDIO_CONNECTION_TIMEOUT = config.get('mediaFlowTimeoutDuration');
 const MEDIA_FLOW_TIMEOUT_DURATION = config.get('mediaFlowTimeoutDuration');
 const MEDIA_STATE_TIMEOUT_DURATION = config.get('mediaStateTimeoutDuration');
 const PERMISSION_PROBES = config.get('permissionProbes');
+const BRIDGE_MODE = config.has('listenOnlyGlobalAudioMode')
+  ? config.get('listenOnlyGlobalAudioMode')
+  : 'RTP';
+const IGNORE_THRESHOLDS = config.has('listenOnlyIgnoreMediaThresholds')
+  ? config.get('listenOnlyIgnoreMediaThresholds')
+  : true;
 
 const EventEmitter = require('events');
 
 module.exports = class Audio extends BaseProvider {
-  constructor(bbbGW, voiceBridge, mcs, meetingId) {
+  constructor(bbbGW, voiceBridge, mcs, meetingId, mediaServer) {
     super(bbbGW);
     this.sfuApp = C.AUDIO_APP;
     this.mcs = mcs;
@@ -36,6 +42,7 @@ module.exports = class Audio extends BaseProvider {
     this.meetingId = meetingId;
     this.handleMCSCoreDisconnection = this.handleMCSCoreDisconnection.bind(this);
     this.mcs.on(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
+    this.mediaServer = mediaServer;
   }
 
   set sourceAudioStatus (status) {
@@ -297,7 +304,7 @@ module.exports = class Audio extends BaseProvider {
 
   /* ======= MEDIA STATE HANDLERS ======= */
 
-  _mediaStateRTP (event, endpoint) {
+  _onBridgeMediaStateChange (event, endpoint) {
     const { mediaId, state } = event;
     const { name, details = null } = state;
 
@@ -428,7 +435,6 @@ module.exports = class Audio extends BaseProvider {
         } else {
           this._onSubscriberMediaNotFlowing(connectionId);
         }
-
         break;
 
       case C.MEDIA_SERVER_OFFLINE:
@@ -444,7 +450,7 @@ module.exports = class Audio extends BaseProvider {
 
   /* ======= START/CONNECTION METHODS ======= */
 
-  _waitForGlobalAudio (mediaServer) {
+  _waitForGlobalAudio () {
     const waitForConnection = () => {
       return new Promise((resolve, reject) => {
         const onMediaStarted = () =>  {
@@ -471,7 +477,7 @@ module.exports = class Audio extends BaseProvider {
             return Promise.resolve(true);
             break;
           case C.MEDIA_STOPPED:
-            return this.startGlobalAudioBridge(mediaServer);
+            return this.startGlobalAudioBridge();
             break;
           default:
             return waitForConnection();
@@ -489,9 +495,9 @@ module.exports = class Audio extends BaseProvider {
     return Promise.race([connectionProbe(), failOver()]);
   }
 
-  startGlobalAudioBridge (mediaServer) {
-    return new Promise(async (resolve, reject) => {
-      Logger.info(LOG_PREFIX,  `Starting RTP source audio/GLOBAL_AUDIO for ${this.voiceBridge}`,
+  _startGABridge (transportType) {
+      return new Promise(async (resolve, reject) => {
+      Logger.info(LOG_PREFIX,  `Starting WebRTC source audio/GLOBAL_AUDIO for ${this.voiceBridge}`,
         this._getPartialLogMetadata());
       try {
         if (!this.sourceAudioStarted && this.sourceAudioStatus === C.MEDIA_STOPPED) {
@@ -509,50 +515,64 @@ module.exports = class Audio extends BaseProvider {
             { name: this.globalAudioBridge },
           );
           this.userId = userId;
+
+          // Subscribe to the GLOBAL_AUDIO endpoint created above. This will
+          // act as the WRTC relay which will generate the answer descripto for
+          // the endpoint published above
+          const proxyOptions = {
+            adapter: this.mediaServer,
+            name: `PROXY_${this.globalAudioBridge}|subscribe`,
+            ignoreThresholds: true,
+            hackForceActiveDirection: true,
+            trickle: false,
+            profiles: {
+              // sendrecv => in from FS, out to subscribers. Odd, isn't it? :)
+              audio: 'sendrecv',
+            },
+            mediaProfile: 'audio',
+            adapterOptions: {
+              msHackRTPAVPtoRTPAVPF: true,
+            },
+          }
+
+          const { mediaId: proxyId, answer: proxyOffer } = await this.mcs.publish(
+            this.userId,
+            this.voiceBridge,
+            transportType,
+            proxyOptions,
+          );
+
+          this.mcs.onEvent(C.MEDIA_STATE, proxyId, (event) => {
+            this._onBridgeMediaStateChange(event, proxyId);
+          });
+
           const globalAudioOptions = {
             adapter: 'Freeswitch',
             name: this.globalAudioBridge,
             ignoreThresholds: true,
+            descriptor: proxyOffer,
+            profiles: {
+              audio: 'sendonly',
+            },
+            mediaProfile: 'audio',
           }
 
-          // Publish with server acting as offeree. Answer is here is actually the
-          // offeree descriptor which will be processed by a relay RTP endpoint
-          const { mediaId, answer } = await this.mcs.publish(
+          // Publish with server acting as offerer. Answer is here is actually the
+          // offeree descriptor which will be processed by a relay WRTC endpoint
+          const { mediaId, answer: globalAudioAnswer } = await this.mcs.publish(
             this.userId,
             this.voiceBridge,
-            C.RTP,
+            transportType,
             globalAudioOptions
           );
 
-          // Subscribe to the GLOBAL_AUDIO endpoint created above. This will
-          // act as the RTP relay which will generate the answer descripto for
-          // the endpoint published above
-          const proxyOptions = {
-            adapter: mediaServer,
-            descriptor: answer,
-            name: `PROXY_${this.globalAudioBridge}|subscribe`,
-            ignoreThresholds: true,
-            hackForceActiveDirection: true,
-          }
-
-          const { mediaId: proxyId, answer: proxyAnswer } = await this.mcs.subscribe(
-            this.userId,
-            mediaId,
-            C.RTP,
-            proxyOptions
-          );
-
-          this.mcs.onEvent(C.MEDIA_STATE, proxyId, (event) => {
-            this._mediaStateRTP(event, proxyId);
-          });
-
           // Renegotiate the source endpoint passing the answer generated by the
-          // relay RTP
+          // relay WRTC ep
           await this.mcs.publish(
             this.userId,
             this.voiceBridge,
-            C.RTP,
-            { ...globalAudioOptions, mediaId, descriptor: proxyAnswer }
+            transportType,
+            { ...proxyOptions, mediaId: proxyId, descriptor: globalAudioAnswer }
           );
 
           this.sourceAudio = proxyId;
@@ -560,12 +580,12 @@ module.exports = class Audio extends BaseProvider {
           this.sourceAudioStatus = C.MEDIA_STARTED;
           this.emit(C.MEDIA_STARTED);
 
-          Logger.info(LOG_PREFIX, `Listen only source RTP relay successfully created`,
+          Logger.info(LOG_PREFIX, `Listen only source WebRTC relay successfully created`,
             { ...this._getPartialLogMetadata(), mediaId: this.sourceAudio, userId: this.userId });
           return resolve(true);
         }
       } catch (error) {
-        Logger.error(LOG_PREFIX, `Error on starting listen only source RTP relay`,
+        Logger.error(LOG_PREFIX, `Error on starting listen only source WebRTC relay`,
           { ...this._getPartialLogMetadata(), error });
         this.sourceAudioStatus = C.MEDIA_NEGOTIATION_FAILED;
         this._stopSourceAudio();
@@ -574,7 +594,17 @@ module.exports = class Audio extends BaseProvider {
     });
   }
 
-  async start (sessionId, connectionId, sdpOffer, userId, userName, mediaServer) {
+  startGlobalAudioBridge () {
+    switch (BRIDGE_MODE) {
+      case 'WebRTC':
+        return this._startGABridge(C.WEBRTC);
+      case 'RTP':
+      default:
+        return this._startGABridge(C.RTP);
+    }
+  }
+
+  async start (sessionId, connectionId, sdpOffer, userId, userName) {
     let mcsUserId;
     const isConnected = await this.mcs.waitForConnection();
 
@@ -592,7 +622,7 @@ module.exports = class Audio extends BaseProvider {
     }
 
     try {
-      await this._waitForGlobalAudio(mediaServer);
+      await this._waitForGlobalAudio();
     } catch (error) {
       const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
       Logger.error(LOG_PREFIX, `New listen only session failed: GLOBAL_AUDIO unavailable`,
@@ -624,7 +654,7 @@ module.exports = class Audio extends BaseProvider {
       this._getFullLogMetadata(connectionId));
 
     try {
-      const sdpAnswer = await this._subscribeToGlobalAudio(sdpOffer, connectionId, mediaServer);
+      const sdpAnswer = await this._subscribeToGlobalAudio(sdpOffer, connectionId);
       return sdpAnswer;
     } catch (error) {
       const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
@@ -641,13 +671,17 @@ module.exports = class Audio extends BaseProvider {
     }
   }
 
-  async _subscribeToGlobalAudio (sdpOffer, connectionId, mediaServer) {
+  async _subscribeToGlobalAudio (sdpOffer, connectionId) {
     const { userId, mcsUserId } = this.getUser(connectionId);
     const options = {
       descriptor: sdpOffer,
-      adapter: mediaServer,
+      adapter: this.mediaServer,
       name: this._assembleStreamName('subscribe', userId, this.meetingId),
-      ignoreThresholds: true,
+      ignoreThresholds: IGNORE_THRESHOLDS,
+      profiles: {
+        audio: 'recvonly',
+      },
+      mediaProfile: 'audio',
     }
 
     let mediaId, answer;
@@ -674,6 +708,28 @@ module.exports = class Audio extends BaseProvider {
     Logger.info(LOG_PREFIX, 'Listen only session subscribed to global audio',
       this._getFullLogMetadata(connectionId));
     return answer;
+  }
+
+  processAnswer (answer, connectionId) {
+    const endpoint = this.audioEndpoints[connectionId];
+
+    Logger.debug(LOG_PREFIX, 'Processing listen only answer',
+      this._getFullLogMetadata(connectionId));
+
+    if (endpoint && endpoint.mediaId) {
+      const options = {
+        mediaId: endpoint.mediaId,
+        descriptor: answer,
+        adapter: this.mediaServer,
+        name: this._assembleStreamName('subscribe', endpoint.mcsUserId, this.meetingId),
+        ignoreThresholds: IGNORE_THRESHOLDS,
+        profiles: {
+          audio: 'recvonly',
+        },
+      }
+
+      return this.mcs.subscribe(endpoint.mcsUserId, this.sourceAudio, C.WEBRTC, options);
+    }
   }
 
   /* ======= STOP METHODS ======= */

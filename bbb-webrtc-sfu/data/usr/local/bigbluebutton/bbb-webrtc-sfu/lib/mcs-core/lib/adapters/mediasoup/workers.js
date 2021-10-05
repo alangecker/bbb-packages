@@ -1,12 +1,19 @@
 'use strict';
 
+const os = require('os')
 const mediasoup = require('mediasoup');
 const { v4: uuidv4 }= require('uuid');
 const C = require('../../constants/constants');
 const { handleError } = require('./errors.js');
 const Logger = require('../../utils/logger');
-const { WORKER_SETTINGS, LOG_PREFIX } = require('./configs.js');
+const {
+  DEFAULT_NOF_WORKERS,
+  WORKER_SETTINGS,
+  LOG_PREFIX
+} = require('./configs.js');
 
+
+const CORE_COUNT = os.cpus().length
 // WORKER_STORAGE: [<worker>]. Registers mediasoup workers, raw form
 const WORKER_STORAGE = [];
 
@@ -59,20 +66,31 @@ const deleteWorker = (id) => {
   return deleted;
 }
 
-const setupWorkerCrashHandler = (worker) => {
-  const onMediaServerOffline = (error) => {
-    Logger.error(LOG_PREFIX, 'CRITICAL: Worker crashed',
-      { errorMessage: error.Message, errorCode: error.code });
-    //this._destroyElementsFromWorker(worker);
-  };
-
-  worker.on('died', onMediaServerOffline);
-  // TODO fire offline event upstream
+const setupWorkerEventHandler = (worker, callback) => {
+  worker.once('died', () => { callback('died', worker.internalAdapterId) });
 };
 
-const createWorkers = (nofWorkers, workerSettings = WORKER_SETTINGS) => {
+const _getNofWorkersFromStrat = (workerStrat) => {
+  if (typeof workerStrat === 'string' && workerStrat === 'auto') {
+    return CORE_COUNT;
+  } else if (typeof workerStrat === 'number') {
+    return workerStrat;
+  }
+
+  // 8w
+  return DEFAULT_NOF_WORKERS;
+};
+
+const createWorkers = (
+  workerStrat,
+  workerSettings,
+  eventHandler,
+) => {
+  const nofWorkers = _getNofWorkersFromStrat(workerStrat);
+  Logger.debug(LOG_PREFIX, `Spawning workers: ${nofWorkers} (${workerStrat})`);
   for (let i = 0; i < nofWorkers; i++) {
     createWorker(workerSettings).then((worker) => {
+      if (eventHandler) setupWorkerEventHandler(worker, eventHandler);
       storeWorker(worker);
     }).catch(error => {
       Logger.error(LOG_PREFIX, 'Worker creation failed',
@@ -100,6 +118,7 @@ const stopWorker = (worker) => {
 }
 
 module.exports = {
+  WORKER_STORAGE,
   createWorkers,
   createWorker,
   stopWorker,

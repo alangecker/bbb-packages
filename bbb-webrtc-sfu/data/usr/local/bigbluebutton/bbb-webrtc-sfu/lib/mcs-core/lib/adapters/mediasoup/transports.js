@@ -1,6 +1,7 @@
 const C = require('../../constants/constants');
 const {
-  LOG_PREFIX, WEBRTC_TRANSPORT_SETTINGS, DEFAULT_MAX_BW, DEFAULT_INITIAL_BW
+  LOG_PREFIX, WEBRTC_TRANSPORT_SETTINGS, RTP_TRANSPORT_SETTINGS,
+  DEFAULT_MAX_BW, DEFAULT_INITIAL_BW,
 } = require('./configs');
 const { getRouter } = require('./routers.js');
 const Logger = require('../../utils/logger');
@@ -18,11 +19,13 @@ module.exports = class TransportSet {
 
   static getPRTPTransportOpts (transport) {
     return {
-      id: transport.id,
-      rtcpMux: transport.rtcpMux,
-      comedia: transport.comedia,
-      enableSrtp: transport.enableSrtp,
-      srtpCryptoSuite: transport.srtpCryptoSuite,
+      plainRtpParameters: {
+        id: transport.id,
+        ip: transport.tuple.localIp,
+        port: transport.tuple.localPort,
+        ipVersion: 4, // TODO IPvX aware
+        // TODO account for RTCP-mux == false scenarios
+      }
     };
   }
 
@@ -35,6 +38,15 @@ module.exports = class TransportSet {
     this.connected = false;
   }
 
+  set transport (newTransport) {
+    this._transport = newTransport;
+    this._transport.once("routerclose", () => { this.stop("routerclose") });
+  }
+
+  get transport () {
+    return this._transport;
+  }
+
   _createPRTPTransportSet ({
     transportSettings = RTP_TRANSPORT_SETTINGS,
   }) {
@@ -43,7 +55,8 @@ module.exports = class TransportSet {
         const router = getRouter(this.routerId);
         if (router == null) return reject(new Error('Router not found'));
 
-        const transport = await router.createPlainTransport(transportSettings);
+        this.transport = await router.createPlainTransport(transportSettings);
+        router.activeElements++;
         this.setInputBandwidth(DEFAULT_MAX_BW);
 
         Logger.info(LOG_PREFIX, "Transport creation success", {
@@ -87,6 +100,7 @@ module.exports = class TransportSet {
           initialAvailableOutgoingBitrate: DEFAULT_INITIAL_BW,
         });
         this.setInputBandwidth(DEFAULT_MAX_BW);
+        router.activeElements++;
 
         Logger.info(LOG_PREFIX, "Transport creation success", {
           transportId: this.transport.id,
@@ -120,16 +134,35 @@ module.exports = class TransportSet {
     }
   }
 
-  setInputBandwidth (max) {
-    if (this.transport && typeof this.transport.setMaxIncomingBitrate === 'function') {
-      return this.transport.setMaxIncomingBitrate(max)
+  connect (parameters) {
+    return this.transport.connect(parameters);
+  }
+
+  setInputBandwidth (max = 0) {
+    if (this.transport
+      && typeof this.transport.setMaxIncomingBitrate === 'function'
+      && max > 0
+    ) {
+      this.transport.setMaxIncomingBitrate(max).catch(error => {
+        // Man shrugging
+        Logger.debug(LOG_PREFIX, "Max incoming bitrate failure", error);
+      });
     }
   }
 
-  stop () {
+  stop (reason) {
     if (this.transport && typeof this.transport.close === 'function') {
       return this.transport.close();
     }
+
+    if (reason) {
+      Logger.info(LOG_PREFIX, "TransportSet closed", {
+        transportId: this.id, reason,
+      });
+    }
+
+    const router = getRouter(this.routerId);
+    if (router) router.activeElements--;
 
     return Promise.resolve();
   }

@@ -51,6 +51,8 @@ const createRouter = (worker, {
       router.workerId = worker.internalAdapterId;
       router.activeElements = 0;
       router.internalAdapterId = `${worker.internalAdapterId}-${routerIdSuffix}`;
+      router.on("workerclose", () => {_close(router, "workerclose")});
+
       return resolve(router);
     } catch (error) {
       Logger.error(LOG_PREFIX, 'Router creation failed', error,
@@ -83,10 +85,11 @@ const getOrCreateRouter = async (worker, {
   }
 }
 
-const _close = (router) => {
+const _close = (router, reason = 'normalclearing') => {
   if (router && typeof router.close === 'function') {
-    Logger.debug(LOG_PREFIX, 'Releasing router', { routerId });
-    deleteRouter(routerId);
+    Logger.info(LOG_PREFIX, 'Releasing router',
+      { routerId: router.internalAdapterId, reason });
+    deleteRouter(router.internalAdapterId);
     return router.close();
   }
 
@@ -94,23 +97,8 @@ const _close = (router) => {
 };
 
 const releaseRouter = (routerId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const router = getRouter(routerId);
-
-      if (router && typeof router.close === 'function') {
-        Logger.debug(LOG_PREFIX, `Releasing router ${routerId}`,
-          { routerId });
-        deleteRouter(routerId);
-        await router.close();
-        return resolve()
-      }
-
-      return resolve();
-    } catch (error) {
-      return reject(handleError(error));
-    }
-  });
+  const router = getRouter(routerId);
+  return _close(router);
 }
 
 const releaseAllRoutersWithIdSuffix = (routerIdSuffix) => {
