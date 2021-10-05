@@ -51,6 +51,10 @@
       "path": "packages/babel-compiler.js"
     },
     {
+      "node_modules": "npm/node_modules/meteor/react-fast-refresh/node_modules",
+      "path": "packages/react-fast-refresh.js"
+    },
+    {
       "sourceMap": "packages/ecmascript.js.map",
       "path": "packages/ecmascript.js"
     },
@@ -192,6 +196,11 @@
       "path": "packages/reactive-var.js"
     },
     {
+      "node_modules": "npm/node_modules/meteor/minifier-css/node_modules",
+      "sourceMap": "packages/minifier-css.js.map",
+      "path": "packages/minifier-css.js"
+    },
+    {
       "path": "packages/standard-minifier-css.js"
     },
     {
@@ -237,9 +246,6 @@
     },
     {
       "path": "packages/cfs_reactive-list.js"
-    },
-    {
-      "path": "packages/livedata.js"
     },
     {
       "path": "packages/hot-code-push.js"

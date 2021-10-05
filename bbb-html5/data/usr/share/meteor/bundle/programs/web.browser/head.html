@@ -55,15 +55,21 @@
     [hidden]:not([hidden="false"]) {
       display: none !important;
     }
+
+    textarea::-webkit-input-placeholder,
+    input::-webkit-input-placeholder {
+      color: var(--palette-placeholder-text);
+      opacity: 1;
+    }
   </style>
   <script>
     document.addEventListener('gesturestart', function (e) {
       e.preventDefault();
     });
   </script>
-  <script src="compatibility/adapter.js?v=2187" language="javascript"></script>
-  <script src="compatibility/sip.js?v=2187" language="javascript"></script>
-  <script src="compatibility/kurento-utils.js?v=2187" language="javascript"></script>
+  <script src="compatibility/adapter.js?v=2277" language="javascript"></script>
+  <script src="compatibility/sip.js?v=2277" language="javascript"></script>
+  <script src="compatibility/kurento-utils.js?v=2277" language="javascript"></script>
   <!-- fonts -->
   <link rel="preload" href="fonts/BbbIcons/bbb-icons.woff?j1ntjp" as="font" crossorigin="anonymous"/>
   <link rel="preload" href="fonts/SourceSansPro/SourceSansPro-Light.woff" as="font" crossorigin="anonymous"/>

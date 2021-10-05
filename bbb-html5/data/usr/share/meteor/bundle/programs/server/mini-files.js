@@ -42,7 +42,7 @@ module.link("os", {
 }, 1);
 
 function isWindowsLikeFilesystem() {
-  return process.platform === "win32" || release().indexOf("Microsoft") >= 0;
+  return process.platform === "win32" || release().toLowerCase().includes("microsoft");
 }
 
 function toPosixPath(p) {

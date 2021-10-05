@@ -10,12 +10,12 @@ var fetch = Package.fetch.fetch;
 
 var require = meteorInstall({"node_modules":{"meteor":{"dynamic-import":{"server.js":function module(require,exports,module){
 
-/////////////////////////////////////////////////////////////////////////////////
-//                                                                             //
-// packages/dynamic-import/server.js                                           //
-//                                                                             //
-/////////////////////////////////////////////////////////////////////////////////
-                                                                               //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                       //
+// packages/dynamic-import/server.js                                                                     //
+//                                                                                                       //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                         //
 "use strict";
 
 const assert = require("assert");
@@ -85,6 +85,8 @@ function middleware(request, response) {
 
   if (request.method === "OPTIONS") {
     const acrh = request.headers["access-control-request-headers"];
+    response.setHeader('Allow', 'OPTIONS, POST');
+    response.setHeader('Content-Length', '0');
     response.setHeader(
       "Access-Control-Allow-Headers",
       typeof acrh === "string" ? acrh : "*"
@@ -120,11 +122,13 @@ function middleware(request, response) {
     });
 
   } else {
+    const body = `method ${request.method} not allowed`;
     response.writeHead(405, {
+      Allow: "OPTIONS, POST",
+      'Content-Length': Buffer.byteLength(body),
       "Cache-Control": "no-cache"
     });
-
-    response.end(`method ${request.method} not allowed`);
+    response.end(body);
   }
 }
 
@@ -229,16 +233,16 @@ onMessage("client-refresh", () => {
   });
 });
 
-/////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"cache.js":function module(require,exports,module){
 
-/////////////////////////////////////////////////////////////////////////////////
-//                                                                             //
-// packages/dynamic-import/cache.js                                            //
-//                                                                             //
-/////////////////////////////////////////////////////////////////////////////////
-                                                                               //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                       //
+// packages/dynamic-import/cache.js                                                                      //
+//                                                                                                       //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                         //
 var dbPromise;
 
 var canUseCache =
@@ -428,19 +432,28 @@ function flushSetMany() {
   });
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"client.js":function module(require,exports,module){
 
-/////////////////////////////////////////////////////////////////////////////////
-//                                                                             //
-// packages/dynamic-import/client.js                                           //
-//                                                                             //
-/////////////////////////////////////////////////////////////////////////////////
-                                                                               //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                       //
+// packages/dynamic-import/client.js                                                                     //
+//                                                                                                       //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                         //
 var Module = module.constructor;
 var cache = require("./cache.js");
 var meteorInstall = require("meteor/modules").meteorInstall;
+var dynamicVersions = require("./dynamic-versions.js");
+
+// Fix for Safari 14 bug (https://bugs.webkit.org/show_bug.cgi?id=226547), do not delete this unused var
+var idb = global.indexedDB;
+
+var dynamicImportSettings = Meteor.settings
+    && Meteor.settings.public
+    && Meteor.settings.public.packages
+    && Meteor.settings.public.packages['dynamic-import'] || {};
 
 // Call module.dynamicImport(id) to fetch a module and any/all of its
 // dependencies that have not already been fetched, and evaluate them as
@@ -458,7 +471,6 @@ Module.prototype.dynamicImport = function (id) {
 meteorInstall.fetch = function (ids) {
   var tree = Object.create(null);
   var versions = Object.create(null);
-  var dynamicVersions = require("./dynamic-versions.js");
   var missing;
 
   function addSource(id, source) {
@@ -558,6 +570,14 @@ exports.setSecretKey = function (key) {
 
 var fetchURL = require("./common.js").fetchURL;
 
+function inIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+}
+
 function fetchMissing(missingTree) {
   // If the hostname of the URL returned by Meteor.absoluteUrl differs
   // from location.host, then we'll be making a cross-origin request here,
@@ -567,7 +587,18 @@ function fetchMissing(missingTree) {
   // preflight OPTIONS request, which may add latency to the first dynamic
   // import() request, so it's a good idea for ROOT_URL to match
   // location.host if possible, though not strictly necessary.
-  var url = Meteor.absoluteUrl(fetchURL);
+
+  var url = fetchURL;
+
+  var useLocationOrigin = dynamicImportSettings.useLocationOrigin;
+
+  var disableLocationOriginIframe = dynamicImportSettings.disableLocationOriginIframe;
+
+  if (useLocationOrigin && location && !(disableLocationOriginIframe && inIframe())) {
+    url = location.origin.concat(url);
+  } else {
+    url = Meteor.absoluteUrl(url);
+  }
 
   if (secretKey) {
     url += "key=" + secretKey;
@@ -612,32 +643,34 @@ function getNamespace(module, id) {
   return namespace;
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"common.js":function module(require,exports){
 
-/////////////////////////////////////////////////////////////////////////////////
-//                                                                             //
-// packages/dynamic-import/common.js                                           //
-//                                                                             //
-/////////////////////////////////////////////////////////////////////////////////
-                                                                               //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                       //
+// packages/dynamic-import/common.js                                                                     //
+//                                                                                                       //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                         //
 exports.fetchURL = "/__meteor__/dynamic-import/fetch";
 
-/////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"dynamic-versions.js":function module(require,exports,module){
 
-/////////////////////////////////////////////////////////////////////////////////
-//                                                                             //
-// packages/dynamic-import/dynamic-versions.js                                 //
-//                                                                             //
-/////////////////////////////////////////////////////////////////////////////////
-                                                                               //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                       //
+// packages/dynamic-import/dynamic-versions.js                                                           //
+//                                                                                                       //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                         //
 // This magic double-underscored identifier gets replaced in
 // tools/isobuild/bundler.js with a tree of hashes of all dynamic
 // modules, for use in client.js and cache.js.
 var versions = {};
+
+const METEOR_PREFIX = '/node_modules/meteor/';
 
 exports.get = function (id) {
   var tree = versions;
@@ -702,7 +735,24 @@ function precacheOnLoad(event) {
   // will be fetched in one HTTP POST request.
   function prefetchInChunks(modules, amount) {
     Promise.all(modules.splice(0, amount).map(function (id) {
-      return module.prefetch(id);
+      return new Promise(function (resolve, reject) {
+        module.prefetch(id).then(resolve).catch(
+          function (err) {
+            // we probably have a : _ mismatch
+            // what can get wrong if we do the replacement
+            // 1. a package with a name like a_b:package will not resolve
+            // 2. someone falsely imports a_package that does not exist but a
+            // package a:package exists, so this one gets imported and its usage
+            // will fail
+            if (id.indexOf(METEOR_PREFIX) === 0) {
+              module.prefetch(
+                METEOR_PREFIX + id.replace(METEOR_PREFIX, '').replace('_', ':')
+              ).then(resolve).catch(reject);
+            } else {
+              reject(err);
+            }
+          })
+      });
     })).then(function () {
       if (modules.length > 0) {
         setTimeout(function () {
@@ -723,16 +773,16 @@ if (global.addEventListener) {
   global.attachEvent('onload', precacheOnLoad);
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"security.js":function module(require,exports,module){
 
-/////////////////////////////////////////////////////////////////////////////////
-//                                                                             //
-// packages/dynamic-import/security.js                                         //
-//                                                                             //
-/////////////////////////////////////////////////////////////////////////////////
-                                                                               //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                       //
+// packages/dynamic-import/security.js                                                                   //
+//                                                                                                       //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                         //
 Meteor.startup(function () {
   const bpc = Package["browser-policy-content"];
   const BP = bpc && bpc.BrowserPolicy;
@@ -756,7 +806,7 @@ Meteor.startup(function () {
   }
 });
 
-/////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }}}}},{
   "extensions": [

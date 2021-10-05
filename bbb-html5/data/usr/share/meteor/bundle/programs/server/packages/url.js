@@ -40,8 +40,9 @@ setMinimumBrowserVersions({
   electron: [0, 20],
 }, module.id);
 
-// backwards compatability
+// backwards compatibility
 Object.assign(exports.URL, require('./bc/url_server'));
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 },"bc":{"url_common.js":function module(require,exports){

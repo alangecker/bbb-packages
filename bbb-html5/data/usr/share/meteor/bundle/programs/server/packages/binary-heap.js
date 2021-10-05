@@ -78,7 +78,7 @@ class MaxHeap {
 
 
   _initFromData(data) {
-    this._heap = data.map((_ref) => {
+    this._heap = data.map(_ref => {
       let {
         id,
         value

@@ -72,6 +72,7 @@ install("promise", "meteor/promise/server.js");
 install("ecmascript-runtime-client", "meteor/ecmascript-runtime-client/versions.js");
 install("ecmascript-runtime-server", "meteor/ecmascript-runtime-server/runtime.js");
 install("babel-compiler");
+install("react-fast-refresh");
 install("ecmascript");
 install("babel-runtime", "meteor/babel-runtime/babel-runtime.js");
 install("fetch", "meteor/fetch/server.js");
@@ -107,6 +108,7 @@ install("allow-deny");
 install("binary-heap", "meteor/binary-heap/binary-heap.js");
 install("mongo");
 install("reactive-var");
+install("minifier-css", "meteor/minifier-css/minifier.js");
 install("standard-minifier-css");
 install("standard-minifier-js");
 install("shell-server", "meteor/shell-server/main.js");
@@ -120,7 +122,6 @@ install("nathantreid:css-modules", "meteor/nathantreid:css-modules/package/main.
 install("rocketchat:streamer");
 install("deps");
 install("cfs:reactive-list");
-install("livedata");
 install("hot-code-push");
 install("launch-screen");
 install("autoupdate", "meteor/autoupdate/autoupdate_server.js");
@@ -1454,6 +1455,17 @@ module.exports = {
 module.useNode();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+},"future.js":function module(require,exports,module){
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// node_modules/fibers/future.js                                                                                       //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                       //
+module.useNode();
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }},"react":{"package.json":function module(require,exports,module){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1463,9 +1475,48 @@ module.useNode();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
 module.exports = {
+  "browserify": {
+    "transform": [
+      "loose-envify"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/facebook/react/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "loose-envify": "^1.1.0",
+    "object-assign": "^4.1.1",
+    "prop-types": "^15.6.2"
+  },
+  "deprecated": false,
+  "description": "React is a JavaScript library for building user interfaces.",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "build-info.json",
+    "index.js",
+    "cjs/",
+    "umd/",
+    "jsx-runtime.js",
+    "jsx-dev-runtime.js"
+  ],
+  "homepage": "https://reactjs.org/",
+  "keywords": [
+    "react"
+  ],
+  "license": "MIT",
+  "main": "index.js",
   "name": "react",
-  "version": "16.14.0",
-  "main": "index.js"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facebook/react.git",
+    "directory": "packages/react"
+  },
+  "version": "16.14.0"
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

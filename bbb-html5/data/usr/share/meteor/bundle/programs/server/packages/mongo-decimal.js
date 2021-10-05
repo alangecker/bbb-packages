@@ -65,7 +65,7 @@ EJSON.addType('Decimal', function (str) {
                                                                      //
 module.exports = {
   "name": "decimal.js",
-  "version": "10.0.2",
+  "version": "10.2.1",
   "main": "decimal"
 };
 

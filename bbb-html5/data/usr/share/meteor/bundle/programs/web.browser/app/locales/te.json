@@ -342,8 +342,7 @@
     "app.submenu.application.languageLabel": "అప్లికేషన్ భాష",
     "app.submenu.application.languageOptionLabel": "భాషను ఎంచుకోండి",
     "app.submenu.application.noLocaleOptionLabel": "చురుకైన స్థానికులు లేరు",
-    "app.submenu.application.paginationEnabledLabel": "వీడియో pagination
- ",
+    "app.submenu.application.paginationEnabledLabel": "వీడియో pagination",
     "app.submenu.notification.SectionTitle": "నోటిఫికేషన్స్",
     "app.submenu.notification.Desc": "మీకు ఎలా మరియు ఏమి తెలియజేయబడుతుందో చెప్పండి",
     "app.submenu.notification.audioAlertLabel": "ఆడియో హెచ్చరికలు",
@@ -483,8 +482,6 @@
     "app.audioModal.playAudio.arialabel" : "ఆడియో ప్లే చేయండి",
     "app.audioDial.tipIndicator": "చిట్కా",
     "app.audioDial.tipMessage": "మిమ్మల్ని మీరు మ్యూట్ / అన్‌మ్యూట్ చేయడానికి మీ ఫోన్‌లోని '0' కీని నొక్కండి.",
-    "app.audioModal.connecting": "కనెక్ట్ అవుతోంది",
-    "app.audioModal.connectingEchoTest": "ప్రతిధ్వని పరీక్షకు కనెక్ట్ అవుతోంది",
     "app.audioManager.joinedAudio": "మీరు ఆడియో సమావేశంలో చేరారు",
     "app.audioManager.joinedEcho": "మీరు ప్రతిధ్వని పరీక్షలో చేరారు",
     "app.audioManager.leftAudio": "మీరు ఆడియో సమావేశం నుండి వదిలి వెళ్ళారు",
