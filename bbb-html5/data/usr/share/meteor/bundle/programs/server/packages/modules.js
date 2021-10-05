@@ -1329,7 +1329,7 @@ module.useNode();
                                                                                                                        //
 module.exports = {
   "name": "axios",
-  "version": "0.21.1",
+  "version": "0.21.3",
   "main": "index.js"
 };
 

@@ -289,7 +289,6 @@ fi
 ### END DEB-HELPERS.SH ###
 ##########################
 
-
 HOST=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | grep -v '#' | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}')
 
 if [ ! -L /etc/nginx/sites-enabled/bigbluebutton ]; then
@@ -400,12 +399,26 @@ if [ "$DISTRIB_RELEASE" == "16.04" ]; then
     chown -R meteor:meteor node-v8.17.0-linux-x64
   fi
 else
-  if [ ! -d /usr/share/node-v12.16.1-linux-x64 ]; then
-    cd /usr/share
-    tar xfz node-v12.16.1-linux-x64.tar.gz
-    chown -R meteor:meteor node-v12.16.1-linux-x64
+  # for release 2.3 we use node-v12.16.1-linux-x64
+  if [ -f /usr/share/node-v12.16.1-linux-x64.tar.gz ]; then
+    if [ ! -d /usr/share/node-v12.16.1-linux-x64 ]; then
+      cd /usr/share
+      tar xfz node-v12.16.1-linux-x64.tar.gz
+      chown -R meteor:meteor node-v12.16.1-linux-x64
+    fi
   fi
+
+  # for release 2.4 we use node-v14.17.6-linux-x64
+  if [ -f /usr/share/node-v14.17.6-linux-x64.tar.gz ]; then 
+    if [ ! -d /usr/share/node-v14.17.6-linux-x64 ]; then
+      cd /usr/share
+      tar xfz node-v14.17.6-linux-x64.tar.gz
+      chown -R meteor:meteor node-v14.17.6-linux-x64
+    fi
+  fi
+
 fi
+
 
 
 # Enable Listen Only support in FreeSWITCH
