@@ -274,16 +274,18 @@ module.exports = class Kurento extends EventEmitter {
               // If we're acting as offeree, we try to generate the least offensive SDP possible
               // for pure RTP endpoints as to minimize compatibility issues.
               // Hence the bizarre filters
-              const filterOptions = [
-                { reg: /AVPF/ig, val: 'AVP' },
-                { reg: /a=mid:video0\r*\n*/ig, val: '' },
-                { reg: /a=mid:audio0\r*\n*/ig, val: '' },
-                { reg: /a=rtcp-fb:.*\r*\n*/ig, val: '' },
-                { reg: /a=extmap:3 http:\/\/www.webrtc.org\/experiments\/rtp-hdrext\/abs-send-time\r*\n*/ig, val: '' },
-                { reg: /a=setup:actpass\r*\n*/ig, val: '' }
-              ]
+              options.filterOptions = (type === C.MEDIA_TYPE.WEBRTC)
+                ? []
+                : [
+                  { reg: /AVPF/ig, val: 'AVP' },
+                  { reg: /a=mid:video0\r*\n*/ig, val: '' },
+                  { reg: /a=mid:audio0\r*\n*/ig, val: '' },
+                  { reg: /a=rtcp-fb:.*\r*\n*/ig, val: '' },
+                  { reg: /a=extmap:3 http:\/\/www.webrtc.org\/experiments\/rtp-hdrext\/abs-send-time\r*\n*/ig, val: '' },
+                  { reg: /a=setup:actpass\r*\n*/ig, val: '' }
+                ];
 
-              answer = await this.generateOffer(mediaElement, filterOptions);
+              answer = await this.generateOffer(mediaElement, options);
             }
 
             answer = Kurento.appendContentTypeIfNeeded(answer, mediaType);
@@ -312,7 +314,7 @@ module.exports = class Kurento extends EventEmitter {
   async _negotiateWebRTCEndpoint (roomId, userId, mediaSessionId, descriptor, type, options) {
     try {
       const isTrickled = typeof options.trickle === 'undefined' || options.trickle;
-      options.trickle= isTrickled;
+      options.trickle = isTrickled;
       const medias = await this._negotiateSDPEndpoint(roomId, userId, mediaSessionId, descriptor, type, options);
       if (isTrickled) {
         medias.forEach(m => {
@@ -934,7 +936,7 @@ module.exports = class Kurento extends EventEmitter {
     });
   }
 
-  processAnswer (elementId, answer, hackFilterAudioOut = false) {
+  processAnswer (elementId, answer) {
     return new Promise((resolve, reject) => {
       try {
         const mediaElement = this.getMediaElement(elementId);
@@ -943,11 +945,6 @@ module.exports = class Kurento extends EventEmitter {
             Logger.warn(LOG_PREFIX, `Element ${elementId} was already negotiated, ignoring processAnswer`);
             return resolve();
           }
-          if (hackFilterAudioOut) {
-            const header = SdpWrapper.getSessionDescription(answer);
-            const body = SdpWrapper.removeSessionDescription(answer);
-            answer = header + 'm=audio 0 RTP/AVP 96 97\n\ra=inactive\n\r' + body;
-          }
 
           Logger.trace(LOG_PREFIX, `Processing ${elementId} answer`, { answer });
 
@@ -955,6 +952,7 @@ module.exports = class Kurento extends EventEmitter {
             if (error) {
               return reject(this._handleError(error));
             }
+
             mediaElement.negotiated = true;
             return resolve();
           });
@@ -969,28 +967,84 @@ module.exports = class Kurento extends EventEmitter {
     });
   }
 
-  generateOffer (elementId, filterOptions = []) {
+  _getNormalizedMProfiles (profiles) {
+    const options = {
+      offerToReceiveAudio: false,
+      offerToReceiveVideo: false,
+    };
+
+    if (profiles.hasOwnProperty('video')
+      && profiles.video) {
+      options.offerToReceiveVideo = true;
+    }
+
+    if (options.offerToReceiveVideo === false
+      && profiles.hasOwnProperty('content')
+      && profiles.content) {
+      options.offerToReceiveVideo = true;
+    }
+
+    if (profiles.hasOwnProperty('audio') && profiles.audio) {
+      options.offerToReceiveAudio = true;
+    }
+
+    return options;
+  }
+
+  generateOffer (elementId, options = {}) {
     return new Promise((resolve, reject) => {
+      let offerOptions;
+      const isTrickled = typeof options.trickle === 'undefined' || options.trickle;
+
+      try {
+        if (options.profiles) {
+          const mProf = this._getNormalizedMProfiles(options.profiles);
+          offerOptions = new (KMS_CLIENT.getComplexType('OfferOptions'))(mProf);
+        }
+      } catch (error) {
+        Logger.error(LOG_PREFIX, "Failed to digest media offer options", error);
+      }
+
       try {
         const mediaElement = this.getMediaElement(elementId);
+
         if (mediaElement) {
-          mediaElement.generateOffer((error, offer) => {
+          mediaElement.generateOffer(offerOptions, (error, offer) => {
             if (error) {
               return reject(this._handleError(error));
             }
-            filterOptions.forEach(({ reg, val }) => {
-              offer = offer.replace(reg, val);
-            });
-            Logger.trace(LOG_PREFIX, `Generated offer for ${elementId}`, { offer });
-            return resolve(offer);
+
+            const sanitize = (descriptor) => {
+              if (options.filterOptions && options.filterOptions.length > 0) {
+                options.filterOptions.forEach(({ reg, val }) => {
+                  descriptor = descriptor.replace(reg, val);
+                });
+                return descriptor;
+              }
+
+              return descriptor;
+            };
+
+            if (isTrickled || typeof mediaElement.gatherCandidates !== 'function') {
+              return resolve(sanitize(offer));
+            }
+
+            this._vanillaGatherCandidates(elementId)
+              .then((localDescriptor) => {
+                Logger.info(LOG_PREFIX, `Vanilla candidate gathering succeeded`,
+                  { mediaElementId: elementId });
+                return resolve(sanitize(localDescriptor));
+              })
+              .catch(error => {
+                return reject(this._handleError(error));
+              });
           });
-        }
-        else {
+        } else {
+          // MEDIA_NOT_FOUND
           return reject(this._handleError(ERRORS[40101].error));
         }
-      }
-      catch (err) {
-        return reject(this._handleError(err));
+      } catch (error) {
+        return reject(this._handleError(error));
       }
     });
   }

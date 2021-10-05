@@ -14,20 +14,27 @@ const MediaFactory = require('../media/media-factory.js');
 const GLOBAL_EVENT_EMITTER = require('../utils/emitter');
 const { handleError } = require('../utils/util.js');
 const { perUser: USER_MEDIA_THRESHOLD } = config.get('mediaThresholds');
+const MCS_USER_EJECTION_TIMER = config.has('mcsUserEjectionTimer')
+  ? config.get('mcsUserEjectionTimer')
+  : 60000; // 1 min
 
 const LOG_PREFIX = "[mcs-user]";
 
 module.exports = class User extends EventEmitter  {
-  constructor(roomId, type, params = {}) {
+  constructor(room, type, params = {}) {
     super();
     this.id = rid();
     this.externalUserId = params.externalUserId || this.id;
     this.autoLeave = typeof params.autoLeave !== 'undefined'? params.autoLeave : false;
-    this.roomId = roomId;
+    this.room = room;
     this.type = type;
     this.name = params.name ? params.name : this.id;
     this.mediaSessions = {}
     this._clientTrackingIds = {};
+  }
+
+  get roomId () {
+    return this.room.id;
   }
 
   async _startSession (sessionId) {
@@ -67,6 +74,14 @@ module.exports = class User extends EventEmitter  {
     return false;
   }
 
+  addMediaSession (mediaSession) {
+    this.mediaSessions[mediaSession.id] = mediaSession;
+  }
+
+  getMediaSession (id) {
+    return this.mediaSessions[id];
+  }
+
   createMediaSession (descriptor, type, params = {}) {
     const { mediaId } = params;
 
@@ -76,13 +91,21 @@ module.exports = class User extends EventEmitter  {
     // If it doesn't exist, just create a new one since it's an optional parameter
     // which should be ignored in case it doesn't make sense
     if (mediaId) {
-      const targetMediaSession = this.mediaSessions[mediaId];
+      const targetMediaSession = this.getMediaSession(mediaId);
       if (targetMediaSession) {
         const updatedParams = { ...targetMediaSession.options, ...params };
         targetMediaSession.remoteDescriptor = descriptor;
         targetMediaSession.processOptionalParameters(updatedParams);
         return targetMediaSession;
       }
+    }
+
+    if (!params.ignoreThresholds
+      && (this.isAboveThreshold() || this.room.isAboveThreshold())) {
+      throw (this._handleError({
+        ...C.ERROR.MEDIA_SERVER_NO_RESOURCES,
+        details: 'Threshold exceeded',
+      }));
     }
 
     const mediaSession = MediaFactory.createMediaSession(
@@ -93,8 +116,11 @@ module.exports = class User extends EventEmitter  {
       params
     );
 
+    this.addMediaSession(mediaSession);
+    this.room.addMediaSession(mediaSession);
+
     this._trackMediaDisconnection(mediaSession);
-    this.mediaSessions[mediaSession.id] = mediaSession;
+    if (this.ejectionRoutine) this._clearEjectionTimeout();
 
     return mediaSession;
   };
@@ -161,9 +187,26 @@ module.exports = class User extends EventEmitter  {
     }
   }
 
-  _ejectIfNeeded () {
-    if (this.autoLeave && Object.keys(this.mediaSessions).length <= 0) {
+  getNumberOfUserMediaSessions () {
+    return Object.keys(this.mediaSessions).length;
+  }
+
+  _clearEjectionTimeout () {
+    clearTimeout(this.ejectionRoutine);
+    this.ejectionRoutine = null;
+  }
+
+  _eject () {
+    if (this.getNumberOfUserMediaSessions() <= 0) {
       this.emit(C.EVENT.EJECT_USER, this.getUserInfo());
+    }
+
+    this._clearEjectionTimeout();
+  }
+
+  _setupEjectionRoutine () {
+    if (this.ejectionRoutine == null) {
+      this.ejectionRoutine = setTimeout(this._eject.bind(this), MCS_USER_EJECTION_TIMER);
     }
   }
 
@@ -172,7 +215,9 @@ module.exports = class User extends EventEmitter  {
     try {
       if (session) {
         delete this.mediaSessions[sessionId];
-        this._ejectIfNeeded();
+        if (this.autoLeave && this.getNumberOfUserMediaSessions() <= 0) {
+          this._setupEjectionRoutine();
+        }
         return session.stop();
       }
       return Promise.resolve();
@@ -222,10 +267,6 @@ module.exports = class User extends EventEmitter  {
     });
   }
 
-  getMediaSession (id) {
-    return this.mediaSessions[id];
-  }
-
   getUserInfo () {
     const mediasList = Object.keys(this.mediaSessions).map(key => {
       let mi = this.mediaSessions[key].getMediaInfo();
@@ -262,7 +303,9 @@ module.exports = class User extends EventEmitter  {
         }
 
         delete this.mediaSessions[mediaSessionId];
-        this._ejectIfNeeded();
+        if (this.autoLeave && this.getNumberOfUserMediaSessions() <= 0) {
+          this._setupEjectionRoutine();
+        }
         GLOBAL_EVENT_EMITTER.removeListener(C.EVENT.MEDIA_DISCONNECTED, deleteMedia);
       }
     };

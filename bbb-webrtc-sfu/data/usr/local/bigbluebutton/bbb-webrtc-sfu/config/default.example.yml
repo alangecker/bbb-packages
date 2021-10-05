@@ -23,6 +23,8 @@ kurentoTrackIceStateChanges: false
 # 'kurento' config parameter with a mediaType field (main|audio|content) which
 # will specify what will each server handle. Default is ROUND_ROBIN
 balancing-strategy: ROUND_ROBIN
+# Allow media offloading to Kurento instances with mismatched media types
+kurentoAllowMediaTypeMix: false
 video-transposing-ceiling: 50
 audio-transposing-ceiling: 100
 acceptSelfSignedCertificate: false
@@ -63,6 +65,9 @@ recordingFormat: webm
 # 14 days is the default
 redisExpireTime: 1209600
 
+# Time to wait before ejecting an user which has the autoLeave flag marked
+# as true and has no more media sessions under its ownership
+mcsUserEjectionTimer: 60000
 # mcs-core entrypoint configured on nginx
 mcs-path: /mcs
 mcs-port: 3010

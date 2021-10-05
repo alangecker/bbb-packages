@@ -593,6 +593,10 @@ module.exports = class Video extends BaseProvider {
         mediaSpecs,
         mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
         kurentoRembParams,
+        profiles: {
+          video: 'recvonly',
+        },
+        mediaProfile: 'main',
         adapter: this.mediaServerAdapter,
       }
       this.options = options;
