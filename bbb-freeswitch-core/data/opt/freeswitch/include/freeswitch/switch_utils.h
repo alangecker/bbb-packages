@@ -831,14 +831,38 @@ static inline char *switch_clean_name_string(char *s)
 
 
 /*!
-  \brief Turn a string into a number (default if NULL)
+  \brief Turn a string into an integer (default if NULL)
   \param nptr the string
   \param dft the default
-  \return the number version of the string or the default
+  \return the integer version of the string or the default
 */
 static inline int switch_safe_atoi(const char *nptr, int dft)
 {
 	return nptr ? atoi(nptr) : dft;
+}
+
+
+/*!
+  \brief Turn a string into a long integer (default if NULL)
+  \param nptr the string
+  \param dft the default
+  \return the long integer version of the string or the default
+*/
+static inline long int switch_safe_atol(const char *nptr, long int dft)
+{
+	return nptr ? atol(nptr) : dft;
+}
+
+
+/*!
+  \brief Turn a string into a long long integer (default if NULL)
+  \param nptr the string
+  \param dft the default
+  \return the long long integer version of the string or the default
+*/
+static inline long long int switch_safe_atoll(const char *nptr, long long int dft)
+{
+	return nptr ? atoll(nptr) : dft;
 }
 
 
@@ -1459,6 +1483,9 @@ SWITCH_DECLARE(void) switch_getcputime(switch_cputime *t);
 SWITCH_DECLARE(char *)switch_html_strip(const char *str);
 
 SWITCH_DECLARE(unsigned long) switch_getpid(void);
+
+SWITCH_DECLARE(switch_status_t) switch_digest(const char *digest_name, unsigned char **digest, const void *input, switch_size_t inputLen, unsigned int *outputlen);
+SWITCH_DECLARE(switch_status_t) switch_digest_string(const char *digest_name, char **digest_str, const void *input, switch_size_t inputLen, unsigned int *outputlen);
 
 SWITCH_END_EXTERN_C
 #endif
