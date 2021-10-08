@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/playback/presentation/2.3/static/css/main.c6f1af0f.chunk.css",
-    "main.js": "/playback/presentation/2.3/static/js/main.e050eb18.chunk.js",
-    "main.js.map": "/playback/presentation/2.3/static/js/main.e050eb18.chunk.js.map",
+    "main.css": "/playback/presentation/2.3/static/css/main.e64efa86.chunk.css",
+    "main.js": "/playback/presentation/2.3/static/js/main.e1a26d4d.chunk.js",
+    "main.js.map": "/playback/presentation/2.3/static/js/main.e1a26d4d.chunk.js.map",
     "runtime-main.js": "/playback/presentation/2.3/static/js/runtime-main.e34840b1.js",
     "runtime-main.js.map": "/playback/presentation/2.3/static/js/runtime-main.e34840b1.js.map",
-    "static/js/2.acdd359d.chunk.js": "/playback/presentation/2.3/static/js/2.acdd359d.chunk.js",
-    "static/js/2.acdd359d.chunk.js.map": "/playback/presentation/2.3/static/js/2.acdd359d.chunk.js.map",
+    "static/js/2.6fec41ae.chunk.js": "/playback/presentation/2.3/static/js/2.6fec41ae.chunk.js",
+    "static/js/2.6fec41ae.chunk.js.map": "/playback/presentation/2.3/static/js/2.6fec41ae.chunk.js.map",
     "index.html": "/playback/presentation/2.3/index.html",
-    "static/css/main.c6f1af0f.chunk.css.map": "/playback/presentation/2.3/static/css/main.c6f1af0f.chunk.css.map",
-    "static/js/2.acdd359d.chunk.js.LICENSE.txt": "/playback/presentation/2.3/static/js/2.acdd359d.chunk.js.LICENSE.txt",
+    "static/css/main.e64efa86.chunk.css.map": "/playback/presentation/2.3/static/css/main.e64efa86.chunk.css.map",
+    "static/js/2.6fec41ae.chunk.js.LICENSE.txt": "/playback/presentation/2.3/static/js/2.6fec41ae.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/playback/presentation/2.3/static/media/logo.874db01b.png"
   },
   "entrypoints": [
     "static/js/runtime-main.e34840b1.js",
-    "static/js/2.acdd359d.chunk.js",
-    "static/css/main.c6f1af0f.chunk.css",
-    "static/js/main.e050eb18.chunk.js"
+    "static/js/2.6fec41ae.chunk.js",
+    "static/css/main.e64efa86.chunk.css",
+    "static/js/main.e1a26d4d.chunk.js"
   ]
 }
