@@ -1,8 +1,8 @@
 15614357181f67abdf7c895a7f4d9f9f  etc/bigbluebutton/nginx/learning-dashboard.nginx
-0efd9805744aae8fab30d313d4c7ebbc  usr/share/doc/bbb-learning-dashboard/changelog.gz
-8dca97a425a835b5495504528ff6dfcf  var/bigbluebutton/learning-dashboard/asset-manifest.json
+205737baac5602fe19c9cf649714549d  usr/share/doc/bbb-learning-dashboard/changelog.gz
+446fd80f0d89cc798b995f6cdcd55bf0  var/bigbluebutton/learning-dashboard/asset-manifest.json
 b591a12aff228feae97aacaeefb97fad  var/bigbluebutton/learning-dashboard/favicon.ico
-e7730c49b76a28d3a200bc87b93be786  var/bigbluebutton/learning-dashboard/index.html
+01f5cc978efbc1c4594e95b35af6ea64  var/bigbluebutton/learning-dashboard/index.html
 07ac9b01c8dcec879aadb34ae191204e  var/bigbluebutton/learning-dashboard/static/css/main.0bdae46e.chunk.css
 3e7f69db2295597a4b891c3ccbb5e3cf  var/bigbluebutton/learning-dashboard/static/css/main.0bdae46e.chunk.css.map
 721f852a6df2499fbdfb039f08d81007  var/bigbluebutton/learning-dashboard/static/js/2.0b678f42.chunk.js
@@ -10,8 +10,8 @@ eb88ae1f3529bf01217586e9e48eb2a1  var/bigbluebutton/learning-dashboard/static/js
 6e68a373dc45b5a199ee80b7eca905b2  var/bigbluebutton/learning-dashboard/static/js/2.0b678f42.chunk.js.map
 438179a929cf021b78cb0fb7a4c0bc28  var/bigbluebutton/learning-dashboard/static/js/3.6f03c2b7.chunk.js
 eae5ee051ae9c24b5894d5361d8d8670  var/bigbluebutton/learning-dashboard/static/js/3.6f03c2b7.chunk.js.map
-9a560177b130196eca57059771b2ddbc  var/bigbluebutton/learning-dashboard/static/js/main.3278c61d.chunk.js
-7afc1967beb2ab0676264187a30056ab  var/bigbluebutton/learning-dashboard/static/js/main.3278c61d.chunk.js.map
+0fe664a03a447cc22e6df19f5d569f45  var/bigbluebutton/learning-dashboard/static/js/main.8f61cfc1.chunk.js
+33c711bdbfc7f5fa9b2ad927d36908b7  var/bigbluebutton/learning-dashboard/static/js/main.8f61cfc1.chunk.js.map
 829c6480b2be4c235c1c2a2b13ad1e43  var/bigbluebutton/learning-dashboard/static/js/runtime-main.4327ff5c.js
 b4b3bdaf2c7d4d2df7c275d819128dae  var/bigbluebutton/learning-dashboard/static/js/runtime-main.4327ff5c.js.map
 fac7ed604181aa62e89b21c2a1f107a0  var/bigbluebutton/learning-dashboard/static/media/bbb-icons.1b4ec364.woff
