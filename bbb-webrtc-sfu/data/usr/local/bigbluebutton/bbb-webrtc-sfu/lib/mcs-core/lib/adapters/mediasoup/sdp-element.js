@@ -9,6 +9,7 @@ const SoupSDPU = require("mediasoup-client/lib/handlers/sdp/commonUtils");
 const { LOG_PREFIX, ROUTER_SETTINGS } = require('./configs.js');
 const BaseMediasoupElement = require('./base-element.js');
 const config = require('config');
+const { v4: uuidv4 }= require('uuid');
 
 module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
   constructor(type, routerId) {
@@ -91,55 +92,67 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
     }
   }
 
-  _getActualMediaType (mediaTypes, mediaProfile = null) {
-    if (mediaProfile) {
-      switch (mediaProfile) {
-        case C.MEDIA_PROFILE.MAIN:
-          return 'video';
-        case C.MEDIA_PROFILE.AUDIO:
-          return 'audio';
-        case C.MEDIA_PROFILE.CONTENT:
-          return 'video';
-        default: break
-      }
+  _getMappedMType (apiProfileOrMType) {
+    switch (apiProfileOrMType) {
+      case C.MEDIA_PROFILE.MAIN:
+      case 'video':
+        return 'video';
+      case C.MEDIA_PROFILE.AUDIO:
+        return 'audio';
+      case C.MEDIA_PROFILE.CONTENT:
+        return 'video';
+      default: return;
+    }
+  }
+
+  _mapMTypesOrProfiles (mTypesOrProfiles) {
+    const actualMediaTypes = [];
+    for (const [mediaType, mediaTypeDir] of Object.entries(mTypesOrProfiles)) {
+      if (mediaTypeDir) actualMediaTypes.push(this._getMappedMType(mediaType));
     }
 
-    if (!!mediaTypes.audio) return 'audio';
-    if (!!mediaTypes.video || !!mediaTypes.content) return 'video';
+    return actualMediaTypes;
+  }
 
-    // FIXME this default is bug prone
-    return 'video';
+  _getActualMediaTypes (mediaTypes, profiles = {}) {
+    let actualMediaTypes = this._mapMTypesOrProfiles(mediaTypes);
+
+    if (actualMediaTypes.length > 0) return actualMediaTypes;
+
+    // Fallback to API profiles
+    return this._mapMTypesOrProfiles(profiles);
   }
 
   _processProducerSDPOffer (kind, rtpParameters, paused = false) {
     return new Promise(async (resolve, reject) => {
       try {
         const producer = await this.produce(kind, rtpParameters, paused);
-
         // FIXME yeah... we really don't want to rely on single negotiation
         this.negotiated = true;
-        const offerRtpParameters = producer.rtpParameters;
-        const rtcpStreamId = producer.rtpParameters.rtcp.cname;
 
-        return resolve({ offerRtpParameters, rtcpStreamId });
+        return resolve({
+          trackId: producer.id,
+          offerRtpParameters: producer.rtpParameters,
+          rtcpStreamId: producer.rtpParameters.rtcp.cname,
+        });
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  async _processConsumerSDPOffer (rtpCapabilities, options) {
+  async _processConsumerSDPOffer (mediaType, rtpCapabilities, options) {
     return new Promise(async (resolve, reject) => {
       try {
-        const consumer = await this.consume(rtpCapabilities, options)
-
-        // FIXME
+        const consumer = await this.consume(mediaType, rtpCapabilities, options)
+        // FIXME yeah... we really don't want to rely on single negotiation
         this.negotiated = true;
 
-        const offerRtpParameters = consumer.rtpParameters;
-        const rtcpStreamId = consumer.rtpParameters.rtcp.cname;
-
-        return resolve({ offerRtpParameters, rtcpStreamId });
+        return resolve({
+          trackId: consumer.id,
+          offerRtpParameters: consumer.rtpParameters,
+          rtcpStreamId: consumer.rtpParameters.rtcp.cname,
+        });
       } catch (error) {
         reject(error);
       }
@@ -197,7 +210,8 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
     // local description as an offer
 
     if (mode === 'consumer') {
-      const producer = this._getConsumerSource(sourceAdapterElementIds);
+      const source = this._getConsumerSource(sourceAdapterElementIds);
+      const producer = source.getProducerOfKind(mediaType);
       return Promise.resolve({
         rtpParams: {
           codecs: producer.rtpParameters.codecs,
@@ -205,6 +219,7 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
         setup: 'actpass',
       });
     } else {
+      // Promisified
       return this._generateOffererProducerCaps(mediaType);
     }
   }
@@ -212,53 +227,89 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
   processSDPOffer (mediaTypes, options) {
     return new Promise(async (resolve, reject) => {
       try {
-        const actualMediaType = this._getActualMediaType(mediaTypes, options.mediaProfile);
         const mode = this._getMode(options.sourceAdapterElementIds);
-        const { rtpParams, setup } = await this._getRTPParameters(actualMediaType, options);
-        let offerRtpParameters;
-        let rtcpStreamId;
+        const actualMediaTypes = this._getActualMediaTypes(
+          mediaTypes, options.profiles,
+        );
 
         if (this.remoteDescriptor == null && options.remoteDescriptor) {
           this.remoteDescriptor = options.remoteDescriptor;
-          if (mode === 'producer') {
-            ({ offerRtpParameters, rtcpStreamId } = await this._processProducerSDPOffer(
-              actualMediaType, rtpParams
-            ));
-          } else {
-            ({ offerRtpParameters, rtcpStreamId } = await this._processConsumerSDPOffer(
-              rtpParams, options
-            ));
-          }
-          // We are offerers; local is set, remote has to be processed. Do your
-          // thing.
-          if (options.remoteDescriptor) {
-            this.connectTransport(options.remoteDescriptor, actualMediaType);
-          }
-        } else {
-          if (mode == 'consumer') {
-            ({ offerRtpParameters, rtcpStreamId } = await this._processConsumerSDPOffer(
-              rtpParams, options
-            ));
-          } else {
-            offerRtpParameters = rtpParams;
-            rtcpStreamId = rtpParams.rtcp.cname;
-          }
+          Logger.trace(LOG_PREFIX, "Remote descriptor set", {
+            elementId: this.id, type: this.type, router: this.routerId,
+            transport: this.transportSet.id, descriptor: this.remoteDescriptor,
+          });
         }
+
+        let kindParametersMap = [];
+
+        const transducingRoutines = actualMediaTypes.map((actualMediaType) => {
+          return new Promise(async (resolve, reject) => {
+            try {
+              const { rtpParams, setup } = await this._getRTPParameters(actualMediaType, options);
+              let offerRtpParameters;
+              let rtcpStreamId;
+              let trackId;
+
+              // We as answerers
+              if (this.remoteDescriptor) {
+                if (mode === 'producer') {
+                  ({ offerRtpParameters, rtcpStreamId, trackId } = await this._processProducerSDPOffer(
+                    actualMediaType, rtpParams
+                  ));
+                } else {
+                  ({ offerRtpParameters, rtcpStreamId, trackId } = await this._processConsumerSDPOffer(
+                    actualMediaType, rtpParams, options
+                  ));
+                }
+              } else { // We as offerers
+                if (mode == 'consumer') {
+                  ({ offerRtpParameters, rtcpStreamId, trackId } = await this._processConsumerSDPOffer(
+                    actualMediaType, rtpParams, options
+                  ));
+                } else {
+                  offerRtpParameters = rtpParams;
+                  rtcpStreamId = rtpParams.rtcp.cname;
+                  trackId = uuidv4();
+                }
+              }
+
+              kindParametersMap.push({
+                actualMediaType,
+                offerRtpParameters,
+                streamId: rtcpStreamId,
+                trackId,
+                setup,
+              });
+
+              return resolve();
+            } catch (error) {
+              reject(error);
+            }
+          });
+        });
+
+        await Promise.all(transducingRoutines);
 
         if (this.localDescriptor == null) {
           this.localDescriptor = SDPTranslator.assembleSDP(mediaTypes, {
             transportOptions: this.transportSet.transportOptions,
-            kind: actualMediaType,
-            offerRtpParameters,
-            streamId: rtcpStreamId,
-            setup,
+            kindParametersMap,
             adapterOptions: options.adapterOptions,
           });
+
+          Logger.trace(LOG_PREFIX, "Local descriptor set", {
+            elementId: this.id, type: this.type, router: this.routerId,
+            transport: this.transportSet.id, descriptor: this.localDescriptor,
+          });
+        };
+
+        if (options.remoteDescriptor) {
+          await this.connectTransport(options.remoteDescriptor, actualMediaTypes[0]);
         }
 
         return resolve(this.localDescriptor);
-      } catch (err) {
-        return reject(handleError(err));
+      } catch (error) {
+        return reject(handleError(error));
       }
     })
   }
@@ -266,30 +317,30 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
   _connectWRTCTransport (description) {
     const dtlsParameters = SoupSDPU.extractDtlsParameters({ sdpObject: description });
     this.dtlsParameters = dtlsParameters;
-    this.transportSet.connect({ dtlsParameters }).then(() => {
+    return this.transportSet.connect({ dtlsParameters }).then(() => {
       Logger.debug(LOG_PREFIX, "Transport connected", {
         elementId: this.id, dtlsParameters,
       });
     }).catch(error => {
-      // TODO preferably re-throw
       Logger.error(LOG_PREFIX, "Transport connect failure", {
         errorMessage: error.message, elementId: this.id, dtlsParameters,
       });
+      throw error;
     });
   }
 
   _connectPRTPTransport (description, kind) {
     const prtpParameters = SDPTranslator.extractPlainRtpParameters(description, kind);
     this.prtpParameters = prtpParameters;
-    this.transportSet.connect(prtpParameters).then(() => {
+    return this.transportSet.connect(prtpParameters).then(() => {
       Logger.debug(LOG_PREFIX, "Transport connected", {
         elementId: this.id, prtpParameters,
       });
     }).catch(error => {
-      // TODO preferably re-throw
       Logger.error(LOG_PREFIX, "Transport connect failure", {
         errorMessage: error.message, elementId: this.id, prtpParameters,
       });
+      throw error;
     });
   }
 
@@ -300,7 +351,7 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
       case C.MEDIA_TYPE.RTP:
         return this._connectPRTPTransport(description, kind);
       default:
-        return;
+        return Promise.reject(new TypeError('Invalid transport type'));
     }
   }
 

@@ -50,11 +50,6 @@ const extractRTPParams = (baseRTPCaps, jsonSdp, kind, mode) => {
     params = extractRecvRTPParams(msExtendedRtpCaps);
   }
 
-  // TODO: "mid"
-  //params.mid = '1';
-  // TODO proper RTCP fillers
-  //params.rtcp = getRtcpParameters(jsonSdp, "video");
-
   return params;
 }
 
@@ -65,52 +60,59 @@ const extractPlainRtpParameters = (jsonSdp, kind) => {
   });
 }
 
-const _processHackFlags = (description, adapterOptions = {}) => {
+const _processHackFlags = (targetMediaSection, adapterOptions = {}) => {
   if (!!adapterOptions.msHackRTPAVPtoRTPAVPF) {
-    description = description.replace(/RTP\/AVP/ig, 'RTP/AVPF');
+    targetMediaSection._mediaObject.protocol = targetMediaSection._mediaObject
+      .protocol.replace(/RTP\/AVP/ig, 'RTP/AVPF');
+  }
+}
+
+const _getMappedDirectionFromMType = (mediaTypes) => {
+  if (mediaTypes.video == 'sendonly'
+    || mediaTypes.content == 'sendonly'
+    || mediaTypes.audio === 'sendonly') {
+    return 'recvonly';
   }
 
-  return description;
-}
+  if (mediaTypes.video == 'recvonly'
+    || mediaTypes.content == 'recvonly'
+    || mediaTypes.audio === 'recvonly') {
+    return'sendonly';
+  }
+
+  return 'sendrecv';
+};
 
 // This obviously only works for single stream SDPs right now.
 // But then again: when we reach the point where we want to do proper bundling
 // and use less transports, we won't use SDP. So who cares? -- prlanzarin
 const assembleSDP = (mediaTypes, {
   transportOptions,
-  kind,
-  offerRtpParameters,
-  streamId,
-  setup,
+  kindParametersMap,
   adapterOptions,
 }) => {
   const reassembledSDP = new RemoteSdp.RemoteSdp({
     ...transportOptions,
   });
 
-  reassembledSDP.receive({
-    // TODO proper mid
-    mid: 0,
-    kind,
-    offerRtpParameters,
-    streamId,
+  kindParametersMap.forEach((kMap, i) => {
+    reassembledSDP.receive({
+      mid: i,
+      kind: kMap.actualMediaType,
+      offerRtpParameters: kMap.offerRtpParameters,
+      streamId: kMap.streamId,
+      trackId: kMap.trackId,
+    });
+
+    const targetMediaSection = reassembledSDP._mediaSections.find(ms => ms._mediaObject.mid == i);
+    if (targetMediaSection) {
+      targetMediaSection._mediaObject.direction = _getMappedDirectionFromMType(mediaTypes);
+      if (kMap.setup) { targetMediaSection._mediaObject.setup = kMap.setup; }
+      _processHackFlags(targetMediaSection, adapterOptions);
+    }
   });
 
-  let answer = reassembledSDP.getSdp();
-
-  // FIXME this is just not good (up to the two replaces)
-  let targetDirection = 'sendrecv';
-  if (mediaTypes.video == 'sendonly'
-    || mediaTypes.content == 'sendonly'
-    || mediaTypes.audio === 'sendonly') {
-    targetDirection = 'recvonly';
-  }
-
-  answer = answer.replace(/sendrecv|sendonly|recvonly/ig, targetDirection);
-  answer = answer.replace(/actpass/ig, setup);
-  answer = _processHackFlags(answer, adapterOptions);
-
-  return answer;
+  return reassembledSDP.getSdp();
 };
 
 module.exports = {
