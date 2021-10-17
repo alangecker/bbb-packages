@@ -30,7 +30,7 @@ public:
     appName: BigBlueButton HTML5 Client
     bbbServerVersion: 2.3
     copyright: '©2021 BigBlueButton Inc.'
-    html5ClientBuild: 1845
+    html5ClientBuild: 1854
     helpLink: https://bigbluebutton.org/html5/
     lockOnJoin: true
     cdn: ''

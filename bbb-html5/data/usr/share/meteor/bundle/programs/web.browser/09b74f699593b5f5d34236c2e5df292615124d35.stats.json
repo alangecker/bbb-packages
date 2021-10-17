@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.6.0"
   },
-  "totalMinifiedBytes": 3018514,
-  "totalMinifiedGzipBytes": 748313,
+  "totalMinifiedBytes": 3018931,
+  "totalMinifiedGzipBytes": 748489,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9504,
     "packages/meteor-base.js": 31,
@@ -1895,7 +1895,7 @@
       {}
     ],
     "app/app.js": [
-      1381340,
+      1381757,
       {
         "imports": {
           "ui": {
@@ -2368,12 +2368,12 @@
                   "container.jsx": 2081
                 },
                 "invitation": {
-                  "component.jsx": 1729,
-                  "container.jsx": 763
+                  "component.jsx": 1708,
+                  "container.jsx": 771
                 },
-                "component.jsx": 7026,
-                "container.jsx": 1186,
-                "service.js": 2312,
+                "component.jsx": 7129,
+                "container.jsx": 1190,
+                "service.js": 2285,
                 "styles.scss": 56,
                 "styles.scss.js": 7614
               },
@@ -2387,9 +2387,9 @@
               },
               "captions": {
                 "pad": {
-                  "component.jsx": 5241,
-                  "container.jsx": 715,
-                  "service.js": 671,
+                  "component.jsx": 5350,
+                  "container.jsx": 651,
+                  "service.js": 685,
                   "styles.scss": 56,
                   "styles.scss.js": 3085
                 },
@@ -2399,9 +2399,9 @@
                   "styles.scss": 56,
                   "styles.scss.js": 5892
                 },
-                "component.jsx": 1667,
-                "container.jsx": 347,
-                "service.js": 2570
+                "component.jsx": 1670,
+                "container.jsx": 349,
+                "service.js": 2583
               },
               "components-data": {
                 "chat-context": {
@@ -2583,7 +2583,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4018
                 },
-                "component.jsx": 11879,
+                "component.jsx": 11976,
                 "container.jsx": 1686,
                 "service.js": 4125,
                 "styles.scss": 56,
@@ -2645,7 +2645,7 @@
               },
               "breakout-join-confirmation": {
                 "component.jsx": 4301,
-                "container.jsx": 1003,
+                "container.jsx": 991,
                 "styles.scss": 56,
                 "styles.scss.js": 481
               },
@@ -2707,9 +2707,9 @@
                 "styles.scss.js": 964
               },
               "note": {
-                "component.jsx": 1789,
+                "component.jsx": 1724,
                 "container.jsx": 448,
-                "service.js": 2036,
+                "service.js": 1827,
                 "styles.scss": 56,
                 "styles.scss.js": 2766
               },
@@ -2765,7 +2765,7 @@
                 "styles.scss.js": 2790
               },
               "subscriptions": {
-                "component.jsx": 2626
+                "component.jsx": 2632
               },
               "switch": {
                 "component.jsx": 1896,
@@ -2808,7 +2808,7 @@
               },
               "audio-manager": {
                 "error-codes.js": 99,
-                "index.js": 14577
+                "index.js": 14690
               },
               "auth": {
                 "index.js": 4526
@@ -2848,7 +2848,7 @@
                 "bridge": {
                   "base.js": 864,
                   "kurento.js": 5157,
-                  "sip.js": 22598
+                  "sip.js": 22941
                 }
               }
             },
