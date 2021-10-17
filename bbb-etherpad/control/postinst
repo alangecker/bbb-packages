@@ -295,6 +295,11 @@ chown root:root /usr/lib/systemd/system/etherpad.service
 SOURCE=/tmp/settings.json
 TARGET=/usr/share/etherpad-lite/settings.json
 
+# no longer needed in 2.3+
+if [ -f /usr/local/bigbluebutton/core/scripts/bigbluebutton.yml ]; then
+  APIKEY=$(cat /usr/share/etherpad-lite/APIKEY.txt)
+  sed -i "s/ETHERPAD_APIKEY/$APIKEY/g" /usr/local/bigbluebutton/core/scripts/bigbluebutton.yml
+fi
 
 if [ ! -f /.dockerenv ]; then
   systemctl enable etherpad.service
