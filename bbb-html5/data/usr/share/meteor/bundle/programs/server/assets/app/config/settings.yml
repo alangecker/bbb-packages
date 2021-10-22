@@ -30,7 +30,7 @@ public:
     appName: BigBlueButton HTML5 Client
     bbbServerVersion: 2.4
     copyright: '©2021 BigBlueButton Inc.'
-    html5ClientBuild: 2323
+    html5ClientBuild: 2343
     helpLink: https://bigbluebutton.org/html5/
     lockOnJoin: true
     cdn: ''
@@ -526,6 +526,7 @@ public:
     allowDownloadable: true
     panZoomThrottle: 32
     restoreOnUpdate: false
+    oldMinimizeButton: false
     uploadEndpoint: '/bigbluebutton/presentation/upload'
     uploadValidMimeTypes:
       - extension: .pdf

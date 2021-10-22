@@ -56,8 +56,13 @@
       display: none !important;
     }
 
-    textarea::-webkit-input-placeholder,
-    input::-webkit-input-placeholder {
+    ::-webkit-input-placeholder {
+      color: var(--palette-placeholder-text);
+      opacity: 1;
+    }
+
+    :-moz-placeholder, /* Firefox 4 to 18 */
+    ::-moz-placeholder { /* Firefox 19+ */
       color: var(--palette-placeholder-text);
       opacity: 1;
     }
@@ -67,11 +72,11 @@
       e.preventDefault();
     });
   </script>
-  <script src="compatibility/adapter.js?v=2323" language="javascript"></script>
-  <script src="compatibility/sip.js?v=2323" language="javascript"></script>
-  <script src="compatibility/kurento-utils.js?v=2323" language="javascript"></script>
-  <script src="compatibility/tflite-simd.js?v=2323" language="javascript"></script>
-  <script src="compatibility/tflite.js?v=2323" language="javascript"></script>
+  <script src="compatibility/adapter.js?v=2343" language="javascript"></script>
+  <script src="compatibility/sip.js?v=2343" language="javascript"></script>
+  <script src="compatibility/kurento-utils.js?v=2343" language="javascript"></script>
+  <script src="compatibility/tflite-simd.js?v=2343" language="javascript"></script>
+  <script src="compatibility/tflite.js?v=2343" language="javascript"></script>
   <!-- fonts -->
   <link rel="preload" href="fonts/BbbIcons/bbb-icons.woff?j1ntjp" as="font" crossorigin="anonymous"/>
   <link rel="preload" href="fonts/SourceSansPro/SourceSansPro-Light.woff" as="font" crossorigin="anonymous"/>

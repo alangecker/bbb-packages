@@ -2,35 +2,35 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "90b495f6840970616c7b444b8d242d858c9b40b7.js",
+      "path": "09a04b153fe02f52447c305dfa860c46f8013a26.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/90b495f6840970616c7b444b8d242d858c9b40b7.js?meteor_js_resource=true",
+      "url": "/09a04b153fe02f52447c305dfa860c46f8013a26.js?meteor_js_resource=true",
       "replaceable": false,
-      "size": 3642550,
-      "hash": "90b495f6840970616c7b444b8d242d858c9b40b7",
-      "sri": "VFJeGXGNI/DMLTxMxp67tGukvLKrlm27kQ+xhyggoFk46LbWdRcrC1pMt1jCeTg7ZSrAYvTsq1wpXSoh1RniaA=="
+      "size": 3646651,
+      "hash": "09a04b153fe02f52447c305dfa860c46f8013a26",
+      "sri": "CxBgWAxkbZszKWPDG61ZgW0PH7JXjzE2aA0JIwlbQiwLg//gdZb5jJ20VsFSBCeaZcXIkqZysyvJ5MPiYCDryQ=="
     },
     {
-      "path": "90b495f6840970616c7b444b8d242d858c9b40b7.stats.json",
+      "path": "09a04b153fe02f52447c305dfa860c46f8013a26.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/90b495f6840970616c7b444b8d242d858c9b40b7.stats.json?meteor_js_resource=true",
-      "size": 120334,
-      "hash": "9519a0cb13cb80a3f3ae5fd1420c0d0f93a677b3",
-      "sri": "+yY05U69rEkjfIbrdpVn/aFI5yPp8gWEwL7XgcWaDJZPqIFkcypZUlCftDe13OjvtgiwYMzuxYpIB6MScyr4hw=="
+      "url": "/09a04b153fe02f52447c305dfa860c46f8013a26.stats.json?meteor_js_resource=true",
+      "size": 120518,
+      "hash": "a715ed501a5298510ae4ecd777a08346d344da4a",
+      "sri": "OM02fAasWofDdSafn71EjqRqnNoVUxbzJFCd2xhKXkjtPb0WtPQZYyGbnsyGfvJk4uzio88L3ZtfFVkzEd5wAw=="
     },
     {
-      "path": "fab8a519958869f787f8c9b6ad600b3736976e68.css",
+      "path": "95399548b455d7f72b56c528b6c82b2e6bb975e6.css",
       "where": "client",
       "type": "css",
       "cacheable": true,
-      "url": "/fab8a519958869f787f8c9b6ad600b3736976e68.css?meteor_css_resource=true",
-      "size": 19575,
-      "hash": "fab8a519958869f787f8c9b6ad600b3736976e68",
-      "sri": "ddjr0b0+ly5dsfoJcCsjLXSdyqAT7Nl2NfbeYbMcQb5zpq3GQ5fcA7eFPPKM/2e0n+fFM+AAKTKOIV1v89YsMg=="
+      "url": "/95399548b455d7f72b56c528b6c82b2e6bb975e6.css?meteor_css_resource=true",
+      "size": 19793,
+      "hash": "95399548b455d7f72b56c528b6c82b2e6bb975e6",
+      "sri": "8MENR2aD4T7oafOeByDyFUXfn2da7fDkVF2tREOWpwaf4Nq08HxXDW5gBxEQ8Xuoa94Uunyq6pgGf95dpst3Wg=="
     },
     {
       "path": "app/compatibility/adapter.js",
@@ -98,8 +98,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ar.json",
-      "size": 78170,
-      "hash": "e8cd17987643eaec3c5168505616ce9aa5e07cce",
+      "size": 78573,
+      "hash": "459e5c10ca831677616be182d4a2affc5897e7af",
       "sri": null
     },
     {
@@ -168,8 +168,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/de.json",
-      "size": 69950,
-      "hash": "185b4674032ca8f722829003a23d96a57e697adf",
+      "size": 70236,
+      "hash": "efd4f38eb2791be6746dec51e1539d03fdf88db7",
       "sri": null
     },
     {
@@ -198,8 +198,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 64081,
-      "hash": "9e6ca9a4453d56daada0aff43148228fc0131741",
+      "size": 64378,
+      "hash": "7f9d69373dd33baa4cec3a1562b3dbd9a5c4ecf2",
       "sri": null
     },
     {
@@ -258,8 +258,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/et.json",
-      "size": 65885,
-      "hash": "b852f5707de05f3e0686161ebfb35cc1cdc7ce07",
+      "size": 66043,
+      "hash": "9339e81da36de6f44e8dc85d6c0429c1fbbf02ad",
       "sri": null
     },
     {
@@ -278,8 +278,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/fa_IR.json",
-      "size": 77123,
-      "hash": "96c99308cee889f376afb77644ee93209c05207c",
+      "size": 84085,
+      "hash": "5298db27fc8d70a07a85ea6310a801a60c840d68",
       "sri": null
     },
     {
@@ -388,8 +388,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ja.json",
-      "size": 74644,
-      "hash": "817f45ea19dc3c01aea7cd37169039e216a3731b",
+      "size": 74971,
+      "hash": "7dde1227b0379ff5659856ed87dc748e3ae6ac9f",
       "sri": null
     },
     {
@@ -558,8 +558,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ru.json",
-      "size": 92167,
-      "hash": "cf100a26a9ecd414b6d393f56007eb80b8a9a4f3",
+      "size": 92389,
+      "hash": "9122b8717f9f741cfb08006dac2800fba85a66da",
       "sri": null
     },
     {
@@ -618,8 +618,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/te.json",
-      "size": 99275,
-      "hash": "a8703d8d97f61bc275fd1c9c8aacf365ffbb6597",
+      "size": 115743,
+      "hash": "d112c3ad53752a21c54c62af6e02b61885315cd0",
       "sri": null
     },
     {
@@ -638,8 +638,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/tr.json",
-      "size": 49992,
-      "hash": "1e87e9323e2966bf0fc3319c16a95492793270d2",
+      "size": 50371,
+      "hash": "69a3331e9c0a14ecbde3e485a069541b9f861d5e",
       "sri": null
     },
     {
@@ -648,8 +648,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/tr_TR.json",
-      "size": 67938,
-      "hash": "a929008d4008a9db1fb2bf6692821d4b714b9f9d",
+      "size": 68014,
+      "hash": "14ce5ddee691b56cc16c538729a4d69b858fb2dd",
       "sri": null
     },
     {
@@ -678,8 +678,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/vi_VN.json",
-      "size": 60312,
-      "hash": "10d48a0e58dbc8ee5f9ca5d22eacd9e080d5adca",
+      "size": 67456,
+      "hash": "41b7091a18feac51b27bcc3623c8b3785fd5a273",
       "sri": null
     },
     {
@@ -723,13 +723,33 @@
       "sri": null
     },
     {
+      "path": "app/wasm/tflite-simd.wasm",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/wasm/tflite-simd.wasm",
+      "size": 2601242,
+      "hash": "a305df7921c87dec6d382c9f8ba2a2885a67b3ea",
+      "sri": null
+    },
+    {
+      "path": "app/wasm/tflite.wasm",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/wasm/tflite.wasm",
+      "size": 2028341,
+      "hash": "9c4972e8956fadf38585758a6ec00324af0766c2",
+      "sri": null
+    },
+    {
       "path": "app/fonts/BbbIcons/bbb-icons.woff",
       "where": "client",
       "type": "asset",
       "cacheable": false,
       "url": "/fonts/BbbIcons/bbb-icons.woff",
-      "size": 19736,
-      "hash": "f2bed8fe2ebfd97cfd469533f98b9326fc30add7",
+      "size": 21444,
+      "hash": "4955096a20b19e6811b6fddd47b109293be46e0f",
       "sri": null
     },
     {
@@ -1216,7 +1236,7 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "2e060eefcd27707cd548d7d75815c67c213946fb"
+      "hash": "84a1c6a02d140a40aa3b8cf81e6249390722b7a2"
     },
     {
       "path": "body.html",
