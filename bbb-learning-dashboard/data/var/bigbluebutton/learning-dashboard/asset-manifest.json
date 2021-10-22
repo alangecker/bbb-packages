@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/learning-dashboard/static/css/main.0bdae46e.chunk.css",
-    "main.js": "/learning-dashboard/static/js/main.8f61cfc1.chunk.js",
-    "main.js.map": "/learning-dashboard/static/js/main.8f61cfc1.chunk.js.map",
+    "main.css": "/learning-dashboard/static/css/main.8a125d3b.chunk.css",
+    "main.js": "/learning-dashboard/static/js/main.b9e4f4fe.chunk.js",
+    "main.js.map": "/learning-dashboard/static/js/main.b9e4f4fe.chunk.js.map",
     "runtime-main.js": "/learning-dashboard/static/js/runtime-main.4327ff5c.js",
     "runtime-main.js.map": "/learning-dashboard/static/js/runtime-main.4327ff5c.js.map",
     "static/js/2.0b678f42.chunk.js": "/learning-dashboard/static/js/2.0b678f42.chunk.js",
@@ -10,14 +10,14 @@
     "static/js/3.6f03c2b7.chunk.js": "/learning-dashboard/static/js/3.6f03c2b7.chunk.js",
     "static/js/3.6f03c2b7.chunk.js.map": "/learning-dashboard/static/js/3.6f03c2b7.chunk.js.map",
     "index.html": "/learning-dashboard/index.html",
-    "static/css/main.0bdae46e.chunk.css.map": "/learning-dashboard/static/css/main.0bdae46e.chunk.css.map",
+    "static/css/main.8a125d3b.chunk.css.map": "/learning-dashboard/static/css/main.8a125d3b.chunk.css.map",
     "static/js/2.0b678f42.chunk.js.LICENSE.txt": "/learning-dashboard/static/js/2.0b678f42.chunk.js.LICENSE.txt",
     "static/media/bbb-icons.css": "/learning-dashboard/static/media/bbb-icons.1b4ec364.woff"
   },
   "entrypoints": [
     "static/js/runtime-main.4327ff5c.js",
     "static/js/2.0b678f42.chunk.js",
-    "static/css/main.0bdae46e.chunk.css",
-    "static/js/main.8f61cfc1.chunk.js"
+    "static/css/main.8a125d3b.chunk.css",
+    "static/js/main.b9e4f4fe.chunk.js"
   ]
 }
