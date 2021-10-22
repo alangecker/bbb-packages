@@ -5,6 +5,11 @@ const {
 } = require('./configs');
 const { getRouter } = require('./routers.js');
 const Logger = require('../../utils/logger');
+const { getMappedTransportType } = require('./utils.js');
+const {
+  MCSPrometheusAgent,
+  METRIC_NAMES,
+} = require('../../metrics/index.js');
 
 module.exports = class TransportSet {
   static getWebRTCTransportOpts (transport) {
@@ -77,6 +82,10 @@ module.exports = class TransportSet {
           routerId: this.routerId,
         }
 
+        MCSPrometheusAgent.increment(METRIC_NAMES.MEDIASOUP_TRANSPORTS,
+          { type: getMappedTransportType(this.type) }
+        );
+
         return resolve(this);
       } catch (error) {
         Logger.error(LOG_PREFIX, "Transport creation failed", {
@@ -109,6 +118,10 @@ module.exports = class TransportSet {
         this.id = this.transport.id;
         this.transportOptions = TransportSet.getWebRTCTransportOpts(this.transport);
         this.host = this.routerId;
+
+        MCSPrometheusAgent.increment(METRIC_NAMES.MEDIASOUP_TRANSPORTS,
+          { type: getMappedTransportType(this.type) }
+        );
 
         return resolve(this);
       } catch (error) {
@@ -151,19 +164,25 @@ module.exports = class TransportSet {
   }
 
   stop (reason) {
-    if (this.transport && typeof this.transport.close === 'function') {
-      return this.transport.close();
-    }
-
+    // If a reason is specified it's worth logging
     if (reason) {
       Logger.info(LOG_PREFIX, "TransportSet closed", {
         transportId: this.id, reason,
       });
     }
 
-    const router = getRouter(this.routerId);
-    if (router) router.activeElements--;
+    if (this.transport && typeof this.transport.close === 'function') {
+      try {
+        this.transport.close();
+        MCSPrometheusAgent.decrement(METRIC_NAMES.MEDIASOUP_TRANSPORTS,
+          { type: getMappedTransportType(this.type) }
+        );
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
 
-    return Promise.resolve();
+    return Promise.resolve()
   }
 }

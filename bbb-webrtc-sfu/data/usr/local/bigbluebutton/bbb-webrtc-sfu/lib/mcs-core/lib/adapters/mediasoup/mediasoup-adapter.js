@@ -10,15 +10,17 @@ process.env.DEBUG = DEBUG;
 const C = require('../../constants/constants.js');
 const EventEmitter = require('events').EventEmitter;
 const Logger = require('../../utils/logger');
-const { hrTime } = (require('../../utils/util'));
 const GLOBAL_EVENT_EMITTER = require('../../utils/emitter');
 const SDPMedia = require('../../model/sdp-media');
+const RecordingMedia =require('../../model/recording-media');
 const MediaElements = require('./media-elements.js');
 const MediasoupSDPElement = require('./sdp-element.js');
+const RecorderElement = require('./recorder-element.js');
 const Routers = require('./routers.js');
 const Workers = require('./workers.js');
 const { ERRORS, handleError } = require('./errors.js');
 const transform = require('sdp-transform');
+const { annotateEventWithTimestamp } = require('../adapter-utils.js');
 
 let instance = null;
 
@@ -46,9 +48,13 @@ module.exports = class MediasoupAdapter extends EventEmitter {
       switch (type) {
         case C.MEDIA_TYPE.RTP:
         case C.MEDIA_TYPE.WEBRTC:
-          return this._negotiateSDPEndpoint(roomId, userId, mediaSessionId, descriptor, type, options);
+          return this._negotiateSDPEndpoint(
+            roomId, userId, mediaSessionId, descriptor, type, options
+          );
         case C.MEDIA_TYPE.RECORDING:
-          return this._unsupported("MEDIASOUP_UNSUPPORTED_MEDIA_TYPE");
+          return this._startRecording(
+            roomId, userId, mediaSessionId, descriptor, type, options
+          );
         case C.MEDIA_TYPE.URI:
           return this._unsupported("MEDIASOUP_UNSUPPORTED_MEDIA_TYPE");
         default:
@@ -64,16 +70,57 @@ module.exports = class MediasoupAdapter extends EventEmitter {
 
     return new Promise(async (resolve, reject) => {
       try {
-        let mediaElement, host;
+        let mediaElement;
 
         const sdpMediaModel = new SDPMedia(roomId, userId, mediaSessionId, descriptor, null, type, this, null, null, options);
-        ({ mediaElement, host } = await this._createMediaElement(roomId, type, options));
+        ({ mediaElement } = await this._createSDPMediaElement(roomId, type, options));
         const medias = await mediaElement.negotiate(sdpMediaModel, options);
         resolve(medias);
       } catch (error) {
         reject(handleError(error));
       }
     });
+  }
+
+  async _startRecording (roomId, userId, mediaSessionId, descriptor, type, options) {
+    try {
+      const { uri, sourceMedia: sourceMediaSession } = options;
+      const sourceMedia = sourceMediaSession.medias[0];
+      const sourceId = sourceMedia.adapterElementId;
+      const sourceElement = MediaElements.getElement(sourceId);
+
+      if (sourceElement == null) {
+        throw handleError({
+          ...C.ERROR.MEDIA_NOT_FOUND,
+          details: "MEDIASOUP_RECORDER_SOURCE_NOT_FOUND",
+        });
+      }
+
+      const recorderMediaModel = new RecordingMedia(
+        roomId, userId, mediaSessionId, descriptor,
+        null, type, this, null, null, options
+      );
+
+      // I care not for the router this one belongs to as of this moment
+      const recorderElement = new RecorderElement(
+        type, sourceElement.routerId, uri, sourceElement
+      );
+
+      // Notary office stuff
+      recorderMediaModel.adapterElementId = recorderElement.id;
+      recorderMediaModel.host = sourceElement.transportSet.host;
+      MediaElements.storeElement(recorderElement.id, recorderElement);
+      recorderMediaModel.trackMedia();
+      const router = Routers.getRouter(recorderElement.routerId);
+      router.activeElements++;
+
+      await recorderElement.record(uri);
+
+      return [recorderMediaModel];
+    } catch (error) {
+      // TODO rollback
+      throw error;
+    }
   }
 
   _getOrCreateRouter (routerIdSuffix, { sourceAdapterElementIds = [] }) {
@@ -104,7 +151,7 @@ module.exports = class MediasoupAdapter extends EventEmitter {
     });
   }
 
-  _createMediaElement (roomId, type, options = {}) {
+  _createSDPMediaElement (roomId, type, options = {}) {
     return new Promise(async (resolve, reject) => {
       try {
         const router = await this._getOrCreateRouter(roomId, options);
@@ -123,17 +170,16 @@ module.exports = class MediasoupAdapter extends EventEmitter {
       try {
         Logger.info(LOG_PREFIX, 'Releasing endpoint', { elementId, roomId: room });
         const mediaElement = MediaElements.getElement(elementId);
-
         this._removeElementEventListeners(elementId);
 
         if (mediaElement) {
-          const router = Routers.getRouter(mediaElement.routerId);
-
-          if (router) {
-            router.activeElements--;
-          }
-
           try {
+            const router = Routers.getRouter(mediaElement.routerId);
+
+            if (router) {
+              router.activeElements--;
+            }
+
             await mediaElement.stop();
             Logger.info(LOG_PREFIX, `Router elements decreased for room ${room}`,
               { activeElements: router.activeElements, roomId: room });
@@ -220,28 +266,27 @@ module.exports = class MediasoupAdapter extends EventEmitter {
   }
 
   addMediaEventListener (eventTag, elementId) {
-    let event;
     const mediaElement = MediaElements.getElement(elementId);
 
     try {
       if (mediaElement) {
         Logger.trace(LOG_PREFIX, `Adding media state listener ${eventTag}`, { eventTag, elementId });
         mediaElement.on(eventTag, (rawEvent) => {
-          const timestampUTC = Date.now();
-          const timestampHR = hrTime();
           switch (eventTag) {
             default:
-              event = {
+              const event = {
                 state: {
                   name: eventTag,
                   details: rawEvent.state || rawEvent.newState
                 },
                 elementId,
-                timestampUTC,
-                timestampHR,
                 rawEvent: { ...rawEvent },
               };
-              this.emit(C.EVENT.MEDIA_STATE.MEDIA_EVENT+elementId, event);
+
+              this.emit(
+                C.EVENT.MEDIA_STATE.MEDIA_EVENT+elementId,
+                annotateEventWithTimestamp(event)
+              );
           }
         });
       }
@@ -304,13 +349,13 @@ module.exports = class MediasoupAdapter extends EventEmitter {
   // So yeah. Some work needed (mainly client side) - prlanzarin mar 13 2021
   connect (sourceId, sinkId, type) {
     // Passthrough for now
-    return resolve();
+    return Promise.resolve();
   }
 
   // See contract comment @connect method
   disconnect (sourceId, sinkId, type) {
     // Passthrough for now
-    return resolve();
+    return Promise.resolve();
   }
 
   // TODO Isn't needed. Maybe figure out a way to notify adapter capabilities
@@ -321,13 +366,5 @@ module.exports = class MediasoupAdapter extends EventEmitter {
 
   dtmf (elementId, tone) {
     return this._unsupported("MEDIASOUP_DTMF_NOT_IMPLEMENTED");
-  }
-
-  startRecording (sourceId) {
-    return this._unsupported("MEDIASOUP_START_RECORDING_NOT_IMPLEMENTED");
-  }
-
-  stopRecording (sourceId) {
-    return this._unsupported("MEDIASOUP_STOP_RECORDING_NOT_IMPLEMENTED");
   }
 };

@@ -7,6 +7,14 @@ const { getElement } = require('./media-elements.js');
 const TransportSet = require('./transports.js');
 const { v4: uuidv4 }= require('uuid');
 const EventEmitter = require('events').EventEmitter;
+const {
+  getMappedTransportType,
+  getCodecFromMimeType,
+} = require('./utils.js');
+const {
+  MCSPrometheusAgent,
+  METRIC_NAMES,
+} = require('../../metrics/index.js');
 
 module.exports = class BaseMediasoupElement extends EventEmitter {
   static _unsupported (details) {
@@ -21,11 +29,19 @@ module.exports = class BaseMediasoupElement extends EventEmitter {
     this.id = uuidv4();
     this.type = type;
     this.routerId = routerId;
-    this.transportSet;
+    this._transportSet;
     this.producers = new Map();
     this.consumers = new Map();
     this.connected = false;
     this.negotiated = false;
+  }
+
+  set transportSet (_transportSet) {
+    this._transportSet = _transportSet;
+  }
+
+  get transportSet () {
+    return this._transportSet;
   }
 
   _consumerSourceHasProducers (source) {
@@ -69,6 +85,12 @@ module.exports = class BaseMediasoupElement extends EventEmitter {
 
     producer.once("transportclose", () => this._closeProducer(producer));
     this.producers.set(producer.id, producer);
+    MCSPrometheusAgent.increment(METRIC_NAMES.MEDIASOUP_PRODUCERS, {
+      type: producer.type,
+      kind: producer.kind,
+      transport_type: getMappedTransportType(this.transportSet.type)
+    });
+
     return true;
   }
 
@@ -110,8 +132,17 @@ module.exports = class BaseMediasoupElement extends EventEmitter {
       producer = this.getProducer(id);
     }
 
-    if (producer == null) return false;
-    return this.producers.delete(producer.id);
+    if (producer && this.producers.delete(producer.id)) {
+      MCSPrometheusAgent.decrement(METRIC_NAMES.MEDIASOUP_PRODUCERS, {
+        type: producer.type,
+        kind: producer.kind,
+        transport_type: getMappedTransportType(this.transportSet.type)
+      });
+
+      return true;
+    }
+
+    return false;
   }
 
   storeConsumer (consumer) {
@@ -128,6 +159,12 @@ module.exports = class BaseMediasoupElement extends EventEmitter {
     consumer.once("transportclose", () => this._closeConsumer(consumer));
     consumer.once("producerclose", () => this._closeConsumer(consumer));
     this.consumers.set(consumer.id, consumer);
+    MCSPrometheusAgent.increment(METRIC_NAMES.MEDIASOUP_CONSUMERS, {
+      type: consumer.type,
+      kind: consumer.kind,
+      transport_type: getMappedTransportType(this.transportSet.type)
+    });
+
     return true;
   }
 
@@ -165,8 +202,17 @@ module.exports = class BaseMediasoupElement extends EventEmitter {
       consumer = this.getConsumer(id);
     }
 
-    if (consumer == null) return false;
-    return this.consumers.delete(consumer.id);
+    if (consumer && this.consumers.delete(consumer.id)) {
+      MCSPrometheusAgent.decrement(METRIC_NAMES.MEDIASOUP_CONSUMERS, {
+        type: consumer.type,
+        kind: consumer.kind,
+        transport_type: getMappedTransportType(this.transportSet.type)
+      });
+
+      return true;
+    }
+
+    return false;
   }
 
   createTransportSet (options = {}) {
@@ -184,6 +230,28 @@ module.exports = class BaseMediasoupElement extends EventEmitter {
       throw (handleError(error));
     }
   }
+
+  _extractRecConfigsFromProducers () {
+    const recCodecs = {};
+    const recCodecParameters = [];
+
+    this.producers.forEach((producer) => {
+      if (recCodecs[producer.kind] == null) {
+        const producerCodecs = producer.rtpParameters.codecs;
+        recCodecs[producer.kind] = 'copy';
+        recCodecParameters.push({
+          kind: producer.kind,
+          rtpProfile: 'RTP/AVPF',
+          codec: getCodecFromMimeType(producerCodecs[0].mimeType),
+          codecRate: producerCodecs[0].clockRate,
+          producerId: producer.id,
+        });
+      }
+    });
+
+    return { recCodecs, recCodecParameters };
+  }
+
 
   _negotiate (descriptor, options) {
     return BaseMediasoupElement._unsupported("MEDIASOUP_MUST_IMPLEMENT_NEGOTIATE");
@@ -255,11 +323,16 @@ module.exports = class BaseMediasoupElement extends EventEmitter {
   }
   // END EVENT BLOCK
 
-  stop () {
+  _stop () { // : Promise<void> {
+    // To be implemented by inheritors
+    return Promise.resolve();
+  }
+
+  async stop () {
     if (this.transportSet && typeof this.transportSet.stop === 'function') {
-      return this.transportSet.stop();
+      await this.transportSet.stop();
     }
 
-    return Promise.resolve();
+    return this._stop();
   }
 }

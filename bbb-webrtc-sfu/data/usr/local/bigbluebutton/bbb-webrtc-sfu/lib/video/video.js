@@ -383,13 +383,15 @@ module.exports = class Video extends BaseProvider {
           this.meetingId,
           this._recordingSubPath,
           recordingName,
-          format
+          format,
+          this.mediaServerAdapter,
         );
+
         const recordingId = await this.mcs.startRecording(
           this.userId,
           this.mediaId,
           recordingPath,
-          { recordingProfile, ignoreThresholds: true }
+          { adapter: this.mediaServerAdapter, recordingProfile, ignoreThresholds: true }
         );
 
         this.mcs.onEvent(C.MEDIA_STATE, recordingId, (event) => {
@@ -398,6 +400,7 @@ module.exports = class Video extends BaseProvider {
 
         this.recording = { recordingId, filename: recordingPath, recordingPath };
         this.isRecording = true;
+
         resolve(this.recording);
       }
       catch (error) {

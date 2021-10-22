@@ -1,6 +1,11 @@
-FROM node:14-alpine
+FROM node:14-bullseye-slim
 
-RUN apk update && apk add git
+RUN apt-get update && apt-get -y install \
+  git \
+  make \
+  python \
+  g++ \
+  ffmpeg
 
 ADD . app
 

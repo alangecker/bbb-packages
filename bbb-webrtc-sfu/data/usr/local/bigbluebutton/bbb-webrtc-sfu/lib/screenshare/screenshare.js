@@ -439,18 +439,26 @@ module.exports = class Screenshare extends BaseProvider {
           this.meetingId,
           this._recordingSubPath,
           this._voiceBridge,
-          format
+          format,
+          this.presenterAdapter,
         );
         const recordingId = await this.mcs.startRecording(
           this.presenterMCSUserId,
           this._presenterEndpoint,
           recordingPath,
-          { recordingProfile, ignoreThresholds: true, mediaProfile: 'content' }
+          {
+            recordingProfile,
+            ignoreThresholds: true,
+            mediaProfile: 'content',
+            adapter: this.presenterAdapter
+          }
         );
         this.recording = { recordingId, filename: recordingPath };
+
         this.mcs.onEvent(C.MEDIA_STATE, this.recording.recordingId, (event) => {
           this._mediaStateRecording(event, this.recording.recordingId);
         });
+
         resolve(this.recording);
       } catch (err) {
         reject(this._handleError(LOG_PREFIX, err));
@@ -599,13 +607,14 @@ module.exports = class Screenshare extends BaseProvider {
       // arbitrary choice that makes no difference.
       // The media specs format isn't flexible enough, so that's what we have
       const kurentoRembParams = { ...KURENTO_REMB_PARAMS };
+      this.presenterAdapter = options.mediaServer;
       kurentoRembParams.rembOnConnect = DEFAULT_MEDIA_SPECS.VP8.as_content;
       const mcsOptions = {
         descriptor,
         name: this._assembleStreamName('publish', this.userId, this._voiceBridge),
         mediaProfile: 'content',
         kurentoRembParams,
-        adapter: options.mediaServer,
+        adapter: this.presenterAdapter,
         mediaSpecs,
         ignoreThresholds: IGNORE_THRESHOLDS,
       };

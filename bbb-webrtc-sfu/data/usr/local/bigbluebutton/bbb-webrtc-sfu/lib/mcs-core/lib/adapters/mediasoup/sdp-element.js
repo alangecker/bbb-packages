@@ -10,6 +10,7 @@ const { LOG_PREFIX, ROUTER_SETTINGS } = require('./configs.js');
 const BaseMediasoupElement = require('./base-element.js');
 const config = require('config');
 const { v4: uuidv4 }= require('uuid');
+const { enrichCodecsArrayWithPreferredPT } = require('./utils.js');
 
 module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
   constructor(type, routerId) {
@@ -214,7 +215,9 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
       const producer = source.getProducerOfKind(mediaType);
       return Promise.resolve({
         rtpParams: {
-          codecs: producer.rtpParameters.codecs,
+          codecs: enrichCodecsArrayWithPreferredPT(
+            producer.rtpParameters.codecs
+          ),
         },
         setup: 'actpass',
       });
@@ -423,12 +426,4 @@ module.exports = class MediasoupSDPElement extends BaseMediasoupElement {
   }
 
   // END EVENT BLOCK
-
-  stop () {
-    if (this.transportSet && typeof this.transportSet.stop === 'function') {
-      return this.transportSet.stop();
-    }
-
-    return Promise.resolve();
-  }
 }

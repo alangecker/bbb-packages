@@ -1,6 +1,6 @@
 {
   "name": "bbb-webrtc-sfu",
-  "version": "2.6.0-beta.4",
+  "version": "2.6.0-beta.5",
   "private": true,
   "scripts": {
     "start": "node server.js",
@@ -23,12 +23,12 @@
     "sip.js": "git+https://github.com/mconf/sip.js.git#v0.7.5.12",
     "uuid": "8.3.1",
     "winston": "2.4.5",
-    "ws": "7.4.6"
-  },
-  "devDependencies": {
-    "bbb-sfurec-adapter": "git+https://github.com/mconf/bbb-sfurec-adapter.git",
+    "ws": "7.4.6",
     "mediasoup": "^3.8.4",
     "mediasoup-client": "^3.6.41",
+    "bbb-sfurec-adapter": "git+https://github.com/mconf/bbb-sfurec-adapter.git#v1.0.0-dev.6"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.12"
   },
   "optionalDependencies": {}
