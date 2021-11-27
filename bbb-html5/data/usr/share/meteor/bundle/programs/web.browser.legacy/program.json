@@ -2,25 +2,25 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "e6404d1fbc8c6ba8ce2660c1a0b896744a97c156.js",
+      "path": "a2e0799dfd32da0f8deef6a282032f19b8c03211.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/e6404d1fbc8c6ba8ce2660c1a0b896744a97c156.js?meteor_js_resource=true",
+      "url": "/a2e0799dfd32da0f8deef6a282032f19b8c03211.js?meteor_js_resource=true",
       "replaceable": false,
-      "size": 743140,
-      "hash": "e6404d1fbc8c6ba8ce2660c1a0b896744a97c156",
-      "sri": "Fo+vynHLwS+OOVCKVCbxna/qZlqPt9M4t7xZ4sMHmcX8D9Q17Wtk4OgaD8i84m47OzYDM0/b58gnOgx28Mr8VA=="
+      "size": 752095,
+      "hash": "a2e0799dfd32da0f8deef6a282032f19b8c03211",
+      "sri": "WkBSIKULl/23LhUSAKtgP6yn/n2+voUGB6k3oNvQ9bmB3Enbux7DMQlf2Om45hoJf1NlUgFI/j9jxwW1/5dxZg=="
     },
     {
-      "path": "e6404d1fbc8c6ba8ce2660c1a0b896744a97c156.stats.json",
+      "path": "a2e0799dfd32da0f8deef6a282032f19b8c03211.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/e6404d1fbc8c6ba8ce2660c1a0b896744a97c156.stats.json?meteor_js_resource=true",
-      "size": 38287,
-      "hash": "c5cca6d1cd856d2984033b0c7d5baf4e69483d12",
-      "sri": "iOtBmvk/iOMwOccE4LofFrlA9GXTl+HM0D4mc5iO6Bxeljd7OxuEAxuQNb7mrFCoGTADZkjFS4nTaUH9zqPB/A=="
+      "url": "/a2e0799dfd32da0f8deef6a282032f19b8c03211.stats.json?meteor_js_resource=true",
+      "size": 38776,
+      "hash": "548556532cef8eac94144d19067ad40f73838eff",
+      "sri": "K1fFCX4YDbwbE3LMQ+hXmKx2j7WB1Tq3VRoEkF7/ztWu4o+cKqeE3O+55lTL69gb6d8ec/cCW9WokG7ZJIDOww=="
     },
     {
       "path": "95399548b455d7f72b56c528b6c82b2e6bb975e6.css",
@@ -88,8 +88,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/af.json",
-      "size": 55851,
-      "hash": "d6af80148945e4de8698bcbe831a439bd5187316",
+      "size": 55794,
+      "hash": "35cfecd8fb859d192fe61b38cf7b3ccfd062fac5",
       "sri": null
     },
     {
@@ -98,8 +98,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ar.json",
-      "size": 78573,
-      "hash": "459e5c10ca831677616be182d4a2affc5897e7af",
+      "size": 78952,
+      "hash": "7404682849a96a5687f08aed8212e31691adb1a5",
       "sri": null
     },
     {
@@ -108,8 +108,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/az.json",
-      "size": 51587,
-      "hash": "af8304b3711f441af64aa06216a1df94dbaeeebf",
+      "size": 51522,
+      "hash": "9262afbc7b2d35b7f66f9e781db12495043fc226",
       "sri": null
     },
     {
@@ -118,8 +118,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/bg_BG.json",
-      "size": 57759,
-      "hash": "d349f841447e7ba51402ec5b7fe6c16ababda798",
+      "size": 57683,
+      "hash": "4d9b90798353bb6937305feec3f6df4d0d67f6e1",
       "sri": null
     },
     {
@@ -128,8 +128,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/bn.json",
-      "size": 95927,
-      "hash": "3454b9d108b0fcc70076befe9eef08fc9fa3c45c",
+      "size": 95822,
+      "hash": "4e175440f8a11663b9d6d6b406a7847b044ad638",
       "sri": null
     },
     {
@@ -138,8 +138,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ca.json",
-      "size": 50312,
-      "hash": "ad45e1a33a3a3ca3b17687ac5293ae668796d502",
+      "size": 50244,
+      "hash": "bae483e85ee7692095222c366d5c525cd3e5f6a3",
       "sri": null
     },
     {
@@ -148,8 +148,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/cs_CZ.json",
-      "size": 58258,
-      "hash": "a5a4eb9fc7f7fe2422661405077e7188e7be56fa",
+      "size": 58198,
+      "hash": "74cd6dce680cede3d71df2af581719e6d8966a41",
       "sri": null
     },
     {
@@ -158,8 +158,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/da.json",
-      "size": 50329,
-      "hash": "deeddfc3b57f6f98cd8a336c2fd88e68bd9f940c",
+      "size": 50269,
+      "hash": "4db627223c5b8449bce05ed363ce26373d5944ac",
       "sri": null
     },
     {
@@ -168,8 +168,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/de.json",
-      "size": 70236,
-      "hash": "efd4f38eb2791be6746dec51e1539d03fdf88db7",
+      "size": 70570,
+      "hash": "1fad47a2934ddbf05fd608f227103c93ac49b6c9",
       "sri": null
     },
     {
@@ -178,8 +178,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/dv.json",
-      "size": 86715,
-      "hash": "a6abe78a4dd8370b4597de9578fbbfa945dac43f",
+      "size": 86632,
+      "hash": "0ef94c9efc8ad7c49f7633a4dab5dd3ac7e6b580",
       "sri": null
     },
     {
@@ -188,8 +188,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/el_GR.json",
-      "size": 86415,
-      "hash": "a8c06d39524ef50e49ca542b7e9a2856fc5b51c1",
+      "size": 86310,
+      "hash": "d514e0ed8fc7a794d413c23ee10310bf9f60e53f",
       "sri": null
     },
     {
@@ -198,8 +198,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 64378,
-      "hash": "7f9d69373dd33baa4cec3a1562b3dbd9a5c4ecf2",
+      "size": 64665,
+      "hash": "c2b98c9a974ec4a13005ec50843f3f4f19a50508",
       "sri": null
     },
     {
@@ -208,8 +208,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/eo.json",
-      "size": 48608,
-      "hash": "175cc9706c28862a54aee0733449cabdc926bc87",
+      "size": 48551,
+      "hash": "5c16d145f27c7c5b0f6a3e53f10be084650a861f",
       "sri": null
     },
     {
@@ -218,8 +218,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/es.json",
-      "size": 59377,
-      "hash": "7ff26c75b3310032e4c04ddb43d253dfe4c629ab",
+      "size": 59310,
+      "hash": "c139be63246338c851e184fe49e670a60b7cf311",
       "sri": null
     },
     {
@@ -238,8 +238,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/es_ES.json",
-      "size": 59904,
-      "hash": "c1c7a31593268dbdb299fa3530a2d9a499c3d9fe",
+      "size": 59837,
+      "hash": "770f4d972f842e0c0d07c95289e1e18ada4d1d42",
       "sri": null
     },
     {
@@ -248,8 +248,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/es_MX.json",
-      "size": 31807,
-      "hash": "0bdeb8cc272636ce4f542b1750800c97ad3a83d3",
+      "size": 31743,
+      "hash": "4bc75f817b30fe510acc9a3a1c4a2780ba631ac4",
       "sri": null
     },
     {
@@ -258,8 +258,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/et.json",
-      "size": 66043,
-      "hash": "9339e81da36de6f44e8dc85d6c0429c1fbbf02ad",
+      "size": 66488,
+      "hash": "2779c8eebe5e47da13b6d81a3c3d9ae3da9c35b5",
       "sri": null
     },
     {
@@ -268,8 +268,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/eu.json",
-      "size": 63272,
-      "hash": "dac88bddcf5f7fee14fd611a61541a147924b16c",
+      "size": 68420,
+      "hash": "bcc598627b6dcdaf9cfb45820b1940aa35bcc45f",
       "sri": null
     },
     {
@@ -278,8 +278,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/fa_IR.json",
-      "size": 84085,
-      "hash": "5298db27fc8d70a07a85ea6310a801a60c840d68",
+      "size": 84630,
+      "hash": "87237478b485b9a6afa6403e30ba5ff4afba1dde",
       "sri": null
     },
     {
@@ -288,8 +288,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/fi.json",
-      "size": 37034,
-      "hash": "74e6be9beb81d508a2f3530e6d9b239af51eeaf4",
+      "size": 36976,
+      "hash": "94cc786df576b4153eef361a00d5dbc7f17bd58d",
       "sri": null
     },
     {
@@ -298,8 +298,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/fr.json",
-      "size": 68105,
-      "hash": "dd668d1bf50db2e72e63e3e10ac84472684b3af3",
+      "size": 72986,
+      "hash": "f70e2ee1543476e25fee6517b7aa27f2addb083a",
       "sri": null
     },
     {
@@ -308,8 +308,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/gl.json",
-      "size": 65798,
-      "hash": "751cd25c44edd1a3583231034955173586b91ec0",
+      "size": 65732,
+      "hash": "138fe3963809a274dcf740c83bf20e1f39d3efa1",
       "sri": null
     },
     {
@@ -318,8 +318,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/he.json",
-      "size": 47718,
-      "hash": "89302bf81d147816a8f31aaf1c6fbfca9b72347b",
+      "size": 47655,
+      "hash": "21d089e3a4219f27f47b728f0635fd703399239f",
       "sri": null
     },
     {
@@ -328,8 +328,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/hi_IN.json",
-      "size": 51442,
-      "hash": "912c4bf1a4448432f198a6a27c080973b4c4ad11",
+      "size": 51330,
+      "hash": "e3fd721032936a9f3d8b2f009e177d4cc506901b",
       "sri": null
     },
     {
@@ -338,8 +338,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/hr.json",
-      "size": 15946,
-      "hash": "b9b83f438a08b71e09832fd243b28b1c0b60c1ac",
+      "size": 15991,
+      "hash": "3423e313aa0cb2166e131f9f23707b71b6072158",
       "sri": null
     },
     {
@@ -348,8 +348,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/hu_HU.json",
-      "size": 56145,
-      "hash": "ffa8bab176efc11d1e937a06318e19b6f50fb397",
+      "size": 56073,
+      "hash": "c6e32ee0acd740815cf02943e5cd438bc0fda340",
       "sri": null
     },
     {
@@ -358,8 +358,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/hy.json",
-      "size": 3513,
-      "hash": "d16a933cba5ed712ddcd4de0affb8661b3e8461b",
+      "size": 92033,
+      "hash": "8f5d5c7b8ed49a3dcfa58799006f39f223d84325",
       "sri": null
     },
     {
@@ -368,8 +368,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/id.json",
-      "size": 56231,
-      "hash": "abf6ff727c2cb79963b85646d03d1c466e9d5a2f",
+      "size": 62319,
+      "hash": "ceeb474faf298c65d287d4e3389b3b8c65dbae88",
       "sri": null
     },
     {
@@ -378,8 +378,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/it_IT.json",
-      "size": 68929,
-      "hash": "8b16992400732fb4e22ed693603287a39f3bb4e2",
+      "size": 69564,
+      "hash": "9d1c9b2124f8efbcdfcf70326238664a335a5e29",
       "sri": null
     },
     {
@@ -388,8 +388,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ja.json",
-      "size": 74971,
-      "hash": "7dde1227b0379ff5659856ed87dc748e3ae6ac9f",
+      "size": 75305,
+      "hash": "ab01c50b500eb07fcd59a9bd3c14cb730c92c526",
       "sri": null
     },
     {
@@ -398,8 +398,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ka.json",
-      "size": 75168,
-      "hash": "b9053e8174d1bce5f87a7b42da8cc4746df82d7e",
+      "size": 75037,
+      "hash": "0398383344674bd9a56583a342411eb9d73d15d9",
       "sri": null
     },
     {
@@ -408,8 +408,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/km.json",
-      "size": 63748,
-      "hash": "dc07fbd19c0dd5ded56e3e5e0b7689c08eeb9e59",
+      "size": 63655,
+      "hash": "d8fae385cd5d18c8ffb086450abec582ac5ced28",
       "sri": null
     },
     {
@@ -418,8 +418,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/kn.json",
-      "size": 78660,
-      "hash": "82dc5b6edcf0ade2509ccad90b3aa7fb9aef86d8",
+      "size": 78547,
+      "hash": "6ddc3dbeab500e54d8e32c45c437764821badee1",
       "sri": null
     },
     {
@@ -428,8 +428,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ko_KR.json",
-      "size": 58134,
-      "hash": "37517b7afb725399bb6ea350307fc0c0c2f03b0c",
+      "size": 58081,
+      "hash": "b518175c6b8ccceeb97bfd4b6c0ed6b6a3e366ca",
       "sri": null
     },
     {
@@ -448,8 +448,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/lt_LT.json",
-      "size": 48960,
-      "hash": "56d253b2914fac70c0dfbe4facb8e76bbddb7a29",
+      "size": 49094,
+      "hash": "849c54c748b2786a91c8f844561cf51bcae9f3d6",
       "sri": null
     },
     {
@@ -458,8 +458,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/lv.json",
-      "size": 47720,
-      "hash": "125e31b81a508d5219d0e85516767172838c7802",
+      "size": 47647,
+      "hash": "68363c3dfd0bae84a609d27b2ecf5e0ced76ab01",
       "sri": null
     },
     {
@@ -468,8 +468,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ml.json",
-      "size": 104591,
-      "hash": "fe1d8fe3f70e7f8a698429575fbb0fcea36f516a",
+      "size": 104466,
+      "hash": "9cb15fdbb9cd949b2eb0b5c6e7ae0afd58e7195a",
       "sri": null
     },
     {
@@ -488,8 +488,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/nb_NO.json",
-      "size": 43594,
-      "hash": "63938337e95f10c32e41a7c6f07706f9610b7f47",
+      "size": 43531,
+      "hash": "752567ef259bf9fe706e7d2745de8c9adea8dc97",
       "sri": null
     },
     {
@@ -498,8 +498,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/nl.json",
-      "size": 62527,
-      "hash": "8a0324f2b26c2e1ca9ee283080b06993eb95362c",
+      "size": 68440,
+      "hash": "083e61709601cd04a4e896a4e94258075d62cd56",
       "sri": null
     },
     {
@@ -518,8 +518,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/pl_PL.json",
-      "size": 58241,
-      "hash": "665d71d96c4ee8e3f59716ed3bebd3c4e17aee5b",
+      "size": 59794,
+      "hash": "aaaa5c7da79a9a9326bac78adb52b5b2ebc84bef",
       "sri": null
     },
     {
@@ -528,8 +528,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/pt.json",
-      "size": 51494,
-      "hash": "a99a94a38e1f3cfe5456af858c86fd08da46d85b",
+      "size": 51430,
+      "hash": "c52998b1639b13025a609a981d7b454a6702e4a0",
       "sri": null
     },
     {
@@ -538,8 +538,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/pt_BR.json",
-      "size": 65258,
-      "hash": "91a23b5be4b3934389fb973972fec0bb834d0e7a",
+      "size": 65195,
+      "hash": "fa8472754963d0e94c985bc18d376bbb3338edb3",
       "sri": null
     },
     {
@@ -548,8 +548,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ro_RO.json",
-      "size": 42262,
-      "hash": "14cd42255770086494e8cd9ccfdb1a454cc803df",
+      "size": 42203,
+      "hash": "e9004065b05b4c24f4a210777dd99db871a37f4f",
       "sri": null
     },
     {
@@ -558,8 +558,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ru.json",
-      "size": 92389,
-      "hash": "9122b8717f9f741cfb08006dac2800fba85a66da",
+      "size": 92943,
+      "hash": "5ef38e9237621c731d37777d96ca9731ccd3ee2a",
       "sri": null
     },
     {
@@ -568,8 +568,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/sk_SK.json",
-      "size": 58561,
-      "hash": "9ebae451c7a2794d82682a1d04334f903f14e0c3",
+      "size": 58500,
+      "hash": "3a7d2f136560daa0fb03a16adfc39e14f81208fc",
       "sri": null
     },
     {
@@ -578,8 +578,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/sl.json",
-      "size": 49843,
-      "hash": "151249e62273d351a2f18a1ca83d706741a8fed6",
+      "size": 49787,
+      "hash": "3a8f8c3219f8ba21274d66c1e5b3ebdba895b91a",
       "sri": null
     },
     {
@@ -588,8 +588,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/sr.json",
-      "size": 46026,
-      "hash": "f063371e9ab78dba63f1c7a711341df64885406f",
+      "size": 45968,
+      "hash": "0ff19bc539d6a993b379bb4d389a1b17d8a69132",
       "sri": null
     },
     {
@@ -598,8 +598,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/sv_SE.json",
-      "size": 40781,
-      "hash": "e39b102b4f1bb9fe4a7ea4c5e51f2cbc857e767f",
+      "size": 40716,
+      "hash": "ac88927fda885f4ab351e9fa5aefde1eb0aab017",
       "sri": null
     },
     {
@@ -608,8 +608,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/ta.json",
-      "size": 104255,
-      "hash": "c1e2245f733e53cd5a576f914474c04cb44e82bd",
+      "size": 104115,
+      "hash": "d73744401d3b19b6a20c6319c5ce17a69728acc8",
       "sri": null
     },
     {
@@ -618,8 +618,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/te.json",
-      "size": 115743,
-      "hash": "d112c3ad53752a21c54c62af6e02b61885315cd0",
+      "size": 115645,
+      "hash": "10bd93e4a57be28b1e585adacc7aa171ec105380",
       "sri": null
     },
     {
@@ -628,8 +628,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/th.json",
-      "size": 63744,
-      "hash": "21b9d9635e420bfe224ddfc8c910fda7a91dc3d5",
+      "size": 63660,
+      "hash": "6b7ebd2ef01b3271a17517400b81d581f6e53103",
       "sri": null
     },
     {
@@ -638,8 +638,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/tr.json",
-      "size": 50371,
-      "hash": "69a3331e9c0a14ecbde3e485a069541b9f861d5e",
+      "size": 50308,
+      "hash": "f6a4fa4dcace964b938096d9ab7389481658a22f",
       "sri": null
     },
     {
@@ -648,8 +648,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/tr_TR.json",
-      "size": 68014,
-      "hash": "14ce5ddee691b56cc16c538729a4d69b858fb2dd",
+      "size": 68517,
+      "hash": "51e2fdfc75d1aafabecdc876814493a8ef4db0d9",
       "sri": null
     },
     {
@@ -658,8 +658,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/uk_UA.json",
-      "size": 88371,
-      "hash": "36db73e9cdb20c358b2a2e891d2206c84f0cc374",
+      "size": 90365,
+      "hash": "4e0848968ef1c1d1ecab957ad09c7da9736551f7",
       "sri": null
     },
     {
@@ -678,8 +678,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/vi_VN.json",
-      "size": 67456,
-      "hash": "41b7091a18feac51b27bcc3623c8b3785fd5a273",
+      "size": 67401,
+      "hash": "c9be02fdcfbd77bc2064075b4b4c0b39a90edd05",
       "sri": null
     },
     {
@@ -688,8 +688,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/zh_CN.json",
-      "size": 45090,
-      "hash": "0ba21f6a12514515aaee1f32d95adcbb3f7b87c6",
+      "size": 49919,
+      "hash": "c6586841441106950f3b705224ee4625dfafa813",
       "sri": null
     },
     {
@@ -698,8 +698,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/zh_TW.json",
-      "size": 57283,
-      "hash": "6a7b9e3d0153c27037063407d190b149f699d0c0",
+      "size": 57232,
+      "hash": "19283aaf13f1172349be7f0b75257ee6ea4a1c69",
       "sri": null
     },
     {

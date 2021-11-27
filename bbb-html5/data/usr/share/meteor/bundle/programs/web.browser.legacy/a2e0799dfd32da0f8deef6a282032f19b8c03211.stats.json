@@ -1,17 +1,17 @@
 {
   "minifier": {
     "name": "standard-minifier-js",
-    "version": "2.6.1"
+    "version": "2.7.1"
   },
-  "totalMinifiedBytes": 743140,
-  "totalMinifiedGzipBytes": 206037,
+  "totalMinifiedBytes": 752095,
+  "totalMinifiedGzipBytes": 209306,
   "minifiedBytesByPackage": {
-    "packages/meteor.js": 9504,
+    "packages/meteor.js": 9329,
     "packages/meteor-base.js": 31,
     "packages/mobile-experience.js": 37,
-    "packages/modules-runtime.js": 4510,
+    "packages/modules-runtime.js": 4495,
     "packages/modules.js": [
-      283127,
+      283633,
       {
         "node_modules": {
           "meteor": {
@@ -19,7 +19,7 @@
               "client.js": 126,
               "legacy.js": 42,
               "css.js": 263,
-              "install-packages.js": 2163,
+              "install-packages.js": 2204,
               "process.js": 349,
               "reify.js": 73,
               "stubs.js": 99,
@@ -27,15 +27,15 @@
                 "reify": {
                   "lib": {
                     "runtime": {
-                      "index.js": 911,
-                      "utils.js": 1222,
-                      "entry.js": 3047
+                      "index.js": 948,
+                      "utils.js": 1309,
+                      "entry.js": 3503
                     }
                   }
                 },
                 "meteor-babel-helpers": {
                   "package.json": 90,
-                  "index.js": 391
+                  "index.js": 387
                 }
               }
             }
@@ -62,7 +62,7 @@
             "package.json": 177,
             "index.js": 289,
             "cjs": {
-              "react-dom.production.min.js": 117319,
+              "react-dom.production.min.js": 117173,
               "react-dom.development.js": 276
             }
           },
@@ -109,21 +109,21 @@
               "index.js": 1272,
               "components": {
                 "createFormattedComponent.js": 1829,
-                "injectIntl.js": 999,
+                "injectIntl.js": 1000,
                 "useIntl.js": 221,
-                "provider.js": 3436,
-                "relative.js": 2902,
+                "provider.js": 3438,
+                "relative.js": 2904,
                 "plural.js": 378,
-                "message.js": 2274,
-                "html-message.js": 1395
+                "message.js": 2276,
+                "html-message.js": 1397
               },
               "utils.js": 1702,
               "formatters": {
                 "number.js": 936,
                 "relativeTime.js": 677,
-                "dateTime.js": 1627,
+                "dateTime.js": 1628,
                 "plural.js": 481,
-                "message.js": 2436,
+                "message.js": 2437,
                 "list.js": 804,
                 "displayName.js": 499
               }
@@ -133,18 +133,18 @@
             "package.json": 115,
             "dist": {
               "index.js": 214,
-              "core.js": 2611,
-              "formatters.js": 4863
+              "core.js": 2612,
+              "formatters.js": 4865
             }
           },
           "intl-messageformat-parser": {
             "package.json": 122,
             "dist": {
               "index.js": 354,
-              "parser.js": 17519,
+              "parser.js": 17508,
               "types.js": 1076,
               "normalize.js": 769,
-              "skeleton.js": 5116
+              "skeleton.js": 5117
             }
           },
           "intl-format-cache": {
@@ -156,12 +156,12 @@
               "package.json": 117,
               "dist": {
                 "index.js": 1219,
-                "diff.js": 1111,
+                "diff.js": 1116,
                 "polyfill-utils.js": 3230,
                 "aliases.js": 4635,
                 "parentLocales.js": 2265,
                 "invariant.js": 153,
-                "resolve-locale.js": 3569,
+                "resolve-locale.js": 3595,
                 "get-canonical-locales.js": 221,
                 "units.js": 907,
                 "number-types.js": 610
@@ -210,12 +210,13 @@
     "packages/modern-browsers.js": 35,
     "packages/babel-compiler.js": 34,
     "packages/react-fast-refresh.js": [
-      1364,
+      2936,
       {
         "node_modules": {
           "meteor": {
             "react-fast-refresh": {
-              "client-runtime.js": 86,
+              "client.js": 327,
+              "client-runtime.js": 1331,
               "node_modules": {
                 "react-refresh": {
                   "runtime.js": 92,
@@ -245,7 +246,7 @@
       }
     ],
     "packages/promise.js": [
-      5823,
+      5834,
       {
         "node_modules": {
           "meteor": {
@@ -264,7 +265,7 @@
                 "asap": {
                   "package.json": 249,
                   "raw.js": 63,
-                  "browser-raw.js": 673
+                  "browser-raw.js": 684
                 },
                 "meteor-promise": {
                   "package.json": 121,
@@ -277,7 +278,7 @@
       }
     ],
     "packages/fetch.js": [
-      7902,
+      7755,
       {
         "node_modules": {
           "meteor": {
@@ -286,7 +287,7 @@
               "node_modules": {
                 "whatwg-fetch": {
                   "package.json": 82,
-                  "fetch.js": 7297
+                  "fetch.js": 7148
                 }
               }
             }
@@ -295,12 +296,12 @@
       }
     ],
     "packages/dynamic-import.js": [
-      5148,
+      5201,
       {
         "node_modules": {
           "meteor": {
             "dynamic-import": {
-              "client.js": 1872,
+              "client.js": 1923,
               "cache.js": 1952,
               "common.js": 62,
               "dynamic-versions.js": 824
@@ -310,7 +311,7 @@
       }
     ],
     "packages/es5-shim.js": [
-      28488,
+      28782,
       {
         "node_modules": {
           "meteor": {
@@ -321,7 +322,7 @@
               "import_globals.js": 77,
               "node_modules": {
                 "es5-shim": {
-                  "es5-shim.js": 22551,
+                  "es5-shim.js": 22843,
                   "es5-sham.js": 4835
                 }
               }
@@ -331,7 +332,7 @@
       }
     ],
     "packages/ecmascript-runtime-client.js": [
-      120678,
+      123222,
       {
         "node_modules": {
           "meteor": {
@@ -363,10 +364,10 @@
                       "index.js": 1278
                     },
                     "regexp": {
-                      "index.js": 376
+                      "index.js": 413
                     },
                     "string": {
-                      "index.js": 1285
+                      "index.js": 1321
                     },
                     "weak-map": {
                       "index.js": 188
@@ -376,7 +377,7 @@
                     }
                   },
                   "modules": {
-                    "es.array.concat.js": 993,
+                    "es.array.concat.js": 961,
                     "es.object.to-string.js": 174,
                     "es.symbol.js": 4691,
                     "es.symbol.async-iterator.js": 80,
@@ -425,11 +426,11 @@
                     "es.array.some.js": 267,
                     "es.array.sort.js": 1324,
                     "es.array.species.js": 59,
-                    "es.array.splice.js": 938,
+                    "es.array.splice.js": 923,
                     "es.array.unscopables.flat.js": 69,
                     "es.array.unscopables.flat-map.js": 72,
                     "es.function.bind.js": 116,
-                    "es.function.name.js": 272,
+                    "es.function.name.js": 274,
                     "es.function.has-instance.js": 405,
                     "es.math.acosh.js": 303,
                     "es.math.asinh.js": 209,
@@ -440,7 +441,7 @@
                     "es.math.expm1.js": 134,
                     "es.math.fround.js": 111,
                     "es.math.hypot.js": 303,
-                    "es.math.imul.js": 298,
+                    "es.math.imul.js": 282,
                     "es.math.log10.js": 134,
                     "es.math.log1p.js": 109,
                     "es.math.log2.js": 130,
@@ -472,16 +473,17 @@
                     "es.object.define-setter.js": 382,
                     "es.object.lookup-getter.js": 452,
                     "es.object.lookup-setter.js": 452,
-                    "es.regexp.constructor.js": 1195,
+                    "es.regexp.constructor.js": 2296,
                     "es.regexp.to-string.js": 457,
+                    "es.regexp.dot-all.js": 375,
                     "es.regexp.exec.js": 149,
-                    "es.regexp.flags.js": 261,
-                    "es.regexp.sticky.js": 399,
+                    "es.regexp.flags.js": 332,
+                    "es.regexp.sticky.js": 384,
                     "es.regexp.test.js": 484,
-                    "es.string.match.js": 694,
-                    "es.string.replace.js": 1315,
-                    "es.string.search.js": 577,
-                    "es.string.split.js": 2070,
+                    "es.string.match.js": 692,
+                    "es.string.replace.js": 1524,
+                    "es.string.search.js": 575,
+                    "es.string.split.js": 2237,
                     "es.string.from-code-point.js": 423,
                     "es.string.raw.js": 304,
                     "es.string.code-point-at.js": 178,
@@ -493,6 +495,7 @@
                     "es.string.repeat.js": 116,
                     "es.string.replace-all.js": 938,
                     "es.string.starts-with.js": 623,
+                    "es.string.substr.js": 375,
                     "es.string.trim.js": 215,
                     "es.string.trim-start.js": 260,
                     "es.string.trim-end.js": 253,
@@ -580,7 +583,7 @@
                     "to-string-tag-support.js": 124,
                     "object-to-string.js": 172,
                     "classof.js": 435,
-                    "object-create.js": 955,
+                    "object-create.js": 954,
                     "object-define-properties.js": 284,
                     "object-keys.js": 149,
                     "html.js": 97,
@@ -592,7 +595,7 @@
                     "function-bind-context.js": 358,
                     "a-function.js": 122,
                     "collection.js": 1517,
-                    "internal-metadata.js": 701,
+                    "internal-metadata.js": 700,
                     "freezing.js": 133,
                     "iterate.js": 885,
                     "is-array-iterator-method.js": 190,
@@ -604,9 +607,9 @@
                     "inherit-if-required.js": 229,
                     "object-set-prototype-of.js": 368,
                     "a-possible-prototype.js": 161,
-                    "collection-strong.js": 2330,
+                    "collection-strong.js": 2315,
                     "redefine-all.js": 116,
-                    "define-iterator.js": 1369,
+                    "define-iterator.js": 1372,
                     "create-iterator-constructor.js": 370,
                     "iterators-core.js": 531,
                     "object-get-prototype-of.js": 372,
@@ -640,9 +643,11 @@
                     "object-prototype-accessors-forced.js": 283,
                     "is-regexp.js": 214,
                     "regexp-flags.js": 237,
-                    "regexp-sticky-helpers.js": 267,
-                    "regexp-exec.js": 1015,
-                    "fix-regexp-well-known-symbol-logic.js": 1366,
+                    "regexp-sticky-helpers.js": 266,
+                    "regexp-unsupported-dot-all.js": 148,
+                    "regexp-unsupported-ncg.js": 171,
+                    "regexp-exec.js": 1402,
+                    "fix-regexp-well-known-symbol-logic.js": 817,
                     "advance-string-index.js": 135,
                     "regexp-exec-abstract.js": 363,
                     "get-substitution.js": 566,
@@ -681,7 +686,7 @@
       }
     ],
     "packages/base64.js": [
-      2002,
+      1999,
       {
         "node_modules": {
           "meteor": {
@@ -693,7 +698,7 @@
       }
     ],
     "packages/ejson.js": [
-      8073,
+      8075,
       {
         "node_modules": {
           "meteor": {
@@ -707,32 +712,32 @@
       }
     ],
     "packages/diff-sequence.js": [
-      3087,
+      3095,
       {
         "node_modules": {
           "meteor": {
             "diff-sequence": {
-              "diff.js": 2548
+              "diff.js": 2559
             }
           }
         }
       }
     ],
     "packages/geojson-utils.js": [
-      5218,
+      5226,
       {
         "node_modules": {
           "meteor": {
             "geojson-utils": {
               "main.js": 50,
-              "geojson-utils.js": 4794
+              "geojson-utils.js": 4805
             }
           }
         }
       }
     ],
     "packages/id-map.js": [
-      1933,
+      1935,
       {
         "node_modules": {
           "meteor": {
@@ -744,7 +749,7 @@
       }
     ],
     "packages/random.js": [
-      4688,
+      4685,
       {
         "node_modules": {
           "meteor": {
@@ -761,7 +766,7 @@
       }
     ],
     "packages/mongo-id.js": [
-      2308,
+      2305,
       {
         "node_modules": {
           "meteor": {
@@ -773,38 +778,38 @@
       }
     ],
     "packages/ordered-dict.js": [
-      3974,
+      4017,
       {
         "node_modules": {
           "meteor": {
             "ordered-dict": {
-              "ordered_dict.js": 3445
+              "ordered_dict.js": 3491
             }
           }
         }
       }
     ],
     "packages/tracker.js": [
-      5257,
+      5301,
       {
         "node_modules": {
           "meteor": {
             "tracker": {
-              "tracker.js": 4759
+              "tracker.js": 4801
             }
           }
         }
       }
     ],
     "packages/minimongo.js": [
-      48117,
+      48130,
       {
         "node_modules": {
           "meteor": {
             "minimongo": {
               "minimongo_client.js": 50,
               "common.js": 13450,
-              "cursor.js": 5095,
+              "cursor.js": 5106,
               "local_collection.js": 21425,
               "matcher.js": 3099,
               "minimongo_common.js": 237,
@@ -816,7 +821,7 @@
       }
     ],
     "packages/check.js": [
-      6641,
+      6643,
       {
         "node_modules": {
           "meteor": {
@@ -829,7 +834,7 @@
       }
     ],
     "packages/retry.js": [
-      1477,
+      1479,
       {
         "node_modules": {
           "meteor": {
@@ -841,35 +846,35 @@
       }
     ],
     "packages/callback-hook.js": [
-      1784,
+      1856,
       {
         "node_modules": {
           "meteor": {
             "callback-hook": {
-              "hook.js": 1280
+              "hook.js": 1350
             }
           }
         }
       }
     ],
     "packages/ddp-common.js": [
-      5498,
+      5500,
       {
         "node_modules": {
           "meteor": {
             "ddp-common": {
               "namespace.js": 18,
               "heartbeat.js": 1693,
-              "utils.js": 1548,
+              "utils.js": 1559,
               "method_invocation.js": 589,
-              "random_stream.js": 701
+              "random_stream.js": 692
             }
           }
         }
       }
     ],
     "packages/reload.js": [
-      3011,
+      3008,
       {
         "node_modules": {
           "meteor": {
@@ -881,12 +886,12 @@
       }
     ],
     "packages/socket-stream-client.js": [
-      38328,
+      37999,
       {
         "node_modules": {
           "meteor": {
             "socket-stream-client": {
-              "sockjs-0.3.4.js": 30572,
+              "sockjs-0.3.4.js": 30241,
               "browser.js": 3465,
               "common.js": 2902,
               "urls.js": 801
@@ -896,7 +901,7 @@
       }
     ],
     "packages/ddp-client.js": [
-      25551,
+      25390,
       {
         "node_modules": {
           "meteor": {
@@ -907,7 +912,7 @@
               },
               "common": {
                 "MethodInvoker.js": 1381,
-                "livedata_connection.js": 21229,
+                "livedata_connection.js": 21066,
                 "namespace.js": 997
               }
             }
@@ -918,38 +923,51 @@
     "packages/ddp.js": 78,
     "packages/ddp-server.js": 30,
     "packages/allow-deny.js": [
-      6161,
+      6088,
       {
         "node_modules": {
           "meteor": {
             "allow-deny": {
-              "allow-deny.js": 5493
+              "allow-deny.js": 5418
+            }
+          }
+        }
+      }
+    ],
+    "packages/logging.js": [
+      4491,
+      {
+        "node_modules": {
+          "meteor": {
+            "logging": {
+              "logging.js": 3848,
+              "logging_browser.js": 53
             }
           }
         }
       }
     ],
     "packages/mongo.js": [
-      9405,
+      9831,
       {
         "node_modules": {
           "meteor": {
             "mongo": {
               "local_collection_driver.js": 440,
-              "collection.js": 8050
+              "collection.js": 8448
             }
           }
         }
       }
     ],
     "packages/reactive-var.js": 818,
-    "packages/minifier-css.js": 71,
+    "packages/minifier-css.js": 66,
     "packages/standard-minifier-css.js": 41,
     "packages/standard-minifier-js.js": 40,
     "packages/shell-server.js": 32,
     "packages/static-html.js": 31,
     "packages/tmeasday_check-npm-versions.js": [
-      14427,
+      14412,
       {
         "node_modules": {
           "meteor": {
@@ -958,7 +976,7 @@
               "node_modules": {
                 "semver": {
                   "package.json": 77,
-                  "semver.js": 12842
+                  "semver.js": 12825
                 }
               }
             }
@@ -967,7 +985,7 @@
       }
     ],
     "packages/react-meteor-data.js": [
-      4675,
+      4672,
       {
         "node_modules": {
           "meteor": {
@@ -981,7 +999,7 @@
       }
     ],
     "packages/url.js": [
-      43228,
+      43087,
       {
         "node_modules": {
           "meteor": {
@@ -1000,7 +1018,7 @@
                   "modules": {
                     "web.url.js": 11631,
                     "es.string.iterator.js": 409,
-                    "web.url-search-params.js": 4561,
+                    "web.url-search-params.js": 4431,
                     "es.array.iterator.js": 618,
                     "web.url.to-json.js": 159
                   },
@@ -1031,7 +1049,7 @@
                     "is-pure.js": 31,
                     "uid.js": 131,
                     "hidden-keys.js": 31,
-                    "define-iterator.js": 1369,
+                    "define-iterator.js": 1372,
                     "export.js": 612,
                     "object-get-own-property-descriptor.js": 428,
                     "object-property-is-enumerable.js": 178,
@@ -1060,7 +1078,7 @@
                     "engine-v8-version.js": 266,
                     "engine-user-agent.js": 96,
                     "use-symbol-as-uid.js": 116,
-                    "object-create.js": 955,
+                    "object-create.js": 954,
                     "object-define-properties.js": 284,
                     "object-keys.js": 149,
                     "html.js": 97,
@@ -1081,7 +1099,7 @@
                     "get-iterator-method.js": 204,
                     "classof.js": 435,
                     "to-string-tag-support.js": 124,
-                    "string-punycode-to-ascii.js": 1273,
+                    "string-punycode-to-ascii.js": 1258,
                     "add-to-unscopables.js": 261,
                     "redefine-all.js": 116,
                     "get-iterator.js": 216
@@ -1100,27 +1118,27 @@
           "meteor": {
             "http": {
               "httpcall_client.js": 2122,
-              "httpcall_common.js": 934
+              "httpcall_common.js": 932
             }
           }
         }
       }
     ],
     "packages/reactive-dict.js": [
-      4672,
+      4680,
       {
         "node_modules": {
           "meteor": {
             "reactive-dict": {
               "migration.js": 821,
-              "reactive-dict.js": 3233
+              "reactive-dict.js": 3244
             }
           }
         }
       }
     ],
     "packages/session.js": [
-      713,
+      710,
       {
         "node_modules": {
           "meteor": {
@@ -1146,7 +1164,7 @@
       }
     ],
     "packages/rocketchat_streamer.js": [
-      6118,
+      6113,
       {
         "node_modules": {
           "meteor": {
@@ -1163,9 +1181,9 @@
       }
     ],
     "packages/deps.js": 111,
-    "packages/cfs_reactive-list.js": 2487,
+    "packages/cfs_reactive-list.js": 2414,
     "packages/webapp.js": [
-      884,
+      881,
       {
         "node_modules": {
           "meteor": {
@@ -1177,14 +1195,14 @@
       }
     ],
     "packages/hot-code-push.js": 33,
-    "packages/launch-screen.js": 76,
+    "packages/launch-screen.js": 71,
     "packages/autoupdate.js": [
-      4092,
+      4117,
       {
         "node_modules": {
           "meteor": {
             "autoupdate": {
-              "autoupdate_client.js": 1951,
+              "autoupdate_client.js": 1979,
               "client_versions.js": 1490
             }
           }
@@ -1196,20 +1214,20 @@
       {}
     ],
     "app/app.js": [
-      5097,
+      5087,
       {
         "imports": {
           "ui": {
             "components": {
               "legacy": {
-                "component.jsx": 3039,
+                "component.jsx": 3032,
                 "styles.css": 356
               }
             }
           },
           "utils": {
             "browserInfo.js": 487,
-            "deviceInfo.js": 611
+            "deviceInfo.js": 608
           }
         },
         "client": {
