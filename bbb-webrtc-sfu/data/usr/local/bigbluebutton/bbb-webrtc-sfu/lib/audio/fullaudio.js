@@ -17,32 +17,37 @@ const PERMISSION_PROBES = config.get('permissionProbes');
 const BRIDGE_MODE = config.has('listenOnlyGlobalAudioMode')
   ? config.get('listenOnlyGlobalAudioMode')
   : 'RTP';
-const IGNORE_THRESHOLDS = config.has('listenOnlyIgnoreMediaThresholds')
-  ? config.get('listenOnlyIgnoreMediaThresholds')
-  : true;
+const EJECT_ON_USER_LEFT = config.get('ejectOnUserLeft');
 
 const EventEmitter = require('events');
 
 module.exports = class Audio extends BaseProvider {
-  constructor(bbbGW, voiceBridge, mcs, meetingId, mediaServer) {
+  constructor(bbbGW, voiceBridge, mcs, meetingId, bbbUserId, connectionId, mediaServer) {
     super(bbbGW);
     this.sfuApp = C.AUDIO_APP;
     this.mcs = mcs;
     this.voiceBridge = voiceBridge;
+    this.connectionId = connectionId;
+    this.bbbUserId = bbbUserId;
     this.globalAudioBridge = `${GLOBAL_AUDIO_PREFIX}${this.voiceBridge}`;
     this.sourceAudio;
     this.sourceAudioStarted = false;
     this.sourceAudioStatus = C.MEDIA_STOPPED;
     this.audioEndpoints = {};
-    this.userId;
+    this.userId = null;
+    this.mcsUserId = null;
     this._mediaFlowingTimeouts = {};
     this._mediaStateTimeouts = {};
     this.connectedUsers = {};
     this.candidatesQueue = {}
     this.meetingId = meetingId;
-    this.handleMCSCoreDisconnection = this.handleMCSCoreDisconnection.bind(this);
-    this.mcs.on(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
     this.mediaServer = mediaServer;
+
+    this.disconnectUser = this.disconnectUser.bind(this);
+    this.handleMCSCoreDisconnection = this.handleMCSCoreDisconnection.bind(this);
+
+    this._trackMeetingEvents();
+    this.mcs.on(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
   }
 
   set sourceAudioStatus (status) {
@@ -74,6 +79,12 @@ module.exports = class Audio extends BaseProvider {
       status: this.sourceAudioStatus,
       connectionId,
     };
+  }
+
+  _trackMeetingEvents () {
+    if (EJECT_ON_USER_LEFT) {
+      this.bbbGW.once(C.USER_LEFT_MEETING_2x+this.bbbUserId, this.disconnectUser);
+    }
   }
 
   /* ======= ICE HANDLERS ======= */
@@ -169,32 +180,13 @@ module.exports = class Audio extends BaseProvider {
     }
   };
 
-  /**
-  * Consult connectionId from a hash object composed by users {userId: String, userName: String}
-  * @param  {String} userId user id of a specific user at the media manager
-  * @return  {String} connectionId
-  */
-   getConnectionId(userId) {
-     for (var key in this.connectedUsers) {
-       if (this.connectedUsers.hasOwnProperty(key)) {
-         let user = this.connectedUsers[key]
-         if (user.hasOwnProperty('userId') && user['userId'] === userId) {
-           return key;
-         }
-       }
-     }
-     Logger.error(LOG_PREFIX, `User not found on getConnectionId for userId ${userId}`,
-      this._getPartialLogMetadata());
-   };
-
   getGlobalAudioPermission (meetingId, voiceBridge, userId, sfuSessionId) {
     if (!PERMISSION_PROBES) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const onResp = (payload) => {
-        const { meetingId, voiceBridge, userId, allowed } = payload;
         if (meetingId === payload.meetingId
-          && payload.voiceBridge === voiceBridge
-          && payload.userId === userId
+          && voiceBridge === payload.voiceConf
+          && userId === payload.userId
           && payload.allowed) {
           return resolve();
         }
@@ -210,11 +202,17 @@ module.exports = class Audio extends BaseProvider {
 
   /* ======= MEDIA TIMEOUT HANDLERS ===== */
 
-  _onSubscriberMediaFlowing (connectionId) {
+  _onSubscriberMediaFlowing (connectionId, mediaData = {}) {
+    const { role } = mediaData;
+
     Logger.debug(LOG_PREFIX, `Listen only WebRTC media is FLOWING`,
       this._getFullLogMetadata(connectionId));
     this.clearMediaFlowingTimeout(connectionId);
-    this.sendUserConnectedToGlobalAudioMessage(connectionId);
+
+    if (!role || (role !== 'sendrecv')) {
+      this.sendUserConnectedToGlobalAudioMessage(connectionId);
+    }
+
     this.sendToClient({
       type: 'audio',
       connectionId: connectionId,
@@ -402,9 +400,10 @@ module.exports = class Audio extends BaseProvider {
     }
   }
 
-  _mediaStateWebRTC (event, endpoint, connectionId) {
+  _mediaStateWebRTC (event, endpoint, connectionId, mediaData) {
     const { mediaId , state } = event;
     const { name, details } = state;
+
     const logMetadata = this._getFullLogMetadata(connectionId);
 
     if (mediaId !== endpoint) {
@@ -431,7 +430,7 @@ module.exports = class Audio extends BaseProvider {
           { ...logMetadata, state });
 
         if (details === 'FLOWING') {
-          this._onSubscriberMediaFlowing(connectionId);
+          this._onSubscriberMediaFlowing(connectionId, mediaData);
         } else {
           this._onSubscriberMediaNotFlowing(connectionId);
         }
@@ -449,6 +448,9 @@ module.exports = class Audio extends BaseProvider {
   }
 
   /* ======= START/CONNECTION METHODS ======= */
+  _waitForFullAudio(connectionId) {
+    return this.startFullAudioBridge(connectionId)
+  }
 
   _waitForGlobalAudio () {
     const waitForConnection = () => {
@@ -495,6 +497,92 @@ module.exports = class Audio extends BaseProvider {
     return Promise.race([connectionProbe(), failOver()]);
   }
 
+  _startFullAudioBridge(transportType) {
+    return new Promise(async (resolve, reject) => {
+      Logger.info(LOG_PREFIX,  `Starting WebRTC Audio for ${this.voiceBridge}`,
+        this._getPartialLogMetadata());
+      try {
+          const isConnected = await this.mcs.waitForConnection();
+
+          if (!isConnected) {
+            return reject(errors.MEDIA_SERVER_OFFLINE);
+          }
+
+          const userId = await this.mcs.join(
+            this.voiceBridge,
+            'SFU',
+            { name: this.caleeName },
+          );
+          this.userId = userId;
+
+          const proxyOptions = {
+            adapter: this.mediaServer,
+            name: `PROXY_${this.caleeName}|subscribe`,
+            ignoreThresholds: true,
+            trickle: false,
+            profiles: {
+              audio: 'sendrecv',
+            },
+            mediaProfile: 'audio',
+            adapterOptions: {
+              msHackRTPAVPtoRTPAVPF: true,
+            },
+          }
+
+          const { mediaId: proxyMediaId, answer: proxyOffer } = await this.mcs.publish(
+            this.userId,
+            this.voiceBridge,
+            transportType,
+            proxyOptions,
+          );
+
+          this.mcs.onEvent(C.MEDIA_STATE, proxyMediaId, (event) => {
+            this._onBridgeMediaStateChange(event, proxyMediaId);
+          });
+
+          const fullAudioOptions = {
+            adapter: 'Freeswitch',
+            name: this.caleeName,
+            ignoreThresholds: true,
+            descriptor: proxyOffer,
+            profiles: {
+              audio: 'sendrecv',
+            },
+            mediaProfile: 'audio',
+          }
+
+          const { answer: fullAudioAnswer } = await this.mcs.publish(
+            this.userId,
+            this.voiceBridge,
+            transportType,
+            fullAudioOptions
+          );
+
+          await this.mcs.publish(
+            this.userId,
+            this.voiceBridge,
+            transportType,
+            { ...proxyOptions, mediaId: proxyMediaId, descriptor: fullAudioAnswer }
+          );
+
+          this.sourceAudio = proxyMediaId;
+          this.sourceAudioStarted = true;
+          this.sourceAudioStatus = C.MEDIA_STARTED;
+          this.emit(C.MEDIA_STARTED);
+
+          Logger.info(LOG_PREFIX, `Fullaudio source WebRTC relay successfully created`,
+            { ...this._getPartialLogMetadata(), mediaId: this.sourceAudio, userId: this.userId });
+          return resolve(true);
+      } catch (error) {
+        Logger.error(LOG_PREFIX, `Error on starting fullaudio source WebRTC relay`,
+          { ...this._getPartialLogMetadata(), error });
+        this.sourceAudioStatus = C.MEDIA_NEGOTIATION_FAILED;
+        this._stopSourceAudio();
+        return reject(error);
+      }
+    });
+  }
+
   _startGABridge (transportType) {
       return new Promise(async (resolve, reject) => {
       Logger.info(LOG_PREFIX,  `Starting WebRTC source audio/GLOBAL_AUDIO for ${this.voiceBridge}`,
@@ -526,8 +614,7 @@ module.exports = class Audio extends BaseProvider {
             hackForceActiveDirection: true,
             trickle: false,
             profiles: {
-              // sendrecv => in from FS, out to subscribers. Odd, isn't it? :)
-              audio: 'sendrecv',
+              audio: 'recvonly',
             },
             mediaProfile: 'audio',
             adapterOptions: {
@@ -604,7 +691,12 @@ module.exports = class Audio extends BaseProvider {
     }
   }
 
-  async start (sessionId, connectionId, sdpOffer, userId, userName) {
+  startFullAudioBridge (connectionId) {
+    return this._startFullAudioBridge(C.RTP, connectionId);
+  }
+
+  async start (sessionId, connectionId, sdpOffer, userId, userName,
+    role, caleeName) {
     let mcsUserId;
     const isConnected = await this.mcs.waitForConnection();
 
@@ -612,22 +704,37 @@ module.exports = class Audio extends BaseProvider {
       throw this._handleError(LOG_PREFIX, errors.MEDIA_SERVER_OFFLINE, "recv", userId);
     }
 
+    this.caleeName = caleeName;
+    this.role = role;
+
     try {
       await this.getGlobalAudioPermission(this.meetingId, this.voiceBridge, userId, connectionId);
     } catch (error) {
       const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
-      Logger.error(LOG_PREFIX, 'New listen only session failed: unauthorized',
+      Logger.error(LOG_PREFIX, 'New audio session failed: unauthorized',
         { ...this._getPartialLogMetadata(), error: normalizedError });
       throw normalizedError;
     }
 
     try {
-      await this._waitForGlobalAudio();
+      switch (role) {
+        case 'sendrecv':
+          await this._waitForFullAudio(connectionId);
+          break;
+        case 'recvonly':
+        default:
+            await this._waitForGlobalAudio();
+          break;
+      }
     } catch (error) {
-      const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
-      Logger.error(LOG_PREFIX, `New listen only session failed: GLOBAL_AUDIO unavailable`,
-        { ...this._getPartialLogMetadata(), error: normalizedError });
-      throw errors.SFU_GLOBAL_AUDIO_FAILED;
+      const normalizedError = this._handleError(LOG_PREFIX, error, "recv",
+        userId);
+      Logger.error(
+        LOG_PREFIX,
+        `New audio session failed: AUDIO unavailable`,
+        { ...this._getPartialLogMetadata(), error: normalizedError }
+      );
+      throw errors.SFU_AUDIO_FAILED;
     }
 
     try {
@@ -636,6 +743,7 @@ module.exports = class Audio extends BaseProvider {
         'SFU',
         { externalUserId: userId, autoLeave: true }
       );
+      this.mcsUserId = mcsUserId;
     } catch (error) {
       const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
       Logger.error(LOG_PREFIX, `mcs-core join failure for new listen only session`, {
@@ -654,7 +762,10 @@ module.exports = class Audio extends BaseProvider {
       this._getFullLogMetadata(connectionId));
 
     try {
-      const sdpAnswer = await this._subscribeToGlobalAudio(sdpOffer, connectionId);
+      const sdpAnswer = (role === 'sendrecv')
+      ? await this._subscribeToFullAudio(sdpOffer, connectionId, role)
+      : await this._subscribeToGlobalAudio(sdpOffer, connectionId)
+
       return sdpAnswer;
     } catch (error) {
       const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
@@ -671,13 +782,56 @@ module.exports = class Audio extends BaseProvider {
     }
   }
 
+  async _subscribeToFullAudio(sdpOffer, connectionId, role) {
+    const { userId, mcsUserId } = this.getUser(connectionId);
+    const options = {
+      descriptor: sdpOffer,
+      adapter: this.mediaServer,
+      name: this._assembleStreamName('subscribe', userId, this.meetingId),
+      ignoreThresholds: true,
+      profiles: {
+        audio: role,
+      },
+      mediaProfile: 'audio',
+    }
+
+    let mediaId, answer;
+
+    try {
+      ({ mediaId, answer } = await this.mcs.subscribe(mcsUserId,
+        this.sourceAudio, C.WEBRTC, options));
+
+        this.mcs.connect(mediaId, [this.sourceAudio]);
+    } catch (subscribeError) {
+      Logger.error(LOG_PREFIX, `New fullaudio session failed to subscribe to
+        full audio`,
+        { ...this._getPartialLogMetadata(), subscribeError});
+      throw (this._handleError(LOG_PREFIX, subscribeError, "recv",
+        connectionId));
+    }
+
+    this.mcs.onEvent(C.MEDIA_STATE, mediaId, (event) => {
+      this._mediaStateWebRTC(event, mediaId, connectionId, { role });
+    });
+
+    this.mcs.onEvent(C.MEDIA_STATE_ICE, mediaId, (event) => {
+      this._onMCSIceCandidate(event, mediaId, connectionId);
+    });
+
+    this.audioEndpoints[connectionId] = { mcsUserId, mediaId };
+    this._flushCandidatesQueue(connectionId);
+    Logger.info(LOG_PREFIX, 'Fullaudio session subscribed',
+      this._getFullLogMetadata(connectionId));
+    return answer;
+  }
+
   async _subscribeToGlobalAudio (sdpOffer, connectionId) {
     const { userId, mcsUserId } = this.getUser(connectionId);
     const options = {
       descriptor: sdpOffer,
       adapter: this.mediaServer,
       name: this._assembleStreamName('subscribe', userId, this.meetingId),
-      ignoreThresholds: IGNORE_THRESHOLDS,
+      ignoreThresholds: true,
       profiles: {
         audio: 'recvonly',
       },
@@ -722,7 +876,7 @@ module.exports = class Audio extends BaseProvider {
         descriptor: answer,
         adapter: this.mediaServer,
         name: this._assembleStreamName('subscribe', endpoint.mcsUserId, this.meetingId),
-        ignoreThresholds: IGNORE_THRESHOLDS,
+        ignoreThresholds: true,
         profiles: {
           audio: 'recvonly',
         },
@@ -733,6 +887,17 @@ module.exports = class Audio extends BaseProvider {
   }
 
   /* ======= STOP METHODS ======= */
+  async _stopProxyEndpoints (connectionId) {
+    const { userId, mcsUserId } = this;
+
+    if (userId && mcsUserId) {
+      try {
+        await this.mcs.leave(this.voiceBridge, this.userId);
+      } catch (error) {
+        Logger.warn(LOG_PREFIX, `Error on stopping source audio ${this.voiceBridge} with MCS user ${this.userId}`, { ...this._getPartialLogMetadata(), error });
+      }
+    }
+  }
 
   async stopListener(connectionId) {
     const listener = this.audioEndpoints[connectionId];
@@ -748,10 +913,19 @@ module.exports = class Audio extends BaseProvider {
       }
     }
 
-    this.sendUserDisconnectedFromGlobalAudioMessage(connectionId);
-
-    if (this.audioEndpoints && Object.keys(this.audioEndpoints).length === 1) {
-      this._stopSourceAudio();
+    switch (this.role) {
+      case 'sendrecv':
+        this._stopProxyEndpoints(connectionId);
+        break;
+      case 'recvonly':
+      default:
+        this.sendUserDisconnectedFromGlobalAudioMessage(connectionId);
+        if (this.audioEndpoints
+          && Object.keys(this.audioEndpoints).length === 1) {
+          this._stopSourceAudio();
+        }
+        await this.mcs.leave(this.voiceBridge, this.userId);
+      break;
     }
 
     delete this.candidatesQueue[connectionId];
@@ -761,9 +935,13 @@ module.exports = class Audio extends BaseProvider {
   }
 
   async stop () {
-    Logger.info(LOG_PREFIX, `Listen only session-wide stop for room ${this.voiceBridge}, releasing everything`,
+    Logger.info(LOG_PREFIX, `Fullaudio session-wide stop for room `
+      + `${this.voiceBridge}, releasing everything`,
       this._getPartialLogMetadata());
+
     this.mcs.removeListener(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
+    this.bbbGW.removeListener(C.USER_LEFT_MEETING_2x+this.bbbUserId, this.disconnectUser);
+
     try {
       const nofConnectedUsers = Object.keys(this.connectedUsers).length;
       if (nofConnectedUsers <= 0) {
@@ -823,4 +1001,21 @@ module.exports = class Audio extends BaseProvider {
       user.connected = true;
     }
   };
+
+  async disconnectUser() {
+    try {
+      Logger.info(LOG_PREFIX, 'Disconnect full audio session on UserLeft*',
+        this._getFullLogMetadata(this.connectionId));
+      await this.stopListener();
+    } catch (error) {
+      Logger.error(LOG_PREFIX, 'Failed to disconnect full audio on UserLeft*',
+        { ...this._getFullLogMetadata(this.connectionId), error });
+    } finally {
+      this.sendToClient({
+        connectionId: this.connectionId,
+        type: C.AUDIO_APP,
+        id : 'close',
+      }, C.FROM_AUDIO);
+    }
+  }
 };

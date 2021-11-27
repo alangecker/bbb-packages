@@ -7,10 +7,8 @@
 
 const C = require('../constants/constants');
 const SdpWrapper = require('../utils/sdp-wrapper');
-const rid = require('readable-id');
 const Media = require('./media');
 const Balancer = require('../media/balancer');
-const config = require('config');
 const Logger = require('../utils/logger');
 const LOG_PREFIX = "[mcs-sdp-media]";
 const { isIP } = require('net');
@@ -197,16 +195,12 @@ module.exports = class SDPMedia extends Media {
     }
   }
 
-  addIceCandidate (candidate) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.adapter.addIceCandidate(this.adapterElementId, candidate);
-        resolve();
-      }
-      catch (err) {
-        return reject(this._handleError(err));
-      }
-    });
+  async addIceCandidate (candidate) {
+    try {
+      await this.adapter.addIceCandidate(this.adapterElementId, candidate);
+    } catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
   _updateHostLoad () {

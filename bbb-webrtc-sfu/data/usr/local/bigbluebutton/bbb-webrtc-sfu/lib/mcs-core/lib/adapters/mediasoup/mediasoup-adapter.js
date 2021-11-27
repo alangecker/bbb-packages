@@ -4,6 +4,7 @@ const config = require('config');
 const {
   NOF_WORKERS, WORKER_SETTINGS, ROUTER_SETTINGS, DEBUG, LOG_PREFIX,
 } = require('./configs.js');
+const ADU = require('../adapter-utils.js');
 
 process.env.DEBUG = DEBUG;
 
@@ -21,6 +22,7 @@ const Workers = require('./workers.js');
 const { ERRORS, handleError } = require('./errors.js');
 const transform = require('sdp-transform');
 const { annotateEventWithTimestamp } = require('../adapter-utils.js');
+const MTransportSDPElement = require('./mtransport-sdp-element.js');
 
 let instance = null;
 
@@ -35,7 +37,6 @@ module.exports = class MediasoupAdapter extends EventEmitter {
       Workers.createWorkers(
         NOF_WORKERS,
         WORKER_SETTINGS,
-        this._handleWorkerEvents.bind(this)
       );
       instance = this;
     }
@@ -65,21 +66,33 @@ module.exports = class MediasoupAdapter extends EventEmitter {
     }
   }
 
-  _negotiateSDPEndpoint (roomId, userId, mediaSessionId, descriptor, type, options) {
+  async _negotiateSDPEndpoint (roomId, userId, mediaSessionId, descriptor, type, options) {
     Logger.debug(LOG_PREFIX, 'Negotiating SDP endpoint', { userId, roomId });
+    try {
+      const { mediaElement } = await this._createSDPMediaElement(roomId, type, options);
+      const sdpMediaModel = new SDPMedia(
+        roomId, userId, mediaSessionId, descriptor, null, type, this, null, null, options
+      );
 
-    return new Promise(async (resolve, reject) => {
-      try {
-        let mediaElement;
-
-        const sdpMediaModel = new SDPMedia(roomId, userId, mediaSessionId, descriptor, null, type, this, null, null, options);
-        ({ mediaElement } = await this._createSDPMediaElement(roomId, type, options));
-        const medias = await mediaElement.negotiate(sdpMediaModel, options);
-        resolve(medias);
-      } catch (error) {
-        reject(handleError(error));
+      if (sdpMediaModel.remoteDescriptor) {
+        options.remoteDescriptor = sdpMediaModel.remoteDescriptor._jsonSdp;
       }
-    });
+
+      const localDescriptor = await mediaElement.negotiate(
+        sdpMediaModel.mediaTypes, options
+      );
+      sdpMediaModel.adapterElementId = mediaElement.id;
+      sdpMediaModel.host = mediaElement.host;
+      sdpMediaModel.trackMedia();
+      const mediaProfile = ADU.parseMediaType(sdpMediaModel);
+      sdpMediaModel.localDescriptor = ADU.appendContentTypeIfNeeded(
+        localDescriptor, mediaProfile
+      );
+
+      return [sdpMediaModel];
+    } catch (error) {
+      throw (handleError(error));
+    }
   }
 
   async _startRecording (roomId, userId, mediaSessionId, descriptor, type, options) {
@@ -111,118 +124,92 @@ module.exports = class MediasoupAdapter extends EventEmitter {
       recorderMediaModel.host = sourceElement.transportSet.host;
       MediaElements.storeElement(recorderElement.id, recorderElement);
       recorderMediaModel.trackMedia();
-      const router = Routers.getRouter(recorderElement.routerId);
-      router.activeElements++;
 
       await recorderElement.record(uri);
 
       return [recorderMediaModel];
     } catch (error) {
       // TODO rollback
-      throw error;
+      throw (handleError(error));
     }
   }
 
-  _getOrCreateRouter (routerIdSuffix, { sourceAdapterElementIds = [] }) {
-    return new Promise(async (resolve, reject) => {
-      let targetRouterId;
-      let router;
-      try {
-        if (sourceAdapterElementIds.length >= 1) {
-          const sourceElement = MediaElements.getElement(sourceAdapterElementIds[0]);
-          if (sourceElement) {
-            targetRouterId = sourceElement.routerId;
+  async _getOrCreateRouter (routerIdSuffix, { sourceAdapterElementIds = [] }) {
+    let targetRouterId;
+    if (sourceAdapterElementIds.length >= 1) {
+      const sourceElement = MediaElements.getElement(sourceAdapterElementIds[0]);
+      if (sourceElement) {
+        targetRouterId = sourceElement.routerId;
+      }
+    }
+
+    if (targetRouterId) {
+      const targetRouter = Routers.getRouter(targetRouterId);
+      if (targetRouter) return targetRouter;
+    }
+
+    const worker = await Workers.getWorkerRR();
+    const routerSettings = config.util.cloneDeep(ROUTER_SETTINGS);
+
+    return Routers.getOrCreateRouter(worker, { routerIdSuffix, routerSettings });
+  }
+
+  _getSDPElementConstructor(options) {
+    if (options.adapterOptions == null) return MediasoupSDPElement;
+    if (options.adapterOptions.splitTransport) return MTransportSDPElement;
+    return MediasoupSDPElement;
+  }
+
+  async _createSDPMediaElement (roomId, type, options = {}) {
+    const router = await this._getOrCreateRouter(roomId, options);
+    const ProxiedElementConstructor = this._getSDPElementConstructor(options);
+    const mediaElement = new ProxiedElementConstructor(type, router.internalAdapterId);
+    MediaElements.storeElement(mediaElement.id, mediaElement);
+    return { mediaElement, host: mediaElement.host };
+  }
+
+  async stop (room, type, elementId) {
+    try {
+      const mediaElement = MediaElements.getElement(elementId);
+      this._removeElementEventListeners(elementId);
+
+      if (mediaElement) {
+        await mediaElement.stop();
+      } else {
+        Logger.warn(LOG_PREFIX, 'Media element not found on stop', {
+          elementId, roomId: room, type,
+        });
+      }
+    } catch (error) {
+      Logger.error(LOG_PREFIX, 'CRITICAL: element stop failed', {
+        errorMessage: error.message, elementId, roomId: room, type,
+        errorStack: error.stack,
+      });
+    } finally {
+      // TODO check if there's any more cleanup to be done
+      MediaElements.deleteElement(elementId);
+    }
+  }
+
+  async processAnswer (elementId, descriptorString, options) {
+    try {
+      const mediaElement = MediaElements.getElement(elementId);
+      if (mediaElement) {
+        Logger.trace(LOG_PREFIX, 'Processing direct answer', {
+          elementId, answer: descriptorString
+        });
+
+        const localDescriptor = await mediaElement.processSDPOffer(
+          options.mediaTypes, {
+            remoteDescriptor: transform.parse(descriptorString),
+            ...options
           }
-        }
-
-        if (targetRouterId) {
-          router = Routers.getRouter(targetRouterId);
-          if (router) return resolve(router);
-        }
-
-        const worker = await Workers.getWorkerRR();
-        const routerSettings = config.util.cloneDeep(ROUTER_SETTINGS);
-        router = await Routers.getOrCreateRouter(worker, { routerIdSuffix, routerSettings });
-
-        return resolve(router);
-      } catch (error) {
-        reject(error);
+        );
+        return localDescriptor;
       }
-    });
-  }
-
-  _createSDPMediaElement (roomId, type, options = {}) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const router = await this._getOrCreateRouter(roomId, options);
-        const mediaElement = new MediasoupSDPElement(type, router.internalAdapterId);
-        MediaElements.storeElement(mediaElement.id, mediaElement);
-        router.activeElements++;
-        return resolve({ mediaElement, host: mediaElement.host });
-      } catch (error) {
-        reject(handleError(error));
-      }
-    });
-  }
-
-  stop (room, type, elementId) {
-    return new Promise(async (resolve) => {
-      try {
-        Logger.info(LOG_PREFIX, 'Releasing endpoint', { elementId, roomId: room });
-        const mediaElement = MediaElements.getElement(elementId);
-        this._removeElementEventListeners(elementId);
-
-        if (mediaElement) {
-          try {
-            const router = Routers.getRouter(mediaElement.routerId);
-
-            if (router) {
-              router.activeElements--;
-            }
-
-            await mediaElement.stop();
-            Logger.info(LOG_PREFIX, `Router elements decreased for room ${room}`,
-              { activeElements: router.activeElements, roomId: room });
-            if (router.activeElements <= 0) {
-              await Routers.releaseRouter(router.internalAdapterId);
-            }
-          } catch (error) {
-            Logger.error("Error releasing transpts", error);
-          }
-
-          MediaElements.deleteElement(elementId);
-
-          return resolve();
-        } else {
-          Logger.warn(LOG_PREFIX, `Media element not found on stop`, { elementId });
-          return resolve();
-        }
-      } catch (err) {
-        handleError(err);
-        resolve();
-      }
-    });
-  }
-
-  processAnswer (elementId, descriptorString, options) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const mediaElement = MediaElements.getElement(elementId);
-        if (mediaElement) {
-          Logger.trace(LOG_PREFIX, `Direct processing of ${elementId} answer `, { answer: descriptorString });
-
-          const localDescriptor = await mediaElement.processSDPOffer(
-            options.mediaTypes, {
-              remoteDescriptor: transform.parse(descriptorString),
-              ...options
-            }
-          );
-          return resolve(localDescriptor);
-        }
-      } catch (error) {
-        return reject(handleError(error));
-      }
-    });
+    } catch (error) {
+      throw (handleError(error));
+    }
   }
 
   requestKeyframe (elementId) {
@@ -248,6 +235,8 @@ module.exports = class MediasoupAdapter extends EventEmitter {
       case C.MEDIA_TYPE.WEBRTC:
         this.addMediaEventListener(C.EVENT.MEDIA_STATE.FLOW_IN, elementId);
         this.addMediaEventListener(C.EVENT.MEDIA_STATE.FLOW_OUT, elementId);
+        this.addMediaEventListener(C.EVENT.MEDIA_STATE.DTLS_FAILURE, elementId)
+        this.addMediaEventListener(C.EVENT.MEDIA_STATE.ICE_FAILURE, elementId)
         break;
 
       case C.MEDIA_TYPE.RTP:
@@ -272,22 +261,19 @@ module.exports = class MediasoupAdapter extends EventEmitter {
       if (mediaElement) {
         Logger.trace(LOG_PREFIX, `Adding media state listener ${eventTag}`, { eventTag, elementId });
         mediaElement.on(eventTag, (rawEvent) => {
-          switch (eventTag) {
-            default:
-              const event = {
-                state: {
-                  name: eventTag,
-                  details: rawEvent.state || rawEvent.newState
-                },
-                elementId,
-                rawEvent: { ...rawEvent },
-              };
+          const event = {
+            state: {
+              name: eventTag,
+              details: rawEvent.state || rawEvent.newState
+            },
+            elementId,
+            rawEvent: { ...rawEvent },
+          };
 
-              this.emit(
-                C.EVENT.MEDIA_STATE.MEDIA_EVENT+elementId,
-                annotateEventWithTimestamp(event)
-              );
-          }
+          this.emit(
+            C.EVENT.MEDIA_STATE.MEDIA_EVENT+elementId,
+            annotateEventWithTimestamp(event)
+          );
         });
       }
     } catch (error) {
@@ -301,20 +287,6 @@ module.exports = class MediasoupAdapter extends EventEmitter {
     eventsToRemove.forEach(e => {
       this.removeAllListeners(e);
     });
-  }
-
-  _notifyWorkerDeath (workerId) {
-    Logger.error(LOG_PREFIX, 'Worker died', { workerId });
-  }
-
-  _handleWorkerEvents (event, workerId) {
-    switch (event) {
-      case 'died':
-        this._notifyWorkerDeath(workerId);
-        break;
-      default:
-        return; //ignore
-    }
   }
 
   // Warning: here be dragons
@@ -347,12 +319,14 @@ module.exports = class MediasoupAdapter extends EventEmitter {
   // diff'd consumer
   //
   // So yeah. Some work needed (mainly client side) - prlanzarin mar 13 2021
+  // eslint-disable-next-line no-unused-vars
   connect (sourceId, sinkId, type) {
     // Passthrough for now
     return Promise.resolve();
   }
 
   // See contract comment @connect method
+  // eslint-disable-next-line no-unused-vars
   disconnect (sourceId, sinkId, type) {
     // Passthrough for now
     return Promise.resolve();
@@ -360,10 +334,12 @@ module.exports = class MediasoupAdapter extends EventEmitter {
 
   // TODO Isn't needed. Maybe figure out a way to notify adapter capabilities
   // upstream so we save some ticks trickling the call all the way down here?
+  // eslint-disable-next-line no-unused-vars
   addIceCandidate (elementId, candidate) {
     return Promise.resolve();
   }
 
+  // eslint-disable-next-line no-unused-vars
   dtmf (elementId, tone) {
     return this._unsupported("MEDIASOUP_DTMF_NOT_IMPLEMENTED");
   }

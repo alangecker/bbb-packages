@@ -95,6 +95,8 @@ EVENT.MEDIA_STATE.ICE = "OnIceCandidate"
 EVENT.MEDIA_STATE.ICE_GATHERING_DONE = "IceGatheringDone";
 EVENT.MEDIA_STATE.ICE_STATE_CHANGE = "IceComponentStateChange";
 EVENT.MEDIA_STATE.ICE_CANDIDATE_PAIR_SELECTED = "NewCandidatePairSelected";
+EVENT.MEDIA_STATE.DTLS_FAILURE = "DtlsFailure";
+EVENT.MEDIA_STATE.ICE_FAILURE = "IceFailure";
 EVENT.SERVER_STATE = "ServerState"
 EVENT.ROOM_EMPTY = "RoomEmpty"
 EVENT.MEDIA_CONNECTED = "mediaConnected";
@@ -194,12 +196,3 @@ exports.STRING.DEFAULT_NAME = "default"
 exports.STRING.SIP_USER_AGENT = "SIP.js 0.7.8"
 exports.STRING.ANONYMOUS = "ANONYMOUS"
 exports.STRING.FS_USER_AGENT_STRING = "Freeswitch_User_Agent"
-exports.STRING.XML_MEDIA_FAST_UPDATE = '<?xml version=\"1.0\" encoding=\"utf-8\" ?>' +
-                                          '<media_control>' +
-                                            '<vc_primitive>' +
-                                              '<to_encoder>' +
-                                                '<picture_fast_update>' +
-                                                '</picture_fast_update>' +
-                                              '</to_encoder>' +
-                                            '</vc_primitive>' +
-                                          '</media_control>'

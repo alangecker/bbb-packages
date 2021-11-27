@@ -72,14 +72,14 @@ class MediaControllerC {
   }
 
   stop () {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       try {
         Logger.info(LOG_PREFIX, "Stopping everything!");
 
         this.users.forEach(async u => {
           try {
             const { roomId, id } = u;
-            await this.leave(roomId, id);
+            this.leave(roomId, id);
           } catch (e) {
             this._handleError(e);
           }
@@ -128,15 +128,22 @@ class MediaControllerC {
   _ejectUser (userInfo) {
     const { userId, externalUserId, roomId } = userInfo;
     try {
-      this.leave(roomId, userId, C.INTERNAL_TRACKING_ID)
+      this.leave(roomId, userId);
       Logger.info(LOG_PREFIX, "User ejected", { userId, externalUserId, roomId });
     } catch (error) {
-      Logger.error(LOG_PREFIX, `Auto eject for user ${userId} at ${roomId} failed due to ${error.message}`,
-        { roomId, userId, externalUserId, error });
+      if (error === C.ERROR.USER_NOT_FOUND) {
+        Logger.debug(LOG_PREFIX, 'User with already left the room', {
+          userId, externalUserId, roomId,
+        });
+      } else {
+        Logger.error(LOG_PREFIX, 'Auto eject failed', {
+          userId, externalUserId, roomId, errorMessage: error.message, error,
+        });
+      }
     }
   }
 
-  leave (roomId, userId, params = {}) {
+  leave (roomId, userId) {
     let user, room;
     try {
       user = this.getUser(userId);
@@ -189,7 +196,7 @@ class MediaControllerC {
   }
 
   async publishAndSubscribe (roomId, userId, sourceId, type, params = {}) {
-    let user, room, source, session, answer;
+    let user, source, session, answer;
     type = C.EMAP[type];
 
     Logger.trace(LOG_PREFIX, 'Publish/Subscribe request', {
@@ -213,9 +220,9 @@ class MediaControllerC {
 
     try {
       user = this.getUser(userId);
-      room = this.getRoom(user.roomId);
+      this.getRoom(user.roomId);
     } catch (error) {
-      throw error;
+      throw (this._handleError(error));
     }
 
     try {
@@ -242,7 +249,7 @@ class MediaControllerC {
   }
 
   async publish (userId, roomId, type, params = {}) {
-    let user, room, session, answer;
+    let user, session, answer;
     type = C.EMAP[type];
 
     Logger.trace(LOG_PREFIX, 'Publish request', { userId, roomId, descriptor: params.descriptor });
@@ -264,10 +271,10 @@ class MediaControllerC {
 
     try {
       user = this.getUser(userId);
-      room = this.getRoom(user.roomId);
+      this.getRoom(user.roomId);
     } catch (error) {
       Logger.warn(LOG_PREFIX, `Publish for ${userId} failed due to ${error.message}`, { roomId, userId, error });
-      throw error;
+      throw (this._handleError(error));
     }
 
     try {
@@ -383,7 +390,7 @@ class MediaControllerC {
   }
 
   async startRecording (userId, sourceId, recordingPath, params = {}) {
-    let user, room, sourceSession, recordingSession, answer;
+    let user, sourceSession, recordingSession, answer;
 
     if (!this._validateAdapterFromOptions(params)) {
       throw (this._handleError(C.ERROR.MEDIA_ADAPTER_OBJECT_NOT_FOUND));
@@ -398,7 +405,7 @@ class MediaControllerC {
 
     try {
       user = this.getUser(userId);
-      room = this.getRoom(user.roomId);
+      this.getRoom(user.roomId);
       sourceSession = this.getMediaSession(sourceId);
     } catch (error) {
       Logger.warn(LOG_PREFIX, `startRecording from user ${userId} of media ${sourceId} failed due to ${error.message}`,
@@ -425,7 +432,7 @@ class MediaControllerC {
   }
 
   stopRecording (userId, recId) {
-    let user, room, answer;
+    let user, room;
 
     try {
       user = this.getUser(userId);
@@ -447,47 +454,34 @@ class MediaControllerC {
     }
   }
 
-  connect (sourceId, sinkId, type = 'ALL') {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const sourceSession = this.getMediaSession(sourceId);
-        const sinkSession = this.getMediaSession(sinkId);
-
-        await sourceSession.connect(sinkSession, type);
-        return resolve();
-      }
-      catch (err) {
-        return reject(this._handleError(err));
-      }
-    });
+  async connect (sourceId, sinkId, type = 'ALL') {
+    try {
+      const sourceSession = this.getMediaSession(sourceId);
+      const sinkSession = this.getMediaSession(sinkId);
+      await sourceSession.connect(sinkSession, type);
+    }
+    catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
-  disconnect (sourceId, sinkId, type = 'ALL') {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const sourceSession = this.getMediaSession(sourceId);
-        const sinkSession = this.getMediaSession(sinkId);
-
-        await sourceSession.disconnect(sinkSession, type);
-        return resolve();
-      }
-      catch (err) {
-        return reject(this._handleError(err));
-      }
-    });
+  async disconnect (sourceId, sinkId, type = 'ALL') {
+    try {
+      const sourceSession = this.getMediaSession(sourceId);
+      const sinkSession = this.getMediaSession(sinkId);
+      await sourceSession.disconnect(sinkSession, type);
+    } catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
-  addIceCandidate (mediaId, candidate) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const session = this.getMediaSession(mediaId);
-        await session.addIceCandidate(candidate);
-        return resolve();
-      }
-      catch (err) {
-        return reject(this._handleError(err));
-      }
-    });
+  async addIceCandidate (mediaId, candidate) {
+    try {
+      const session = this.getMediaSession(mediaId);
+      await session.addIceCandidate(candidate);
+    } catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
   onEvent (eventName, identifier) {
@@ -495,10 +489,11 @@ class MediaControllerC {
       const mappedEvent = C.EMAP[eventName]? C.EMAP[eventName] : eventName;
       switch (mappedEvent) {
         case C.EVENT.MEDIA_STATE.MEDIA_EVENT:
-        case C.EVENT.MEDIA_STATE.ICE:
+        case C.EVENT.MEDIA_STATE.ICE: {
           const session = this.getMediaSession(identifier);
           session.onEvent(mappedEvent);
           break;
+        }
         case C.EVENT.MEDIA_CONNECTED:
         case C.EVENT.MEDIA_DISCONNECTED:
         case C.EVENT.MEDIA_RENEGOTIATED:
@@ -644,8 +639,6 @@ class MediaControllerC {
   }
 
   removeUser (user) {
-    let removed = false;
-
     if (this.users.delete(user.id) | this.users.delete(user.externalUserId)) {
       MCSPrometheusAgent.set(METRIC_NAMES.USERS, this.getNumberOfUsers());
       GLOBAL_EVENT_EMITTER.emit(C.EVENT.USER_LEFT, user.getUserInfo());
@@ -691,7 +684,7 @@ class MediaControllerC {
       return room.getMediaInfos();
     } catch (error) {
       Logger.error(LOG_PREFIX, `getRoomMedias failed for room ${roomId} due to ${error.message}`,
-        { roomID, error });
+        { roomId, error });
       throw (this._handleError(error));
     }
   }
@@ -818,13 +811,23 @@ class MediaControllerC {
     }
   }
 
-  releaseConferenceFloor (roomId, preserve = true) {
+  releaseConferenceFloor(roomId, preserve = true) {
     try {
       const room = this.getRoom(roomId);
+
+      if (!room) return;
+
       return room.releaseConferenceFloor(preserve);
     } catch (error) {
+      if (error.message === C.ERROR.ROOM_NOT_FOUND.message) {
+        Logger.info(LOG_PREFIX, `Ignoring releaseConferenceFloor for room ` +
+          `${roomId}. This room was already removed`);
+          return;
+      }
+
       Logger.error(LOG_PREFIX, `releaseConferenceFloor for room ${roomId} failed due to ${error.message}`,
         { roomId, error });
+
       throw (this._handleError(error));
     }
   }
@@ -890,7 +893,7 @@ class MediaControllerC {
    * @param {String} identifier
    * @param {String} strategy The name of the strategy to be set
    */
-  setStrategy (identifier, strategy, params = {}) {
+  setStrategy () {
     throw this._handleError({
       ...C.ERROR.MEDIA_INVALID_OPERATION,
       details: 'setStrategy is not implemented',
@@ -902,7 +905,7 @@ class MediaControllerC {
    * or media unit, return the current strategy set for the member
    * @param {String} identifier
    */
-  getStrategy (identifier) {
+  getStrategy () {
     throw this._handleError({
       ...C.ERROR.MEDIA_INVALID_OPERATION,
       details: 'getStrategy is not implemented',
@@ -1044,7 +1047,7 @@ class MediaControllerC {
           return msTypesMatch && msMTypesMatch;
         });
 
-        mediasSessions.forEach(ms => {
+        mediaSessions.forEach(ms => {
           ms.medias = ms.medias.filter(({ mediaTypes: msMediaTypes }) => {
             const msmtk = Object.keys(msMediaTypes);
             return msMediaTypes[msmtk] === mediaTypes[msmtk];

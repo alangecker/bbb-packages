@@ -15,6 +15,15 @@ const GLOBAL_EVENT_EMITTER = require('../utils/emitter');
 const LOG_PREFIX = "[mcs-sdp-session]";
 
 module.exports = class SDPSession extends MediaSession {
+  static filterProfilesByMType (targetMediaType, profiles = {}) {
+    const filteredProfiles = {};
+    for (const [mediaType, mediaTypeDir] of Object.entries(profiles)) {
+      if (targetMediaType === mediaType) filteredProfiles[mediaType] = mediaTypeDir;
+    }
+
+    return filteredProfiles;
+  }
+
   constructor(
     remoteDescriptor = null,
     room,
@@ -115,24 +124,21 @@ module.exports = class SDPSession extends MediaSession {
     const audioOptions = isAnswerer ?
       this._options :
       { ...this._options, mediaProfile: C.MEDIA_PROFILE.AUDIO };
+    audioOptions.profiles = SDPSession.filterProfilesByMType('audio', audioOptions.profiles);
 
     const shouldNegotiate = !!descriptor
       || (this.profiles.audio && !isAnswerer);
 
     if (shouldNegotiate) {
-      try {
-        const audioMedias = await audioAdapter.negotiate(
-          this.roomId, this.userId, this.id,
-          descriptor, this.type, audioOptions
-        );
-        audioMedias.forEach(m => {
-          m.localDescriptor = m.localDescriptor.audioSdp;
-          Logger.debug(LOG_PREFIX, `Composed adapter negotiation succeeded for audio media unit ${m.id}`, m.localDescriptor._plainSdp);
-        });
-        return audioMedias;
-      } catch (e) {
-        throw e;
-      }
+      const audioMedias = await audioAdapter.negotiate(
+        this.roomId, this.userId, this.id,
+        descriptor, this.type, audioOptions
+      );
+      audioMedias.forEach(m => {
+        m.localDescriptor = m.localDescriptor.audioSdp;
+        Logger.debug(LOG_PREFIX, `Composed adapter negotiation succeeded for audio media unit ${m.id}`, m.localDescriptor._plainSdp);
+      });
+      return audioMedias;
     } else {
       return [];
     }
@@ -145,24 +151,21 @@ module.exports = class SDPSession extends MediaSession {
     const videoOptions = isAnswerer ?
       this._options :
       { ...this._options, mediaProfile: C.MEDIA_PROFILE.MAIN };
+    videoOptions.profiles = SDPSession.filterProfilesByMType('video', videoOptions.profiles);
 
     const shouldNegotiate = !!descriptor
       || (this.profiles.video && !isAnswerer);
 
     if (shouldNegotiate) {
-      try {
-        const videoMedias = await videoAdapter.negotiate(
-          this.roomId, this.userId, this.id,
-          descriptor, this.type, videoOptions
-        );
-        videoMedias.forEach(m => {
-          m.localDescriptor =  m.localDescriptor.mainVideoSdp;
-          Logger.debug(LOG_PREFIX, `Composed adapter negotiation succeeded for video media unit ${m.id}`, m.localDescriptor._plainSdp);
-        });
-        return videoMedias;
-      } catch (e) {
-        throw e;
-      }
+      const videoMedias = await videoAdapter.negotiate(
+        this.roomId, this.userId, this.id,
+        descriptor, this.type, videoOptions
+      );
+      videoMedias.forEach(m => {
+        m.localDescriptor =  m.localDescriptor.mainVideoSdp;
+        Logger.debug(LOG_PREFIX, `Composed adapter negotiation succeeded for video media unit ${m.id}`, m.localDescriptor._plainSdp);
+      });
+      return videoMedias;
     } else {
       return [];
     }
@@ -175,24 +178,21 @@ module.exports = class SDPSession extends MediaSession {
     const contentOptions = isAnswerer ?
       this._options :
       { ...this._options, mediaProfile: C.MEDIA_PROFILE.CONTENT };
+    contentOptions.profiles = SDPSession.filterProfilesByMType('content', contentOptions.profiles);
 
     const shouldNegotiate = !!descriptor
       || (this.profiles.content && !isAnswerer);
 
     if (shouldNegotiate) {
-      try {
-        const contentMedias = await contentAdapter.negotiate(
-          this.roomId, this.userId, this.id, descriptor,
-          this.type, contentOptions
-        );
-        contentMedias.forEach(m => {
-          m.localDescriptor = m.localDescriptor.contentVideoSdp;
-          Logger.debug(LOG_PREFIX, `Composed adapter negotiation succeeded for content media unit ${m.id}`, m.localDescriptor._plainSdp);
-        });
-        return contentMedias;
-      } catch (e) {
-        throw e;
-      }
+      const contentMedias = await contentAdapter.negotiate(
+        this.roomId, this.userId, this.id, descriptor,
+        this.type, contentOptions
+      );
+      contentMedias.forEach(m => {
+        m.localDescriptor = m.localDescriptor.contentVideoSdp;
+        Logger.debug(LOG_PREFIX, `Composed adapter negotiation succeeded for content media unit ${m.id}`, m.localDescriptor._plainSdp);
+      });
+      return contentMedias;
     } else {
       return [];
     }
@@ -200,7 +200,7 @@ module.exports = class SDPSession extends MediaSession {
 
   async _negotiateApplicationMedias (descriptor) {
     return this._rejectMedias(descriptor);
-  };
+  }
 
   async _rejectMedias (descriptor = '') {
     if (!descriptor) {
@@ -214,7 +214,7 @@ module.exports = class SDPSession extends MediaSession {
       C.MEDIA_TYPE.INTERNAL_UNSUPPORTED,
     );
     return [unsupportedMediaContainer];
-  };
+  }
 
   async _composedAdapterProcess () {
     const remoteDescriptor = this.remoteDescriptor
@@ -277,7 +277,7 @@ module.exports = class SDPSession extends MediaSession {
       const normalizedError = this._handleError(error);
       Logger.error(LOG_PREFIX, `Composed adapter process error on promise chain ${error.message}`,
         { error: normalizedError });
-    });;
+    });
   }
 
   _monoAdapterProcess () {
@@ -297,209 +297,207 @@ module.exports = class SDPSession extends MediaSession {
 
   // FIXME Man... this SUCKS
   // FIXME FIXME FIXME
-  renegotiateStreams () {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const {
-          videoAdapter,
-          audioAdapter,
-          contentAdapter
-        } = this._adapters;
+  async renegotiateStreams () {
+    try {
+      const {
+        videoAdapter,
+        audioAdapter,
+        contentAdapter
+      } = this._adapters;
 
-        // Short exit: we have a single media. Probably a proper single m=* line
-        // session or a multi m=* line where the adapter does it stuff right
-        if (this._getNofMedias() === 1) {
-          const tMedia = this.medias[0];
-          try {
-            if (tMedia) {
-              Logger.trace(LOG_PREFIX, 'Processing unified answerer streams', {
-                mediaSessionId: this.id,
-                mediaId: tMedia.id,
-                descriptor: this.remoteDescriptor.plainSdp,
-              });
+      // Short exit: we have a single media. Probably a proper single m=* line
+      // session or a multi m=* line where the adapter does it stuff right
+      if (this._getNofMedias() === 1) {
+        const tMedia = this.medias[0];
+        try {
+          if (tMedia) {
+            Logger.trace(LOG_PREFIX, 'Processing unified answerer streams', {
+              mediaSessionId: this.id,
+              mediaId: tMedia.id,
+              descriptor: this.remoteDescriptor.plainSdp,
+            });
 
-              await videoAdapter.processAnswer(
-                tMedia.adapterElementId,
-                this.remoteDescriptor.plainSdp,
-                { mediaTypes: tMedia.mediaTypes, ...this._options }
-              );
-
-              tMedia.remoteDescriptor = this.remoteDescriptor.plainSdp;
-            } else {
-              throw ({
-                ...C.ERROR.MEDIA_NOT_FOUND,
-                details: 'No unified media on renegotiation',
-              });
-            }
-
-            this.localDescriptor = this.getAnswer();
-            return resolve(this.localDescriptor.plainSdp);
-          } catch (error) {
-            Logger.error(LOG_PREFIX, 'Renegotiation failed',
-              { roomId: this.roomId, userId: this.userId, mediaSessionId: this.id, error }
+            await videoAdapter.processAnswer(
+              tMedia.adapterElementId,
+              this.remoteDescriptor.plainSdp,
+              { mediaTypes: tMedia.mediaTypes, ...this._options }
             );
-            return reject(error);
+
+            tMedia.remoteDescriptor = this.remoteDescriptor.plainSdp;
+          } else {
+            throw ({
+              ...C.ERROR.MEDIA_NOT_FOUND,
+              details: 'No unified media on renegotiation',
+            });
           }
+
+          this.localDescriptor = this.getAnswer();
+          return this.localDescriptor.plainSdp;
+        } catch (error) {
+          Logger.error(LOG_PREFIX, 'Renegotiation failed',
+            { roomId: this.roomId, userId: this.userId, mediaSessionId: this.id, error }
+          );
+          throw error;
         }
+      }
 
-        // There are checks here for shouldProcessRemoteDescriptorAsAnswerer because
-        // we don't support full, unlimited renegotiation as of now due to media
-        // server limitations. I understand this is kinda coupling the session
-        // logic to a limitation of Kurento and this should be handled there.
-        // Also, this method works well, but it needs a refactor to be similar
-        // to composedAdapterNegotiation (or even re-use it). Needs a media server
-        // adapter data interfacing review, though.
-        // I'll do it once I have time - prlanzarin 31/10/2019 FIXME
-        if (this.remoteDescriptor.mainVideoSdp && this.shouldProcessRemoteDescriptorAsAnswerer) {
-          try {
-            const videoMedia = this.medias.find(m => m.mediaTypes.video);
+      // There are checks here for shouldProcessRemoteDescriptorAsAnswerer because
+      // we don't support full, unlimited renegotiation as of now due to media
+      // server limitations. I understand this is kinda coupling the session
+      // logic to a limitation of Kurento and this should be handled there.
+      // Also, this method works well, but it needs a refactor to be similar
+      // to composedAdapterNegotiation (or even re-use it). Needs a media server
+      // adapter data interfacing review, though.
+      // I'll do it once I have time - prlanzarin 31/10/2019 FIXME
+      if (this.remoteDescriptor.mainVideoSdp && this.shouldProcessRemoteDescriptorAsAnswerer) {
+        try {
+          const videoMedia = this.medias.find(m => m.mediaTypes.video);
 
-            if (videoMedia) {
-              Logger.trace(LOG_PREFIX, 'Processing answerer video streams', {
-                mediaSessionId: this.id,
-                mediaId: videoMedia.id,
-                descriptor: this.remoteDescriptor.mainVideoSdp,
-              });
+          if (videoMedia) {
+            Logger.trace(LOG_PREFIX, 'Processing answerer video streams', {
+              mediaSessionId: this.id,
+              mediaId: videoMedia.id,
+              descriptor: this.remoteDescriptor.mainVideoSdp,
+            });
 
-              await videoAdapter.processAnswer(
-                videoMedia.adapterElementId,
-                this.remoteDescriptor.mainVideoSdp,
-                { mediaTypes: videoMedia.mediaTypes, ...this._options }
-              );
-
-              videoMedia.remoteDescriptor = this.remoteDescriptor.mainVideoSdp;
-            } else {
-              throw ({
-                ...C.ERROR.MEDIA_NOT_FOUND,
-                details: 'No video media on renegotiation',
-              });
-            }
-          } catch (error) {
-            Logger.error(LOG_PREFIX, 'Video renegotiation failed',
-              { roomId: this.roomId, userId: this.userId, mediaSessionId: this.id, error }
+            await videoAdapter.processAnswer(
+              videoMedia.adapterElementId,
+              this.remoteDescriptor.mainVideoSdp,
+              { mediaTypes: videoMedia.mediaTypes, ...this._options }
             );
+
+            videoMedia.remoteDescriptor = this.remoteDescriptor.mainVideoSdp;
+          } else {
+            throw ({
+              ...C.ERROR.MEDIA_NOT_FOUND,
+              details: 'No video media on renegotiation',
+            });
           }
+        } catch (error) {
+          Logger.error(LOG_PREFIX, 'Video renegotiation failed',
+            { roomId: this.roomId, userId: this.userId, mediaSessionId: this.id, error }
+          );
         }
+      }
 
-        if (this.remoteDescriptor.audioSdp && this.shouldProcessRemoteDescriptorAsAnswerer) {
+      if (this.remoteDescriptor.audioSdp && this.shouldProcessRemoteDescriptorAsAnswerer) {
+        try {
+          const audioMedia = this.medias.find(m => m.mediaTypes.audio);
+
+          if (audioMedia) {
+            Logger.trace(LOG_PREFIX, 'Processing answerer audio streams', {
+              mediaSessionId: this.id,
+              mediaId: audioMedia.id,
+              descriptor: this.remoteDescriptor.audioSdp,
+            });
+            const adescBody = SdpWrapper.removeSessionDescription(this.remoteDescriptor.audioSdp);
+            const mainWithInvalidVideo = this.remoteDescriptor.sessionDescriptionHeader + adescBody;
+            await audioAdapter.processAnswer(
+              audioMedia.adapterElementId,
+              mainWithInvalidVideo,
+              { mediaTypes: audioMedia.mediaTypes, ...this._options }
+            );
+
+            audioMedia.remoteDescriptor = this.remoteDescriptor.audioSdp;
+          } else {
+            throw this._handleError({
+              ...C.ERROR.MEDIA_NOT_FOUND,
+              details: 'No audio media on renegotiation',
+            });
+          }
+        } catch (error) {
+          Logger.error(LOG_PREFIX, 'Audio renegotiation failed',
+            { roomId: this.roomId, userId: this.userId, mediaSessionId: this.id, error }
+          );
+        }
+      }
+
+      if (this.remoteDescriptor.invalidSdps
+        && (!this.localDescriptor || !this.localDescriptor.invalidSdps)) {
+        const rejectedMedias = await this._rejectMedias(this.remoteDescriptor.invalidSdps);
+        let currentMediaLength = this.medias.length + this.invalidMedias.length;
+        rejectedMedias.forEach(rm => {
+          rm.sdpPosition = currentMediaLength;
+          currentMediaLength +=1;
+        });
+        this.invalidMedias = this.invalidMedias.concat(rejectedMedias);
+      }
+
+      if (this.remoteDescriptor.contentVideoSdp) {
+        // This is an ANSWERER descriptor to us (as OFFERERS)
+        if (this.shouldProcessRemoteDescriptorAsAnswerer || (this.localDescriptor && this.localDescriptor.contentVideoSdp)) {
           try {
-            const audioMedia = this.medias.find(m => m.mediaTypes.audio);
+            const contentMedia = this.medias.find(m => m.mediaTypes.content);
 
-            if (audioMedia) {
-              Logger.trace(LOG_PREFIX, 'Processing answerer audio streams', {
+            if (contentMedia) {
+              Logger.trace(LOG_PREFIX, 'Processing answerer content streams', {
                 mediaSessionId: this.id,
-                mediaId: audioMedia.id,
-                descriptor: this.remoteDescriptor.audioSdp,
+                mediaId: contentMedia.id,
+                descriptor: this.remoteDescriptor.contentVideoSdp,
               });
-              const adescBody = SdpWrapper.removeSessionDescription(this.remoteDescriptor.audioSdp);
-              const mainWithInvalidVideo = this.remoteDescriptor.sessionDescriptionHeader + adescBody;
-              await audioAdapter.processAnswer(
-                audioMedia.adapterElementId,
-                mainWithInvalidVideo,
-                { mediaTypes: audioMedia.mediaTypes, ...this._options }
+
+              await contentAdapter.processAnswer(
+                contentMedia.adapterElementId,
+                this.remoteDescriptor.contentVideoSdp,
+                { mediaTypes: contentMedia.mediaTypes, ...this._options }
               );
 
-              audioMedia.remoteDescriptor = this.remoteDescriptor.audioSdp;
+              contentMedia.remoteDescriptor = this.remoteDescriptor.contentVideoSdp;
             } else {
               throw this._handleError({
                 ...C.ERROR.MEDIA_NOT_FOUND,
-                details: 'No audio media on renegotiation',
+                details: 'No content media on renegotiation',
               });
             }
           } catch (error) {
-            Logger.error(LOG_PREFIX, 'Audio renegotiation failed',
+            Logger.error(LOG_PREFIX, 'Content renegotiation failed',
               { roomId: this.roomId, userId: this.userId, mediaSessionId: this.id, error }
             );
           }
-        }
-
-        if (this.remoteDescriptor.invalidSdps
-          && (!this.localDescriptor || !this.localDescriptor.invalidSdps)) {
-          const rejectedMedias = await this._rejectMedias(this.remoteDescriptor.invalidSdps);
-          let currentMediaLength = this.medias.length + this.invalidMedias.length;
-          rejectedMedias.forEach(rm => {
-            rm.sdpPosition = currentMediaLength;
-            currentMediaLength +=1;
+        } else if (!this.localDescriptor || !this.localDescriptor.contentVideoSdp) {
+          // This is a renegotiation for a new content media for us as ANSWERERS
+          Logger.trace(LOG_PREFIX, "Renegotiating content streams", {
+            mediaSessionId: this.id,
+            descriptor: this.remoteDescriptor.contentVideoSdp,
           });
-          this.invalidMedias = this.invalidMedias.concat(rejectedMedias);
-        }
 
-        if (this.remoteDescriptor.contentVideoSdp) {
-          // This is an ANSWERER descriptor to us (as OFFERERS)
-          if (this.shouldProcessRemoteDescriptorAsAnswerer || (this.localDescriptor && this.localDescriptor.contentVideoSdp)) {
-            try {
-              const contentMedia = this.medias.find(m => m.mediaTypes.content);
-
-              if (contentMedia) {
-                Logger.trace(LOG_PREFIX, 'Processing answerer content streams', {
-                  mediaSessionId: this.id,
-                  mediaId: contentMedia.id,
-                  descriptor: this.remoteDescriptor.contentVideoSdp,
-                });
-
-                await contentAdapter.processAnswer(
-                  contentMedia.adapterElementId,
-                  this.remoteDescriptor.contentVideoSdp,
-                  { mediaTypes: contentMedia.mediaTypes, ...this._options }
-                );
-
-                contentMedia.remoteDescriptor = this.remoteDescriptor.contentVideoSdp;
-              } else {
-                throw this._handleError({
-                  ...C.ERROR.MEDIA_NOT_FOUND,
-                  details: 'No content media on renegotiation',
-                });
-              }
-            } catch (error) {
-              Logger.error(LOG_PREFIX, 'Content renegotiation failed',
-                { roomId: this.roomId, userId: this.userId, mediaSessionId: this.id, error }
-              );
-            }
-          } else if (!this.localDescriptor || !this.localDescriptor.contentVideoSdp) {
-            // This is a renegotiation for a new content media for us as ANSWERERS
-            Logger.trace(LOG_PREFIX, "Renegotiating content streams", {
-              mediaSessionId: this.id,
-              descriptor: this.remoteDescriptor.contentVideoSdp,
-            });
-
-            try {
-              const contentMedias = await this._negotiateContentMedias(this.remoteDescriptor.contentVideoSdp);
-              let currentMediaLength = this.medias.length + this.invalidMedias.length;
-              contentMedias.forEach(cm => {
-                cm.sdpPosition = currentMediaLength;
-                currentMediaLength +=1;
-              });
-              this.medias = this.medias.concat(contentMedias);
-            } catch (e) {
-              this._handleError(e);
-            }
-          }
-        } else if (this.profiles.content) {
-          // Late content offer request on a renegotiation (we as OFFERERS)
           try {
-            try {
-              const contentMedias = await this._negotiateContentMedias();
-              let currentMediaLength = this.medias.length + this.invalidMedias.length;
-              contentMedias.forEach(cm => {
-                cm.sdpPosition = currentMediaLength;
-                currentMediaLength +=1;
-              });
-              this.medias = this.medias.concat(contentMedias);
-            } catch (e) {
-              this._handleError(e);
-            }
+            const contentMedias = await this._negotiateContentMedias(this.remoteDescriptor.contentVideoSdp);
+            let currentMediaLength = this.medias.length + this.invalidMedias.length;
+            contentMedias.forEach(cm => {
+              cm.sdpPosition = currentMediaLength;
+              currentMediaLength +=1;
+            });
+            this.medias = this.medias.concat(contentMedias);
           } catch (e) {
             this._handleError(e);
           }
         }
-
-        this.localDescriptor = this.getAnswer();
-
-        return resolve(this.localDescriptor._plainSdp);
-      } catch (e) {
-        return reject(this._handleError(e));
+      } else if (this.profiles.content) {
+        // Late content offer request on a renegotiation (we as OFFERERS)
+        try {
+          try {
+            const contentMedias = await this._negotiateContentMedias();
+            let currentMediaLength = this.medias.length + this.invalidMedias.length;
+            contentMedias.forEach(cm => {
+              cm.sdpPosition = currentMediaLength;
+              currentMediaLength +=1;
+            });
+            this.medias = this.medias.concat(contentMedias);
+          } catch (e) {
+            this._handleError(e);
+          }
+        } catch (e) {
+          this._handleError(e);
+        }
       }
-    });
+
+      this.localDescriptor = this.getAnswer();
+
+      return this.localDescriptor._plainSdp;
+    } catch (error) {
+      throw this._handleError(error);
+    }
   }
 
   _hasValidMedias () {
@@ -549,11 +547,7 @@ module.exports = class SDPSession extends MediaSession {
       throw (this._handleError(error));
     }
 
-    try {
-      this.localDescriptor = this.getAnswer();
-    } catch (error) {
-      throw error;
-    }
+    this.localDescriptor = this.getAnswer();
 
     localDescriptorAnswer = this._hasCompleteLocalDescriptor()
       ? this.localDescriptor._plainSdp
@@ -599,7 +593,7 @@ module.exports = class SDPSession extends MediaSession {
 
           throw error;
         });
-      };
+      }
     };
 
     if (this.medias.length === 1) {

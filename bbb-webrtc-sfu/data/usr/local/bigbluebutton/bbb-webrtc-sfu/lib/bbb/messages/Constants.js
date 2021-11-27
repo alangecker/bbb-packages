@@ -1,6 +1,5 @@
 "use strict";
 
-const config = require('config');
 /**
  * @classdesc
  * Message constants for the communication with BigBlueButton
@@ -24,7 +23,7 @@ const config = require('config');
         // SFU app types
         SCREENSHARE_APP:  'screenshare',
         VIDEO_APP: 'video',
-        AUDIO_APP: 'audio',
+        LISTEN_ONLY_APP: 'audio',
 
         // SFU requisition roles
         SEND_ROLE: 'send',
@@ -47,6 +46,8 @@ const config = require('config');
         TO_AUDIO: 'to-sfu-audio',
         TO_AKKA_APPS: 'to-akka-apps-redis-channel',
         FROM_AKKA_APPS: 'from-akka-apps-redis-channel',
+        FROM_LISTEN_ONLY: 'from-sfu-listen-only',
+        TO_LISTEN_ONLY: 'to-sfu-listen-only',
 
         // RedisWrapper events
         REDIS_MESSAGE : "redis_message",
@@ -106,7 +107,6 @@ const config = require('config');
         CONFERENCE_NAME: "voiceConf",
         SCREENSHARE_CONF: "screenshareConf",
         STREAM_URL: "stream",
-        TIMESTAMP: "timestamp",
         VIDEO_WIDTH: "vidWidth",
         VIDEO_HEIGHT: "vidHeight",
         HAS_AUDIO: "hasAudio",
@@ -133,6 +133,9 @@ const config = require('config');
         BASE_PROCESS_PREFIX: '[BaseProcess]',
         BASE_MANAGER_PREFIX: '[BaseManager]',
         BASE_PROVIDER_PREFIX: '[BaseProvider]',
+        LISTENONLY_PROCESS_PREFIX: '[ListenOnlyProcess]',
+        LISTENONLY_MANAGER_PREFIX: '[ListenOnlyManager]',
+        LISTENONLY_PROVIDER_PREFIX: '[ListenOnly]',
         SCREENSHARE_PROCESS_PREFIX: '[ScreenshareProcess]',
         SCREENSHARE_MANAGER_PREFIX: '[ScreenshareManager]',
         SCREENSHARE_PROVIDER_PREFIX: '[ScreenshareProvider]',
@@ -142,6 +145,8 @@ const config = require('config');
         AUDIO_PROCESS_PREFIX: '[AudioProcess]',
         AUDIO_MANAGER_PREFIX: '[AudioManager]',
         AUDIO_PROVIDER_PREFIX: '[AudioProvider]',
+        FULLAUDIO_PROCESS_PREFIX: '[FullAudioProcess]',
+        FULLAUDIO_MANAGER_PREFIX: '[FullAudioManager]',
 
         // MCS error codes
         MEDIA_SERVER_OFFLINE: 2001,

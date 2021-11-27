@@ -2,7 +2,6 @@
 
 const { v4: uuidv4 }= require('uuid');
 const C = require('../../constants/constants.js');
-const config = require('config');
 const EventEmitter = require('events').EventEmitter;
 const Logger = require('../../utils/logger');
 const Util = require('../../utils/util');
@@ -15,7 +14,6 @@ const SDPMedia = require('../../model/sdp-media');
 const RecordingMedia = require('../../model/recording-media');
 
 const LOG_PREFIX = "[tainted-loopback-adapter]";
-const VANILLA_GATHERING_TIMEOUT = 30000;
 
 let instance = null;
 
@@ -33,7 +31,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
       this._globalEmitter.on(C.EVENT.ROOM_EMPTY, this._releaseAllRoomPipelines.bind(this));
       this._bogusHost = {
         id: uuidv4(),
-        ip: '198.51.100.13', 
+        ip: '198.51.100.13',
         ipClassMappings: {
           public: '198.51.100.13',
           local: '198.51.100.13',
@@ -69,8 +67,8 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     return mediaElement.enrichedId;
   }
 
-  _createMediaPipeline (hostId) {
-    return new Promise((resolve, reject) => {
+  _createMediaPipeline () {
+    return new Promise((resolve) => {
       return resolve({
         host: this._bogusHost,
         activeElements: 0,
@@ -94,7 +92,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
 
         if (pPromise) {
           return pPromise;
-        };
+        }
 
         pPromise = this._createMediaPipeline(hostId);
 
@@ -138,7 +136,6 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
       try {
         Logger.debug(LOG_PREFIX, `Releasing pipeline of room ${room}`,
           { hostId, roomId: room });
-        const pipeline = this._mediaPipelines[room][hostId];
         delete this._mediaPipelines[room][hostId];
         return resolve()
 
@@ -148,7 +145,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     });
   }
 
-  _createElement (pipeline, type, options = {}) {
+  _createElement (pipeline ) {
     return new Promise((resolve, reject) => {
       try {
         const mediaElement = {
@@ -171,26 +168,20 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
   }
 
   negotiate (roomId, userId, mediaSessionId, descriptor, type, options) {
-    let media;
     try {
       switch (type) {
         case C.MEDIA_TYPE.RTP:
           return this._negotiateSDPEndpoint(roomId, userId, mediaSessionId, descriptor, type, options);
-          break;
         case C.MEDIA_TYPE.WEBRTC:
           return this._negotiateWebRTCEndpoint(roomId, userId, mediaSessionId, descriptor, type, options);
-          break;
         case C.MEDIA_TYPE.RECORDING:
           return this._negotiateRecordingEndpoint(roomId, userId, mediaSessionId, descriptor, type, options);
-          break;
         case C.MEDIA_TYPE.URI:
-          return resolve();
-          break;
         default:
           throw(this._handleError(ERRORS[40107].error));
       }
-    } catch (err) {
-      throw(this._handleError(err));
+    } catch (error) {
+      throw(this._handleError(error));
     }
   }
 
@@ -199,43 +190,39 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     try {
       const partialDescriptors = SdpWrapper.getPartialDescriptions(descriptor);
       let medias = []
-      const negotiationProcedures = partialDescriptors.map((d, i) => {
-        return new Promise(async (resolve, reject) => {
-          try {
-            let mediaElement, host, answer;
-            const media = new SDPMedia(roomId, userId, mediaSessionId, d, null, type, this, null, null, options);
-            const mediaType = ADPUtils.parseMediaType(media);
-            ({ mediaElement, host } = await this.createMediaElement(roomId, type, { ...options, mediaType }));
+      const negotiationProcedures = partialDescriptors.map(async (d, i) => {
+        try {
+          let mediaElement, host, answer;
+          const media = new SDPMedia(roomId, userId, mediaSessionId, d, null, type, this, null, null, options);
+          const mediaType = ADPUtils.parseMediaType(media);
+          ({ mediaElement, host } = await this.createMediaElement(roomId, type, { ...options, mediaType }));
 
-            media.adapterElementId = mediaElement;
-            media.host = host;
-            media.trackMedia();
+          media.adapterElementId = mediaElement;
+          media.host = host;
+          media.trackMedia();
 
-            if (d) {
-              answer = await this.processOffer(mediaElement, d, options);
-            } else {
-              const filterOptions = [
-                { reg: /AVPF/ig, val: 'AVP' },
-                { reg: /a=mid:video0\r*\n*/ig, val: '' },
-                { reg: /a=mid:audio0\r*\n*/ig, val: '' },
-                { reg: /a=rtcp-fb:.*\r*\n*/ig, val: '' },
-                { reg: /a=extmap:3 http:\/\/www.webrtc.org\/experiments\/rtp-hdrext\/abs-send-time\r*\n*/ig, val: '' },
-                { reg: /a=setup:actpass\r*\n*/ig, val: '' }
-              ]
+          if (d) {
+            answer = await this.processOffer(mediaElement, d, options);
+          } else {
+            const filterOptions = [
+              { reg: /AVPF/ig, val: 'AVP' },
+              { reg: /a=mid:video0\r*\n*/ig, val: '' },
+              { reg: /a=mid:audio0\r*\n*/ig, val: '' },
+              { reg: /a=rtcp-fb:.*\r*\n*/ig, val: '' },
+              { reg: /a=extmap:3 http:\/\/www.webrtc.org\/experiments\/rtp-hdrext\/abs-send-time\r*\n*/ig, val: '' },
+              { reg: /a=setup:actpass\r*\n*/ig, val: '' }
+            ]
 
-              answer = await this.generateOffer(mediaElement, filterOptions);
-            }
-
-            answer = ADPUtils.appendContentTypeIfNeeded(answer, mediaType);
-            media.localDescriptor = answer;
-            media.remoteDescriptor = d;
-            medias[i] = media;
-
-            resolve();
-          } catch (err) {
-            reject(this._handleError(err));
+            answer = await this.generateOffer(mediaElement, filterOptions);
           }
-        });
+
+          answer = ADPUtils.appendContentTypeIfNeeded(answer, mediaType);
+          media.localDescriptor = answer;
+          media.remoteDescriptor = d;
+          medias[i] = media;
+        } catch (error) {
+          throw (this._handleError(error));
+        }
       });
 
       return Promise.all(negotiationProcedures).then(() => {
@@ -288,25 +275,24 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     }
   }
 
-  createMediaElement (roomId, type, options = {}) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const host = this._bogusHost;
-        await this._getMediaPipeline(host.id, roomId);
-        const pipeline = this._mediaPipelines[roomId][host.id];
-        const mediaElement = await this._createElement(pipeline, type, options);
+  async createMediaElement (roomId, type, options = {}) {
+    try {
+      const host = this._bogusHost;
+      await this._getMediaPipeline(host.id, roomId);
+      const pipeline = this._mediaPipelines[roomId][host.id];
+      const mediaElement = await this._createElement(pipeline, type, options);
 
-        if (type === C.MEDIA_TYPE.RTP || type === C.MEDIA_TYPE.WEBRTC) {
-          this.setOutputBandwidth(mediaElement, 300, 1500);
-          this.setInputBandwidth(mediaElement, 300, 1500);
-        }
-
-        this._mediaPipelines[roomId][host.id].activeElements++;
-        return resolve({ mediaElement: this.getMediaElementId(mediaElement), host });
-      } catch (err) {
-        reject(this._handleError(err));
+      if (type === C.MEDIA_TYPE.RTP || type === C.MEDIA_TYPE.WEBRTC) {
+        this.setOutputBandwidth(mediaElement, 300, 1500);
+        this.setInputBandwidth(mediaElement, 300, 1500);
       }
-    });
+
+      this._mediaPipelines[roomId][host.id].activeElements++;
+
+      return { mediaElement: this.getMediaElementId(mediaElement), host };
+    } catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
   async startRecording (sourceId) {
@@ -372,22 +358,19 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     });
   }
 
-  connect (sourceId, sinkId, type) {
-    return new Promise(async (resolve, reject) => {
-      const source = this.getMediaElement(sourceId);
-      const sink = this.getMediaElement(sinkId);
+  async connect (sourceId, sinkId, type) {
+    const source = this.getMediaElement(sourceId);
+    const sink = this.getMediaElement(sinkId);
 
-      if (source == null || sink == null) {
-        return reject(this._handleError(ERRORS[40101].error));
-      }
+    if (source == null || sink == null) {
+      throw (this._handleError(ERRORS[40101].error));
+    }
 
-      try {
-        await this._connect(source, sink, type);
-        resolve();
-      } catch (error) {
-        return reject(this._handleError(error));
-      }
-    });
+    try {
+      await this._connect(source, sink, type);
+    } catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
   async _disconnect (source, sink, type) {
@@ -414,62 +397,56 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     });
   }
 
-  disconnect (sourceId, sinkId, type) {
-    return new Promise(async (resolve, reject) => {
-      const source = this.getMediaElement(sourceId);
-      const sink = this.getMediaElement(sinkId);
+  async disconnect (sourceId, sinkId, type) {
+    const source = this.getMediaElement(sourceId);
+    const sink = this.getMediaElement(sinkId);
 
-      if (source == null || sink == null) {
-        return reject(this._handleError(ERRORS[40101].error));
-      }
+    if (source == null || sink == null) {
+      throw (this._handleError(ERRORS[40101].error));
+    }
 
-      try {
-          await this._disconnect(source, sink, type);
-          resolve();
-      } catch (error) {
-        return reject(this._handleError(error));
-      }
-    });
+    try {
+      await this._disconnect(source, sink, type);
+    } catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
-  stop (room, type, elementId) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        Logger.info(LOG_PREFIX, `Releasing endpoint`, { elementId, roomId: room });
-        const mediaElement = this.getMediaElement(elementId);
+  async stop (room, type, elementId) {
+    try {
+      Logger.info(LOG_PREFIX, `Releasing endpoint`, { elementId, roomId: room });
+      const mediaElement = this.getMediaElement(elementId);
 
-        this._removeElementEventListeners(elementId);
+      this._removeElementEventListeners(elementId);
 
-        if (type === 'RecorderEndpoint') {
-          await this._stopRecording(elementId);
-        }
-
-        if (mediaElement) {
-          const pipeline = this._mediaPipelines[room][mediaElement.host.id];
-          const hostId = mediaElement.host.id;
-
-          delete this._mediaElements[elementId];
-
-          if (pipeline) {
-            pipeline.activeElements--;
-
-            Logger.info(LOG_PREFIX, `Pipeline elements decreased for room ${room}`,
-              { activeElements: pipeline.activeElements, roomId: room, hostId });
-            if (pipeline.activeElements <= 0) {
-              await this._releasePipeline(room, hostId);
-            }
-          }
-
-          return resolve();
-        } else {
-          Logger.warn(LOG_PREFIX, `Media element not found on stop`, { elementId });
-          return resolve();
-        }
-      } catch (err) {
-        this._handleError(err);
-        resolve();
+      if (type === 'RecorderEndpoint') {
+        await this._stopRecording(elementId);
       }
-    });
+
+      if (mediaElement) {
+        const pipeline = this._mediaPipelines[room][mediaElement.host.id];
+        const hostId = mediaElement.host.id;
+
+        delete this._mediaElements[elementId];
+
+        if (pipeline) {
+          pipeline.activeElements--;
+
+          Logger.info(LOG_PREFIX, `Pipeline elements decreased for room ${room}`,
+            { activeElements: pipeline.activeElements, roomId: room, hostId });
+
+          if (pipeline.activeElements <= 0) {
+            await this._releasePipeline(room, hostId);
+          }
+        }
+      } else {
+        Logger.warn(LOG_PREFIX, `Media element not found on stop`, { elementId });
+      }
+    } catch (error) {
+      Logger.error(LOG_PREFIX, 'Element stop failed', {
+        roomId: room, elementId, type, error,
+      });
+    }
   }
 
   _checkForMDNSCandidate (candidate) {
@@ -480,7 +457,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
   }
 
   addIceCandidate (elementId, candidate) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const mediaElement = this.getMediaElement(elementId);
       try {
         if (mediaElement  && candidate) {
@@ -520,7 +497,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     });
   }
 
-  setInputBandwidth (element, min, max) {
+  setInputBandwidth (element) {
     if (element) {
       return;
     } else {
@@ -528,7 +505,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     }
   }
 
-  setOutputBandwidth (element, min, max) {
+  setOutputBandwidth (element) {
     if (element) {
       return;
     } else {
@@ -536,7 +513,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
     }
   }
 
-  setOutputBitrate (element, bitrate) {
+  setOutputBitrate (element) {
     if (element) {
       return;
     } else {
@@ -625,7 +602,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
   requestKeyframe (elementId) {
     return new Promise((resolve, reject) => {
       try {
-        const mediaElement = this.getMediaElement(elementId);
+        this.getMediaElement(elementId);
         return resolve();
       } catch (error) {
         return reject(this._handleError(error));
@@ -636,7 +613,7 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
   dtmf (elementId, tone) {
     return new Promise((resolve, reject) => {
       try {
-        const mediaElement = this.getMediaElement(elementId);
+        this.getMediaElement(elementId);
         return resolve(tone);
       } catch (error) {
         return reject(this._handleError(error));
@@ -716,9 +693,10 @@ module.exports = class TaintedLoopbackAdapter extends EventEmitter {
           }
         });
       }
-    }
-    catch (err) {
-      err = this._handleError(err);
+    } catch (error) {
+      Logger.error(LOG_PREFIX, 'Failure in addMediaEventListener', {
+        errorMessage: error.message, error,
+      });
     }
   }
 

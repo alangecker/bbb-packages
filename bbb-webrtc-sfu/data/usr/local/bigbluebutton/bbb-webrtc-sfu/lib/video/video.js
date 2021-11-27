@@ -19,6 +19,12 @@ const PERMISSION_PROBES = config.get('permissionProbes');
 const IGNORE_THRESHOLDS = config.has('videoIgnoreMediaThresholds')
   ? config.get('videoIgnoreMediaThresholds')
   : false;
+const RECORDING_ADAPTER = config.has('recordingAdapter')
+  ? config.get('recordingAdapter')
+  : 'native'
+const GENERATE_TS_ON_RECORDING_EVT = config.has('recordingGenerateTsOnRecEvt')
+  ? config.get('recordingGenerateTsOnRecEvt')
+  : false;
 
 let sources = {};
 
@@ -65,6 +71,10 @@ module.exports = class Video extends BaseProvider {
     this.mcs.on(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
     this.record = record;
     this.mediaServerAdapter = mediaServer;
+    this.hgaRecordingSet = {
+      nativeSubMediaId: null, // ?: string (<T>)
+      hgaPubMediaId: null, // ?: string (<T>)
+    };
     this._trackMeetingEvents();
   }
 
@@ -119,11 +129,7 @@ module.exports = class Video extends BaseProvider {
 
   async processAnswer (answer) {
     const stream = Video.getSource(this.id);
-    try {
-      await this.mcs.subscribe(this.userId, stream, C.WEBRTC, { ...this.options, descriptor: answer, mediaId: this.mediaId });
-    } catch (error) {
-      throw error;
-    }
+    await this.mcs.subscribe(this.userId, stream, C.WEBRTC, { ...this.options, descriptor: answer, mediaId: this.mediaId });
   }
 
   async onIceCandidate (_candidate) {
@@ -145,7 +151,7 @@ module.exports = class Video extends BaseProvider {
           { ...this._getLogMetadata(), error });
       }
     }
-  };
+  }
 
   _onMCSIceCandidate (event, endpoint) {
     const { mediaId, candidate } = event;
@@ -261,7 +267,11 @@ module.exports = class Video extends BaseProvider {
           if (this.status !== C.MEDIA_STARTED) {
             // Record the video stream if it's the original being shared
             if (this.shouldRecord()) {
-              this.startRecording();
+              this.startRecording().catch(error => {
+                Logger.error(LOG_PREFIX, 'Recording start failed', {
+                  ...this._getLogMetadata(), error,
+                });
+              });
             }
 
             this.sendPlayStart();
@@ -299,10 +309,20 @@ module.exports = class Video extends BaseProvider {
           Logger.warn(LOG_PREFIX, `Recording media STOPPED FLOWING on endpoint ${endpoint}`,
             this._getLogMetadata());
         } else if (details === 'FLOWING') {
-          if (!this._startRecordingEventFired) {
+          if (!this._startRecordingEventFired && !GENERATE_TS_ON_RECORDING_EVT) {
+            Logger.debug(LOG_PREFIX, 'Firing recording event via flowing event',
+              this._getLogMetadata());
             const { timestampHR, timestampUTC } = state;
             this.sendStartShareEvent(timestampHR, timestampUTC);
           }
+        }
+        break;
+      case "Recording":
+        if (!this._startRecordingEventFired && GENERATE_TS_ON_RECORDING_EVT) {
+          Logger.debug(LOG_PREFIX, 'Firing recording event via experimental event',
+            this._getLogMetadata());
+          const { timestampHR, timestampUTC } = state;
+          this.sendStartShareEvent(timestampHR, timestampUTC);
         }
         break;
 
@@ -354,8 +374,16 @@ module.exports = class Video extends BaseProvider {
   }
 
   sendStartShareEvent(timestampHR, timestampUTC) {
-    const shareCamEvent = Messaging.generateWebRTCShareEvent('StartWebRTCShareEvent', this.meetingId, this.recording.filename, timestampHR, timestampUTC);
-    this.bbbGW.writeMeetingKey(this.meetingId, shareCamEvent, function(error) {});
+    if (timestampHR == null) {
+      timestampHR = Utils.hrTime();
+    }
+
+    if (timestampUTC == null) {
+      timestampUTC = Date.now()
+    }
+
+    const shareEvent = Messaging.generateWebRTCShareEvent('StartWebRTCShareEvent', this.meetingId, this.recording.filename, timestampHR, timestampUTC);
+    this.bbbGW.writeMeetingKey(this.meetingId, shareEvent, function() {});
     this._startRecordingEventFired = true;
   }
 
@@ -364,51 +392,155 @@ module.exports = class Video extends BaseProvider {
     const timestampHR = Utils.hrTime();
     const stopShareEvent =
       Messaging.generateWebRTCShareEvent('StopWebRTCShareEvent', this.meetingId, this.recording.filename, timestampHR, timestampUTC);
-    this.bbbGW.writeMeetingKey(this.meetingId, stopShareEvent, function(error) {});
+    this.bbbGW.writeMeetingKey(this.meetingId, stopShareEvent, function() {});
     this._stopRecordingEventFired = true;
   }
 
-  async startRecording () {
-    return new Promise(async (resolve, reject) => {
+  async _stopHGARecordingSet () {
+    const { nativeSubMediaId, hgaPubMediaId } = this.hgaRecordingSet;
+
+    if (nativeSubMediaId) {
       try {
-        const cameraCodec = DEFAULT_MEDIA_SPECS.codec_video_main;
-        const recordingName = `${this._cameraProfile}-${this.bbbUserId}`;
-        const recordingProfile = (cameraCodec === 'VP8' || cameraCodec === 'ANY')
-          ? C.RECORDING_PROFILE_WEBM_VIDEO_ONLY
-          : C.RECORDING_PROFILE_MKV_VIDEO_ONLY;
-        const format = (cameraCodec === 'VP8' || cameraCodec === 'ANY')
-          ? C.RECORDING_FORMAT_WEBM
-          : C.RECORDING_FORMAT_MKV;
-        const recordingPath = this.getRecordingPath(
-          this.meetingId,
-          this._recordingSubPath,
-          recordingName,
-          format,
-          this.mediaServerAdapter,
-        );
-
-        const recordingId = await this.mcs.startRecording(
-          this.userId,
-          this.mediaId,
-          recordingPath,
-          { adapter: this.mediaServerAdapter, recordingProfile, ignoreThresholds: true }
-        );
-
-        this.mcs.onEvent(C.MEDIA_STATE, recordingId, (event) => {
-          this._mediaStateRecording(event, recordingId);
-        });
-
-        this.recording = { recordingId, filename: recordingPath, recordingPath };
-        this.isRecording = true;
-
-        resolve(this.recording);
+        await this.mcs.unsubscribe(this.userId, nativeSubMediaId);
+      } catch(error) {
+        Logger.error(LOG_PREFIX, "HGA: native recording subscriber cleanup failure?",
+          { ...this._getLogMetadata(), error, recordingAdapter: RECORDING_ADAPTER });
+      } finally {
+        this.hgaRecordingSet.nativeSubMediaId = null;
       }
-      catch (error) {
-        Logger.error(LOG_PREFIX, "Error on recording start",
-          { ...this._getLogMetadata(), error });
-        reject(this._handleError(LOG_PREFIX, error, this.role, this.id));
+    }
+
+    if (hgaPubMediaId) {
+      try {
+        await this.mcs.unpublish(this.userId, hgaPubMediaId);
+      } catch(error) {
+        Logger.error(LOG_PREFIX, "HGA: hga recording publisher cleanup failure?",
+          { ...this._getLogMetadata(), error, recordingAdapter: RECORDING_ADAPTER });
+      } finally {
+        this.hgaRecordingSet.hgaPubMediaId = null;
       }
-    });
+    }
+  }
+
+  // Hoo-ah! - prlanzarin july 26 2021
+  async _recordViaHGAdapter (sourceMediaId, recordingPath, recordingOptions) {
+    // 1 - Generate a subscriber/consumer media session in the native adapter
+    // 2 - Generate a publisher media session in the heterogeneous adapter
+    //     (RECORDING_ADAPTER) with the offer from #1
+    // 3 - Send back the answer from #2 to the native adapter
+    // 4 - Call startRecording in the heterogeneous adapter (RECORDING_ADAPTER),
+    //     specifying the source to be the mediaSessionId obtained in #2
+
+    // Step 1
+    const nativeOptions = {
+      mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
+      profiles: {
+        video: 'sendrecv',
+      },
+      mediaProfile: 'main',
+      adapter: this.mediaServerAdapter,
+      ignoreThresholds: true,
+      adapterOptions: {
+        transportOptions: {
+          rtcpMux: false,
+          comedia: false,
+        },
+      }
+    };
+
+    const {  mediaId: nativeMediaId, answer: nativeDescriptor } = await this.mcs.subscribe(
+      this.userId, sourceMediaId, C.RTP, nativeOptions
+    );
+    this.hgaRecordingSet.nativeSubMediaId= nativeMediaId;
+
+    // Step 2
+    const hgaOptions = {
+      descriptor: nativeDescriptor,
+      adapter: RECORDING_ADAPTER,
+      ignoreThresholds: true,
+      profiles: {
+        video: 'sendonly',
+      },
+      mediaProfile: 'main',
+    };
+
+    const { mediaId: hgaMediaId, answer: hgaAnswer } = await this.mcs.publish(
+      this.userId, this.voiceBridge, C.RTP, hgaOptions,
+    );
+    this.hgaRecordingSet.hgaPubMediaId = hgaMediaId;
+
+    // Step 3
+    nativeOptions.descriptor = hgaAnswer;
+    nativeOptions.mediaId = nativeMediaId;
+    await this.mcs.subscribe(this.userId, sourceMediaId, C.RTP, nativeOptions);
+
+    // Step 4 - Hoo-ah!
+    recordingOptions.adapter = RECORDING_ADAPTER;
+    return this._record(hgaMediaId, recordingPath, recordingOptions);
+  }
+
+  async _record (sourceMediaId, recordingPath, options) {
+    if (options.adapter == null) {
+      options.adapter = this.mediaServerAdapter;
+    }
+
+    const recordingId = await this.mcs.startRecording(
+      this.userId, sourceMediaId, recordingPath, options,
+    );
+
+    return { recordingId, filename: recordingPath, recordingPath };
+  }
+
+  _getRecordingAdapter () {
+    if (RECORDING_ADAPTER === 'native' || RECORDING_ADAPTER === this.mediaServerAdapter) {
+      return this.mediaServerAdapter;
+    }
+
+    return RECORDING_ADAPTER;
+  }
+
+  _getRecordingMethod () {
+    // Specifying that the rec adapter should be the same as the source media's
+    // adapter is the same that specifying native; just don't do it.
+    if (RECORDING_ADAPTER === 'native' || RECORDING_ADAPTER === this.mediaServerAdapter) {
+      return this._record.bind(this);
+    } else {
+      // Hoo-ah! - prlanzarin july 26 2021
+      return this._recordViaHGAdapter.bind(this);
+    }
+  }
+
+  async startRecording () {
+    try {
+      const cameraCodec = DEFAULT_MEDIA_SPECS.codec_video_main;
+      const recordingName = `${this._cameraProfile}-${this.bbbUserId}`;
+      const recordingProfile = (cameraCodec === 'VP8' || cameraCodec === 'ANY')
+        ? C.RECORDING_PROFILE_WEBM_VIDEO_ONLY
+        : C.RECORDING_PROFILE_MKV_VIDEO_ONLY;
+      const format = (cameraCodec === 'VP8' || cameraCodec === 'ANY')
+        ? C.RECORDING_FORMAT_WEBM
+        : C.RECORDING_FORMAT_MKV;
+      const proxiedStartRecording = this._getRecordingMethod();
+      const recordingPath = this.getRecordingPath(
+        this.meetingId,
+        this._recordingSubPath,
+        recordingName,
+        format,
+        this._getRecordingAdapter(),
+      );
+
+      const recordingOptions = { recordingProfile, ignoreThresholds: true };
+      const recordingData = await proxiedStartRecording(
+        this.mediaId, recordingPath, recordingOptions
+      );
+      this.recording = recordingData;
+      this.sendStartShareEvent();
+      this.isRecording = true;
+
+      return recordingData;
+    } catch (error) {
+      throw (this._handleError(LOG_PREFIX, error, this.role, this.id));
+    }
   }
 
   async stopRecording () {
@@ -425,9 +557,8 @@ module.exports = class Video extends BaseProvider {
     if (!PERMISSION_PROBES) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const onResp = (payload) => {
-        const { meetingId, userId, allowed } = payload;
         if (meetingId === payload.meetingId
-          && payload.userId === userId
+          && userId === payload.userId
           && payload.allowed) {
           return resolve();
         }
@@ -449,9 +580,8 @@ module.exports = class Video extends BaseProvider {
     if (!PERMISSION_PROBES) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const onResp = (payload) => {
-        const { meetingId, userId, allowed } = payload;
         if (meetingId === payload.meetingId
-          && payload.userId === userId
+          && userId === payload.userId
           && payload.allowed) {
           return resolve();
         }
@@ -471,122 +601,76 @@ module.exports = class Video extends BaseProvider {
     });
   }
 
-  start (sdpOffer, mediaSpecs) {
-    return new Promise(async (resolve, reject) => {
+  async start (sdpOffer, mediaSpecs) {
+    try {
       if (this.status === C.MEDIA_STOPPED) {
-        try {
-          this.status = C.MEDIA_STARTING;
+        this.status = C.MEDIA_STARTING;
 
-          if (this.shared) {
-            await this.getBroadcastPermission(
-              this.meetingId,
-              this.bbbUserId,
-              this.streamName,
-            );
-          } else {
-            await this.getSubscribePermission(
-              this.meetingId,
-              this.bbbUserId,
-              this.id,
-              this.streamName,
-            );
-          }
-
-          const isConnected = await this.mcs.waitForConnection();
-
-          if (!isConnected) {
-            return reject(errors.MEDIA_SERVER_OFFLINE);
-          }
-
-          // Probe akka-apps to see if this is to be recorded
-          if (SHOULD_RECORD && this.shared) {
-            this.isRecorded = await this.probeForRecordingStatus(this.meetingId, this.id);
-          }
-
-          const userId = await this.mcs.join(
-            this.voiceBridge,
-            'SFU',
-            { externalUserId: this.bbbUserId, autoLeave: true });
-          this.userId = userId;
-          const sdpAnswer = await this._addMCSMedia(C.WEBRTC, sdpOffer, mediaSpecs);
-          // Status to indicate that the brokering with mcs-core was succesfull.
-          // Don't mix with MEDIA_STARTED. MEDIA_STARTED means that media is
-          // flowing through the server. This just means that the session was
-          // negotiated properly.
-          this.status = C.MEDIA_NEGOTIATED;
-          this.mcs.onEvent(C.MEDIA_STATE, this.mediaId, (event) => {
-            this._mediaStateWebRTC(event, this.mediaId);
-          });
-
-          this.mcs.onEvent(C.MEDIA_STATE_ICE, this.mediaId, (event) => {
-            this._onMCSIceCandidate(event, this.mediaId);
-          });
-
-          this.flushCandidatesQueue(this.mcs, [...this.candidatesQueue], this.mediaId);
-          this.candidatesQueue = [];
-
-          Logger.info(LOG_PREFIX, "Video start succeeded", this._getLogMetadata());
-          return resolve(sdpAnswer);
+        if (this.shared) {
+          await this.getBroadcastPermission(
+            this.meetingId,
+            this.bbbUserId,
+            this.streamName,
+          );
+        } else {
+          await this.getSubscribePermission(
+            this.meetingId,
+            this.bbbUserId,
+            this.id,
+            this.streamName,
+          );
         }
-        catch (error) {
-          Logger.error(LOG_PREFIX, `Video start procedure failed due to ${error.message}`,
-            { ...this._getLogMetadata(), error });
-          this.status = C.MEDIA_NEGOTIATION_FAILED;
-          reject(this._handleError(LOG_PREFIX, error, this.role, this.id));
+
+        const isConnected = await this.mcs.waitForConnection();
+
+        if (!isConnected) {
+          throw (errors.MEDIA_SERVER_OFFLINE);
         }
+
+        // Probe akka-apps to see if this is to be recorded
+        if (SHOULD_RECORD && this.shared) {
+          this.isRecorded = await this.probeForRecordingStatus(this.meetingId, this.id);
+        }
+
+        const userId = await this.mcs.join(
+          this.voiceBridge,
+          'SFU',
+          { externalUserId: this.bbbUserId, autoLeave: true });
+        this.userId = userId;
+        const sdpAnswer = await this._addMCSMedia(C.WEBRTC, sdpOffer, mediaSpecs);
+        // Status to indicate that the brokering with mcs-core was succesfull.
+        // Don't mix with MEDIA_STARTED. MEDIA_STARTED means that media is
+        // flowing through the server. This just means that the session was
+        // negotiated properly.
+        this.status = C.MEDIA_NEGOTIATED;
+        this.mcs.onEvent(C.MEDIA_STATE, this.mediaId, (event) => {
+          this._mediaStateWebRTC(event, this.mediaId);
+        });
+
+        this.mcs.onEvent(C.MEDIA_STATE_ICE, this.mediaId, (event) => {
+          this._onMCSIceCandidate(event, this.mediaId);
+        });
+
+        this.flushCandidatesQueue(this.mcs, [...this.candidatesQueue], this.mediaId);
+        this.candidatesQueue = [];
+        Logger.info(LOG_PREFIX, "Video start succeeded", this._getLogMetadata());
+
+        return sdpAnswer;
       } else {
         Logger.warn(LOG_PREFIX, `Video rejected due to invalid status`,
           this._getLogMetadata());
-        const error = { code: 2200, reason: errors[2200], details: `Invalid video status ${this.status}` }
-        reject(this._handleError(LOG_PREFIX, error, this.role, this.id));
-      };
-    });
-  }
-
-  _addMCSMedia (type, descriptor, mediaSpecs) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (this.shared) {
-          // Get the REMB spec to be used. Video uses the default mixed in with
-          // the custom bitrate sent when the profile is chosen. Fetching bitrate
-          // by the VP8 codec is just an arbitrary choice that makes no difference.
-          // The media specs format isn't flexible enough, so that's what we have
-          const kurentoRembParams = { ...KURENTO_REMB_PARAMS };
-          kurentoRembParams.rembOnConnect = mediaSpecs.VP8.as_main;
-          const options = {
-            descriptor,
-            name: this._assembleStreamName('publish', this.id, this.voiceBridge),
-            mediaSpecs,
-            kurentoRembParams,
-            adapter: this.mediaServerAdapter,
-            ignoreThresholds: IGNORE_THRESHOLDS
-          };
-
-          const { mediaId, answer } = await this.mcs.publish(this.userId, this.voiceBridge, type, options);
-          this.mediaId = mediaId;
-          Video.setSource(this.id, this.mediaId);
-          return resolve(answer);
-        }
-        else {
-          const stream = Video.getSource(this.id);
-          if (stream) {
-            const answer = this._subscribeToMedia(descriptor, mediaSpecs);
-            return resolve(answer);
-          } else {
-            const error = { code: 2201, reason: errors[2201] };
-            Logger.warn(LOG_PREFIX, `Publisher stream from ${this.id} isn't set yet. Rejecting with MEDIA_NOT_FOUND`,
-              this._getLogMetadata());
-            throw error;
-          }
-        }
-      } catch (error) {
-        return reject(error);
+        throw new TypeError('Invalid video status');
       }
-    });
+    } catch (error) {
+      Logger.error(LOG_PREFIX, `Video start procedure failed due to ${error.message}`,
+        { ...this._getLogMetadata(), error });
+      this.status = C.MEDIA_NEGOTIATION_FAILED;
+      throw (this._handleError(LOG_PREFIX, error, this.role, this.id));
+    }
   }
 
-  async _subscribeToMedia (descriptor, mediaSpecs) {
-    try {
+  async _addMCSMedia (type, descriptor, mediaSpecs) {
+    if (this.shared) {
       // Get the REMB spec to be used. Video uses the default mixed in with
       // the custom bitrate sent when the profile is chosen. Fetching bitrate
       // by the VP8 codec is just an arbitrary choice that makes no difference.
@@ -595,50 +679,58 @@ module.exports = class Video extends BaseProvider {
       kurentoRembParams.rembOnConnect = mediaSpecs.VP8.as_main;
       const options = {
         descriptor,
-        name: this._assembleStreamName('subscribe', this.id, this.voiceBridge),
+        name: this._assembleStreamName('publish', this.id, this.voiceBridge),
         mediaSpecs,
-        mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
         kurentoRembParams,
-        profiles: {
-          video: 'recvonly',
-        },
-        mediaProfile: 'main',
         adapter: this.mediaServerAdapter,
         ignoreThresholds: IGNORE_THRESHOLDS
-      }
-      this.options = options;
-      const stream = Video.getSource(this.id);
-      const { mediaId, answer } = await this.mcs.subscribe(this.userId, stream, C.WEBRTC, options);
+      };
+
+      const { mediaId, answer } = await this.mcs.publish(this.userId, this.voiceBridge, type, options);
       this.mediaId = mediaId;
+      Video.setSource(this.id, this.mediaId);
+
       return answer;
-    }
-    catch (err) {
-      throw err;
+    } else {
+      const stream = Video.getSource(this.id);
+
+      if (stream) {
+        const answer = await this._subscribeToMedia(descriptor, mediaSpecs);
+        return answer;
+      } else {
+        const error = { code: 2201, reason: errors[2201] };
+        Logger.warn(LOG_PREFIX, `Publisher stream from ${this.id} isn't set yet. Rejecting with MEDIA_NOT_FOUND`,
+          this._getLogMetadata());
+        throw error;
+      }
     }
   }
 
-  async pause (state) {
+  async _subscribeToMedia (descriptor, mediaSpecs) {
+    // Get the REMB spec to be used. Video uses the default mixed in with
+    // the custom bitrate sent when the profile is chosen. Fetching bitrate
+    // by the VP8 codec is just an arbitrary choice that makes no difference.
+    // The media specs format isn't flexible enough, so that's what we have
+    const kurentoRembParams = { ...KURENTO_REMB_PARAMS };
+    kurentoRembParams.rembOnConnect = mediaSpecs.VP8.as_main;
+    const options = {
+      descriptor,
+      name: this._assembleStreamName('subscribe', this.id, this.voiceBridge),
+      mediaSpecs,
+      mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
+      kurentoRembParams,
+      profiles: {
+        video: 'recvonly',
+      },
+      mediaProfile: 'main',
+      adapter: this.mediaServerAdapter,
+      ignoreThresholds: IGNORE_THRESHOLDS
+    }
+    this.options = options;
     const stream = Video.getSource(this.id);
-    const sinkId = this.mediaId;
-
-    // TODO temporarily deactivated this procedure until the connection type param is fixed
-    return;
-
-
-    // We want to pause the stream
-    try {
-      if (state && (this.status !== C.MEDIA_STARTING || this.status !== C.MEDIA_PAUSED)) {
-        await this.mcs.disconnect(stream, sinkId, 'VIDEO');
-        this.status = C.MEDIA_PAUSED;
-      }
-      else if (!state && this.status === C.MEDIA_PAUSED) { //un-pause
-        await this.mcs.connect(stream, sinkId, 'VIDEO');
-        this.status = C.MEDIA_STARTED;
-      }
-    }
-    catch (err) {
-      this._handleError(LOG_PREFIX, err, this.role, this.id);
-    }
+    const { mediaId, answer } = await this.mcs.subscribe(this.userId, stream, C.WEBRTC, options);
+    this.mediaId = mediaId;
+    return answer;
   }
 
   /* ======= STOP METHODS ======= */
@@ -657,6 +749,7 @@ module.exports = class Video extends BaseProvider {
         && this.isRecording
         && this.state !== C.MEDIA_STOPPED) {
         await this.stopRecording();
+        this._stopHGARecordingSet();
       }
     } catch (error) {
       Logger.warn(LOG_PREFIX, `Error on stopping recording for user ${this.userId} with stream ${this.streamName}`,
@@ -699,7 +792,7 @@ module.exports = class Video extends BaseProvider {
   }
 
   async stop () {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve) => {
       this.mcs.removeListener(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
       this.bbbGW.removeListener(C.DISCONNECT_ALL_USERS_2x+this.meetingId, this.disconnectUser);
       this.bbbGW.removeListener(C.USER_LEFT_MEETING_2x+this.bbbUserId, this.disconnectUser);
@@ -710,7 +803,6 @@ module.exports = class Video extends BaseProvider {
           Logger.warn(LOG_PREFIX, `Video session ${this.streamName} already stopped`,
             this._getLogMetadata());
           return resolve();
-          break;
 
         case C.MEDIA_STOPPING:
           Logger.warn(LOG_PREFIX, `Video session ${this.streamName} already stopping`,
@@ -758,11 +850,11 @@ module.exports = class Video extends BaseProvider {
       Logger.warn(LOG_PREFIX, 'Failed to disconnect video session on UserLeft*/DisconnectAll',
         { ...this._getLogMetadata(), error });
     } finally {
-      this.bbbGW.publish(JSON.stringify({
+      this.sendToClient({
         connectionId: this.connectionId,
         type: C.VIDEO_APP,
         id : 'close',
-      }), C.FROM_VIDEO);
+      }, C.FROM_VIDEO);
     }
   }
 };

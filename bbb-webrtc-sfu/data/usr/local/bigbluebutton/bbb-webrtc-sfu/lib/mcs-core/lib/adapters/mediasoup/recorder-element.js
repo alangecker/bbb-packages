@@ -13,6 +13,8 @@ const Logger = require('../../utils/logger');
 const BaseMediasoupElement = require('./base-element.js');
 const { hrTime } = require('../../utils/util.js');
 const { timemarkToMs } = require('../adapter-utils.js');
+const PRESTART_INTRAFRAME_INTERVAL_MS = RECORDER_FFMPEG.prestartIntraframeInterval || 0
+const PERIODIC_INTRAFRAME_INTERVAL_MS = RECORDER_FFMPEG.periodicIntraframeInterval || 0;
 
 module.exports = class RecorderElement extends BaseMediasoupElement {
   constructor(type, routerId, uri, sourceElement) {
@@ -25,6 +27,7 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
     this.recorderConsumer = null;
     this.rtpPortsInUse = null;
     this.recordingMarkEventFired = false;
+    this.keyframeReqInterval = null;
 
     // Record event handlers
     this._handleRecorderFailure = this._handleRecorderFailure.bind(this);
@@ -35,7 +38,7 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
 
   _handleRecorderEnded (reason) {
     Logger.info(LOG_PREFIX, 'Recorder stopped', {
-      elementId: this.id, reason,
+      elementId: this.id, type: this.type, routerId: this.routerId, reason,
     });
 
     this.rtpPortsInUse.forEach((rtp) => {
@@ -47,13 +50,14 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
 
   _handleRecorderFailure (error) {
     Logger.error(LOG_PREFIX, 'Recording failure', {
-      errorMessage: error.message, errorCode: error.code, elementId: this.id,
+      errorMessage: error.message, elementId: this.id, type: this.type,
+      routerId: this.routerId,
     });
   }
 
   _handleRecorderProgress (progress) {
     Logger.trace(LOG_PREFIX, 'Recording progress', {
-      elementId: this.id, progress,
+      elementId: this.id, type: this.type, routerId: this.routerId, progress,
     });
 
     if (this.recordingMarkEventFired === true) {
@@ -65,9 +69,14 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
       const currentHRInMs = hrTime();
 
       try {
-        const timemarkInMs = timemarkToMs(progress.timemark);
-        finalUTCInMs = currentUTCInMs - timemarkInMs;
-        finalHRInMs = currentHRInMs - timemarkInMs;
+        if (RECORDER_FFMPEG.estimateInitialTimestamp) {
+          const timemarkInMs = timemarkToMs(progress.timemark);
+          finalUTCInMs = currentUTCInMs - timemarkInMs;
+          finalHRInMs = currentHRInMs - timemarkInMs;
+        } else {
+          finalUTCInMs = this.recorder.startedUTC;
+          finalHRInMs = this.recorder.startedHR;
+        }
       } catch (error) {
         finalUTCInMs = this.recorder.startedUTC;
         finalHRInMs = this.recorder.startedHR;
@@ -76,21 +85,47 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
           errorMessage: error.message,
         });
       } finally {
-        const event = {
-          state: 'FLOWING',
-          timestampUTC: finalUTCInMs,
-          timestampHR: finalHRInMs,
-        };
-        // Not that great of an event mapping, but that's my fault for not abstracting
-        // Kurento events out of this pit (x2 rec edition) -- prlanzarin
-        this.emit(C.EVENT.MEDIA_STATE.FLOW_OUT, event);
-        this.recordingMarkEventFired = true;
+        this._fireRecordingStartedEvent(finalUTCInMs, finalHRInMs);
       }
+    }
+  }
+
+  _clearKeyframeReqInterval () {
+    if (this.keyframeReqInterval) {
+      clearInterval(this.keyframeReqInterval);
+      this.keyframeReqInterval = null;
+    }
+  }
+
+  _setKeyframeReqInterval (intervalInMs) {
+    if (this.keyframeReqInterval == null && intervalInMs > 0) {
+      this.keyframeReqInterval = setInterval(() => {
+        this.recorderConsumer.requestKeyFrame();
+      }, intervalInMs);
+    }
+  }
+
+  _fireRecordingStartedEvent (timestampUTC, timestampHR) {
+    if (this.recordingMarkEventFired === false) {
+      this._clearKeyframeReqInterval();
+      this._setKeyframeReqInterval(PERIODIC_INTRAFRAME_INTERVAL_MS);
+      const event = {
+        state: 'FLOWING',
+        timestampUTC,
+        timestampHR,
+      };
+      // Not that great of an event mapping, but that's my fault for not abstracting
+      // Kurento events out of this pit (x2 rec edition) -- prlanzarin
+      this.emit(C.EVENT.MEDIA_STATE.FLOW_OUT, event);
+      this.emit(C.EVENT.RECORDING.STARTED, event);
+
+      this.recordingMarkEventFired = true;
     }
   }
 
   _handleRecorderStarted () {
     Logger.info(LOG_PREFIX, 'Recording started', { elementId: this.id });
+    this._setKeyframeReqInterval(PRESTART_INTRAFRAME_INTERVAL_MS);
     this.recorder.startedUTC = Date.now();
     this.recorder.startedHR = hrTime();
   }
@@ -151,40 +186,44 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
     return Promise.resolve(this.recorderConsumer);
   }
 
-  async record () {
-    const recordingRoutines = [];
-    const { recCodecs, recCodecParameters } = this._extractRecConfigsFromProducers();
+  async _recordStream (codecParameters) {
+    try {
+      const producer = this.sourceElement.getProducer(
+        codecParameters.producerId
+      );
 
-    recCodecParameters.forEach(codecParameters => {
-      const recRoutine = new Promise(async (resolve, reject) => {
-        const producer = this.sourceElement.getProducer(
-          codecParameters.producerId
-        );
+      const transport = await this._createRecorderTransport();
+      const consumer = await this._createRecorderConsumer(transport, producer);
 
-        try {
-          const transport = await this._createRecorderTransport();
-          const consumer = await this._createRecorderConsumer(transport, producer);
+      // Annotate correct payload type based on what the consumer merged
+      // between input, producer and router
+      codecParameters.codecId = consumer.rtpParameters.codecs[0].payloadType
+        || producer.rtpParameters.codecs[0].payloadType;
 
-          // Annotate correct payload type based on what the consumer merged
-          // between input, producer and router
-          codecParameters.codecId = consumer.rtpParameters.codecs[0].payloadType
-            || producer.rtpParameters.codecs[0].payloadType;
-
-          const { rtp, rtcp } = getPortPair();
-          codecParameters.rtpPort = rtp;
-          transport.connect({
-            ip: transport.tuple.localIp,
-            port: rtp,
-            rtcpPort: rtcp,
-          });
-
-          return resolve();
-        } catch (error) {
-          return reject(error);
-        }
+      const { rtp, rtcp } = getPortPair();
+      codecParameters.rtpPort = rtp;
+      transport.connect({
+        ip: transport.tuple.localIp,
+        port: rtp,
+        rtcpPort: rtcp,
       });
 
-      recordingRoutines.push(recRoutine);
+    } catch (error) {
+      // TODO rollback/cleanup
+      Logger.debug(LOG_PREFIX, 'Internal stream recording failure', {
+        errorMessage: error.message, elementId: this.id, type: this.type,
+        routerId: this.routerId, codecParameters,
+      });
+
+      throw error;
+    }
+  }
+
+  async record () {
+    const { recCodecs, recCodecParameters } = this._extractRecConfigsFromProducers();
+
+    const recordingRoutines = recCodecParameters.map(codecParameters => {
+      return this._recordStream(codecParameters);
     });
 
     const recorderOpts = {
@@ -200,28 +239,27 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
         topLevelIP: RTP_TRANSPORT_SETTINGS.listenIp.announcedIp,
         codecParameters: recCodecParameters,
       },
+      logger: Logger,
     };
 
-    try {
-      await Promise.all(recordingRoutines);
-      this.recorder = new FFmpegRecorder(recorderOpts);
-      this.rtpPortsInUse = recCodecParameters.map(({ rtpPort }) => { return rtpPort });
+    await Promise.all(recordingRoutines);
+    this.recorder = new FFmpegRecorder(recorderOpts);
+    this.rtpPortsInUse = recCodecParameters.map(({ rtpPort }) => { return rtpPort });
 
-      this.recorder.on('error', this._handleRecorderFailure);
-      this.recorder.once('started', this._handleRecorderStarted);
-      this.recorder.on('progress', this._handleRecorderProgress);
-      this.recorder.once('end', this._handleRecorderEnded);
+    this.recorder.on('error', this._handleRecorderFailure);
+    this.recorder.once('started', this._handleRecorderStarted);
+    this.recorder.on('progress', this._handleRecorderProgress);
+    this.recorder.once('end', this._handleRecorderEnded);
 
-      await this.recorder.start();
-    } catch (error) {
-      throw error;
-    }
+    await this.recorder.start();
   }
 
   async _stop () {
     Logger.trace(LOG_PREFIX, 'Stopping recorder', {
       elementId: this.id,
     });
+
+    this._clearKeyframeReqInterval();
 
     if (this.recorderConsumer) {
       this.recorderConsumer.close();
@@ -234,7 +272,16 @@ module.exports = class RecorderElement extends BaseMediasoupElement {
     }
 
     if (this.recorder) {
-      return this.recorder.stop();
+      return this.recorder.stop().finally(() => {
+        const event = {
+          state: 'NOT_FLOWING',
+          timestampUTC: Date.now(),
+          timestampHR: hrTime(),
+        };
+        // Not that great of an event mapping, but that's my fault for not abstracting
+        // Kurento events out of this pit (x3 rec edition) -- prlanzarin
+        this.emit(C.EVENT.RECORDING.STOPPED, event);
+      });
     } else {
       return Promise.resolve()
     }

@@ -123,7 +123,7 @@ module.exports = class User extends EventEmitter  {
     if (this.ejectionRoutine) this._clearEjectionTimeout();
 
     return mediaSession;
-  };
+  }
 
   async subscribe (sdp, type, source, params = {}) {
     const connectionType = params.content? C.CONNECTION_TYPE.CONTENT : C.CONNECTION_TYPE.ALL;
@@ -227,22 +227,20 @@ module.exports = class User extends EventEmitter  {
     }
   }
 
-  connect (sourceId, sinkId) {
+  async connect (sourceId, sinkId) {
     const source = this.mediaSessions[sourceId];
     const sink = this.mediaSessions[sinkId];
 
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (source == null) {
-          return reject(this._handleError(C.ERROR.MEDIA_NOT_FOUND));
-        }
-        await source.connect(sink);
-        return resolve();
+    try {
+      if (source == null) {
+        throw (this._handleError(C.ERROR.MEDIA_NOT_FOUND));
       }
-      catch (err) {
-        return reject(this._handleError(err));
-      }
-    });
+
+      await source.connect(sink);
+    }
+    catch (error) {
+      throw (this._handleError(error));
+    }
   }
 
   leave () {
@@ -250,7 +248,8 @@ module.exports = class User extends EventEmitter  {
 
     return sessions.reduce((promise, sk) => {
       return promise.then(() => {
-        this.stopSession(sk).catch((e) => {
+        this.stopSession(sk).catch(() => {
+          // TODO review this
           // Error on stopping, it was probably a MEDIA_NOT_FOUND error, hence
           // we just delete the session if it's still allocated
           if (this.mediaSessions[sk]) {

@@ -62,13 +62,15 @@ module.exports = class WebsocketConnectionManager {
     ws.on('error', (error) => {
       this._onError(ws, error);
     });
-  };
+  }
 
   _onMessage (ws, data) {
     let message = {};
 
     try {
       message = JSON.parse(data);
+
+      if (message.id === 'close') return;
 
       if (message.id === 'ping') {
         return this.sendMessage(ws, { id: 'pong' });

@@ -4,11 +4,9 @@ const C = require('../../constants/constants');
 const { handleError } = require('./errors.js');
 const Logger = require('../../utils/logger');
 const { ROUTER_SETTINGS, LOG_PREFIX } = require('./configs.js');
-const {
-  MCSPrometheusAgent,
-  METRIC_NAMES,
-} = require('../../metrics/index.js');
+const { PrometheusAgent, MS_METRIC_NAMES } = require('./prom-metrics.js');
 
+const ROUTER_ID_S_TOKEN = '/roomId:';
 // ROUTER_STORAGE: Map<routerId, MediaSoupRouter>. Registers thin
 // wrappers for a Mediasoup router (=== pipeline for the jumentoheads)
 const ROUTER_STORAGE = new Map();
@@ -17,6 +15,10 @@ const storeRouter = (id, router) => {
   if (!router) return false;
 
   if (hasRouter(id)) {
+    Logger.error(LOG_PREFIX, 'Collision on router storage', {
+      routerId: id,
+    });
+
     // Might be an ID collision. Throw this peer out and let the client reconnect
     throw handleError({
       ...C.ERROR.MEDIA_ID_COLLISION,
@@ -25,7 +27,7 @@ const storeRouter = (id, router) => {
   }
 
   ROUTER_STORAGE.set(id, router);
-  MCSPrometheusAgent.increment(METRIC_NAMES.MEDIASOUP_ROUTERS);
+  PrometheusAgent.increment(MS_METRIC_NAMES.MEDIASOUP_ROUTERS);
 
   return true;
 }
@@ -42,35 +44,37 @@ const deleteRouter = (id) => {
   const deleted = ROUTER_STORAGE.delete(id);
 
   if (deleted) {
-    MCSPrometheusAgent.decrement(METRIC_NAMES.MEDIASOUP_ROUTERS);
+    PrometheusAgent.decrement(MS_METRIC_NAMES.MEDIASOUP_ROUTERS);
   }
 
   return deleted;
 }
 
 const assembleRouterId = (routerIdPrefix, routerIdSuffix) => {
-  return `${routerIdPrefix}-${routerIdSuffix}`;
+  return `${routerIdPrefix}${ROUTER_ID_S_TOKEN}${routerIdSuffix}`;
 }
 
-const createRouter = (worker, {
+const getRouterIdSuffix = (routerId) => {
+  return routerId.split(ROUTER_ID_S_TOKEN)[1];
+}
+
+const createRouter = async (worker, {
   routerIdSuffix,
   routerSettings = ROUTER_SETTINGS,
 }) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const router = await worker.createRouter(routerSettings);
-      router.workerId = worker.internalAdapterId;
-      router.activeElements = 0;
-      router.internalAdapterId = `${worker.internalAdapterId}-${routerIdSuffix}`;
-      router.on("workerclose", () => {_close(router, "workerclose")});
+  try {
+    const router = await worker.createRouter(routerSettings);
+    router.workerId = worker.internalAdapterId;
+    router.internalAdapterId = assembleRouterId(worker.internalAdapterId, routerIdSuffix);
+    router.once("workerclose", () => {_close(router, "workerclose")});
 
-      return resolve(router);
-    } catch (error) {
-      Logger.error(LOG_PREFIX, 'Router creation failed', error,
-        { errorMessage: error.Message, errorCode: error.code });
-      throw error;
-    }
-  });
+    return router;
+  } catch (error) {
+    Logger.error(LOG_PREFIX, 'Router creation failed', {
+      errorMessage: error.message, roomId: routerIdSuffix,
+    });
+    throw error;
+  }
 }
 
 const getOrCreateRouter = async (worker, {
@@ -85,21 +89,24 @@ const getOrCreateRouter = async (worker, {
 
     router = await createRouter(worker, { routerIdSuffix, routerSettings });
     storeRouter(routerId, router);
-    Logger.info(LOG_PREFIX, `Created router at room ${routerIdSuffix} with rid ${routerId}`,
-      { routerId: router.id, routerIdSuffix });
+    Logger.info(LOG_PREFIX, 'Router created', {
+      routerId: router.id, routerIntId: router.internalAdapterId, roomId: routerIdSuffix,
+    });
 
     return router;
   } catch (error) {
-    Logger.error(LOG_PREFIX, 'Router fetch failed',
-      { errorMessage: error.Message, errorCode: error.code });
+    Logger.error(LOG_PREFIX, 'Router fetch failed', {
+      errorMessage: error.message, roomId: routerIdSuffix,
+    });
     throw (handleError(error));
   }
 }
 
 const _close = (router, reason = 'normalclearing') => {
   if (router && typeof router.close === 'function') {
-    Logger.info(LOG_PREFIX, 'Releasing router',
-      { routerId: router.internalAdapterId, reason });
+    Logger.info(LOG_PREFIX, 'Releasing router', {
+      routerId: router.id, routerIntId: router.internalAdapterId, reason
+    });
     deleteRouter(router.internalAdapterId);
     return router.close();
   }
@@ -112,9 +119,11 @@ const releaseRouter = (routerId) => {
   return _close(router);
 }
 
+// TODO refactor: why are we iterating over the whole map...
 const releaseAllRoutersWithIdSuffix = (routerIdSuffix) => {
   ROUTER_STORAGE.forEach(async (router, routerId) => {
-    if (routerId.includes(routerIdSuffix)) {
+    const targetSuffix = getRouterIdSuffix(routerId);
+    if (targetSuffix === routerIdSuffix) {
       try {
         await releaseRouter(routerId);
       } catch (error) {

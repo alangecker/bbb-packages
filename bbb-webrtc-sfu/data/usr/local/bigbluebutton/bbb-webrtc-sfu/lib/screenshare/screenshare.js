@@ -34,6 +34,12 @@ const MEDIA_FLOW_TIMEOUT_DURATION = config.get('mediaFlowTimeoutDuration');
 const IGNORE_THRESHOLDS = config.has('screenshareIgnoreMediaThresholds')
   ? config.get('screenshareIgnoreMediaThresholds')
   : false;
+const RECORDING_ADAPTER = config.has('recordingAdapter')
+  ? config.get('recordingAdapter')
+  : 'native'
+const GENERATE_TS_ON_RECORDING_EVT = config.has('recordingGenerateTsOnRecEvt')
+  ? config.get('recordingGenerateTsOnRecEvt')
+  : false;
 
 const LOG_PREFIX = "[screenshare]";
 
@@ -62,8 +68,8 @@ module.exports = class Screenshare extends BaseProvider {
       mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
       kurentoRembParams,
       profiles: {
-        content: 'recvonly',
         audio: hasAudio ? 'recvonly' : undefined,
+        content: 'recvonly',
       },
       adapter,
       ignoreThresholds: IGNORE_THRESHOLDS,
@@ -98,6 +104,10 @@ module.exports = class Screenshare extends BaseProvider {
     this._mediaFlowingTimeouts = {};
     this.handleMCSCoreDisconnection = this.handleMCSCoreDisconnection.bind(this);
     this.mcs.on(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
+    this.hgaRecordingSet = {
+      nativeSubMediaId: null, // ?: string (<T>)
+      hgaPubMediaId: null, // ?: string (<T>)
+    };
   }
 
   set status (status) {
@@ -139,18 +149,18 @@ module.exports = class Screenshare extends BaseProvider {
     };
   }
 
-  getConnectionIdAndRole (userId) {
-    if (this.presenterMCSUserId === userId) return { connectionId: this._connectionId, role: C.RECV_ROLE };
+  getConnectionIdAndRolesFromUser (userId) {
+    const cIDsAndRoles = Object.keys(this._viewerUsers).filter(connectionId => {
+      const user = this._viewerUsers[connectionId];
+      return (user && user.userId === userId);
+    }).map(connectionId => ({ connectionId, role: C.RECV_ROLE }));
 
-    for (const connectionId in this._viewerUsers) {
-      if (this._viewerUsers.hasOwnProperty(connectionId)) {
-        const user = this._viewerUsers[connectionId]
-        if (user.hasOwnProperty('userId') && user['userId'] === userId) {
-          return { connectionId, role: C.RECV_ROLE };
-        }
-      }
+    if (this.presenterMCSUserId === userId) {
+      cIDsAndRoles.push({ connectionId: this._connectionId, role: C.RECV_ROLE });
     }
-  };
+
+    return cIDsAndRoles;
+  }
 
   /* ======= ICE HANDLERS ======= */
 
@@ -171,7 +181,7 @@ module.exports = class Screenshare extends BaseProvider {
           this._presenterCandidatesQueue.push(candidate);
         }
         break;
-      case C.RECV_ROLE:
+      case C.RECV_ROLE: {
         let endpoint = this._viewerEndpoints[connectionId];
         if (endpoint) {
           try {
@@ -188,6 +198,7 @@ module.exports = class Screenshare extends BaseProvider {
           this._viewersCandidatesQueue[connectionId].push(candidate);
         }
         break;
+      }
       default:
         Logger.warn(LOG_PREFIX, "Unknown role", role);
       }
@@ -244,16 +255,20 @@ module.exports = class Screenshare extends BaseProvider {
       connectionId,
       error: { code: 2211 , reason: errors[2211] },
     }, C.FROM_SCREENSHARE);
-  };
+  }
 
   _onPresenterMediaFlowing (connectionId) {
     if (!this._rtmpBroadcastStarted) {
       Logger.info(LOG_PREFIX, "Presenter WebRTC session began FLOWING",
         this._getFullPresenterLogMetadata(connectionId));
-      this._startRtmpBroadcast(this.meetingId);
+      this._startRtmpBroadcast();
       if (this.status != C.MEDIA_STARTED) {
         if (this.isRecorded) {
-          this.startRecording();
+          this.startRecording().catch(error => {
+            Logger.error(LOG_PREFIX, 'Recording start failed', {
+              ...this._getFullPresenterLogMetadata(connectionId), error,
+            });
+          });
         }
         this.status = C.MEDIA_STARTED;
         this.sendPlayStart(C.SEND_ROLE, connectionId);
@@ -261,7 +276,7 @@ module.exports = class Screenshare extends BaseProvider {
     }
 
     this.clearMediaFlowingTimeout(connectionId);
-  };
+  }
 
   _onPresenterMediaNotFlowing (connectionId) {
     Logger.debug(LOG_PREFIX, `Presenter WebRTC session is NOT_FLOWING`,
@@ -409,79 +424,217 @@ module.exports = class Screenshare extends BaseProvider {
         } else if (details === 'FLOWING') {
           Logger.debug(LOG_PREFIX, `Recording media STARTED FLOWING on endpoint ${endpoint}`,
             this._getFullPresenterLogMetadata(this._connectionId));
-          if (!this._startRecordingEventFired) {
+          if (!this._startRecordingEventFired && !GENERATE_TS_ON_RECORDING_EVT) {
+            Logger.debug(LOG_PREFIX, 'Firing recording event via flowing event',
+              this._getFullPresenterLogMetadata(this._connectionId));
             const { timestampHR, timestampUTC } = state;
             this.sendStartShareEvent(timestampHR, timestampUTC);
           }
         }
         break;
+
+      case "Recording":
+        if (!this._startRecordingEventFired && GENERATE_TS_ON_RECORDING_EVT) {
+          Logger.debug(LOG_PREFIX, 'Firing recording event via experimental event',
+            this._getFullPresenterLogMetadata(this._connectionId));
+          const { timestampHR, timestampUTC } = state;
+          this.sendStartShareEvent(timestampHR, timestampUTC);
+        }
+        break;
+
       default: Logger.trace(LOG_PREFIX, "Unhandled recording event", event);
     }
   }
 
   /* ======= RECORDING METHODS ======= */
 
-  async startRecording() {
-    return new Promise(async (resolve, reject) => {
+  async _stopHGARecordingSet () {
+    const { nativeSubMediaId, hgaPubMediaId } = this.hgaRecordingSet;
+
+    if (nativeSubMediaId) {
       try {
-        const contentCodec = DEFAULT_MEDIA_SPECS.codec_video_content;
-        const recordingProfile = (contentCodec === 'VP8' || contentCodec === 'ANY')
-          ? this.hasAudio
-            ? C.RECORDING_PROFILE_WEBM_FULL
-            : C.RECORDING_PROFILE_WEBM_VIDEO_ONLY
-          : this.hasAudio
-            ? C.RECORDING_PROFILE_MKV_FULL
-            : C.RECORDING_PROFILE_MKV_VIDEO_ONLY;
-        const format = (contentCodec === 'VP8' || contentCodec === 'ANY')
-          ? C.RECORDING_FORMAT_WEBM
-          : C.RECORDING_FORMAT_MKV;
-        const recordingPath = this.getRecordingPath(
-          this.meetingId,
-          this._recordingSubPath,
-          this._voiceBridge,
-          format,
-          this.presenterAdapter,
-        );
-        const recordingId = await this.mcs.startRecording(
-          this.presenterMCSUserId,
-          this._presenterEndpoint,
-          recordingPath,
-          {
-            recordingProfile,
-            ignoreThresholds: true,
-            mediaProfile: 'content',
-            adapter: this.presenterAdapter
-          }
-        );
-        this.recording = { recordingId, filename: recordingPath };
-
-        this.mcs.onEvent(C.MEDIA_STATE, this.recording.recordingId, (event) => {
-          this._mediaStateRecording(event, this.recording.recordingId);
+        await this.mcs.unsubscribe(this.presenterMCSUserId, nativeSubMediaId);
+      } catch(error) {
+        Logger.error(LOG_PREFIX, "HGA: native recording subscriber cleanup failure?", {
+          ...this._getFullPresenterLogMetadata(this._connectionId),
+          error,
+          recordingAdapter: RECORDING_ADAPTER
         });
-
-        resolve(this.recording);
-      } catch (err) {
-        reject(this._handleError(LOG_PREFIX, err));
+      } finally {
+        this.hgaRecordingSet.nativeSubMediaId = null;
       }
-    });
+    }
+
+    if (hgaPubMediaId) {
+      try {
+        await this.mcs.unpublish(this.presenterMCSUserId, hgaPubMediaId);
+      } catch(error) {
+        Logger.error(LOG_PREFIX, "HGA: hga recording publisher cleanup failure?", {
+            ...this._getFullPresenterLogMetadata(this._connectionId),
+          error,
+          recordingAdapter: RECORDING_ADAPTER
+        });
+      } finally {
+        this.hgaRecordingSet.hgaPubMediaId = null;
+      }
+    }
+  }
+
+  async _recordViaHGAdapter (sourceMediaId, recordingPath, recordingOptions) {
+    // 1 - Generate a subscriber/consumer media session in the native adapter
+    // 2 - Generate a publisher media session in the heterogeneous adapter
+    //     (RECORDING_ADAPTER) with the offer from #1
+    // 3 - Send back the answer from #2 to the native adapter
+    // 4 - Call startRecording in the heterogeneous adapter (RECORDING_ADAPTER),
+    //     specifying the source to be the mediaSessionId obtained in #2
+
+    // Step 1
+    const nativeOptions = {
+      mediaSpecSlave: SUBSCRIBER_SPEC_SLAVE,
+      profiles: {
+        audio: this.hasAudio ? 'sendrecv' : undefined,
+        content: 'sendrecv',
+      },
+      mediaProfile: 'content',
+      adapter: this.presenterAdapter,
+      ignoreThresholds: true,
+      adapterOptions: {
+        transportOptions: {
+          rtcpMux: false,
+          comedia: false,
+        },
+        // Split transport is a mediasoup-specific adapter option which means the
+        // RTP element will have one transport per media type. This is necessary
+        // because, otherwise, mediasoup will bundle streams in the same port in
+        // the plain transport. This is OK, but neither FS nor KMS support that with
+        // plain RTP endpoints.
+        splitTransport: this.hasAudio,
+      },
+    };
+
+    const {  mediaId: nativeMediaId, answer: nativeDescriptor } = await this.mcs.subscribe(
+      this.presenterMCSUserId, sourceMediaId, C.RTP, nativeOptions
+    );
+    this.hgaRecordingSet.nativeSubMediaId= nativeMediaId;
+
+    // Step 2
+    const hgaOptions = {
+      descriptor: nativeDescriptor,
+      adapter: RECORDING_ADAPTER,
+      ignoreThresholds: true,
+      profiles: {
+        audio: this.hasAudio ? 'sendonly' : undefined,
+        content: 'sendonly',
+      },
+      mediaProfile: 'content',
+    };
+
+    const { mediaId: hgaMediaId, answer: hgaAnswer } = await this.mcs.publish(
+      this.presenterMCSUserId, this._voiceBridge, C.RTP, hgaOptions,
+    );
+    this.hgaRecordingSet.hgaPubMediaId = hgaMediaId;
+
+    // Step 3
+    nativeOptions.descriptor = hgaAnswer;
+    nativeOptions.mediaId = nativeMediaId;
+    await this.mcs.subscribe(this.presenterMCSUserId, sourceMediaId, C.RTP, nativeOptions);
+
+    // Step 4
+    recordingOptions.adapter = RECORDING_ADAPTER;
+    return this._record(hgaMediaId, recordingPath, recordingOptions);
+  }
+
+  async _record (sourceMediaId, recordingPath, options) {
+    if (options.adapter == null) {
+      options.adapter = this.presenterAdapter;
+    }
+
+    const recordingId = await this.mcs.startRecording(
+      this.presenterMCSUserId, sourceMediaId, recordingPath, options,
+    );
+
+    return { recordingId, filename: recordingPath, recordingPath };
+  }
+
+  _getRecordingAdapter () {
+    if (RECORDING_ADAPTER === 'native' || RECORDING_ADAPTER === this.presenterAdapter) {
+      return this.presenterAdapter;
+    }
+
+    return RECORDING_ADAPTER;
+  }
+
+  _getRecordingMethod () {
+    // Specifying that the rec adapter should be the same as the source media's
+    // adapter is the same that specifying native; just don't do it.
+    if (RECORDING_ADAPTER === 'native' || RECORDING_ADAPTER === this.presenterAdapter) {
+      return this._record.bind(this);
+    } else {
+      return this._recordViaHGAdapter.bind(this);
+    }
+  }
+
+  async startRecording () {
+    try {
+      const contentCodec = DEFAULT_MEDIA_SPECS.codec_video_content;
+      const recordingProfile = (contentCodec === 'VP8' || contentCodec === 'ANY')
+        ? this.hasAudio
+        ? C.RECORDING_PROFILE_WEBM_FULL
+        : C.RECORDING_PROFILE_WEBM_VIDEO_ONLY
+        : this.hasAudio
+        ? C.RECORDING_PROFILE_MKV_FULL
+        : C.RECORDING_PROFILE_MKV_VIDEO_ONLY;
+      const format = (contentCodec === 'VP8' || contentCodec === 'ANY')
+        ? C.RECORDING_FORMAT_WEBM
+        : C.RECORDING_FORMAT_MKV;
+      const proxiedStartRecording = this._getRecordingMethod();
+      const recordingPath = this.getRecordingPath(
+        this.meetingId,
+        this._recordingSubPath,
+        this._voiceBridge,
+        format,
+        this._getRecordingAdapter(),
+      );
+      const recordingOptions = {
+        recordingProfile, mediaProfile: 'content', ignoreThresholds: true,
+      };
+
+      const recordingData = await proxiedStartRecording(
+        this._presenterEndpoint, recordingPath, recordingOptions
+      );
+
+      this.recording = recordingData;
+      this.sendStartShareEvent();
+
+      return recordingData;
+    } catch (error) {
+      throw (this._handleError(LOG_PREFIX, error));
+    }
   }
 
   sendStartShareEvent (timestampHR, timestampUTC) {
+    if (timestampHR == null) {
+      timestampHR = Utils.hrTime();
+    }
+
+    if (timestampUTC == null) {
+      timestampUTC = Date.now()
+    }
+
     const shareEvent = Messaging.generateWebRTCShareEvent('StartWebRTCDesktopShareEvent', this.meetingId, this.recording.filename, timestampHR, timestampUTC);
-    this.bbbGW.writeMeetingKey(this.meetingId, shareEvent, function(error) {});
+    this.bbbGW.writeMeetingKey(this.meetingId, shareEvent, function() {});
     this._startRecordingEventFired = true;
   }
 
   /* ======= START PROCEDURES ======= */
 
-  getBroadcastPermission (meetingId, voiceBridge, userId, sfuSessionId, role) {
+  getBroadcastPermission (meetingId, voiceBridge, userId, sfuSessionId) {
     if (!PERMISSION_PROBES) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const onResp = (payload) => {
-        const { meetingId, voiceBridge, userId, allowed } = payload;
         if (meetingId === payload.meetingId
-          && payload.voiceBridge === voiceBridge
-          && payload.userId === userId
+          && voiceBridge === payload.voiceConf
+          && userId === payload.userId
           && payload.allowed) {
           return resolve();
         }
@@ -500,14 +653,13 @@ module.exports = class Screenshare extends BaseProvider {
     });
   }
 
-  getSubscribePermission (meetingId, voiceBridge, userId, streamId, sfuSessionId, role) {
+  getSubscribePermission (meetingId, voiceBridge, userId, streamId, sfuSessionId) {
     if (!PERMISSION_PROBES) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const onResp = (payload) => {
-        const { meetingId, voiceBridge, userId, allowed } = payload;
         if (meetingId === payload.meetingId
-          && payload.voiceBridge === voiceBridge
-          && payload.userId === userId
+          && voiceBridge === payload.voiceConf
+          && userId === payload.userId
           && payload.allowed) {
           return resolve();
         }
@@ -527,71 +679,65 @@ module.exports = class Screenshare extends BaseProvider {
     });
   }
 
-  start (connectionId, bbbUserId, role, descriptor, options = {}) {
-    return new Promise(async (resolve, reject) => {
-      const isConnected = await this.mcs.waitForConnection();
+  async start (connectionId, bbbUserId, role, descriptor, options = {}) {
+    const isConnected = await this.mcs.waitForConnection();
 
-      if (!isConnected) {
-        return reject(errors.MEDIA_SERVER_OFFLINE);
-      }
+    if (!isConnected) {
+      throw errors.MEDIA_SERVER_OFFLINE;
+    }
 
-      // Probe akka-apps to see if this is to be recorded
-      if (SHOULD_RECORD && role === C.SEND_ROLE) {
-        this.isRecorded = await this.probeForRecordingStatus(this.meetingId, bbbUserId);
-      }
+    // Probe akka-apps to see if this is to be recorded
+    if (SHOULD_RECORD && role === C.SEND_ROLE) {
+      this.isRecorded = await this.probeForRecordingStatus(this.meetingId, bbbUserId);
+    }
 
-      if (role === C.RECV_ROLE) {
-        try {
-          Logger.info(LOG_PREFIX, `Starting viewer screensharing session`,
-            this._getFullViewerLogMetadata(connectionId));
-          const sdpAnswer = await this._startViewer(
-            connectionId,
-            this._voiceBridge,
-            descriptor,
-            bbbUserId,
-            this._presenterEndpoint,
-            options,
-          );
-          return resolve(sdpAnswer);
-        }
-        catch (err) {
-          return reject(this._handleError(LOG_PREFIX, err, role, bbbUserId));
-        }
+    if (role === C.RECV_ROLE) {
+      try {
+        Logger.info(LOG_PREFIX, `Starting viewer screensharing session`,
+          this._getFullViewerLogMetadata(connectionId));
+        const sdpAnswer = await this._startViewer(
+          connectionId,
+          this._voiceBridge,
+          descriptor,
+          bbbUserId,
+          this._presenterEndpoint,
+          options,
+        );
+        return sdpAnswer;
+      } catch (error) {
+        throw (this._handleError(LOG_PREFIX, error, role, bbbUserId));
       }
+    }
 
-      if (role === C.SEND_ROLE) {
-        try {
-          Logger.info(LOG_PREFIX, `Starting presenter screensharing session`,
-            this._getFullPresenterLogMetadata(connectionId));
-          const sdpAnswer = await this._startPresenter(descriptor, bbbUserId, connectionId, options);
-          return resolve(sdpAnswer);
-        }
-        catch (err) {
-          return reject(this._handleError(LOG_PREFIX, err, role, bbbUserId));
-        }
+    if (role === C.SEND_ROLE) {
+      try {
+        Logger.info(LOG_PREFIX, `Starting presenter screensharing session`,
+          this._getFullPresenterLogMetadata(connectionId));
+        const sdpAnswer = await this._startPresenter(descriptor, bbbUserId, connectionId, options);
+        return sdpAnswer;
+      } catch (error) {
+        throw (this._handleError(LOG_PREFIX, error, role, bbbUserId));
       }
-    });
+    }
   }
 
-  _startPresenter (descriptor, userId, connectionId, options = {}) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        this.status = C.MEDIA_STARTING;
-        await this.getBroadcastPermission(this.meetingId, this._voiceBridge, userId, connectionId);
-        const presenterMCSUserId = await this.mcs.join(
-          this._voiceBridge,
-          'SFU',
-          { externalUserId: userId, autoLeave: true });
-        this.presenterMCSUserId = presenterMCSUserId;
-        const presenterSdpAnswer = await this._publishPresenterWebRTCStream(descriptor, options);
-        await this.mcs.setContentFloor(this._voiceBridge, this._presenterEndpoint);
-        resolve(presenterSdpAnswer);
-      } catch (error) {
-        Logger.error(LOG_PREFIX, `Error on starting screensharing presenter`,
-          { ...this._getFullPresenterLogMetadata(this._connectionId), error });
-        return reject(this._handleError(LOG_PREFIX, error));
-      }
-    });
+  async _startPresenter (descriptor, userId, connectionId, options = {}) {
+    try {
+      this.status = C.MEDIA_STARTING;
+      await this.getBroadcastPermission(this.meetingId, this._voiceBridge, userId, connectionId);
+      const presenterMCSUserId = await this.mcs.join(
+        this._voiceBridge,
+        'SFU',
+        { externalUserId: userId, autoLeave: true });
+      this.presenterMCSUserId = presenterMCSUserId;
+      const presenterSdpAnswer = await this._publishPresenterWebRTCStream(descriptor, options);
+      await this.mcs.setContentFloor(this._voiceBridge, this._presenterEndpoint);
+      return presenterSdpAnswer;
+    } catch (error) {
+      Logger.error(LOG_PREFIX, `Error on starting screensharing presenter`,
+        { ...this._getFullPresenterLogMetadata(this._connectionId), error });
+      throw (this._handleError(LOG_PREFIX, error));
+    }
   }
 
   async _publishPresenterWebRTCStream (descriptor, options = {}) {
@@ -659,81 +805,80 @@ module.exports = class Screenshare extends BaseProvider {
   }
 
   async _fetchContentFloor () {
+    const { floor } = await this.mcs.getContentFloor(this._voiceBridge);
+    Logger.debug(LOG_PREFIX, `Content floor fetched`, { floor, ...this._getPartialLogMetadata()});
+    return floor;
+  }
+
+  async _startViewer(connectionId, voiceBridge, descriptor, userId, presenterEndpoint, options = {}) {
+    this._viewersCandidatesQueue[connectionId] = [];
+
     try {
-      const { floor } = await this.mcs.getContentFloor(this._voiceBridge);
-      Logger.debug(LOG_PREFIX, `Content floor fetched`, { floor, ...this._getPartialLogMetadata()});
-      return floor;
-    } catch (e) {
-      throw e;
+      await this.getSubscribePermission(this.meetingId, voiceBridge, userId, presenterEndpoint, connectionId);
+      const mcsUserId = await this.mcs.join(
+        this._voiceBridge,
+        'SFU',
+        { externalUserId: userId, autoLeave: true });
+      this._viewerUsers[connectionId] = {
+        userId,
+        connectionId,
+        started: false,
+      };
+
+      const streamName = this._assembleStreamName('subscribe', userId, this._voiceBridge);
+      const mcsOptions = Screenshare.buildSubscriberMCSOptions(
+        descriptor, streamName, this.hasAudio, options.mediaServer,
+      );
+
+      if (this._presenterEndpoint == null) {
+        const floor = await this._fetchContentFloor();
+        this._presenterEndpoint = floor? floor.mediaId : null
+      }
+
+      const { mediaId, answer } = await this.mcs.subscribe(mcsUserId,
+        this._presenterEndpoint, C.WEBRTC, mcsOptions);
+      this._viewerEndpoints[connectionId] = mediaId;
+      this.flushCandidatesQueue(this.mcs, [...this._viewersCandidatesQueue[connectionId]], this._viewerEndpoints[connectionId]);
+      this._viewersCandidatesQueue[connectionId] = [];
+      this.mcs.onEvent(C.MEDIA_STATE, mediaId, (event) => {
+        this._mediaStateWebRTC(
+          event,
+          mediaId,
+          connectionId,
+          this._onViewerWebRTCMediaFlowing.bind(this),
+          this._onViewerWebRTCMediaNotFlowing.bind(this),
+        );
+      });
+      this.mcs.onEvent(C.MEDIA_STATE_ICE, mediaId, (event) => {
+        this._onMCSIceCandidate(event, connectionId, mediaId);
+      });
+      Logger.info(LOG_PREFIX, `Viewer WebRTC stream was successfully created`,
+        this._getFullViewerLogMetadata(connectionId));
+
+      return answer;
+    } catch (error) {
+      Logger.error(LOG_PREFIX, `Viewer subscribe failed for ${userId} due to ${error.message}`,
+        { ...this._getFullViewerLogMetadata(connectionId), error: this._handleError(LOG_PREFIX, error) });
+      throw (this._handleError(LOG_PREFIX, error));
     }
   }
 
-  _startViewer(connectionId, voiceBridge, descriptor, userId, presenterEndpoint, options = {}) {
-    return new Promise(async (resolve, reject) => {
-      let sdpAnswer;
-      this._viewersCandidatesQueue[connectionId] = [];
-
-      try {
-        await this.getSubscribePermission(this.meetingId, voiceBridge, userId, presenterEndpoint, connectionId);
-        const mcsUserId = await this.mcs.join(
-          this._voiceBridge,
-          'SFU',
-          { externalUserId: userId, autoLeave: true });
-        this._viewerUsers[connectionId] = {
-          userId,
-          connectionId,
-          started: false,
-        };
-
-        const streamName = this._assembleStreamName('subscribe', userId, this._voiceBridge);
-        const mcsOptions = Screenshare.buildSubscriberMCSOptions(
-          descriptor, streamName, this.hasAudio, options.mediaServer,
-        );
-
-        if (this._presenterEndpoint == null) {
-          const floor = await this._fetchContentFloor();
-          this._presenterEndpoint = floor? floor.mediaId : null
-        }
-
-        const { mediaId, answer } = await this.mcs.subscribe(mcsUserId,
-          this._presenterEndpoint, C.WEBRTC, mcsOptions);
-        this._viewerEndpoints[connectionId] = mediaId;
-        sdpAnswer = answer;
-        this.flushCandidatesQueue(this.mcs, [...this._viewersCandidatesQueue[connectionId]], this._viewerEndpoints[connectionId]);
-        this._viewersCandidatesQueue[connectionId] = [];
-        this.mcs.onEvent(C.MEDIA_STATE, mediaId, (event) => {
-          this._mediaStateWebRTC(
-            event,
-            mediaId,
-            connectionId,
-            this._onViewerWebRTCMediaFlowing.bind(this),
-            this._onViewerWebRTCMediaNotFlowing.bind(this),
-          );
-        });
-        this.mcs.onEvent(C.MEDIA_STATE_ICE, mediaId, (event) => {
-          this._onMCSIceCandidate(event, connectionId, mediaId);
-        });
-        Logger.info(LOG_PREFIX, `Viewer WebRTC stream was successfully created`,
-          this._getFullViewerLogMetadata(connectionId));
-
-        return resolve(sdpAnswer);
-      } catch (error) {
-        Logger.error(LOG_PREFIX, `Viewer subscribe failed for ${userId} due to ${error.message}`,
-          { ...this._getFullViewerLogMetadata(connectionId), error: this._handleError(LOG_PREFIX, error) });
-        return reject(this._handleError(LOG_PREFIX, error));
-      }
-    });
-  }
-
-  _startRtmpBroadcast (meetingId, output) {
+  async _startRtmpBroadcast () {
     if (SCREENSHARE_SERVER_AKKA_BROADCAST) {
-      this._streamUrl = this._presenterEndpoint;
-      const timestamp = Math.floor(new Date());
-      const dsrbstam = Messaging.generateScreenshareRTMPBroadcastStartedEvent2x(this._voiceBridge,
-        this._voiceBridge, this._streamUrl, this._vw, this._vh, timestamp, this.hasAudio);
-      this.bbbGW.publish(dsrbstam, C.TO_AKKA_APPS);
-      this._rtmpBroadcastStarted = true;
-      Logger.debug(LOG_PREFIX, "Sent startRtmpBroadcast", this._getPartialLogMetadata());
+      try {
+        await this.getBroadcastPermission(this.meetingId, this._voiceBridge, this.userId, this._connectionId);
+        this._streamUrl = this._presenterEndpoint;
+        const timestamp = Math.floor(new Date());
+        const dsrbstam = Messaging.generateScreenshareRTMPBroadcastStartedEvent2x(this._voiceBridge,
+          this._voiceBridge, this._streamUrl, this._vw, this._vh, timestamp, this.hasAudio);
+        this.bbbGW.publish(dsrbstam, C.TO_AKKA_APPS);
+        this._rtmpBroadcastStarted = true;
+        Logger.debug(LOG_PREFIX, "Sent startRtmpBroadcast", this._getPartialLogMetadata());
+      } catch (error) {
+        Logger.error(LOG_PREFIX, "Screenshare won't be broadcasted", {
+          ...this._getFullPresenterLogMetadata(this._connectionId), error,
+        });
+      }
     }
   }
 
@@ -765,7 +910,7 @@ module.exports = class Screenshare extends BaseProvider {
     const timestampUTC = Date.now()
     const timestampHR = Utils.hrTime();
     const shareEvent = Messaging.generateWebRTCShareEvent('StopWebRTCDesktopShareEvent', this.meetingId , this.recording.filename, timestampHR, timestampUTC);
-    this.bbbGW.writeMeetingKey(this.meetingId, shareEvent, function(error){});
+    this.bbbGW.writeMeetingKey(this.meetingId, shareEvent, function(){});
     this._stopRecordingEventFired = true;
   }
 
@@ -778,6 +923,7 @@ module.exports = class Screenshare extends BaseProvider {
 
       try {
         await this.mcs.stopRecording(this.presenterMCSUserId, this.recording.recordingId);
+        this._stopHGARecordingSet();
       } catch (error) {
         // Logging it in case it still happens, but recording should be stopped
         // if it errors out inside mcs-core or if we call mcs.leave for this user
@@ -850,8 +996,8 @@ module.exports = class Screenshare extends BaseProvider {
   }
 
   // FIXME tether resolve to the Resp even from akka-apps
-  _stopRtmpBroadcast (meetingId) {
-    return new Promise((resolve, reject) => {
+  _stopRtmpBroadcast () {
+    return new Promise((resolve) => {
       if (!SCREENSHARE_SERVER_AKKA_BROADCAST) return resolve();
       const timestamp = Math.floor(new Date());
       const dsrstom = Messaging.generateScreenshareRTMPBroadcastStoppedEvent2x(this._voiceBridge,
@@ -871,49 +1017,46 @@ module.exports = class Screenshare extends BaseProvider {
     });
   }
 
-  stopPresenter () {
-    return new Promise (async (resolve, reject) => {
-      // Set this right away to avoid trailing stops
-      this.status = C.MEDIA_STOPPING;
-      // Stop the recording procedures if needed.
-      this._stopRecording();
-      // Send stopRtmpBroadcast message to akka-apps
-      this._notifyScreenshareEndToBBB();
-      // Check if the presenter user ID is set. If it is, it means this has
-      // been started through this process, so clean things up. If it isn't
-      // it means this is a viewer-only session and content has been started
-      // externally; so don't try to clean presenter stuff here because that's
-      // the job of who started it.
-      if (this.presenterMCSUserId) {
-        if (this._presenterEndpoint) {
-          await this._releaseContentFloorIfNeeded();
-          try {
-            await this.mcs.unpublish(this.presenterMCSUserId, this._presenterEndpoint);
-          } catch (error) {
-            Logger.error(LOG_PREFIX, `Unpublish failed for presenter ${this.presenterMCSUserId} due to ${error.message}`,
-              { ...this._getFullPresenterLogMetadata(this._connectionId), error });
-          }
-        } else {
-          Logger.warn(LOG_PREFIX, `Screenshare presenter mediaId not set on stop`,
-            this._getFullPresenterLogMetadata());
+  async stopPresenter () {
+    // Set this right away to avoid trailing stops
+    this.status = C.MEDIA_STOPPING;
+    // Stop the recording procedures if needed.
+    this._stopRecording();
+    // Send stopRtmpBroadcast message to akka-apps
+    this._notifyScreenshareEndToBBB();
+    // Check if the presenter user ID is set. If it is, it means this has
+    // been started through this process, so clean things up. If it isn't
+    // it means this is a viewer-only session and content has been started
+    // externally; so don't try to clean presenter stuff here because that's
+    // the job of who started it.
+    if (this.presenterMCSUserId) {
+      if (this._presenterEndpoint) {
+        await this._releaseContentFloorIfNeeded();
+        try {
+          await this.mcs.unpublish(this.presenterMCSUserId, this._presenterEndpoint);
+        } catch (error) {
+          Logger.error(LOG_PREFIX, `Unpublish failed for presenter ${this.presenterMCSUserId} due to ${error.message}`,
+            { ...this._getFullPresenterLogMetadata(this._connectionId), error });
         }
       } else {
-        Logger.warn(LOG_PREFIX, `Screenshare presenter MCS userId not set on stop`,
+        Logger.warn(LOG_PREFIX, `Screenshare presenter mediaId not set on stop`,
           this._getFullPresenterLogMetadata());
       }
+    } else {
+      Logger.warn(LOG_PREFIX, `Screenshare presenter MCS userId not set on stop`,
+        this._getFullPresenterLogMetadata());
+    }
 
-      this._stopAllViewers();
-      this._presenterEndpoint = null;
-      this._candidatesQueue = null;
-      this.status = C.MEDIA_STOPPED;
-      this.clearSessionListeners();
-      this.clearMediaFlowingTimeout(this._connectionId);
-      resolve();
-    });
+    this._stopAllViewers();
+    this._presenterEndpoint = null;
+    this._candidatesQueue = null;
+    this.status = C.MEDIA_STOPPED;
+    this.clearSessionListeners();
+    this.clearMediaFlowingTimeout(this._connectionId);
   }
 
   stop () {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve) => {
       this.mcs.removeListener(C.MCS_DISCONNECTED, this.handleMCSCoreDisconnection);
 
       switch (this.status) {
@@ -921,7 +1064,6 @@ module.exports = class Screenshare extends BaseProvider {
           Logger.warn(LOG_PREFIX, `Screenshare session already stopped`,
             this._getFullPresenterLogMetadata());
           return resolve();
-          break;
 
         case C.MEDIA_STOPPING:
           Logger.warn(LOG_PREFIX, `Screenshare session already stopping`,

@@ -45,6 +45,10 @@ recordScreenSharing:
   __format: json
 recordingMediaProfile: RECORDING_MEDIA_PROFILE
 recordingFormat: RECORDING_FORMAT
+recordingAdapter: RECORDING_ADAPTER
+recordingGenerateTsOnRecEvt:
+  __name: REC_TS_EXPERIMENTAL_EVT
+  __format: json
 
 modules:
   __name: SFU_MODULES
@@ -108,9 +112,11 @@ media-server-adapters:
   __name: MEDIA_SERVER_ADAPTERS
   __format: json
 
+listenOnlyMediaServer: LISTENONLY_MEDIA_SERVER
 videoMediaServer: VIDEO_MEDIA_SERVER
 screenshareMediaServer: SCREENSHARE_MEDIA_SERVER
 audioMediaServer: AUDIO_MEDIA_SERVER
+fullAudioMediaServer: FULL_AUDIO_MEDIA_SERVER
 listenOnlyGlobalAudioMode: GLOBAL_AUDIO_MODE
 
 listenOnlyIgnoreMediaThresholds:
@@ -147,6 +153,9 @@ mediasoup:
       __format: json
     dtlsCertificateFile: MS_DTLS_CERT
     dtlsPrivateKeyFile: MS_DTLS_KEY
+  promExportWorkerResourceUsage:
+    __name: MS_WORKER_RESOURCE_USAGE
+    __format: json
   webrtc:
     listenIps:
       __name: MS_WEBRTC_LISTEN_IPS
@@ -158,3 +167,22 @@ mediasoup:
     comedia:
       __name: MS_COMEDIA
       __format: json
+  recorder:
+    ffmpeg:
+      prestartIntraframeInterval:
+        __name: FFMPEG_PRESTART_INTRAFRAME_INTERVAL
+        __format: json
+      periodicIntraframeInterval:
+        __name: FFMPEG_PERIODIC_INTRAFRAME_INTERVAL
+        __format: json
+      estimateInitialTimestamp:
+        __name: FFMPEG_ESTIMATE_INI_TS
+        __format: json
+      recMinPort: REC_MIN_PORT
+      recMaxPort: REC_MAX_PORT
+      inputOptions:
+        __name: FFMPEG_INPUT_OPTS
+        __format: json
+      outputOptions:
+        __name: FFMPEG_OUTPUT_OPTS
+        __format: json

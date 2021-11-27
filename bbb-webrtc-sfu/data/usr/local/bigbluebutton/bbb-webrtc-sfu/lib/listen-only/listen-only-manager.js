@@ -7,8 +7,7 @@
 
 "use strict";
 
-const BigBlueButtonGW = require('../bbb/pubsub/bbb-gw');
-const Audio = require('./audio');
+const ListenOnly = require('./listen-only.js');
 const BaseManager = require('../base/BaseManager');
 const C = require('../bbb/messages/Constants');
 const Logger = require('../utils/Logger');
@@ -18,12 +17,12 @@ const ERRORS = require('../base/errors.js');
 
 const { handleExternalConnections : FS_HANDLE_EXTERNAL_CONNECTIONS } = config.get('freeswitch');
 const EJECT_ON_USER_LEFT = config.get('ejectOnUserLeft');
-const AUDIO_MEDIA_SERVER = config.get('audioMediaServer');
+const LISTENONLY_MEDIA_SERVER = config.get('listenOnlyMediaServer');
 
-module.exports = class AudioManager extends BaseManager {
+module.exports = class ListenOnlyManager extends BaseManager {
   constructor (connectionChannel, additionalChannels, logPrefix) {
     super(connectionChannel, additionalChannels, logPrefix);
-    this.sfuApp = C.AUDIO_APP;
+    this.sfuApp = C.LISTEN_ONLY_APP;
     this._meetings = {};
     this._trackMeetingEvents();
     this.messageFactory(this._onMessage.bind(this));
@@ -84,24 +83,26 @@ module.exports = class AudioManager extends BaseManager {
     const sessionId = this._meetings[meetingId];
     const session = this._fetchSession(sessionId);
     if (session) {
-      const connectionId = session.getConnectionId(userId);
-      if (connectionId) {
-        Logger.info(this._logPrefix, 'Disconnect listen only session on UserLeft*', {
-          meetingId,
-          userId,
-          sessionId,
-          connectionId,
-        });
-        return this._closeListener(sessionId, connectionId, {
-          userId, meetingId, roomId: sessionId, connectionId,
-        }).finally(() => {
-          this._bbbGW.publish(JSON.stringify({
+      const connectionIds = session.getConnectionIdsFromUser(userId) || [];
+      connectionIds.forEach(connectionId => {
+        if (connectionId) {
+          Logger.info(this._logPrefix, 'Disconnect listen only session on UserLeft*', {
+            meetingId,
+            userId,
+            sessionId,
             connectionId,
-            type: C.AUDIO_APP,
-            id : 'close',
-          }), C.FROM_AUDIO);
-        });
-      }
+          });
+          return this._closeListener(sessionId, connectionId, {
+            userId, meetingId, roomId: sessionId, connectionId,
+          }).finally(() => {
+            this.sendToClient({
+              connectionId,
+              type: C.LISTEN_ONLY_APP,
+              id : 'close',
+            }, C.FROM_LISTEN_ONLY);
+          });
+        }
+      });
     }
   }
 
@@ -109,7 +110,7 @@ module.exports = class AudioManager extends BaseManager {
     Logger.error(this._logPrefix, `Listen only session wide fatal failure`, {
         errorMessage: error.message,
         errorCode: error.code,
-        ...AudioManager.getMetadataFromMessage(rawMessage),
+        ...ListenOnlyManager.getMetadataFromMessage(rawMessage),
     });
 
     error.id = 'webRTCAudioError';
@@ -117,14 +118,14 @@ module.exports = class AudioManager extends BaseManager {
     this.sendToClient({
       type: 'audio',
       ...error,
-    }, C.FROM_AUDIO);
+    }, C.FROM_LISTEN_ONLY);
   }
 
   _handleListenerStartError (session, userConnectionId, error, rawMessage) {
     Logger.error(this._logPrefix, `Listen only listener failure`, {
       errorMessage: error.message,
       errorCode: error.code,
-      ...AudioManager.getMetadataFromMessage(rawMessage),
+      ...ListenOnlyManager.getMetadataFromMessage(rawMessage),
     });
 
     error.id = 'webRTCAudioError';
@@ -132,7 +133,7 @@ module.exports = class AudioManager extends BaseManager {
     this.sendToClient(({
       type: 'audio',
       ...error,
-    }), C.FROM_AUDIO);
+    }), C.FROM_LISTEN_ONLY);
   }
 
   async handleStart (message) {
@@ -143,14 +144,14 @@ module.exports = class AudioManager extends BaseManager {
       sdpOffer,
       userId,
       userName,
-      mediaServer = AUDIO_MEDIA_SERVER,
+      mediaServer = LISTENONLY_MEDIA_SERVER,
     } = message;
 
     let session = this._fetchSession(sessionId);
     const iceQueue = this._fetchIceQueue(this._getReqIdentifier(sessionId, connectionId));
 
     if (session == null) {
-      session = new Audio(this._bbbGW, sessionId, this.mcs, internalMeetingId, mediaServer);
+      session = new ListenOnly(this._bbbGW, sessionId, this.mcs, internalMeetingId, mediaServer);
       this._sessions[sessionId] = {}
       this._sessions[sessionId] = session;
     }
@@ -163,7 +164,7 @@ module.exports = class AudioManager extends BaseManager {
         // Empty ice queue after starting audio
         this._flushIceQueue(session, iceQueue);
 
-        session.once(C.MEDIA_SERVER_OFFLINE, async (event) => {
+        session.once(C.MEDIA_SERVER_OFFLINE, async () => {
           const errorMessage = this._handleError(this._logPrefix, connectionId, session.globalAudioBridge, C.RECV_ROLE, errors.MEDIA_SERVER_OFFLINE);
           return this._handleSessionWideError(errorMessage, sessionId, message);
         });
@@ -174,10 +175,10 @@ module.exports = class AudioManager extends BaseManager {
           id : 'startResponse',
           response : 'accepted',
           sdpAnswer : sdpAnswer
-        }, C.FROM_AUDIO);
+        }, C.FROM_LISTEN_ONLY);
 
         Logger.info(this._logPrefix, `Started listen only session for user ${userId}`,
-          AudioManager.getMetadataFromMessage(message));
+          ListenOnlyManager.getMetadataFromMessage(message));
       })
       .catch(error => {
         const normalizedError = this._handleError(this._logPrefix, connectionId, null, C.RECV_ROLE, error);
@@ -223,7 +224,7 @@ module.exports = class AudioManager extends BaseManager {
       voiceBridge: sessionId,
       connectionId,
     } = message;
-    const logMetadata = AudioManager.getMetadataFromMessage(message);
+    const logMetadata = ListenOnlyManager.getMetadataFromMessage(message);
 
     return this._closeListener(sessionId, connectionId, logMetadata);
   }
@@ -233,7 +234,7 @@ module.exports = class AudioManager extends BaseManager {
       voiceBridge: sessionId,
       connectionId,
     } = message;
-    const logMetadata = AudioManager.getMetadataFromMessage(message);
+    const logMetadata = ListenOnlyManager.getMetadataFromMessage(message);
 
     Logger.info(this._logPrefix, 'Connection closed', logMetadata)
 
@@ -250,7 +251,7 @@ module.exports = class AudioManager extends BaseManager {
     const session = this._fetchSession(sessionId);
 
     if (session) {
-      const metadata = AudioManager.getMetadataFromMessage(message);
+      const metadata = ListenOnlyManager.getMetadataFromMessage(message);
       session.processAnswer(answer, connectionId).then(() => {
         Logger.debug(this._logPrefix, 'Listen only remote description processed',
           metadata
@@ -283,6 +284,14 @@ module.exports = class AudioManager extends BaseManager {
     }
   }
 
+  handleInvalidRequest (message) {
+    const { connectionId }  = message;
+    const errorMessage = this._handleError(this._logPrefix, connectionId, null, null, errors.SFU_INVALID_REQUEST);
+    this.sendToClient({
+      type: 'audio',
+      ...errorMessage,
+    }, C.FROM_LISTEN_ONLY);
+  }
 
   async _onMessage(message) {
     Logger.trace(this._logPrefix, `Received message from ${message.connectionId}: ${message.id}`);
@@ -314,13 +323,7 @@ module.exports = class AudioManager extends BaseManager {
         break;
 
       default:
-        const { connectionId }  = message;
-        const errorMessage = this._handleError(this._logPrefix, connectionId, null, null, errors.SFU_INVALID_REQUEST);
-        this.sendToClient({
-          type: 'audio',
-          ...errorMessage,
-        }, C.FROM_AUDIO);
-        break;
+        this.handleInvalidRequest(message);
     }
   }
 };

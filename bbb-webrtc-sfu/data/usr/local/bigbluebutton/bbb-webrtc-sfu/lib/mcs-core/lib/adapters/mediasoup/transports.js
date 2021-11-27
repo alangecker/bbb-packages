@@ -1,3 +1,4 @@
+const config = require('config');
 const C = require('../../constants/constants');
 const {
   LOG_PREFIX, WEBRTC_TRANSPORT_SETTINGS, RTP_TRANSPORT_SETTINGS,
@@ -6,10 +7,8 @@ const {
 const { getRouter } = require('./routers.js');
 const Logger = require('../../utils/logger');
 const { getMappedTransportType } = require('./utils.js');
-const {
-  MCSPrometheusAgent,
-  METRIC_NAMES,
-} = require('../../metrics/index.js');
+const { PrometheusAgent, MS_METRIC_NAMES } = require('./prom-metrics.js');
+const { handleError } = require('./errors.js');
 
 module.exports = class TransportSet {
   static getWebRTCTransportOpts (transport) {
@@ -28,8 +27,8 @@ module.exports = class TransportSet {
         id: transport.id,
         ip: transport.tuple.localIp,
         port: transport.tuple.localPort,
+        rtcpPort: transport.rtcpTuple ? transport.rtcpTuple.localPort : undefined,
         ipVersion: 4, // TODO IPvX aware
-        // TODO account for RTCP-mux == false scenarios
       }
     };
   }
@@ -41,96 +40,171 @@ module.exports = class TransportSet {
     this.transport;
     this.routerId = routerId;
     this.connected = false;
+
+    // Event handlers
+    this._handleRouterClose = this._handleRouterClose.bind(this);
   }
 
   set transport (newTransport) {
     this._transport = newTransport;
-    this._transport.once("routerclose", () => { this.stop("routerclose") });
+    if (this.transport) {
+      this.transport.once("routerclose", this._handleRouterClose);
+    }
   }
 
   get transport () {
     return this._transport;
   }
 
-  _createPRTPTransportSet ({
-    transportSettings = RTP_TRANSPORT_SETTINGS,
-  }) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const router = getRouter(this.routerId);
-        if (router == null) return reject(new Error('Router not found'));
 
-        this.transport = await router.createPlainTransport(transportSettings);
-        router.activeElements++;
-        this.setInputBandwidth(DEFAULT_MAX_BW);
-
-        Logger.info(LOG_PREFIX, "Transport creation success", {
-          transportId: this.transport.id,
-        });
-
-        this.id = this.transport.id;
-        this.transportOptions = TransportSet.getPRTPTransportOpts(this.transport);
-        const localIp = RTP_TRANSPORT_SETTINGS.listenIp.ip;
-        const publicIp = RTP_TRANSPORT_SETTINGS.listenIp.announcedIp || localIp;
-        this.host = {
-          id: this.routerId,
-          ipClassMappings: {
-            public: publicIp,
-            private: publicIp || localIp,
-            local: localIp,
-          },
-          routerId: this.routerId,
-        }
-
-        MCSPrometheusAgent.increment(METRIC_NAMES.MEDIASOUP_TRANSPORTS,
-          { type: getMappedTransportType(this.type) }
-        );
-
-        return resolve(this);
-      } catch (error) {
-        Logger.error(LOG_PREFIX, "Transport creation failed", {
-          errorCode: error.code, errorMessage: error.message,
-        });
-        return reject(error);
-      }
-    });
+  set rtcpMux (state = true) {
+    this._rtcpMux = state;
   }
 
-  _createWebRTCTransportSet ({
-    transportSettings = WEBRTC_TRANSPORT_SETTINGS,
+  get rtcpMux () {
+    return this._rtcpMux;
+  }
+
+  set comedia (state = false) {
+    this._comedia = state;
+  }
+
+  get comedia () {
+    return this._comedia;
+  }
+
+  set transportSettings (tSettings) {
+    this._transportSettings = tSettings;
+
+    // The defaults are mediasoup defaults.
+    this.rtcpMux = !(this.transportSettings.rtcpMux == null)
+      ? this.transportSettings.rtcpMux
+      : true;
+    this.comedia = !(this.transportSettings.comedia == null)
+      ? this.transportSettings.comedia
+      : false;
+  }
+
+  get transportSettings () {
+    return this._transportSettings;
+  }
+
+  _handleRouterClose() {
+    this.stop("routerclose");
+  }
+
+  async _createPRTPTransportSet ({
+    transportSettings = RTP_TRANSPORT_SETTINGS,
+    adapterOptions,
   }) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const router = getRouter(this.routerId);
-        if (router == null) return reject(new Error('Router not found'));
+    try {
+      const router = getRouter(this.routerId);
+      let tSettings = transportSettings;
 
-        this.transport = await router.createWebRtcTransport({
-          ...transportSettings,
-          initialAvailableOutgoingBitrate: DEFAULT_INITIAL_BW,
-        });
-        this.setInputBandwidth(DEFAULT_MAX_BW);
-        router.activeElements++;
+      if (router == null) throw (new Error('Router not found'));
 
-        Logger.info(LOG_PREFIX, "Transport creation success", {
-          transportId: this.transport.id,
-        });
-
-        this.id = this.transport.id;
-        this.transportOptions = TransportSet.getWebRTCTransportOpts(this.transport);
-        this.host = this.routerId;
-
-        MCSPrometheusAgent.increment(METRIC_NAMES.MEDIASOUP_TRANSPORTS,
-          { type: getMappedTransportType(this.type) }
-        );
-
-        return resolve(this);
-      } catch (error) {
-        Logger.error(LOG_PREFIX, "Transport creation failed", {
-          errorCode: error.code, errorMessage: error.message,
-        });
-        return reject(error);
+      if (adapterOptions && adapterOptions.transportOptions) {
+        tSettings = config.util.cloneDeep(transportSettings);
+        if (!(adapterOptions.transportOptions.comedia == null)) {
+          tSettings.comedia = adapterOptions.transportOptions.comedia;
+        }
+        if (!(adapterOptions.transportOptions.rtcpMux == null)) {
+          tSettings.rtcpMux = adapterOptions.transportOptions.rtcpMux;
+        }
       }
-    });
+
+      this.transport = await router.createPlainTransport(tSettings);
+      this.transportSettings = tSettings;
+      this.setInputBandwidth(DEFAULT_MAX_BW);
+      this.transportOptions = TransportSet.getPRTPTransportOpts(this.transport);
+      const localIp = this.transportSettings.listenIp.ip;
+      const publicIp = this.transportSettings.listenIp.announcedIp || localIp;
+
+      this.host = {
+        id: this.routerId,
+        ipClassMappings: {
+          public: publicIp,
+          private: publicIp || localIp,
+          local: localIp,
+        },
+        routerId: this.routerId,
+      }
+
+      PrometheusAgent.increment(MS_METRIC_NAMES.MEDIASOUP_TRANSPORTS,
+        { type: getMappedTransportType(this.type) }
+      );
+
+      this.id = this.transport.id;
+
+      Logger.info(LOG_PREFIX, "Transport creation success", {
+        transportId: this.id, type: this.type, routerId: this.routerId,
+      });
+
+      return this;
+    } catch (error) {
+      Logger.error(LOG_PREFIX, "Transport creation failed", {
+        errorMessage: error.message, type: this.type, routerId: this.routerId,
+      });
+      throw error;
+    }
+  }
+
+  async _createWebRTCTransportSet ({
+    transportSettings = WEBRTC_TRANSPORT_SETTINGS,
+    adapterOptions,
+  }) {
+    try {
+      const router = getRouter(this.routerId);
+      let tSettings = transportSettings;
+
+      if (router == null) throw (new Error('Router not found'));
+
+      if (adapterOptions && adapterOptions.transportOptions) {
+        tSettings = config.util.cloneDeep(transportSettings);
+
+        if (!(adapterOptions.transportOptions.enableTcp == null)) {
+          tSettings.enableTcp = adapterOptions.transportOptions.enableTcp;
+        }
+
+        if (!(adapterOptions.transportOptions.initialAvailableOutgoingBitrate == null)) {
+          tSettings.initialAvailableOutgoingBitrate = adapterOptions.transportOptions.initialAvailableOutgoingBitrate;
+        }
+
+        if (!(adapterOptions.transportOptions.port == null)) {
+          tSettings.port= adapterOptions.transportOptions.port;
+        }
+      }
+
+      if (!(tSettings.initialAvailableOutgoingBitrate == null)) {
+        tSettings = {...tSettings, initialAvailableOutgoingBitrate: DEFAULT_INITIAL_BW };
+      }
+
+      this.transport = await router.createWebRtcTransport(tSettings);
+      this.transportSettings = tSettings;
+      this.setInputBandwidth(DEFAULT_MAX_BW);
+
+      this.transportOptions = TransportSet.getWebRTCTransportOpts(this.transport);
+      this.host = {
+        id: this.routerId,
+      }
+
+      PrometheusAgent.increment(MS_METRIC_NAMES.MEDIASOUP_TRANSPORTS,
+        { type: getMappedTransportType(this.type) }
+      );
+
+      this.id = this.transport.id;
+
+      Logger.info(LOG_PREFIX, "Transport creation success", {
+        transportId: this.transport.id, type: this.type, routerId: this.routerId,
+      });
+
+      return this;
+    } catch (error) {
+      Logger.error(LOG_PREFIX, "Transport creation failed", {
+        errorMessage: error.message, type: this.type, routerId: this.routerId,
+      });
+      throw error;
+    }
   }
 
   createTransportSet (options) {
@@ -140,7 +214,7 @@ module.exports = class TransportSet {
       case C.MEDIA_TYPE.RTP:
         return this._createPRTPTransportSet(options);
       default:
-        return reject(handleError({
+        throw(handleError({
           ...C.ERROR.MEDIA_INVALID_OPERATION,
           details: "MEDIASOUP_UNSUPPORTED_MEDIA_TYPE"
         }));
@@ -164,19 +238,30 @@ module.exports = class TransportSet {
   }
 
   stop (reason) {
-    // If a reason is specified it's worth logging
-    if (reason) {
-      Logger.info(LOG_PREFIX, "TransportSet closed", {
-        transportId: this.id, reason,
-      });
-    }
-
-    if (this.transport && typeof this.transport.close === 'function') {
+    if (this.transport
+      && typeof this.transport.close === 'function'
+      && !this.transport.closed) {
       try {
+        this.transport.removeListener('routerclose', this._handleRouterClose);
+        this.transport.removeAllListeners('icestatechange');
+        this.transport.removeAllListeners('dtlsstatechange');
+        this.transport.removeAllListeners('tuple');
+        this.transport.removeAllListeners('rtcptuple');
         this.transport.close();
-        MCSPrometheusAgent.decrement(METRIC_NAMES.MEDIASOUP_TRANSPORTS,
+        this.transport = null;
+        this.connected = false;
+
+        // If a reason is specified it's worth logging
+        if (reason) {
+          Logger.info(LOG_PREFIX, "TransportSet closed", {
+            transportId: this.id, type: this.type, routerId: this.routerId, reason,
+          });
+        }
+
+        PrometheusAgent.decrement(MS_METRIC_NAMES.MEDIASOUP_TRANSPORTS,
           { type: getMappedTransportType(this.type) }
         );
+
         return Promise.resolve();
       } catch (error) {
         return Promise.reject(error);
