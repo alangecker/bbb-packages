@@ -198,8 +198,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 64665,
-      "hash": "c2b98c9a974ec4a13005ec50843f3f4f19a50508",
+      "size": 64602,
+      "hash": "cf6272cf16499255faccccd65651e0d1c34e1cf6",
       "sri": null
     },
     {
@@ -1236,7 +1236,7 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "84a1c6a02d140a40aa3b8cf81e6249390722b7a2"
+      "hash": "14ee70daae9c6bda2bc4ba585bbd393f658c739d"
     },
     {
       "path": "body.html",

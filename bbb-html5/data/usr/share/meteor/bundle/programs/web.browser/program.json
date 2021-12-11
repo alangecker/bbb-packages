@@ -2,25 +2,25 @@
   "format": "web-program-pre1",
   "manifest": [
     {
-      "path": "02422a2dfea29b28bff22918d9142403af22aef8.js",
+      "path": "21e2f45e3873a847afbaf8fafcb22e3eb0756d7a.js",
       "where": "client",
       "type": "js",
       "cacheable": true,
-      "url": "/02422a2dfea29b28bff22918d9142403af22aef8.js?meteor_js_resource=true",
+      "url": "/21e2f45e3873a847afbaf8fafcb22e3eb0756d7a.js?meteor_js_resource=true",
       "replaceable": false,
-      "size": 3665538,
-      "hash": "02422a2dfea29b28bff22918d9142403af22aef8",
-      "sri": "GNz101Adl0JRGrawso29J2CZAoV59L8urZYf9QhGmTMui15pROEIaemNY6Y03G+ITZN6bKFhDlwaS/47WyFdYw=="
+      "size": 3669108,
+      "hash": "21e2f45e3873a847afbaf8fafcb22e3eb0756d7a",
+      "sri": "Z0vVXu5guO86+nC/lStkhErqqI3bMUxaMyHLVjmiR4HJFcnfm2uARktkuBoxaHnfJ4M0j9Gei8dVtQ6+Xgq7rA=="
     },
     {
-      "path": "02422a2dfea29b28bff22918d9142403af22aef8.stats.json",
+      "path": "21e2f45e3873a847afbaf8fafcb22e3eb0756d7a.stats.json",
       "where": "client",
       "type": "json",
       "cacheable": true,
-      "url": "/02422a2dfea29b28bff22918d9142403af22aef8.stats.json?meteor_js_resource=true",
-      "size": 120905,
-      "hash": "d9b52dcaf8aa5b8c174542f3b14c9462aee81969",
-      "sri": "IXefORy/sQg9K96BSEcV8qPd7dvDye4vLafvfh8zjXQj99K16qEOndxqZBx7wD5QUrzP/xE3MZhKBnBmRBIgPA=="
+      "url": "/21e2f45e3873a847afbaf8fafcb22e3eb0756d7a.stats.json?meteor_js_resource=true",
+      "size": 120937,
+      "hash": "125398ca5cdc2f5dc7d7fef87e8a123131bfeb66",
+      "sri": "E7aJlqpa+HQnVBai+p2pqGFIUgIB5byb0vHcTP64yWwEmfKaYxg88lJbp/janme5M73jJ3wRufl5H+kPAxHO3A=="
     },
     {
       "path": "dynamic/imports/api/audio/client/bridge/FullAudioBridge.js",
@@ -231,8 +231,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 64665,
-      "hash": "c2b98c9a974ec4a13005ec50843f3f4f19a50508",
+      "size": 64602,
+      "hash": "cf6272cf16499255faccccd65651e0d1c34e1cf6",
       "sri": null
     },
     {
@@ -1269,7 +1269,7 @@
       "path": "head.html",
       "where": "internal",
       "type": "head",
-      "hash": "84a1c6a02d140a40aa3b8cf81e6249390722b7a2"
+      "hash": "14ee70daae9c6bda2bc4ba585bbd393f658c739d"
     },
     {
       "path": "body.html",
