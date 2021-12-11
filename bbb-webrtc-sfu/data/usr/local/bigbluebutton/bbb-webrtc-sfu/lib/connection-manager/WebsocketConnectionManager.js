@@ -3,9 +3,13 @@
 const ws = require('ws');
 const C = require('../bbb/messages/Constants');
 const Logger = require('../utils/Logger');
-const { v4: uuidv4 }= require('uuid');
+const { v4: uuidv4 } = require('uuid');
+const { extractUserInfos } = require('./utils.js');
+const config = require('config');
+
 
 const LOG_PREFIX = '[WebsocketConnectionManager]';
+const WS_STRICT_HEADER_PARSING = config.get('wsStrictHeaderParsing');
 
 module.exports = class WebsocketConnectionManager {
   constructor (server, path) {
@@ -24,20 +28,24 @@ module.exports = class WebsocketConnectionManager {
     this.emitter.on('response', this._onServerResponse.bind(this));
   }
 
+  _closeSocket (ws) {
+    try {
+      ws.close();
+    } catch (error) {
+      Logger.error(LOG_PREFIX, 'WS close failed', {
+        connectionId: ws.id,
+        errorMessage: error.message,
+        errorCode: error.code
+      });
+    }
+  }
+
   _onServerResponse (data) {
     const connectionId = data ? data.connectionId : null;
     const ws = this.webSockets[connectionId];
     if (ws) {
       if (data.id === 'close') {
-        try {
-          ws.close();
-        } catch (error) {
-          Logger.error(LOG_PREFIX, 'WS close failed', {
-            connectionId,
-            errorMessage: error.message,
-            errorCode: error.code
-          });
-        }
+        this._closeSocket(ws);
       } else {
         // Strip connectionId from the outbound message. Should save some bytes
         if (data.connectionId) data.connectionId = undefined;
@@ -46,10 +54,22 @@ module.exports = class WebsocketConnectionManager {
     }
   }
 
-  _onNewConnection (ws) {
-    ws.id = uuidv4();
-    this.webSockets[ws.id] = ws;
-    Logger.debug(LOG_PREFIX, "WS connection opened", { connectionId: ws.id });
+  _onNewConnection (ws, req) {
+    try {
+      ws.id = uuidv4();
+      this.webSockets[ws.id] = ws;
+      ws.userInfos = extractUserInfos(req);
+      Logger.debug(LOG_PREFIX, "WS connection opened", { connectionId: ws.id });
+    } catch (error) {
+      if (WS_STRICT_HEADER_PARSING) {
+        Logger.debug(LOG_PREFIX, 'Failure on WS connection startup', {
+          errorMessage: error.message,
+        });
+        this._closeSocket(ws);
+        this._onError(ws, error);
+        return;
+      }
+    }
 
     ws.on('message', (data) => {
       this._onMessage(ws, data);
@@ -70,24 +90,25 @@ module.exports = class WebsocketConnectionManager {
     try {
       message = JSON.parse(data);
 
-      if (message.id === 'close') return;
+      switch (message.id) {
+        case 'ping':
+          return this.sendMessage(ws, { id: 'pong' });
+        case 'close':
+          return;
+        default: {
+          message.connectionId = ws.id;
+          message.sfuUserHeader = ws.userInfos;
 
-      if (message.id === 'ping') {
-        return this.sendMessage(ws, { id: 'pong' });
-      }
-
-      message.connectionId = ws.id;
-
-      if (!ws.sessionId) {
-        ws.sessionId = message.voiceBridge;
-      }
-
-      if (!ws.route) {
-        ws.route = message.type;
-      }
-
-      if (!ws.role) {
-        ws.role = message.role;
+          if (!ws.sessionId) {
+            ws.sessionId = message.voiceBridge;
+          }
+          if (!ws.route) {
+            ws.route = message.type;
+          }
+          if (!ws.role) {
+            ws.role = message.role;
+          }
+        }
       }
     } catch(error) {
       Logger.error(LOG_PREFIX, "JSON message parse failed", {
@@ -115,7 +136,8 @@ module.exports = class WebsocketConnectionManager {
       type: ws.route,
       role: ws.role,
       voiceBridge: ws.sessionId,
-      connectionId: ws.id
+      connectionId: ws.id,
+      sfuUserHeader: ws.userInfos,
     }
 
     this.emitter.emit(C.CLIENT_REQ, message);
@@ -131,7 +153,8 @@ module.exports = class WebsocketConnectionManager {
       type: ws.route,
       role: ws.role,
       voiceBridge: ws.sessionId,
-      connectionId: ws.id
+      connectionId: ws.id,
+      sfuUserHeader: ws.userInfos,
     }
 
     this.emitter.emit(C.CLIENT_REQ, message);

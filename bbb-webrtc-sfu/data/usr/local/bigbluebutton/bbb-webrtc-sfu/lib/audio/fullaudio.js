@@ -18,8 +18,9 @@ const BRIDGE_MODE = config.has('listenOnlyGlobalAudioMode')
   ? config.get('listenOnlyGlobalAudioMode')
   : 'RTP';
 const EJECT_ON_USER_LEFT = config.get('ejectOnUserLeft');
+const PROXY_ACTIVE_DIRECTION = config.get('fullAudioProxyActiveDirection');
 
-const EventEmitter = require('events');
+const BOGUS_USER_NAME = 'SFU_NO_USERNAME';
 
 module.exports = class Audio extends BaseProvider {
   constructor(bbbGW, voiceBridge, mcs, meetingId, bbbUserId, connectionId, mediaServer) {
@@ -107,7 +108,7 @@ module.exports = class Audio extends BaseProvider {
       }
       this.candidatesQueue[connectionId].push(_candidate);
     }
-  };
+  }
 
   async _flushCandidatesQueue (connectionId) {
     const endpoint = this.audioEndpoints[connectionId];
@@ -131,20 +132,21 @@ module.exports = class Audio extends BaseProvider {
   /**
    * Include user to a hash object indexed by it's connectionId
    * @param  {String} connectionId Current connection id at the media manager
-   * @param  {Object} user {userId: String, userName: String}
+   * @param  {Object} user {userId: String}
    */
   addUser (connectionId, user) {
-    if (this.connectedUsers.hasOwnProperty(connectionId)) {
+    if (Object.prototype.hasOwnProperty.call(this.connectedUsers, connectionId)) {
+
       Logger.debug(LOG_PREFIX, `Updating user for connectionId ${connectionId}`,
         this._getFullLogMetadata(connectionId));
     }
     this.connectedUsers[connectionId] = user;
     Logger.debug(LOG_PREFIX, `Added user with connectionId ${connectionId}`,
       this._getFullLogMetadata(connectionId));
-  };
+  }
 
   static isValidUser (user) {
-    return user && user.userId && user.userName;
+    return user && user.userId;
   }
 
   /**
@@ -152,7 +154,7 @@ module.exports = class Audio extends BaseProvider {
    * @param  {String} connectionId Current connection id at the media manager
    */
   removeUser(connectionId) {
-    if (this.connectedUsers.hasOwnProperty(connectionId)) {
+    if (Object.prototype.hasOwnProperty.call(this.connectedUsers, connectionId)) {
       Logger.info(LOG_PREFIX, `Removing user with connectionId ${connectionId}`,
         this._getFullLogMetadata(connectionId));
       delete this.connectedUsers[connectionId];
@@ -160,15 +162,15 @@ module.exports = class Audio extends BaseProvider {
       Logger.debug(LOG_PREFIX, `User not found on remove for connectionId ${connectionId}`,
         this._getPartialLogMetadata());
     }
-  };
+  }
 
 /**
  * Consult user from a hash object indexed by it's connectionId
  * @param  {String} connectionId Current connection id at the media manager
- * @return  {Object} user {userId: String, userName: String}
+ * @return  {Object} user {userId: String}
  */
   getUser (connectionId, suppressLog = false) {
-    if (this.connectedUsers.hasOwnProperty(connectionId)) {
+    if (Object.prototype.hasOwnProperty.call(this.connectedUsers, connectionId)) {
       return this.connectedUsers[connectionId];
     } else {
       if (!suppressLog) {
@@ -178,7 +180,7 @@ module.exports = class Audio extends BaseProvider {
 
       return {};
     }
-  };
+  }
 
   getGlobalAudioPermission (meetingId, voiceBridge, userId, sfuSessionId) {
     if (!PERMISSION_PROBES) return Promise.resolve();
@@ -205,7 +207,7 @@ module.exports = class Audio extends BaseProvider {
   _onSubscriberMediaFlowing (connectionId, mediaData = {}) {
     const { role } = mediaData;
 
-    Logger.debug(LOG_PREFIX, `Listen only WebRTC media is FLOWING`,
+    Logger.debug(LOG_PREFIX, `Full audio WebRTC media is FLOWING`,
       this._getFullLogMetadata(connectionId));
     this.clearMediaFlowingTimeout(connectionId);
 
@@ -219,16 +221,16 @@ module.exports = class Audio extends BaseProvider {
       id: "webRTCAudioSuccess",
       success: "MEDIA_FLOWING"
     }, C.FROM_AUDIO);
-  };
+  }
 
   _onSubscriberMediaNotFlowing (connectionId) {
-    Logger.debug(LOG_PREFIX, `Listen only WebRTC media is NOT_FLOWING`,
+    Logger.debug(LOG_PREFIX, `Full audio WebRTC media is NOT_FLOWING`,
       this._getFullLogMetadata(connectionId));
     this.setMediaFlowingTimeout(connectionId);
   }
 
   _onSubscriberMediaNotFlowingTimeout (connectionId) {
-    Logger.error(LOG_PREFIX, `Listen only WebRTC media NOT_FLOWING timeout reached`,
+    Logger.error(LOG_PREFIX, `Full audio WebRTC media NOT_FLOWING timeout reached`,
       this._getFullLogMetadata(connectionId));
     this.sendToClient({
       type: 'audio',
@@ -236,11 +238,11 @@ module.exports = class Audio extends BaseProvider {
       id: "webRTCAudioError",
       error: { code: 2211 , reason: errors[2211] },
     }, C.FROM_AUDIO);
-  };
+  }
 
   setMediaFlowingTimeout (connectionId) {
     if (!this._mediaFlowingTimeouts[connectionId]) {
-      Logger.debug(LOG_PREFIX, `Listen only NOT_FLOWING timeout set`,
+      Logger.debug(LOG_PREFIX, `Full audio NOT_FLOWING timeout set`,
         { ...this._getFullLogMetadata(connectionId), MEDIA_FLOW_TIMEOUT_DURATION });
       this._mediaFlowingTimeouts[connectionId] = setTimeout(() => {
         this._onSubscriberMediaNotFlowingTimeout(connectionId);
@@ -258,19 +260,19 @@ module.exports = class Audio extends BaseProvider {
   }
 
   _onSubscriberMediaConnected (connectionId) {
-    Logger.info(LOG_PREFIX, `Listen only WebRTC media is CONNECTED`,
+    Logger.info(LOG_PREFIX, `Full audio WebRTC media is CONNECTED`,
       this._getFullLogMetadata(connectionId));
     this.clearMediaStateTimeout(connectionId);
-  };
+  }
 
   _onSubscriberMediaDisconnected (connectionId) {
-    Logger.warn(LOG_PREFIX, `Listen only WebRTC media is DISCONNECTED`,
+    Logger.warn(LOG_PREFIX, `Full audio WebRTC media is DISCONNECTED`,
       this._getFullLogMetadata(connectionId));
     this.setMediaStateTimeout(connectionId);
   }
 
   _onSubscriberMediaDisconnectedTimeout (connectionId) {
-    Logger.error(LOG_PREFIX, `Listen only WebRTC media DISCONNECTED timeout reached`,
+    Logger.error(LOG_PREFIX, `Full audio WebRTC media DISCONNECTED timeout reached`,
       this._getFullLogMetadata(connectionId));
 
     this.sendToClient({
@@ -279,11 +281,11 @@ module.exports = class Audio extends BaseProvider {
       id: "webRTCAudioError",
       error: { code: 2211 , reason: errors[2211] },
     }, C.FROM_AUDIO);
-  };
+  }
 
   setMediaStateTimeout (connectionId) {
     if (!this._mediaStateTimeouts[connectionId]) {
-      Logger.warn(LOG_PREFIX, `Listen only DISCONNECTED media state timeout set`,
+      Logger.warn(LOG_PREFIX, `Full audio DISCONNECTED media state timeout set`,
         { ...this._getFullLogMetadata(connectionId), MEDIA_STATE_TIMEOUT_DURATION });
       this._mediaStateTimeouts[connectionId] = setTimeout(() => {
         this._onSubscriberMediaDisconnectedTimeout(connectionId);
@@ -304,7 +306,7 @@ module.exports = class Audio extends BaseProvider {
 
   _onBridgeMediaStateChange (event, endpoint) {
     const { mediaId, state } = event;
-    const { name, details = null } = state;
+    const { name } = state;
 
     if (mediaId !== endpoint) {
       return;
@@ -426,7 +428,7 @@ module.exports = class Audio extends BaseProvider {
 
       case "MediaFlowOutStateChange":
       case "MediaFlowInStateChange":
-        Logger.debug(LOG_PREFIX, `Listen only WebRTC media received MediaFlow state`,
+        Logger.debug(LOG_PREFIX, `Full audio WebRTC media received MediaFlow state`,
           { ...logMetadata, state });
 
         if (details === 'FLOWING') {
@@ -437,7 +439,7 @@ module.exports = class Audio extends BaseProvider {
         break;
 
       case C.MEDIA_SERVER_OFFLINE:
-        Logger.error(LOG_PREFIX, `WebRTC listen only session ${mediaId} received MEDIA_SERVER_OFFLINE event`,
+        Logger.error(LOG_PREFIX, `WebRTC full audio session ${mediaId} received MEDIA_SERVER_OFFLINE event`,
           { ...logMetadata, event });
 
         this.emit(C.MEDIA_SERVER_OFFLINE, event);
@@ -477,10 +479,8 @@ module.exports = class Audio extends BaseProvider {
         switch (this.sourceAudioStatus) {
           case C.MEDIA_STARTED:
             return Promise.resolve(true);
-            break;
           case C.MEDIA_STOPPED:
             return this.startGlobalAudioBridge();
-            break;
           default:
             return waitForConnection();
         }
@@ -523,6 +523,7 @@ module.exports = class Audio extends BaseProvider {
             profiles: {
               audio: 'sendrecv',
             },
+            hackForceActiveDirection: PROXY_ACTIVE_DIRECTION,
             mediaProfile: 'audio',
             adapterOptions: {
               msHackRTPAVPtoRTPAVPF: true,
@@ -667,12 +668,12 @@ module.exports = class Audio extends BaseProvider {
           this.sourceAudioStatus = C.MEDIA_STARTED;
           this.emit(C.MEDIA_STARTED);
 
-          Logger.info(LOG_PREFIX, `Listen only source WebRTC relay successfully created`,
+          Logger.info(LOG_PREFIX, `Full audio source WebRTC relay successfully created`,
             { ...this._getPartialLogMetadata(), mediaId: this.sourceAudio, userId: this.userId });
           return resolve(true);
         }
       } catch (error) {
-        Logger.error(LOG_PREFIX, `Error on starting listen only source WebRTC relay`,
+        Logger.error(LOG_PREFIX, `Error on starting full audio source WebRTC relay`,
           { ...this._getPartialLogMetadata(), error });
         this.sourceAudioStatus = C.MEDIA_NEGOTIATION_FAILED;
         this._stopSourceAudio();
@@ -695,8 +696,7 @@ module.exports = class Audio extends BaseProvider {
     return this._startFullAudioBridge(C.RTP, connectionId);
   }
 
-  async start (sessionId, connectionId, sdpOffer, userId, userName,
-    role, caleeName) {
+  async start (sessionId, connectionId, sdpOffer, userId, role, caleeName) {
     let mcsUserId;
     const isConnected = await this.mcs.waitForConnection();
 
@@ -746,7 +746,7 @@ module.exports = class Audio extends BaseProvider {
       this.mcsUserId = mcsUserId;
     } catch (error) {
       const normalizedError = this._handleError(LOG_PREFIX, error, "recv", userId);
-      Logger.error(LOG_PREFIX, `mcs-core join failure for new listen only session`, {
+      Logger.error(LOG_PREFIX, `mcs-core join failure for new full audio session`, {
         ...this._getPartialLogMetadata(),
         connectionId,
         userId,
@@ -756,9 +756,9 @@ module.exports = class Audio extends BaseProvider {
     }
 
     // Storing the user data to be used by the pub calls
-    const user = { userId, userName, mcsUserId, connected: false };
+    const user = { userId, mcsUserId, connected: false };
     this.addUser(connectionId, user);
-    Logger.info(LOG_PREFIX, `Starting new listen only session`,
+    Logger.info(LOG_PREFIX, `Starting new full audio session`,
       this._getFullLogMetadata(connectionId));
 
     try {
@@ -844,7 +844,7 @@ module.exports = class Audio extends BaseProvider {
       ({ mediaId, answer } = await this.mcs.subscribe(mcsUserId,
         this.sourceAudio, C.WEBRTC, options));
     } catch (subscribeError) {
-      Logger.error(LOG_PREFIX, `New listen only session failed to subscribe to GLOBAL_AUDIO`,
+      Logger.error(LOG_PREFIX, `New full audio session failed to subscribe to GLOBAL_AUDIO`,
         { ...this._getPartialLogMetadata(), subscribeError});
       throw (this._handleError(LOG_PREFIX, subscribeError, "recv", connectionId));
     }
@@ -859,7 +859,7 @@ module.exports = class Audio extends BaseProvider {
 
     this.audioEndpoints[connectionId] = { mcsUserId, mediaId };
     this._flushCandidatesQueue(connectionId);
-    Logger.info(LOG_PREFIX, 'Listen only session subscribed to global audio',
+    Logger.info(LOG_PREFIX, 'Full audio session subscribed to global audio',
       this._getFullLogMetadata(connectionId));
     return answer;
   }
@@ -867,7 +867,7 @@ module.exports = class Audio extends BaseProvider {
   processAnswer (answer, connectionId) {
     const endpoint = this.audioEndpoints[connectionId];
 
-    Logger.debug(LOG_PREFIX, 'Processing listen only answer',
+    Logger.debug(LOG_PREFIX, 'Processing full audio answer',
       this._getFullLogMetadata(connectionId));
 
     if (endpoint && endpoint.mediaId) {
@@ -887,7 +887,7 @@ module.exports = class Audio extends BaseProvider {
   }
 
   /* ======= STOP METHODS ======= */
-  async _stopProxyEndpoints (connectionId) {
+  async _stopProxyEndpoints () {
     const { userId, mcsUserId } = this;
 
     if (userId && mcsUserId) {
@@ -905,7 +905,7 @@ module.exports = class Audio extends BaseProvider {
     if (listener && listener.mediaId && listener.mcsUserId) {
       try {
         await this.mcs.unsubscribe(listener.mcsUserId, listener.mediaId);
-        Logger.info(LOG_PREFIX, 'Listen only session stopped',
+        Logger.info(LOG_PREFIX, 'Full audio session stopped',
           this._getFullLogMetadata(connectionId));
       } catch (error) {
         Logger.warn(LOG_PREFIX, `Error on unsubscribing listener media ${listener.mediaId}`,
@@ -915,7 +915,7 @@ module.exports = class Audio extends BaseProvider {
 
     switch (this.role) {
       case 'sendrecv':
-        this._stopProxyEndpoints(connectionId);
+        this._stopProxyEndpoints();
         break;
       case 'recvonly':
       default:
@@ -952,7 +952,7 @@ module.exports = class Audio extends BaseProvider {
         try {
           await this.stopListener(connectionId);
         } catch (error) {
-          Logger.error(LOG_PREFIX, `Listen only session stop failed`,
+          Logger.error(LOG_PREFIX, `Full audio session stop failed`,
             { ...this._getFullLogMetadata(connectionId), error });
         }
       }
@@ -963,7 +963,7 @@ module.exports = class Audio extends BaseProvider {
         { ...this._getPartialLogMetadata(), error });
       return Promise.reject(this._handleError(LOG_PREFIX, error, "recv", this.userId));
     }
-  };
+  }
 
   async _stopSourceAudio () {
     if (this.userId) {
@@ -983,24 +983,24 @@ module.exports = class Audio extends BaseProvider {
     const user = this.getUser(connectionId);
     if (user) {
       if (user.connected) {
-        const { userId, userName } = user;
-        const msg = Messaging.generateUserDisconnectedFromGlobalAudioMessage(this.voiceBridge, userId, userName);
+        const { userId } = user;
+        const msg = Messaging.generateUserDisconnectedFromGlobalAudioMessage(this.voiceBridge, userId, BOGUS_USER_NAME);
         this.bbbGW.publish(msg, C.TO_AKKA_APPS);
       }
 
       this.removeUser(connectionId);
     }
-  };
+  }
 
   sendUserConnectedToGlobalAudioMessage(connectionId) {
     const user = this.getUser(connectionId);
     if (user) {
-      const { userId, userName } = user;
-      const msg = Messaging.generateUserConnectedToGlobalAudioMessage(this.voiceBridge, userId, userName);
+      const { userId } = user;
+      const msg = Messaging.generateUserConnectedToGlobalAudioMessage(this.voiceBridge, userId, BOGUS_USER_NAME);
       this.bbbGW.publish(msg, C.TO_AKKA_APPS);
       user.connected = true;
     }
-  };
+  }
 
   async disconnectUser() {
     try {

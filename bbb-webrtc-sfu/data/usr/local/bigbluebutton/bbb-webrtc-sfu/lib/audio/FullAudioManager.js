@@ -17,6 +17,7 @@ const config = require('config');
 const ERRORS = require('../base/errors.js');
 
 const AUDIO_MEDIA_SERVER = config.get('fullAudioMediaServer');
+const WS_STRICT_HEADER_PARSING = config.get('wsStrictHeaderParsing');
 
 module.exports = class AudioManager extends BaseManager {
   constructor (connectionChannel, additionalChannels, logPrefix) {
@@ -35,6 +36,25 @@ module.exports = class AudioManager extends BaseManager {
       roomId: message.voiceBridge,
       userId: message.userId,
     };
+  }
+
+  static explodeUserInfoHeader (message) {
+    if (typeof message === 'object' &&  typeof message.sfuUserHeader === 'object') {
+      if (typeof message.sfuUserHeader.userId === 'string'
+        && typeof message.sfuUserHeader.voiceBridge === 'string'
+        && typeof message.sfuUserHeader.meetingId === 'string'
+      ) {
+        // TODO refactor internalMeetingId to be consistent with other modules
+        message.internalMeetingId = message.sfuUserHeader.meetingId;
+        message.meetingId = message.sfuUserHeader.meetingId;
+        message.userId = message.sfuUserHeader.userId;
+        message.voiceBridge = message.sfuUserHeader.voiceBridge;
+
+        return message;
+      }
+    }
+
+    throw errors.SFU_INVALID_REQUEST;
   }
 
   _trackMeetingEvents () {
@@ -116,7 +136,6 @@ module.exports = class AudioManager extends BaseManager {
       internalMeetingId,
       sdpOffer,
       userId,
-      userName,
       mediaServer = AUDIO_MEDIA_SERVER,
       role,
       caleeName,
@@ -135,9 +154,9 @@ module.exports = class AudioManager extends BaseManager {
     this._meetings[internalMeetingId] = sessionId;
 
     // starts audio session by sending sessionID, websocket and sdpoffer
-    return session.start(sessionId, connectionId, sdpOffer, userId, userName,
-      role, caleeName)
-      .then(sdpAnswer => {
+    return session.start(
+      sessionId, connectionId, sdpOffer, userId, role, caleeName
+    ).then(sdpAnswer => {
         // Empty ice queue after starting audio
         this._flushIceQueue(session, iceQueue);
 
@@ -154,7 +173,7 @@ module.exports = class AudioManager extends BaseManager {
           sdpAnswer : sdpAnswer
         }, C.FROM_AUDIO);
 
-        Logger.info(this._logPrefix, `Started listen only session for user ${userId}`,
+        Logger.info(this._logPrefix, `Started full audio session for user ${userId}`,
           AudioManager.getMetadataFromMessage(message));
       })
       .catch(error => {
@@ -173,19 +192,19 @@ module.exports = class AudioManager extends BaseManager {
     return `${sessionId}:${connectionId}`;
   }
 
-  _closeListener (sessionId, connectionId, metadata = {}) {
+  _closeSession (sessionId, connectionId, metadata = {}) {
     const session = this._fetchSession(connectionId);
 
     if (session) {
-      return session.stopListener(connectionId)
+      return this._stopSession(connectionId)
         .then(() => {
           this._deleteIceQueue(this._getReqIdentifier(sessionId, connectionId));
-          Logger.info(this._logPrefix, 'Listen only listener destroyed',
+          Logger.info(this._logPrefix, 'Full audio session destroyed',
             metadata);
         })
         .catch((error) => {
           this._deleteIceQueue(this._getReqIdentifier(sessionId, connectionId));
-          Logger.error(this._logPrefix, 'Listen only listener stop failed', {
+          Logger.error(this._logPrefix, 'CRITICAL: Full audio sessio destroy failed', {
               errorMessage: error.message,
               errorCode: error.code,
               ...metadata,
@@ -203,7 +222,7 @@ module.exports = class AudioManager extends BaseManager {
     } = message;
     const logMetadata = AudioManager.getMetadataFromMessage(message);
 
-    return this._closeListener(sessionId, connectionId, logMetadata);
+    return this._closeSession(sessionId, connectionId, logMetadata);
   }
 
   handleClose (message) {
@@ -215,7 +234,7 @@ module.exports = class AudioManager extends BaseManager {
 
     Logger.info(this._logPrefix, 'Connection closed', logMetadata)
 
-    return this._closeListener(sessionId, connectionId, logMetadata);
+    return this._closeSession(sessionId, connectionId, logMetadata);
   }
 
   handleSubscriberAnswer (message) {
@@ -229,7 +248,7 @@ module.exports = class AudioManager extends BaseManager {
     if (session) {
       const metadata = AudioManager.getMetadataFromMessage(message);
       session.processAnswer(answer, connectionId).then(() => {
-        Logger.debug(this._logPrefix, 'Listen only remote description processed',
+        Logger.debug(this._logPrefix, 'Full audio remote description processed',
           metadata
         );
       }).catch(error => {
@@ -260,7 +279,7 @@ module.exports = class AudioManager extends BaseManager {
     }
   }
 
-  handleInvalidRequest (message) {
+  _handleInvalidRequest (message) {
     const { connectionId }  = message;
     const errorMessage = this._handleError(this._logPrefix, connectionId, null, null, errors.SFU_INVALID_REQUEST);
     this.sendToClient({
@@ -273,6 +292,15 @@ module.exports = class AudioManager extends BaseManager {
     Logger.trace(this._logPrefix, `Received message from ${message.connectionId}: ${message.id}`);
 
     let queue;
+
+    try {
+      AudioManager.explodeUserInfoHeader(message);
+    } catch (error) {
+      if (WS_STRICT_HEADER_PARSING) {
+        Logger.debug(this._logPrefix, 'Invalid user info header', { header: message.sfuUserHeader });
+        return this._handleInvalidRequest(message)
+      }
+    }
 
     switch (message.id) {
       case 'start':
@@ -299,7 +327,8 @@ module.exports = class AudioManager extends BaseManager {
         break;
 
       default:
-        this.handleInvalidRequest(message);
+        this._handleInvalidRequest(message);
+        break;
     }
   }
 };
