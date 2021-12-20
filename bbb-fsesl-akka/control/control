@@ -1,10 +1,10 @@
 Source: bbb-fsesl-akka
 Package: bbb-fsesl-akka
-Version: 2.4.0-25
+Version: 2.4.0-28
 Section: java
 Priority: optional
 Architecture: all
-Installed-Size: 48988
+Installed-Size: 48996
 Depends: java8-runtime-headless, bash, bbb-freeswitch-core
 Maintainer: Richard Alam <ritzalam@gmail.com>
 Description: BigBlueButton FS-ESL (Akka)
