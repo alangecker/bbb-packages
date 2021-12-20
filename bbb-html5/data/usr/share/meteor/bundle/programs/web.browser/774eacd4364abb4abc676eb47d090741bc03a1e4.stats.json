@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.7.1"
   },
-  "totalMinifiedBytes": 3669108,
-  "totalMinifiedGzipBytes": 899417,
+  "totalMinifiedBytes": 3672948,
+  "totalMinifiedGzipBytes": 900482,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9329,
     "packages/meteor-base.js": 31,
@@ -2808,7 +2808,7 @@
       {}
     ],
     "app/app.js": [
-      1542176,
+      1546016,
       {
         "imports": {
           "ui": {
@@ -2818,7 +2818,7 @@
                   "user-participants": {
                     "user-list-item": {
                       "user-dropdown": {
-                        "component.jsx": 11257,
+                        "component.jsx": 11604,
                         "styles.scss": 56,
                         "styles.scss.js": 5618
                       },
@@ -2827,8 +2827,8 @@
                         "styles.scss": 56,
                         "styles.scss.js": 1222
                       },
-                      "component.jsx": 1760,
-                      "container.jsx": 1510
+                      "component.jsx": 1798,
+                      "container.jsx": 1546
                     },
                     "user-options": {
                       "component.jsx": 7973,
@@ -2892,7 +2892,7 @@
                 },
                 "component.jsx": 1265,
                 "container.jsx": 1186,
-                "service.js": 9955,
+                "service.js": 10139,
                 "styles.scss": 56,
                 "styles.scss.js": 2494
               },
@@ -2961,7 +2961,7 @@
                     "container.jsx": 1177,
                     "service.js": 742
                   },
-                  "component.jsx": 4022,
+                  "component.jsx": 4136,
                   "container.jsx": 868,
                   "service.js": 328
                 },
@@ -3001,7 +3001,7 @@
                 "slide": {
                   "component.jsx": 544
                 },
-                "component.jsx": 15021,
+                "component.jsx": 15035,
                 "container.jsx": 3236,
                 "service.js": 2456,
                 "styles.scss": 56,
@@ -3028,7 +3028,7 @@
                   "styles.scss.js": 10509
                 },
                 "actions-dropdown": {
-                  "component.jsx": 5981,
+                  "component.jsx": 5964,
                   "container.jsx": 1150
                 },
                 "presentation-options": {
@@ -3179,10 +3179,10 @@
                   "styles.scss": 56,
                   "styles.scss.js": 10457
                 },
-                "component.jsx": 17289,
+                "component.jsx": 17538,
                 "container.jsx": 756,
-                "service.js": 15170,
-                "stream-sorting.js": 1524
+                "service.js": 15229,
+                "stream-sorting.js": 1546
               },
               "whiteboard": {
                 "annotation-factory": {
@@ -3280,7 +3280,7 @@
                   "component.jsx": 1677,
                   "container.jsx": 783
                 },
-                "component.jsx": 10721,
+                "component.jsx": 10787,
                 "container.jsx": 1432,
                 "service.js": 2538,
                 "styles.scss": 56,
@@ -3366,7 +3366,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4271
                 },
-                "component.jsx": 10674,
+                "component.jsx": 10668,
                 "container.jsx": 1169,
                 "service.js": 1236,
                 "styles.scss": 56,
@@ -3512,11 +3512,11 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4990
                 },
-                "component.jsx": 7275,
-                "container.jsx": 1296,
-                "service.js": 2687,
+                "component.jsx": 8568,
+                "container.jsx": 1380,
+                "service.js": 2892,
                 "styles.scss": 56,
-                "styles.scss.js": 8871
+                "styles.scss.js": 9367
               },
               "toast": {
                 "inject-notify": {
@@ -3529,7 +3529,7 @@
               },
               "video-preview": {
                 "virtual-background": {
-                  "component.jsx": 4788,
+                  "component.jsx": 5148,
                   "styles.scss": 56,
                   "styles.scss.js": 12417
                 },
@@ -3565,7 +3565,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 1149
                 },
-                "component.jsx": 4208,
+                "component.jsx": 4222,
                 "container.jsx": 1885,
                 "styles.scss": 56,
                 "styles.scss.js": 704
@@ -3581,7 +3581,7 @@
                 "styles.scss.js": 568
               },
               "app": {
-                "component.jsx": 10813,
+                "component.jsx": 10841,
                 "container.jsx": 5168,
                 "service.js": 698,
                 "styles.scss": 56,
@@ -3647,7 +3647,7 @@
                 "component.jsx": 4046
               },
               "learning-dashboard": {
-                "service.js": 1357
+                "service.js": 1329
               },
               "loading-screen": {
                 "component.jsx": 420,
@@ -3773,7 +3773,7 @@
                 "screenshare-broker.js": 4500,
                 "sfu-base-broker.js": 4493,
                 "stream-state-service.js": 572,
-                "utils.js": 290
+                "utils.js": 335
               },
               "meeting-settings": {
                 "index.js": 313
@@ -3812,7 +3812,7 @@
                   "base.js": 864,
                   "bridge-whitelist.js": 2,
                   "kurento.js": 5611,
-                  "sip.js": 23142
+                  "sip.js": 23193
                 }
               }
             },
@@ -3821,7 +3821,7 @@
                 "bridge": {
                   "errors.js": 855,
                   "index.js": 97,
-                  "kurento.js": 5924,
+                  "kurento.js": 6110,
                   "service.js": 3106
                 }
               },
