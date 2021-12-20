@@ -26,7 +26,6 @@ const $ = require('./rjquery').$;
 const isNodeText = Ace2Common.isNodeText;
 const getAssoc = Ace2Common.getAssoc;
 const setAssoc = Ace2Common.setAssoc;
-const htmlPrettyEscape = Ace2Common.htmlPrettyEscape;
 const noop = Ace2Common.noop;
 const hooks = require('./pluginfw/hooks');
 
@@ -51,8 +50,6 @@ function Ace2Inner(editorInfo, cssManagers) {
   const FORMATTING_STYLES = ['bold', 'italic', 'underline', 'strikethrough'];
   const SELECT_BUTTON_CLASS = 'selected';
 
-  const caughtErrors = [];
-
   let thisAuthor = '';
 
   let disposed = false;
@@ -61,24 +58,20 @@ function Ace2Inner(editorInfo, cssManagers) {
     window.focus();
   };
 
-  const iframe = window.frameElement;
-  const outerWin = iframe.ace_outerWin;
-  iframe.ace_outerWin = null; // prevent IE 6 memory leak
-  const sideDiv = iframe.nextSibling;
-  const lineMetricsDiv = sideDiv.nextSibling;
-  let lineNumbersShown;
-  let sideDivInner;
-
-  const initLineNumbers = () => {
-    const htmlOpen = '<div id="sidedivinner" class="sidedivinner"><div><span class="line-number">1';
-    const htmlClose = '</span></div></div>';
-    lineNumbersShown = 1;
-    sideDiv.innerHTML = `${htmlOpen}${htmlClose}`;
-    sideDivInner = outerWin.document.getElementById('sidedivinner');
-    $(sideDiv).addClass('sidediv');
+  const outerWin = window.parent;
+  const outerDoc = outerWin.document;
+  const sideDiv = outerDoc.getElementById('sidediv');
+  const lineMetricsDiv = outerDoc.getElementById('linemetricsdiv');
+  const sideDivInner = outerDoc.getElementById('sidedivinner');
+  const appendNewSideDivLine = () => {
+    const lineDiv = outerDoc.createElement('div');
+    sideDivInner.appendChild(lineDiv);
+    const lineSpan = outerDoc.createElement('span');
+    lineSpan.classList.add('line-number');
+    lineSpan.appendChild(outerDoc.createTextNode(sideDivInner.children.length));
+    lineDiv.appendChild(lineSpan);
   };
-
-  initLineNumbers();
+  appendNewSideDivLine();
 
   const scroll = Scroll.init(outerWin);
 
@@ -86,14 +79,45 @@ function Ace2Inner(editorInfo, cssManagers) {
   let outsideKeyPress = (e) => true;
   let outsideNotifyDirty = noop;
 
-  // selFocusAtStart -- determines whether the selection extends "backwards", so that the focus
-  // point (controlled with the arrow keys) is at the beginning; not supported in IE, though
-  // native IE selections have that behavior (which we try not to interfere with).
-  // Must be false if selection is collapsed!
+  /**
+   * Document representation.
+   */
   const rep = {
+    /**
+     * The contents of the document. Each entry in this skip list is an object representing a
+     * line (actually paragraph) of text. The line objects are created by createDomLineEntry().
+     */
     lines: new SkipList(),
+    /**
+     * Start of the selection. Represented as an array of two non-negative numbers that point to the
+     * first character of the selection: [zeroBasedLineNumber, zeroBasedColumnNumber]. Notes:
+     *   - There is an implicit newline character (not actually stored) at the end of every line.
+     *     Because of this, a selection that starts at the end of a line (column number equals the
+     *     number of characters in the line, not including the implicit newline) is not equivalent
+     *     to a selection that starts at the beginning of the next line. The same goes for the
+     *     selection end.
+     *   - If there are N lines, [N, 0] is valid for the start of the selection. [N, 0] indicates
+     *     that the selection starts just after the implicit newline at the end of the document's
+     *     last line (if the document has any lines). The same goes for the end of the selection.
+     *   - If a line starts with a line marker, a selection that starts at the beginning of the line
+     *     may start either immediately before (column = 0) or immediately after (column = 1) the
+     *     line marker, and the two are considered to be semantically equivalent. For safety, all
+     *     code should be written to accept either but only produce selections that start after the
+     *     line marker (the column number should be 1, not 0, when there is a line marker). The same
+     *     goes for the end of the selection.
+     */
     selStart: null,
+    /**
+     * End of the selection. Represented as an array of two non-negative numbers that point to the
+     * character just after the end of the selection: [zeroBasedLineNumber, zeroBasedColumnNumber].
+     * See the above notes for selStart.
+     */
     selEnd: null,
+    /**
+     * Whether the selection extends "backwards", so that the focus point (controlled with the arrow
+     * keys) is at the beginning. This is not supported in IE, though native IE selections have that
+     * behavior (which we try not to interfere with). Must be false if selection is collapsed!
+     */
     selFocusAtStart: false,
     alltext: '',
     alines: [],
@@ -105,7 +129,6 @@ function Ace2Inner(editorInfo, cssManagers) {
     undoModule.apool = rep.apool;
   }
 
-  let root, doc; // set in init()
   let isEditable = true;
   let doesWrap = true;
   let hasLineNumbers = true;
@@ -133,26 +156,8 @@ function Ace2Inner(editorInfo, cssManagers) {
       'profileEnd',
     ];
     console = {};
-    for (let i = 0; i < names.length; ++i) console[names[i]] = noop;
+    for (const name of names) console[name] = noop;
   }
-
-  let PROFILER = window.PROFILER;
-  if (!PROFILER) {
-    PROFILER = () => ({
-      start: noop,
-      mark: noop,
-      literal: noop,
-      end: noop,
-      cancel: noop,
-    });
-  }
-
-  // "dmesg" is for displaying messages in the in-page output pane
-  // visible when "?djs=1" is appended to the pad URL.  It generally
-  // remains a no-op unless djs is enabled, but we make a habit of
-  // only calling it in error cases or while debugging.
-  let dmesg = noop;
-  window.dmesg = noop;
 
   const scheduler = parent; // hack for opera required
 
@@ -160,7 +165,6 @@ function Ace2Inner(editorInfo, cssManagers) {
     if (start === undefined) start = rep.selStart;
     if (end === undefined) end = rep.selEnd;
 
-    // dmesg(String([start.toSource(),end.toSource(),newText.toSource()]));
     // start[0]: <--- start[1] --->CCCCCCCCCCC\n
     //           CCCCCCCCCCCCCCCCCCCC\n
     //           CCCC\n
@@ -227,18 +231,18 @@ function Ace2Inner(editorInfo, cssManagers) {
       if ((typeof info.fade) === 'number') {
         bgcolor = fadeColor(bgcolor, info.fade);
       }
-
-      const authorStyle = cssManagers.inner.selectorStyle(authorSelector);
-      const parentAuthorStyle = cssManagers.parent.selectorStyle(authorSelector);
-
-      // author color
-      authorStyle.backgroundColor = bgcolor;
-      parentAuthorStyle.backgroundColor = bgcolor;
-
       const textColor =
           colorutils.textColorFromBackgroundColor(bgcolor, parent.parent.clientVars.skinName);
-      authorStyle.color = textColor;
-      parentAuthorStyle.color = textColor;
+      const styles = [
+        cssManagers.inner.selectorStyle(authorSelector),
+        cssManagers.parent.selectorStyle(authorSelector),
+      ];
+      for (const style of styles) {
+        style.backgroundColor = bgcolor;
+        style.color = textColor;
+        style['padding-top'] = '3px';
+        style['padding-bottom'] = '4px';
+      }
     }
   };
 
@@ -290,9 +294,9 @@ function Ace2Inner(editorInfo, cssManagers) {
     applyChangesToBase: 1,
   };
 
-  hooks.callAll('aceRegisterNonScrollableEditEvents').forEach((eventType) => {
+  for (const eventType of hooks.callAll('aceRegisterNonScrollableEditEvents')) {
     _nonScrollableEditEvents[eventType] = 1;
-  });
+  }
 
   const isScrollableEditEvent = (eventType) => !_nonScrollableEditEvents[eventType];
 
@@ -300,12 +304,6 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   const inCallStack = (type, action) => {
     if (disposed) return;
-
-    if (currentCallStack) {
-      // Do not uncomment this in production.  It will break Etherpad being provided in iFrames.
-      // I am leaving this in for testing usefulness.
-      // top.console.error(`Can't enter callstack ${type}, already in ${currentCallStack.type}`);
-    }
 
     const newEditEvent = (eventType) => ({
       eventType,
@@ -375,24 +373,11 @@ function Ace2Inner(editorInfo, cssManagers) {
       });
 
       cleanExit = true;
-    } catch (e) {
-      caughtErrors.push(
-          {
-            error: e,
-            time: +new Date(),
-          });
-      dmesg(e.toString());
-      throw e;
     } finally {
       const cs = currentCallStack;
       if (cleanExit) {
         submitOldEvent(cs.editEvent);
         if (cs.domClean && cs.type !== 'setup') {
-          // if (cs.isUserChange)
-          // {
-          //  if (cs.repChanged) parenModule.notifyChange();
-          //  else parenModule.notifyTick();
-          // }
           if (cs.selectionAffected) {
             updateBrowserSelectionFromRep();
           }
@@ -429,7 +414,7 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   const setWraps = (newVal) => {
     doesWrap = newVal;
-    root.classList.toggle('doesWrap', doesWrap);
+    document.body.classList.toggle('doesWrap', doesWrap);
     scheduler.setTimeout(() => {
       inCallStackIfNecessary('setWraps', () => {
         fastIncorp(7);
@@ -459,7 +444,7 @@ function Ace2Inner(editorInfo, cssManagers) {
   };
 
   const setTextFace = (face) => {
-    root.style.fontFamily = face;
+    document.body.style.fontFamily = face;
     lineMetricsDiv.style.fontFamily = face;
   };
 
@@ -470,8 +455,8 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   const setEditable = (newVal) => {
     isEditable = newVal;
-    root.contentEditable = isEditable ? 'true' : 'false';
-    root.classList.toggle('static', !isEditable);
+    document.body.contentEditable = isEditable ? 'true' : 'false';
+    document.body.classList.toggle('static', !isEditable);
   };
 
   const enforceEditability = () => setEditable(isEditable);
@@ -551,15 +536,11 @@ function Ace2Inner(editorInfo, cssManagers) {
     performDocumentApplyChangeset(changeset);
 
     performSelectionChange(
-        [0, rep.lines.atIndex(0).lineMarker],
-        [0, rep.lines.atIndex(0).lineMarker]
-    );
+        [0, rep.lines.atIndex(0).lineMarker], [0, rep.lines.atIndex(0).lineMarker]);
 
     idleWorkTimer.atMost(100);
 
     if (rep.alltext !== atext.text) {
-      dmesg(htmlPrettyEscape(rep.alltext));
-      dmesg(htmlPrettyEscape(atext.text));
       throw new Error('mismatch error setting raw text in setDocAText');
     }
   };
@@ -596,25 +577,6 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   const setNotifyDirty = (handler) => {
     outsideNotifyDirty = handler;
-  };
-
-  const getFormattedCode = () => {
-    if (currentCallStack && !currentCallStack.domClean) {
-      inCallStackIfNecessary('getFormattedCode', incorporateUserChanges);
-    }
-    const buf = [];
-    if (rep.lines.length() > 0) {
-      // should be the case, even for empty file
-      let entry = rep.lines.atIndex(0);
-      while (entry) {
-        const domInfo = entry.domInfo;
-        buf.push((domInfo && domInfo.getInnerHTML()) ||
-            domline.processSpaces(domline.escapeHTML(entry.text), doesWrap) ||
-            '&nbsp;' /* empty line*/);
-        entry = rep.lines.next(entry);
-      }
-    }
-    return `<div class="syntax"><div>${buf.join('</div>\n<div>')}</div></div>`;
   };
 
   const CMDS = {
@@ -668,21 +630,22 @@ function Ace2Inner(editorInfo, cssManagers) {
     }
   };
 
-  // This methed exposes a setter for some ace properties
-  // @param key the name of the parameter
-  // @param value the value to set to
+  /**
+   * This methed exposes a setter for some ace properties
+   * @param key the name of the parameter
+   * @param value the value to set to
+   */
   editorInfo.ace_setProperty = (key, value) => {
     // These properties are exposed
     const setters = {
       wraps: setWraps,
-      showsauthorcolors: (val) => root.classList.toggle('authorColors', !!val),
-      showsuserselections: (val) => root.classList.toggle('userSelections', !!val),
+      showsauthorcolors: (val) => document.body.classList.toggle('authorColors', !!val),
+      showsuserselections: (val) => document.body.classList.toggle('userSelections', !!val),
       showslinenumbers: (value) => {
         hasLineNumbers = !!value;
         sideDiv.parentNode.classList.toggle('line-numbers-hidden', !hasLineNumbers);
         fixView();
       },
-      dmesg: () => { dmesg = window.dmesg = value; },
       userauthor: (value) => {
         thisAuthor = String(value);
         documentAttributeManager.author = thisAuthor;
@@ -690,8 +653,8 @@ function Ace2Inner(editorInfo, cssManagers) {
       styled: setStyled,
       textface: setTextFace,
       rtlistrue: (value) => {
-        root.classList.toggle('rtl', value);
-        root.classList.toggle('ltr', !value);
+        document.body.classList.toggle('rtl', value);
+        document.body.classList.toggle('ltr', !value);
         document.documentElement.dir = value ? 'rtl' : 'ltr';
       },
     };
@@ -723,27 +686,8 @@ function Ace2Inner(editorInfo, cssManagers) {
   editorInfo.ace_setAuthorInfo = (author, info) => {
     setAuthorInfo(author, info);
   };
-  editorInfo.ace_setAuthorSelectionRange = (author, start, end) => {
-    changesetTracker.setAuthorSelectionRange(author, start, end);
-  };
 
-  editorInfo.ace_getUnhandledErrors = () => caughtErrors.slice();
-
-  editorInfo.ace_getDocument = () => doc;
-
-  editorInfo.ace_getDebugProperty = (prop) => {
-    if (prop === 'debugger') {
-      // obfuscate "eval" so as not to scare yuicompressor
-      window['ev' + 'al']('debugger');
-    } else if (prop === 'rep') {
-      return rep;
-    } else if (prop === 'window') {
-      return window;
-    } else if (prop === 'document') {
-      return document;
-    }
-    return undefined;
-  };
+  editorInfo.ace_getDocument = () => document;
 
   const now = () => Date.now();
 
@@ -753,7 +697,7 @@ function Ace2Inner(editorInfo, cssManagers) {
     let printedTrace = false;
     const isTimeUp = () => {
       if (exceededAlready) {
-        if ((!printedTrace)) { // && now() - startTime - ms > 300) {
+        if ((!printedTrace)) {
           printedTrace = true;
         }
         return true;
@@ -949,17 +893,12 @@ function Ace2Inner(editorInfo, cssManagers) {
   clearObservedChanges();
 
   const getCleanNodeByKey = (key) => {
-    const p = PROFILER('getCleanNodeByKey', false); // eslint-disable-line new-cap
-    p.extra = 0;
-    let n = doc.getElementById(key);
+    let n = document.getElementById(key);
     // copying and pasting can lead to duplicate ids
     while (n && isNodeDirty(n)) {
-      p.extra++;
       n.id = '';
-      n = doc.getElementById(key);
+      n = document.getElementById(key);
     }
-    p.literal(p.extra, 'extra');
-    p.end();
     return n;
   };
 
@@ -1025,9 +964,7 @@ function Ace2Inner(editorInfo, cssManagers) {
     if (currentCallStack.observedSelection) return;
     currentCallStack.observedSelection = true;
 
-    const p = PROFILER('getSelection', false); // eslint-disable-line new-cap
     const selection = getSelection();
-    p.end();
 
     if (selection) {
       const node1 = topLevel(selection.startPoint.node);
@@ -1042,11 +979,11 @@ function Ace2Inner(editorInfo, cssManagers) {
   const observeSuspiciousNodes = () => {
     // inspired by Firefox bug #473255, where pasting formatted text
     // causes the cursor to jump away, making the new HTML never found.
-    if (root.getElementsByTagName) {
-      const nds = root.getElementsByTagName('style');
-      for (let i = 0; i < nds.length; i++) {
-        const n = topLevel(nds[i]);
-        if (n && n.parentNode === root) {
+    if (document.body.getElementsByTagName) {
+      const elts = document.body.getElementsByTagName('style');
+      for (const elt of elts) {
+        const n = topLevel(elt);
+        if (n && n.parentNode === document.body) {
           observeChangesAroundNode(n);
         }
       }
@@ -1060,17 +997,13 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     if (DEBUG && window.DONT_INCORP || window.DEBUG_DONT_INCORP) return false;
 
-    const p = PROFILER('incorp', false); // eslint-disable-line new-cap
-
     // returns true if dom changes were made
-    if (!root.firstChild) {
-      root.innerHTML = '<div><!-- --></div>';
+    if (!document.body.firstChild) {
+      document.body.innerHTML = '<div><!-- --></div>';
     }
 
-    p.mark('obs');
     observeChangesAroundSelection();
     observeSuspiciousNodes();
-    p.mark('dirty');
     let dirtyRanges = getDirtyRanges();
     let dirtyRangesCheckOut = true;
     let j = 0;
@@ -1088,9 +1021,7 @@ function Ace2Inner(editorInfo, cssManagers) {
       j++;
     }
     if (!dirtyRangesCheckOut) {
-      const numBodyNodes = root.childNodes.length;
-      for (let k = 0; k < numBodyNodes; k++) {
-        const bodyNode = root.childNodes.item(k);
+      for (const bodyNode of document.body.childNodes) {
         if ((bodyNode.tagName) && ((!bodyNode.id) || (!rep.lines.containsKey(bodyNode.id)))) {
           observeChangesAroundNode(bodyNode);
         }
@@ -1100,7 +1031,6 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     clearObservedChanges();
 
-    p.mark('getsel');
     const selection = getSelection();
 
     let selStart, selEnd; // each one, if truthy, has [line,char] needed to set selection
@@ -1108,18 +1038,16 @@ function Ace2Inner(editorInfo, cssManagers) {
     const splicesToDo = [];
     let netNumLinesChangeSoFar = 0;
     const toDeleteAtEnd = [];
-    p.mark('ranges');
-    p.literal(dirtyRanges.length, 'numdirt');
     const domInsertsNeeded = []; // each entry is [nodeToInsertAfter, [info1, info2, ...]]
     while (i < dirtyRanges.length) {
       const range = dirtyRanges[i];
       a = range[0];
       b = range[1];
-      let firstDirtyNode = (((a === 0) && root.firstChild) ||
+      let firstDirtyNode = (((a === 0) && document.body.firstChild) ||
           getCleanNodeByKey(rep.lines.atIndex(a - 1).key).nextSibling);
       firstDirtyNode = (firstDirtyNode && isNodeDirty(firstDirtyNode) && firstDirtyNode);
 
-      let lastDirtyNode = (((b === rep.lines.length()) && root.lastChild) ||
+      let lastDirtyNode = (((b === rep.lines.length()) && document.body.lastChild) ||
           getCleanNodeByKey(rep.lines.atIndex(b).key).previousSibling);
 
       lastDirtyNode = (lastDirtyNode && isNodeDirty(lastDirtyNode) && lastDirtyNode);
@@ -1169,71 +1097,44 @@ function Ace2Inner(editorInfo, cssManagers) {
 
         const entries = [];
         const nodeToAddAfter = lastDirtyNode;
-        const lineNodeInfos = new Array(lines.length);
-        for (let k = 0; k < lines.length; k++) {
-          const lineString = lines[k];
+        const lineNodeInfos = [];
+        for (const lineString of lines) {
           const newEntry = createDomLineEntry(lineString);
           entries.push(newEntry);
-          lineNodeInfos[k] = newEntry.domInfo;
+          lineNodeInfos.push(newEntry.domInfo);
         }
-        // var fragment = magicdom.wrapDom(document.createDocumentFragment());
         domInsertsNeeded.push([nodeToAddAfter, lineNodeInfos]);
-        dirtyNodes.forEach((n) => {
-          toDeleteAtEnd.push(n);
-        });
+        for (const n of dirtyNodes) toDeleteAtEnd.push(n);
         const spliceHints = {};
         if (selStart) spliceHints.selStart = selStart;
         if (selEnd) spliceHints.selEnd = selEnd;
         splicesToDo.push([a + netNumLinesChangeSoFar, b - a, entries, lineAttribs, spliceHints]);
         netNumLinesChangeSoFar += (lines.length - (b - a));
       } else if (b > a) {
-        splicesToDo.push([a + netNumLinesChangeSoFar,
-          b - a,
-          [],
-          []]);
+        splicesToDo.push([a + netNumLinesChangeSoFar, b - a, [], []]);
       }
       i++;
     }
 
     const domChanges = (splicesToDo.length > 0);
 
-    // update the representation
-    p.mark('splice');
-    splicesToDo.forEach((splice) => {
-      doIncorpLineSplice(splice[0], splice[1], splice[2], splice[3], splice[4]);
-    });
-
-    // do DOM inserts
-    p.mark('insert');
-    domInsertsNeeded.forEach((ins) => {
-      insertDomLines(ins[0], ins[1]);
-    });
-
-    p.mark('del');
-    // delete old dom nodes
-    toDeleteAtEnd.forEach((n) => {
-      // var id = n.uniqueId();
-      // parent of n may not be "root" in IE due to non-tree-shaped DOM (wtf)
-      if (n.parentNode) n.parentNode.removeChild(n);
-
-      // dmesg(htmlPrettyEscape(htmlForRemovedChild(n)));
-    });
+    for (const splice of splicesToDo) doIncorpLineSplice(...splice);
+    for (const ins of domInsertsNeeded) insertDomLines(...ins);
+    for (const n of toDeleteAtEnd) n.remove();
 
     // needed to stop chrome from breaking the ui when long strings without spaces are pasted
     if (scrollToTheLeftNeeded) {
       $('#innerdocbody').scrollLeft(0);
     }
 
-    p.mark('findsel');
     // if the nodes that define the selection weren't encountered during
     // content collection, figure out where those nodes are now.
     if (selection && !selStart) {
-      // if (domChanges) dmesg("selection not collected");
       const selStartFromHook = hooks.callAll('aceStartLineAndCharForPoint', {
         callstack: currentCallStack,
         editorInfo,
         rep,
-        root,
+        root: document.body,
         point: selection.startPoint,
         documentAttributeManager,
       });
@@ -1245,7 +1146,7 @@ function Ace2Inner(editorInfo, cssManagers) {
         callstack: currentCallStack,
         editorInfo,
         rep,
-        root,
+        root: document.body,
         point: selection.endPoint,
         documentAttributeManager,
       });
@@ -1266,14 +1167,12 @@ function Ace2Inner(editorInfo, cssManagers) {
       selEnd[1] = rep.lines.atIndex(selEnd[0]).text.length;
     }
 
-    p.mark('repsel');
     // update rep if we have a new selection
     // NOTE: IE loses the selection when you click stuff in e.g. the
     // editbar, so removing the selection when it's lost is not a good
     // idea.
     if (selection) repSelectionChange(selStart, selEnd, selection && selection.focusAtStart);
     // update browser selection
-    p.mark('browsel');
     if (selection && (domChanges || isCaret())) {
       // if no DOM changes (not this case), want to treat range selection delicately,
       // e.g. in IE not lose which end of the selection is the focus/anchor;
@@ -1283,11 +1182,7 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     currentCallStack.domClean = true;
 
-    p.mark('fixview');
-
     fixView();
-
-    p.end('END');
 
     return domChanges;
   };
@@ -1308,14 +1203,10 @@ function Ace2Inner(editorInfo, cssManagers) {
   const insertDomLines = (nodeToAddAfter, infoStructs) => {
     let lastEntry;
     let lineStartOffset;
-    if (infoStructs.length < 1) return;
-
-    infoStructs.forEach((info) => {
-      const p2 = PROFILER('insertLine', false); // eslint-disable-line new-cap
+    for (const info of infoStructs) {
       const node = info.node;
       const key = uniqueId(node);
       let entry;
-      p2.mark('findEntry');
       if (lastEntry) {
         // optimization to avoid recalculation
         const next = rep.lines.next(lastEntry);
@@ -1325,42 +1216,31 @@ function Ace2Inner(editorInfo, cssManagers) {
         }
       }
       if (!entry) {
-        p2.literal(1, 'nonopt');
         entry = rep.lines.atKey(key);
         lineStartOffset = rep.lines.offsetOfKey(key);
-      } else { p2.literal(0, 'nonopt'); }
+      }
       lastEntry = entry;
-      p2.mark('spans');
       getSpansForLine(entry, (tokenText, tokenClass) => {
         info.appendSpan(tokenText, tokenClass);
       }, lineStartOffset);
-      p2.mark('addLine');
       info.prepareForAdd();
       entry.lineMarker = info.lineMarker;
       if (!nodeToAddAfter) {
-        root.insertBefore(node, root.firstChild);
+        document.body.insertBefore(node, document.body.firstChild);
       } else {
-        root.insertBefore(node, nodeToAddAfter.nextSibling);
+        document.body.insertBefore(node, nodeToAddAfter.nextSibling);
       }
       nodeToAddAfter = node;
       info.notifyAdded();
-      p2.mark('markClean');
       markNodeClean(node);
-      p2.end();
-    });
+    }
   };
 
-  const isCaret = () => (
-    rep.selStart &&
-    rep.selEnd &&
-    rep.selStart[0] === rep.selEnd[0] &&
-    rep.selStart[1] === rep.selEnd[1]
-  );
+  const isCaret = () => (rep.selStart && rep.selEnd &&
+                         rep.selStart[0] === rep.selEnd[0] && rep.selStart[1] === rep.selEnd[1]);
   editorInfo.ace_isCaret = isCaret;
 
   // prereq: isCaret()
-
-
   const caretLine = () => rep.selStart[0];
 
   editorInfo.ace_caretLine = caretLine;
@@ -1398,9 +1278,6 @@ function Ace2Inner(editorInfo, cssManagers) {
   const getPointForLineAndChar = (lineAndChar) => {
     const line = lineAndChar[0];
     let charsLeft = lineAndChar[1];
-    // Do not uncomment this in production it will break iFrames.
-    // top.console.log("line: %d, key: %s, node: %o", line, rep.lines.atIndex(line).key,
-    // getCleanNodeByKey(rep.lines.atIndex(line).key));
     const lineEntry = rep.lines.atIndex(line);
     charsLeft -= lineEntry.lineMarker;
     if (charsLeft < 0) {
@@ -1448,7 +1325,7 @@ function Ace2Inner(editorInfo, cssManagers) {
     // Turn DOM node selection into [line,char] selection.
     // This method has to work when the DOM is not pristine,
     // assuming the point is not in a dirty node.
-    if (point.node === root) {
+    if (point.node === document.body) {
       if (point.index === 0) {
         return [0, 0];
       } else {
@@ -1467,7 +1344,7 @@ function Ace2Inner(editorInfo, cssManagers) {
         col = nodeText(n).length;
       }
       let parNode, prevSib;
-      while ((parNode = n.parentNode) !== root) {
+      while ((parNode = n.parentNode) !== document.body) {
         if ((prevSib = n.previousSibling)) {
           n = prevSib;
           col += nodeText(n).length;
@@ -1519,10 +1396,10 @@ function Ace2Inner(editorInfo, cssManagers) {
 
       insertDomLines(nodeToAddAfter, lineEntries.map((entry) => entry.domInfo));
 
-      keysToDelete.forEach((k) => {
-        const n = doc.getElementById(k);
+      for (const k of keysToDelete) {
+        const n = document.getElementById(k);
         n.parentNode.removeChild(n);
-      });
+      }
 
       if (
         (rep.selStart &&
@@ -1545,7 +1422,6 @@ function Ace2Inner(editorInfo, cssManagers) {
     }
 
     const linesMutatee = {
-      // TODO: Rhansen to check usage of args here.
       splice: (start, numRemoved, ...args) => {
         domAndRepSplice(start, numRemoved, args.map((s) => s.slice(0, -1)));
       },
@@ -1557,12 +1433,9 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     if (requiredSelectionSetting) {
       performSelectionChange(
-          lineAndColumnFromChar(
-              requiredSelectionSetting[0]
-          ),
+          lineAndColumnFromChar(requiredSelectionSetting[0]),
           lineAndColumnFromChar(requiredSelectionSetting[1]),
-          requiredSelectionSetting[2]
-      );
+          requiredSelectionSetting[2]);
     }
   };
 
@@ -1574,30 +1447,26 @@ function Ace2Inner(editorInfo, cssManagers) {
       throw new Error(`doRepApplyChangeset length mismatch: ${errMsg}`);
     }
 
-    // (function doRecordUndoInformation(changes) {
-    ((changes) => {
-      const editEvent = currentCallStack.editEvent;
-      if (editEvent.eventType === 'nonundoable') {
-        if (!editEvent.changeset) {
-          editEvent.changeset = changes;
-        } else {
-          editEvent.changeset = Changeset.compose(editEvent.changeset, changes, rep.apool);
-        }
+    const editEvent = currentCallStack.editEvent;
+    if (editEvent.eventType === 'nonundoable') {
+      if (!editEvent.changeset) {
+        editEvent.changeset = changes;
       } else {
-        const inverseChangeset = Changeset.inverse(changes, {
-          get: (i) => `${rep.lines.atIndex(i).text}\n`,
-          length: () => rep.lines.length(),
-        }, rep.alines, rep.apool);
-
-        if (!editEvent.backset) {
-          editEvent.backset = inverseChangeset;
-        } else {
-          editEvent.backset = Changeset.compose(inverseChangeset, editEvent.backset, rep.apool);
-        }
+        editEvent.changeset = Changeset.compose(editEvent.changeset, changes, rep.apool);
       }
-    })(changes);
+    } else {
+      const inverseChangeset = Changeset.inverse(changes, {
+        get: (i) => `${rep.lines.atIndex(i).text}\n`,
+        length: () => rep.lines.length(),
+      }, rep.alines, rep.apool);
 
-    // rep.alltext = Changeset.applyToText(changes, rep.alltext);
+      if (!editEvent.backset) {
+        editEvent.backset = inverseChangeset;
+      } else {
+        editEvent.backset = Changeset.compose(inverseChangeset, editEvent.backset, rep.apool);
+      }
+    }
+
     Changeset.mutateAttributionLines(changes, rep.alines, rep.apool);
 
     if (changesetTracker.isTracking()) {
@@ -1605,9 +1474,9 @@ function Ace2Inner(editorInfo, cssManagers) {
     }
   };
 
-  /*
-    Converts the position of a char (index in String) into a [row, col] tuple
-  */
+  /**
+   * Converts the position of a char (index in String) into a [row, col] tuple
+   */
   const lineAndColumnFromChar = (x) => {
     const lineEntry = rep.lines.atOffset(x);
     const lineStart = rep.lines.offsetOfEntry(lineEntry);
@@ -1639,8 +1508,8 @@ function Ace2Inner(editorInfo, cssManagers) {
         newText = newText.substring(0, newText.length - 1);
       }
     }
-    performDocumentReplaceRange(lineAndColumnFromChar(startChar),
-        lineAndColumnFromChar(endChar), newText);
+    performDocumentReplaceRange(
+        lineAndColumnFromChar(startChar), lineAndColumnFromChar(endChar), newText);
   };
 
   const performDocumentApplyAttributesToCharRange = (start, end, attribs) => {
@@ -1783,10 +1652,7 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     const attributeValue = selectionAllHasIt ? '' : 'true';
     documentAttributeManager.setAttributesOnRange(
-        rep.selStart,
-        rep.selEnd,
-        [[attributeName, attributeValue]]
-    );
+        rep.selStart, rep.selEnd, [[attributeName, attributeValue]]);
     if (attribIsFormattingStyle(attributeName)) {
       updateStyleButtonState(attributeName, !selectionAllHasIt); // italic, bold, ...
     }
@@ -1801,9 +1667,7 @@ function Ace2Inner(editorInfo, cssManagers) {
   // Change the abstract representation of the document to have a different set of lines.
   // Must be called after rep.alltext is set.
   const doRepLineSplice = (startLine, deleteCount, newLineEntries) => {
-    newLineEntries.forEach((entry) => {
-      entry.width = entry.text.length + 1;
-    });
+    for (const entry of newLineEntries) entry.width = entry.text.length + 1;
 
     const startOldChar = rep.lines.offsetOfIndex(startLine);
     const endOldChar = rep.lines.offsetOfIndex(startLine + deleteCount);
@@ -1836,9 +1700,8 @@ function Ace2Inner(editorInfo, cssManagers) {
     const oldText = rep.alltext.substring(startOldChar, endOldChar);
     const oldAttribs = rep.alines.slice(startLine, startLine + deleteCount).join('');
     const newAttribs = `${lineAttribs.join('|1+1')}|1+1`; // not valid in a changeset
-    const analysis = analyzeChange(
-        oldText, newText, oldAttribs, newAttribs, selStartHintChar, selEndHintChar
-    );
+    const analysis =
+        analyzeChange(oldText, newText, oldAttribs, newAttribs, selStartHintChar, selEndHintChar);
     const commonStart = analysis[0];
     let commonEnd = analysis[1];
     let shortOldText = oldText.substring(commonStart, oldText.length - commonEnd);
@@ -1923,9 +1786,7 @@ function Ace2Inner(editorInfo, cssManagers) {
                 return rep.apool.putAttrib([k, '']);
               }
               return false;
-            }
-            )
-        );
+            }));
 
         const builder1 = startBuilder();
         if (shiftFinalNewlineToBeforeNewText) {
@@ -1994,7 +1855,6 @@ function Ace2Inner(editorInfo, cssManagers) {
         theChangeset = builder.toString();
       }
 
-      // dmesg(htmlPrettyEscape(theChangeset));
       doRepApplyChangeset(theChangeset);
     }
 
@@ -2165,25 +2025,15 @@ function Ace2Inner(editorInfo, cssManagers) {
             isScrollableEditEvent(currentCallStack.type);
         const innerHeight = getInnerHeight();
         scroll.scrollWhenCaretIsInTheLastLineOfViewportWhenNecessary(
-            rep, isScrollableEvent, innerHeight * 2
-        );
+            rep, isScrollableEvent, innerHeight * 2);
       }
 
       return true;
-      // Do not uncomment this in production it will break iFrames.
-      // top.console.log("selStart: %o, selEnd: %o, focusAtStart: %s", rep.selStart, rep.selEnd,
-      // String(!!rep.selFocusAtStart));
     }
     return false;
-  // Do not uncomment this in production it will break iFrames.
-  // top.console.log("%o %o %s", rep.selStart, rep.selEnd, rep.selFocusAtStart);
   };
 
-  const isPadLoading = (eventType) => (
-    eventType === 'setup') ||
-    (eventType === 'setBaseText') ||
-    (eventType === 'importText'
-    );
+  const isPadLoading = (t) => t === 'setup' || t === 'setBaseText' || t === 'importText';
 
   const updateStyleButtonState = (attribName, hasStyleOnRepSelection) => {
     const $formattingButton = parent.parent.$(`[data-key="${attribName}"]`).find('a');
@@ -2193,14 +2043,15 @@ function Ace2Inner(editorInfo, cssManagers) {
   const attribIsFormattingStyle = (attribName) => FORMATTING_STYLES.indexOf(attribName) !== -1;
 
   const selectFormattingButtonIfLineHasStyleApplied = (rep) => {
-    FORMATTING_STYLES.forEach((style) => {
+    for (const style of FORMATTING_STYLES) {
       const hasStyleOnRepSelection =
           documentAttributeManager.hasAttributeOnSelectionOrCaretPosition(style);
       updateStyleButtonState(style, hasStyleOnRepSelection);
-    });
+    }
   };
 
-  const doCreateDomLine = (nonEmpty) => domline.createDomLine(nonEmpty, doesWrap, browser, doc);
+  const doCreateDomLine =
+      (nonEmpty) => domline.createDomLine(nonEmpty, doesWrap, browser, document);
 
   const textify =
       (str) => str.replace(/[\n\r ]/g, ' ').replace(/\xa0/g, ' ').replace(/\t/g, '        ');
@@ -2214,9 +2065,7 @@ function Ace2Inner(editorInfo, cssManagers) {
     ul: 1,
   };
 
-  hooks.callAll('aceRegisterBlockElements').forEach((element) => {
-    _blockElems[element] = 1;
-  });
+  for (const element of hooks.callAll('aceRegisterBlockElements')) _blockElems[element] = 1;
 
   const isBlockElement = (n) => !!_blockElems[(n.tagName || '').toLowerCase()];
   editorInfo.ace_isBlockElement = isBlockElement;
@@ -2228,10 +2077,6 @@ function Ace2Inner(editorInfo, cssManagers) {
     // indicating inserted content.  for example, [0,0] means content was inserted
     // at the top of the document, while [3,4] means line 3 was deleted, modified,
     // or replaced with one or more new lines of content. ranges do not touch.
-    const p = PROFILER('getDirtyRanges', false); // eslint-disable-line new-cap
-    p.forIndices = 0;
-    p.consecutives = 0;
-    p.corrections = 0;
 
     const cleanNodeForIndexCache = {};
     const N = rep.lines.length(); // old number of lines
@@ -2242,7 +2087,6 @@ function Ace2Inner(editorInfo, cssManagers) {
       // in the document, return that node.
       // if (i) is out of bounds, return true. else return false.
       if (cleanNodeForIndexCache[i] === undefined) {
-        p.forIndices++;
         let result;
         if (i < 0 || i >= N) {
           result = true; // truthy, but no actual node
@@ -2258,14 +2102,13 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     const isConsecutive = (i) => {
       if (isConsecutiveCache[i] === undefined) {
-        p.consecutives++;
         isConsecutiveCache[i] = (() => {
           // returns whether line (i) and line (i-1), assumed to be map to clean DOM nodes,
           // or document boundaries, are consecutive in the changed DOM
           const a = cleanNodeForIndex(i - 1);
           const b = cleanNodeForIndex(i);
           if ((!a) || (!b)) return false; // violates precondition
-          if ((a === true) && (b === true)) return !root.firstChild;
+          if ((a === true) && (b === true)) return !document.body.firstChild;
           if ((a === true) && b.previousSibling) return false;
           if ((b === true) && a.nextSibling) return false;
           if ((a === true) || (b === true)) return true;
@@ -2286,16 +2129,13 @@ function Ace2Inner(editorInfo, cssManagers) {
       [-1, N + 1],
     ];
 
+    // returns index of cleanRange containing i, or -1 if none
     const rangeForLine = (i) => {
-      // returns index of cleanRange containing i, or -1 if none
-      let answer = -1;
-      cleanRanges.forEach((r, idx) => {
-        if (i >= r[1]) return false; // keep looking
-        if (i < r[0]) return true; // not found, stop looking
-        answer = idx;
-        return true; // found, stop looking
-      });
-      return answer;
+      for (const [idx, r] of cleanRanges.entries()) {
+        if (i < r[0]) return -1;
+        if (i < r[1]) return idx;
+      }
+      return -1;
     };
 
     const removeLineFromRange = (rng, line) => {
@@ -2320,7 +2160,6 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     const correctlyAssignLine = (line) => {
       if (correctedLines[line]) return true;
-      p.corrections++;
       correctedLines[line] = true;
       // "line" is an index of a line in the un-updated rep.
       // returns whether line was already correctly assigned (i.e. correctly
@@ -2384,29 +2223,20 @@ function Ace2Inner(editorInfo, cssManagers) {
     };
 
     if (N === 0) {
-      p.cancel();
       if (!isConsecutive(0)) {
         splitRange(0, 0);
       }
     } else {
-      p.mark('topbot');
       detectChangesAroundLine(0, 1);
       detectChangesAroundLine(N - 1, 1);
 
-      p.mark('obs');
-      for (const k in observedChanges.cleanNodesNearChanges) {
-        if (observedChanges.cleanNodesNearChanges[k]) {
-          const key = k.substring(1);
-          if (rep.lines.containsKey(key)) {
-            const line = rep.lines.indexOfKey(key);
-            detectChangesAroundLine(line, 2);
-          }
+      for (const k of Object.keys(observedChanges.cleanNodesNearChanges)) {
+        const key = k.substring(1);
+        if (rep.lines.containsKey(key)) {
+          const line = rep.lines.indexOfKey(key);
+          detectChangesAroundLine(line, 2);
         }
       }
-      p.mark('stats&calc');
-      p.literal(p.forIndices, 'byidx');
-      p.literal(p.consecutives, 'cons');
-      p.literal(p.corrections, 'corr');
     }
 
     const dirtyRanges = [];
@@ -2414,27 +2244,20 @@ function Ace2Inner(editorInfo, cssManagers) {
       dirtyRanges.push([cleanRanges[r][1], cleanRanges[r + 1][0]]);
     }
 
-    p.end();
-
     return dirtyRanges;
   };
 
   const markNodeClean = (n) => {
     // clean nodes have knownHTML that matches their innerHTML
-    const dirtiness = {};
-    dirtiness.nodeId = uniqueId(n);
-    dirtiness.knownHTML = n.innerHTML;
-    setAssoc(n, 'dirtiness', dirtiness);
+    setAssoc(n, 'dirtiness', {nodeId: uniqueId(n), knownHTML: n.innerHTML});
   };
 
   const isNodeDirty = (n) => {
-    const p = PROFILER('cleanCheck', false); // eslint-disable-line new-cap
-    if (n.parentNode !== root) return true;
+    if (n.parentNode !== document.body) return true;
     const data = getAssoc(n, 'dirtiness');
     if (!data) return true;
     if (n.id !== data.nodeId) return true;
     if (n.innerHTML !== data.knownHTML) return true;
-    p.end();
     return false;
   };
 
@@ -2466,9 +2289,7 @@ function Ace2Inner(editorInfo, cssManagers) {
   };
 
   const hideEditBarDropdowns = () => {
-    if (window.parent.parent.padeditbar) { // required in case its in an iframe should probably use parent..  See Issue 327 https://github.com/ether/etherpad-lite/issues/327
-      window.parent.parent.padeditbar.toggleDropDown('none');
-    }
+    window.parent.parent.padeditbar.toggleDropDown('none');
   };
 
   const renumberList = (lineNum) => {
@@ -2585,11 +2406,10 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   const doIndentOutdent = (isOut) => {
     if (!((rep.selStart && rep.selEnd) ||
-        ((rep.selStart[0] === rep.selEnd[0]) &&
-        (rep.selStart[1] === rep.selEnd[1]) &&
-        rep.selEnd[1] > 1)) &&
-        (isOut !== true)
-    ) {
+          (rep.selStart[0] === rep.selEnd[0] &&
+           rep.selStart[1] === rep.selEnd[1] &&
+           rep.selEnd[1] > 1)) &&
+        isOut !== true) {
       return false;
     }
 
@@ -2613,9 +2433,7 @@ function Ace2Inner(editorInfo, cssManagers) {
       }
     }
 
-    mods.forEach((mod) => {
-      setLineListType(mod[0], mod[1]);
-    });
+    for (const mod of mods) setLineListType(mod[0], mod[1]);
     return true;
   };
   editorInfo.ace_doIndentOutdent = doIndentOutdent;
@@ -2641,7 +2459,6 @@ function Ace2Inner(editorInfo, cssManagers) {
           const tabSize = THE_TAB.length;
           const toDelete = ((col2 - 1) % tabSize) + 1;
           performDocumentReplaceRange([lineNum, col - toDelete], [lineNum, col], '');
-          // scrollSelectionIntoView();
           handled = true;
         }
       }
@@ -2664,9 +2481,7 @@ function Ace2Inner(editorInfo, cssManagers) {
               if (prevLineBlank && !prevLineListType) {
                 // previous line is blank, remove it
                 performDocumentReplaceRange(
-                    [theLine - 1, prevLineEntry.text.length],
-                    [theLine, 0], ''
-                );
+                    [theLine - 1, prevLineEntry.text.length], [theLine, 0], '');
               } else {
                 // delistify
                 performDocumentReplaceRange([theLine, 0], [theLine, lineEntry.lineMarker], '');
@@ -2674,15 +2489,11 @@ function Ace2Inner(editorInfo, cssManagers) {
             } else if (thisLineHasMarker && prevLineEntry) {
               // If the line has any attributes assigned, remove them by removing the marker '*'
               performDocumentReplaceRange(
-                  [theLine - 1, prevLineEntry.text.length],
-                  [theLine, lineEntry.lineMarker], ''
-              );
+                  [theLine - 1, prevLineEntry.text.length], [theLine, lineEntry.lineMarker], '');
             } else if (theLine > 0) {
               // remove newline
               performDocumentReplaceRange(
-                  [theLine - 1, prevLineEntry.text.length],
-                  [theLine, 0], ''
-              );
+                  [theLine - 1, prevLineEntry.text.length], [theLine, 0], '');
             }
           } else {
             const docChar = caretDocChar();
@@ -2723,42 +2534,30 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   const handleKeyEvent = (evt) => {
     if (!isEditable) return;
-    const type = evt.type;
-    const charCode = evt.charCode;
-    const keyCode = evt.keyCode;
-    const which = evt.which;
-    const altKey = evt.altKey;
-    const shiftKey = evt.shiftKey;
+    const {type, charCode, keyCode, which, altKey, shiftKey} = evt;
 
-    // dmesg("keyevent type: "+type+", which: "+which);
     // Don't take action based on modifier keys going up and down.
     // Modifier keys do not generate "keypress" events.
     // 224 is the command-key under Mac Firefox.
     // 91 is the Windows key in IE; it is ASCII for open-bracket but isn't the keycode for that key
     // 20 is capslock in IE.
-    const isModKey = ((!charCode) &&
-    ((type === 'keyup') || (type === 'keydown')) &&
-    (
-      keyCode === 16 || keyCode === 17 || keyCode === 18 ||
-      keyCode === 20 || keyCode === 224 || keyCode === 91
-    ));
+    const isModKey = !charCode && (type === 'keyup' || type === 'keydown') &&
+        (keyCode === 16 || keyCode === 17 || keyCode === 18 ||
+         keyCode === 20 || keyCode === 224 || keyCode === 91);
     if (isModKey) return;
 
     // If the key is a keypress and the browser is opera and the key is enter,
     // do nothign at all as this fires twice.
-    if (keyCode === 13 && browser.opera && (type === 'keypress')) {
+    if (keyCode === 13 && browser.opera && type === 'keypress') {
       // This stops double enters in Opera but double Tabs still show on single
       // tab keypress, adding keyCode == 9 to this doesn't help as the event is fired twice
       return;
     }
-    let specialHandled = false;
 
-    const isTypeForSpecialKey = ((browser.safari ||
-      browser.chrome ||
-      browser.firefox) ? (type === 'keydown') : (type === 'keypress'));
-    const isTypeForCmdKey = ((browser.safari ||
-      browser.chrome ||
-      browser.firefox) ? (type === 'keydown') : (type === 'keypress'));
+    const isTypeForSpecialKey = browser.safari || browser.chrome || browser.firefox
+      ? type === 'keydown' : type === 'keypress';
+    const isTypeForCmdKey = browser.safari || browser.chrome || browser.firefox
+      ? type === 'keydown' : type === 'keypress';
 
     let stopped = false;
 
@@ -2776,6 +2575,7 @@ function Ace2Inner(editorInfo, cssManagers) {
       } else if (type === 'keydown') {
         outsideKeyDown(evt);
       }
+      let specialHandled = false;
       if (!stopped) {
         const specialHandledInHook = hooks.callAll('aceKeyEvent', {
           callstack: currentCallStack,
@@ -2791,13 +2591,9 @@ function Ace2Inner(editorInfo, cssManagers) {
         }
 
         const padShortcutEnabled = parent.parent.clientVars.padShortcutEnabled;
-        if (
-          (!specialHandled) &&
-          altKey &&
-          isTypeForSpecialKey &&
-          keyCode === 120 &&
-          padShortcutEnabled.altF9
-        ) {
+        if (!specialHandled && isTypeForSpecialKey &&
+            altKey && keyCode === 120 &&
+            padShortcutEnabled.altF9) {
           // Alt F9 focuses on the File Menu and/or editbar.
           // Note that while most editors use Alt F10 this is not desirable
           // As ubuntu cannot use Alt F10....
@@ -2810,26 +2606,18 @@ function Ace2Inner(editorInfo, cssManagers) {
           firstEditbarElement.focus();
           evt.preventDefault();
         }
-        if (
-          (!specialHandled) &&
-          altKey && keyCode === 67 &&
-          type === 'keydown' &&
-          padShortcutEnabled.altC
-        ) {
+        if (!specialHandled && type === 'keydown' &&
+            altKey && keyCode === 67 &&
+            padShortcutEnabled.altC) {
           // Alt c focuses on the Chat window
           $(this).blur();
           parent.parent.chat.show();
           parent.parent.$('#chatinput').focus();
           evt.preventDefault();
         }
-        if (
-          (!specialHandled) &&
-          evt.ctrlKey &&
-          shiftKey &&
-          keyCode === 50 &&
-          type === 'keydown' &&
-          padShortcutEnabled.cmdShift2
-        ) {
+        if (!specialHandled && type === 'keydown' &&
+            evt.ctrlKey && shiftKey && keyCode === 50 &&
+            padShortcutEnabled.cmdShift2) {
           // Control-Shift-2 shows a gritter popup showing a line author
           const lineNumber = rep.selEnd[0];
           const alineAttrs = rep.alines[lineNumber];
@@ -2839,75 +2627,33 @@ function Ace2Inner(editorInfo, cssManagers) {
           // TODO: Still work when authorship colors have been cleared
           // TODO: i18n
           // TODO: There appears to be a race condition or so.
-          const authors = [];
-          let author = null;
+          const authorIds = new Set();
           if (alineAttrs) {
             const opIter = Changeset.opIterator(alineAttrs);
-
             while (opIter.hasNext()) {
               const op = opIter.next();
               const authorId = Changeset.opAttributeValue(op, 'author', apool);
-
-              // Only push unique authors and ones with values
-              if (authors.indexOf(authorId) === -1 && authorId !== '') {
-                authors.push(authorId);
-              }
+              if (authorId !== '') authorIds.add(authorId);
             }
           }
-
-          let authorString;
-          const authorNames = [];
-          if (authors.length === 0) {
-            authorString = 'No author information is available';
-          } else {
-            // Known authors info, both current and historical
-            const padAuthors = parent.parent.pad.userList();
-            let authorObj = {};
-            authors.forEach((authorId) => {
-              padAuthors.forEach((padAuthor) => {
-                // If the person doing the lookup is the author..
-                if (padAuthor.userId === authorId) {
-                  if (parent.parent.clientVars.userId === authorId) {
-                    authorObj = {
-                      name: 'Me',
-                    };
-                  } else {
-                    authorObj = padAuthor;
-                  }
-                }
-              });
-              if (!authorObj) {
-                author = 'Unknown';
-                return;
-              }
-              author = authorObj.name;
-              if (!author) author = 'Unknown';
-              authorNames.push(author);
-            });
-          }
-          if (authors.length === 1) {
-            authorString = `The author of this line is ${authorNames[0]}`;
-          }
-          if (authors.length > 1) {
-            authorString = `The authors of this line are ${authorNames.join(' & ')}`;
-          }
+          const idToName = new Map(parent.parent.pad.userList().map((a) => [a.userId, a.name]));
+          const myId = parent.parent.clientVars.userId;
+          const authors =
+              [...authorIds].map((id) => id === myId ? 'me' : idToName.get(id) || 'unknown');
 
           parent.parent.$.gritter.add({
-            // (string | mandatory) the heading of the notification
             title: 'Line Authors',
-            // (string | mandatory) the text inside the notification
-            text: authorString,
-            // (bool | optional) if you want it to fade out on its own or just sit there
+            text:
+                authors.length === 0 ? 'No author information is available'
+                : authors.length === 1 ? `The author of this line is ${authors[0]}`
+                : `The authors of this line are ${authors.join(' & ')}`,
             sticky: false,
-            // (int | optional) the time you want it to be alive for before fading out
             time: '4000',
           });
         }
-        if ((!specialHandled) &&
-          isTypeForSpecialKey &&
-          keyCode === 8 &&
-          padShortcutEnabled.delete
-        ) {
+        if (!specialHandled && isTypeForSpecialKey &&
+            keyCode === 8 &&
+            padShortcutEnabled.delete) {
           // "delete" key; in mozilla, if we're at the beginning of a line, normalize now,
           // or else deleting a blank line can take two delete presses.
           // --
@@ -2920,27 +2666,22 @@ function Ace2Inner(editorInfo, cssManagers) {
           doDeleteKey(evt);
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          isTypeForSpecialKey &&
-          keyCode === 13 &&
-          padShortcutEnabled.return
-        ) {
+        if (!specialHandled && isTypeForSpecialKey &&
+            keyCode === 13 &&
+            padShortcutEnabled.return) {
           // return key, handle specially;
           // note that in mozilla we need to do an incorporation for proper return behavior anyway.
           fastIncorp(4);
           evt.preventDefault();
           doReturnKey();
-          // scrollSelectionIntoView();
           scheduler.setTimeout(() => {
             outerWin.scrollBy(-100, 0);
           }, 0);
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          isTypeForSpecialKey &&
-          keyCode === 27 &&
-          padShortcutEnabled.esc
-        ) {
+        if (!specialHandled && isTypeForSpecialKey &&
+            keyCode === 27 &&
+            padShortcutEnabled.esc) {
           // prevent esc key;
           // in mozilla versions 14-19 avoid reconnecting pad.
 
@@ -2951,15 +2692,11 @@ function Ace2Inner(editorInfo, cssManagers) {
           // close all gritters when the user hits escape key
           parent.parent.$.gritter.removeAll();
         }
-        if (
-          (!specialHandled) &&
-          /* Do a saved revision on ctrl S */
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 's' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          !evt.altKey &&
-          padShortcutEnabled.cmdS
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            /* Do a saved revision on ctrl S */
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 's' &&
+            !evt.altKey &&
+            padShortcutEnabled.cmdS) {
           evt.preventDefault();
           const originalBackground = parent.parent.$('#revisionlink').css('background');
           parent.parent.$('#revisionlink').css({background: 'lightyellow'});
@@ -2970,26 +2707,21 @@ function Ace2Inner(editorInfo, cssManagers) {
           parent.parent.pad.collabClient.sendMessage({type: 'SAVE_REVISION'});
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // tab
-          isTypeForSpecialKey &&
-          keyCode === 9 &&
-          !(evt.metaKey || evt.ctrlKey) &&
-          padShortcutEnabled.tab) {
+        if (!specialHandled && isTypeForSpecialKey &&
+            // tab
+            keyCode === 9 &&
+            !(evt.metaKey || evt.ctrlKey) &&
+            padShortcutEnabled.tab) {
           fastIncorp(5);
           evt.preventDefault();
           doTabKey(evt.shiftKey);
-          // scrollSelectionIntoView();
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // cmd-Z (undo)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'z' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          !evt.altKey &&
-          padShortcutEnabled.cmdZ
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-Z (undo)
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 'z' &&
+            !evt.altKey &&
+            padShortcutEnabled.cmdZ) {
           fastIncorp(6);
           evt.preventDefault();
           if (evt.shiftKey) {
@@ -2999,120 +2731,93 @@ function Ace2Inner(editorInfo, cssManagers) {
           }
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-        // cmd-Y (redo)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'y' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          padShortcutEnabled.cmdY
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-Y (redo)
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 'y' &&
+            padShortcutEnabled.cmdY) {
           fastIncorp(10);
           evt.preventDefault();
           doUndoRedo('redo');
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // cmd-B (bold)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'b' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          padShortcutEnabled.cmdB) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-B (bold)
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 'b' &&
+            padShortcutEnabled.cmdB) {
           fastIncorp(13);
           evt.preventDefault();
           toggleAttributeOnSelection('bold');
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // cmd-I (italic)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'i' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          padShortcutEnabled.cmdI
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-I (italic)
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 'i' &&
+            padShortcutEnabled.cmdI) {
           fastIncorp(14);
           evt.preventDefault();
           toggleAttributeOnSelection('italic');
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'u' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          padShortcutEnabled.cmdU
-        ) {
-          // cmd-U (underline)
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-U (underline)
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 'u' &&
+            padShortcutEnabled.cmdU) {
           fastIncorp(15);
           evt.preventDefault();
           toggleAttributeOnSelection('underline');
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // cmd-5 (strikethrough)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === '5' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          evt.altKey !== true &&
-          padShortcutEnabled.cmd5
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-5 (strikethrough)
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === '5' &&
+            evt.altKey !== true &&
+            padShortcutEnabled.cmd5) {
           fastIncorp(13);
           evt.preventDefault();
           toggleAttributeOnSelection('strikethrough');
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // cmd-shift-L (unorderedlist)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'l' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          evt.shiftKey &&
-          padShortcutEnabled.cmdShiftL
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-shift-L (unorderedlist)
+            (evt.metaKey || evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 'l' &&
+            evt.shiftKey &&
+            padShortcutEnabled.cmdShiftL) {
           fastIncorp(9);
           evt.preventDefault();
           doInsertUnorderedList();
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // cmd-shift-N and cmd-shift-1 (orderedlist)
-          isTypeForCmdKey &&
-          (
-            (String.fromCharCode(which).toLowerCase() === 'n' &&
-              padShortcutEnabled.cmdShiftN) || (String.fromCharCode(which) === '1' &&
-              padShortcutEnabled.cmdShift1)
-          ) && (evt.metaKey || evt.ctrlKey) &&
-            evt.shiftKey
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-shift-N and cmd-shift-1 (orderedlist)
+            (evt.metaKey || evt.ctrlKey) && evt.shiftKey &&
+            ((String.fromCharCode(which).toLowerCase() === 'n' && padShortcutEnabled.cmdShiftN) ||
+             (String.fromCharCode(which) === '1' && padShortcutEnabled.cmdShift1))) {
           fastIncorp(9);
           evt.preventDefault();
           doInsertOrderedList();
           specialHandled = true;
         }
-        if ((!specialHandled) &&
-          // cmd-shift-C (clearauthorship)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'c' &&
-          (evt.metaKey || evt.ctrlKey) &&
-          evt.shiftKey && padShortcutEnabled.cmdShiftC
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-shift-C (clearauthorship)
+            (evt.metaKey || evt.ctrlKey) && evt.shiftKey &&
+            String.fromCharCode(which).toLowerCase() === 'c' &&
+            padShortcutEnabled.cmdShiftC) {
           fastIncorp(9);
           evt.preventDefault();
           CMDS.clearauthorship();
         }
-        if ((!specialHandled) &&
-          // cmd-H (backspace)
-          isTypeForCmdKey &&
-          String.fromCharCode(which).toLowerCase() === 'h' &&
-          (evt.ctrlKey) &&
-          padShortcutEnabled.cmdH
-        ) {
+        if (!specialHandled && isTypeForCmdKey &&
+            // cmd-H (backspace)
+            (evt.ctrlKey) && String.fromCharCode(which).toLowerCase() === 'h' &&
+            padShortcutEnabled.cmdH) {
           fastIncorp(20);
           evt.preventDefault();
           doDeleteKey();
           specialHandled = true;
         }
-        if ((evt.which === 36 && evt.ctrlKey === true) &&
-        // Control Home send to Y = 0
-        padShortcutEnabled.ctrlHome) {
+        if (evt.ctrlKey === true && evt.which === 36 &&
+            // Control Home send to Y = 0
+            padShortcutEnabled.ctrlHome) {
           scroll.setScrollY(0);
         }
         if ((evt.which === 33 || evt.which === 34) && type === 'keydown' && !evt.ctrlKey) {
@@ -3213,10 +2918,9 @@ function Ace2Inner(editorInfo, cssManagers) {
         thisKeyDoesntTriggerNormalize = true;
       }
 
-      if ((!specialHandled) && (!thisKeyDoesntTriggerNormalize) && (!inInternationalComposition)) {
-        if (type !== 'keyup') {
-          observeChangesAroundSelection();
-        }
+      if (!specialHandled && !thisKeyDoesntTriggerNormalize && !inInternationalComposition &&
+          type !== 'keyup') {
+        observeChangesAroundSelection();
       }
 
       if (type === 'keyup') {
@@ -3242,12 +2946,9 @@ function Ace2Inner(editorInfo, cssManagers) {
           }
           if (selectionInfo) {
             performSelectionChange(
-                lineAndColumnFromChar(
-                    selectionInfo.selStart
-                ),
+                lineAndColumnFromChar(selectionInfo.selStart),
                 lineAndColumnFromChar(selectionInfo.selEnd),
-                selectionInfo.selFocusAtStart
-            );
+                selectionInfo.selFocusAtStart);
           }
           const oldEvent = currentCallStack.startNewEvent(oldEventType, true);
           return oldEvent;
@@ -3273,7 +2974,6 @@ function Ace2Inner(editorInfo, cssManagers) {
       if (isCollapsed) {
         const diveDeep = () => {
           while (p.node.childNodes.length > 0) {
-            // && (p.node == root || p.node.parentNode == root)) {
             if (p.index === 0) {
               p.node = p.node.firstChild;
               p.maxIndex = nodeMaxIndex(p.node);
@@ -3288,15 +2988,13 @@ function Ace2Inner(editorInfo, cssManagers) {
         // with background doesn't seem to show up...
         if (isNodeText(p.node) && p.index === p.maxIndex) {
           let n = p.node;
-          while ((!n.nextSibling) && (n !== root) && (n.parentNode !== root)) {
+          while (!n.nextSibling && n !== document.body && n.parentNode !== document.body) {
             n = n.parentNode;
           }
-          if (
-            n.nextSibling &&
-            (!((typeof n.nextSibling.tagName) === 'string' &&
-              n.nextSibling.tagName.toLowerCase() === 'br')) &&
-              (n !== p.node) && (n !== root) && (n.parentNode !== root)
-          ) {
+          if (n.nextSibling &&
+              !(typeof n.nextSibling.tagName === 'string' &&
+                n.nextSibling.tagName.toLowerCase() === 'br') &&
+              n !== p.node && n !== document.body && n.parentNode !== document.body) {
             // found a parent, go to next node and dive in
             p.node = n.nextSibling;
             p.maxIndex = nodeMaxIndex(p.node);
@@ -3327,25 +3025,19 @@ function Ace2Inner(editorInfo, cssManagers) {
     if (browserSelection) {
       browserSelection.removeAllRanges();
       if (selection) {
-        isCollapsed = (
-          selection.startPoint.node === selection.endPoint.node &&
-          selection.startPoint.index === selection.endPoint.index
-        );
+        isCollapsed = (selection.startPoint.node === selection.endPoint.node &&
+                       selection.startPoint.index === selection.endPoint.index);
         const start = pointToRangeBound(selection.startPoint);
         const end = pointToRangeBound(selection.endPoint);
 
-        if (
-          (!isCollapsed) &&
-          selection.focusAtStart &&
-          browserSelection.collapse &&
-          browserSelection.extend
-        ) {
+        if (!isCollapsed && selection.focusAtStart &&
+            browserSelection.collapse && browserSelection.extend) {
           // can handle "backwards"-oriented selection, shift-arrow-keys move start
           // of selection
           browserSelection.collapse(end.container, end.offset);
           browserSelection.extend(start.container, start.offset);
         } else {
-          const range = doc.createRange();
+          const range = document.createRange();
           range.setStart(start.container, start.offset);
           range.setEnd(end.container, end.offset);
           browserSelection.removeAllRanges();
@@ -3386,7 +3078,6 @@ function Ace2Inner(editorInfo, cssManagers) {
   editorInfo.ace_setOnKeyDown = setOnKeyDown;
   editorInfo.ace_setNotifyDirty = setNotifyDirty;
   editorInfo.ace_dispose = dispose;
-  editorInfo.ace_getFormattedCode = getFormattedCode;
   editorInfo.ace_setEditable = setEditable;
   editorInfo.ace_execCommand = execCommand;
   editorInfo.ace_replaceRange = replaceRange;
@@ -3423,7 +3114,7 @@ function Ace2Inner(editorInfo, cssManagers) {
       if (!isInBody(container)) {
         // command-click in Firefox selects whole document, HEAD and BODY!
         return {
-          node: root,
+          node: document.body,
           index: 0,
           maxIndex: 1,
         };
@@ -3502,18 +3193,9 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   const _teardownActions = [];
 
-  const teardown = () => _teardownActions.forEach((a) => a());
+  const teardown = () => { for (const a of _teardownActions) a(); };
 
-  let inInternationalComposition = false;
-  const handleCompositionEvent = (evt) => {
-    // international input events, fired in FF3, at least;  allow e.g. Japanese input
-    if (evt.type === 'compositionstart') {
-      inInternationalComposition = true;
-    } else if (evt.type === 'compositionend') {
-      inInternationalComposition = false;
-    }
-  };
-
+  let inInternationalComposition = null;
   editorInfo.ace_getInInternationalComposition = () => inInternationalComposition;
 
   const bindTheEventHandlers = () => {
@@ -3522,15 +3204,12 @@ function Ace2Inner(editorInfo, cssManagers) {
     $(document).on('keyup', handleKeyEvent);
     $(document).on('click', handleClick);
     // dropdowns on edit bar need to be closed on clicks on both pad inner and pad outer
-    $(outerWin.document).on('click', hideEditBarDropdowns);
-    // Disabled: https://github.com/ether/etherpad-lite/issues/2546
-    // Will break OL re-numbering: https://github.com/ether/etherpad-lite/pull/2533
-    // $(document).on("cut", handleCut);
+    $(outerDoc).on('click', hideEditBarDropdowns);
 
     // If non-nullish, pasting on a link should be suppressed.
     let suppressPasteOnLink = null;
 
-    $(root).on('auxclick', (e) => {
+    $(document.body).on('auxclick', (e) => {
       if (e.originalEvent.button === 1 && (e.target.a || e.target.localName === 'a')) {
         // The user middle-clicked on a link. Usually users do this to open a link in a new tab, but
         // in X11 (Linux) this will instead paste the contents of the primary selection at the mouse
@@ -3552,7 +3231,7 @@ function Ace2Inner(editorInfo, cssManagers) {
       }
     });
 
-    $(root).on('paste', (e) => {
+    $(document.body).on('paste', (e) => {
       if (suppressPasteOnLink != null && (e.target.a || e.target.localName === 'a')) {
         scheduler.clearTimeout(suppressPasteOnLink);
         suppressPasteOnLink = null;
@@ -3602,13 +3281,20 @@ function Ace2Inner(editorInfo, cssManagers) {
       });
     });
 
-    $(document.documentElement).on('compositionstart', handleCompositionEvent);
-    $(document.documentElement).on('compositionend', handleCompositionEvent);
+    $(document.documentElement).on('compositionstart', () => {
+      if (inInternationalComposition) return;
+      inInternationalComposition = new Promise((resolve) => {
+        $(document.documentElement).one('compositionend', () => {
+          inInternationalComposition = null;
+          resolve();
+        });
+      });
+    });
   };
 
   const topLevel = (n) => {
-    if ((!n) || n === root) return null;
-    while (n.parentNode !== root) {
+    if ((!n) || n === document.body) return null;
+    while (n.parentNode !== document.body) {
       n = n.parentNode;
     }
     return n;
@@ -3630,8 +3316,7 @@ function Ace2Inner(editorInfo, cssManagers) {
       let charsToLeft = index;
       let charsToRight = node.nodeValue.length - index;
       let n;
-      for (n = node.previousSibling; n &&
-          isNodeText(n); n = n.previousSibling) {
+      for (n = node.previousSibling; n && isNodeText(n); n = n.previousSibling) {
         charsToLeft += n.nodeValue;
       }
       const leftEdge = (n ? rightOf(n) : leftOf(node.parentNode));
@@ -3644,11 +3329,7 @@ function Ace2Inner(editorInfo, cssManagers) {
   };
 
   const getInnerHeight = () => {
-    const win = outerWin;
-    const odoc = win.document;
-    let h;
-    if (browser.opera) h = win.innerHeight;
-    else h = odoc.documentElement.clientHeight;
+    const h = browser.opera ? outerWin.innerHeight : outerDoc.documentElement.clientHeight;
     if (h) return h;
 
     // deal with case where iframe is hidden, hope that
@@ -3656,20 +3337,15 @@ function Ace2Inner(editorInfo, cssManagers) {
     return Number(editorInfo.frame.parentNode.style.height.replace(/[^0-9]/g, '') || 0);
   };
 
-  const getInnerWidth = () => {
-    const win = outerWin;
-    const odoc = win.document;
-    return odoc.documentElement.clientWidth;
-  };
+  const getInnerWidth = () => outerDoc.documentElement.clientWidth;
 
   const scrollXHorizontallyIntoView = (pixelX) => {
-    const win = outerWin;
-    const distInsideLeft = pixelX - win.scrollX;
-    const distInsideRight = win.scrollX + getInnerWidth() - pixelX;
+    const distInsideLeft = pixelX - outerWin.scrollX;
+    const distInsideRight = outerWin.scrollX + getInnerWidth() - pixelX;
     if (distInsideLeft < 0) {
-      win.scrollBy(distInsideLeft, 0);
+      outerWin.scrollBy(distInsideLeft, 0);
     } else if (distInsideRight < 0) {
-      win.scrollBy(-distInsideRight + 1, 0);
+      outerWin.scrollBy(-distInsideRight + 1, 0);
     }
   };
 
@@ -3681,9 +3357,8 @@ function Ace2Inner(editorInfo, cssManagers) {
     if (!doesWrap) {
       const browserSelection = getSelection();
       if (browserSelection) {
-        const focusPoint = (
-          browserSelection.focusAtStart ? browserSelection.startPoint : browserSelection.endPoint
-        );
+        const focusPoint =
+            browserSelection.focusAtStart ? browserSelection.startPoint : browserSelection.endPoint;
         const selectionPointX = getSelectionPointX(focusPoint);
         scrollXHorizontallyIntoView(selectionPointX);
         fixView();
@@ -3717,7 +3392,6 @@ function Ace2Inner(editorInfo, cssManagers) {
 
     const mods = [];
     for (let n = firstLine; n <= lastLine; n++) {
-      // var t = '';
       let level = 0;
       let togglingOn = true;
       const listType = /([a-z]+)([0-9]+)/.exec(getLineListType(n));
@@ -3728,7 +3402,6 @@ function Ace2Inner(editorInfo, cssManagers) {
       }
 
       if (listType) {
-        // t = listType[1];
         level = Number(listType[2]);
       }
       const t = getLineListType(n);
@@ -3750,9 +3423,7 @@ function Ace2Inner(editorInfo, cssManagers) {
       }
     }
 
-    mods.forEach((mod) => {
-      setLineListType(mod[0], mod[1]);
-    });
+    for (const mod of mods) setLineListType(mod[0], mod[1]);
   };
 
   const doInsertUnorderedList = () => {
@@ -3767,8 +3438,6 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   // We apply the height of a line in the doc body, to the corresponding sidediv line number
   const updateLineNumbers = () => {
-    if (!currentCallStack || !currentCallStack.domClean) return;
-
     // Refs #4228, to avoid layout trashing, we need to first calculate all the heights,
     // and then apply at once all new height to div elements
     const lineOffsets = [];
@@ -3785,29 +3454,24 @@ function Ace2Inner(editorInfo, cssManagers) {
     // but as it's non-text type the line-height/margins might not be present and it
     // could be that this breaks a theme that has a different default line height..
     // So instead of using an integer here we get the value from the Editor CSS.
-    const innerdocbody = document.querySelector('#innerdocbody');
-    const innerdocbodyStyles = getComputedStyle(innerdocbody);
+    const innerdocbodyStyles = getComputedStyle(document.body);
     const defaultLineHeight = parseInt(innerdocbodyStyles['line-height']);
 
-    let docLine = doc.body.firstChild;
-    let currentLine = 0;
-    let h = null;
-
-    // First loop to calculate the heights from doc body
-    while (docLine) {
-      if (docLine.nextSibling) {
-        if (currentLine === 0) {
+    for (const docLine of document.body.children) {
+      let h;
+      const nextDocLine = docLine.nextElementSibling;
+      if (nextDocLine) {
+        if (lineOffsets.length === 0) {
           // It's the first line. For line number alignment purposes, its
           // height is taken to be the top offset of the next line. If we
           // didn't do this special case, we would miss out on any top margin
           // included on the first line. The default stylesheet doesn't add
           // extra margins/padding, but plugins might.
-          h = docLine.nextSibling.offsetTop - parseInt(
-              window.getComputedStyle(doc.body)
-                  .getPropertyValue('padding-top').split('px')[0]
-          );
+          h = nextDocLine.offsetTop - parseInt(
+              window.getComputedStyle(document.body)
+                  .getPropertyValue('padding-top').split('px')[0]);
         } else {
-          h = docLine.nextSibling.offsetTop - docLine.offsetTop;
+          h = nextDocLine.offsetTop - docLine.offsetTop;
         }
       } else {
         // last line
@@ -3828,49 +3492,15 @@ function Ace2Inner(editorInfo, cssManagers) {
       } else {
         lineHeights.push(defaultLineHeight);
       }
-      docLine = docLine.nextSibling;
-      currentLine++;
     }
 
     let newNumLines = rep.lines.length();
     if (newNumLines < 1) newNumLines = 1;
-    let sidebarLine = sideDivInner.firstChild;
-
-    // Apply height to existing sidediv lines
-    currentLine = 0;
-    while (sidebarLine && currentLine <= lineNumbersShown) {
-      if (lineOffsets[currentLine] != null) {
-        sidebarLine.style.height = `${lineOffsets[currentLine]}px`;
-        sidebarLine.style.lineHeight = `${lineHeights[currentLine]}px`;
-      }
-      sidebarLine = sidebarLine.nextSibling;
-      currentLine++;
-    }
-
-    if (newNumLines !== lineNumbersShown) {
-      const container = sideDivInner;
-      const odoc = outerWin.document;
-      const fragment = odoc.createDocumentFragment();
-
-      // Create missing line and apply height
-      while (lineNumbersShown < newNumLines) {
-        lineNumbersShown++;
-        const div = odoc.createElement('DIV');
-        if (lineOffsets[currentLine]) {
-          div.style.height = `${lineOffsets[currentLine]}px`;
-          div.style.lineHeight = `${lineHeights[currentLine]}px`;
-        }
-        $(div).append($(`<span class='line-number'>${String(lineNumbersShown)}</span>`));
-        fragment.appendChild(div);
-        currentLine++;
-      }
-      container.appendChild(fragment);
-
-      // Remove extra lines
-      while (lineNumbersShown > newNumLines) {
-        container.removeChild(container.lastChild);
-        lineNumbersShown--;
-      }
+    while (sideDivInner.children.length < newNumLines) appendNewSideDivLine();
+    while (sideDivInner.children.length > newNumLines) sideDivInner.lastElementChild.remove();
+    for (const [i, sideDivLine] of Array.prototype.entries.call(sideDivInner.children)) {
+      sideDivLine.style.height = `${lineOffsets[i]}px`;
+      sideDivLine.style.lineHeight = `${lineHeights[i]}px`;
     }
   };
 
@@ -3883,19 +3513,16 @@ function Ace2Inner(editorInfo, cssManagers) {
 
   this.init = async () => {
     await $.ready;
-    doc = document; // defined as a var in scope outside
     inCallStack('setup', () => {
-      const body = doc.getElementById('innerdocbody');
-      root = body; // defined as a var in scope outside
-      if (browser.firefox) $(root).addClass('mozilla');
-      if (browser.safari) $(root).addClass('safari');
-      root.classList.toggle('authorColors', true);
-      root.classList.toggle('doesWrap', doesWrap);
+      if (browser.firefox) $(document.body).addClass('mozilla');
+      if (browser.safari) $(document.body).addClass('safari');
+      document.body.classList.toggle('authorColors', true);
+      document.body.classList.toggle('doesWrap', doesWrap);
 
       enforceEditability();
 
       // set up dom and rep
-      while (root.firstChild) root.removeChild(root.firstChild);
+      while (document.body.firstChild) document.body.removeChild(document.body.firstChild);
       const oneEntry = createDomLineEntry('');
       doRepLineSplice(0, rep.lines.length(), [oneEntry]);
       insertDomLines(null, [oneEntry.domInfo]);

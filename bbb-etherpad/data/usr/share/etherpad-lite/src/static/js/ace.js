@@ -110,7 +110,6 @@ const Ace2Editor = function () {
     'importAText',
     'focus',
     'setEditable',
-    'getFormattedCode',
     'setOnKeyPress',
     'setOnKeyDown',
     'setNotifyDirty',
@@ -121,7 +120,6 @@ const Ace2Editor = function () {
     'applyPreparedChangesetToBase',
     'setUserChangeNotificationCallback',
     'setAuthorInfo',
-    'setAuthorSelectionRange',
     'callWithAce',
     'execCommand',
     'replaceRange',
@@ -138,10 +136,8 @@ const Ace2Editor = function () {
 
   this.exportText = () => loaded ? info.ace_exportText() : '(awaiting init)\n';
 
-  this.getDebugProperty = (prop) => info.ace_getDebugProperty(prop);
-
   this.getInInternationalComposition =
-      () => loaded ? info.ace_getInInternationalComposition() : false;
+      () => loaded ? info.ace_getInInternationalComposition() : null;
 
   // prepareUserChangeset:
   // Returns null if no new changes or ACE not ready.  Otherwise, bundles up all user changes
@@ -152,9 +148,6 @@ const Ace2Editor = function () {
   // prepareUserChangeset will return an updated changeset that takes into account the latest user
   // changes, and modify the changeset to be applied by applyPreparedChangesetToBase accordingly.
   this.prepareUserChangeset = () => loaded ? info.ace_prepareUserChangeset() : null;
-
-  // returns array of {error: <browser Error object>, time: +new Date()}
-  this.getUnhandledErrors = () => loaded ? info.ace_getUnhandledErrors() : [];
 
   const addStyleTagsFor = (doc, files) => {
     for (const file of files) {
@@ -198,7 +191,9 @@ const Ace2Editor = function () {
     //   - Chrome never fires any events on the frame or document. Eventually the document's
     //     readyState becomes 'complete' even though it never fires a readystatechange event.
     //   - Safari behaves like Chrome.
-    outerFrame.srcdoc = '<!DOCTYPE html>';
+    // srcdoc is avoided because Firefox's Content Security Policy engine does not properly handle
+    // 'self' with nested srcdoc iframes: https://bugzilla.mozilla.org/show_bug.cgi?id=1721296
+    outerFrame.src = '../static/empty.html';
     info.frame = outerFrame;
     document.getElementById(containerId).appendChild(outerFrame);
     const outerWindow = outerFrame.contentWindow;
@@ -228,6 +223,10 @@ const Ace2Editor = function () {
     sideDiv.id = 'sidediv';
     sideDiv.classList.add('sidediv');
     outerDocument.body.appendChild(sideDiv);
+    const sideDivInner = outerDocument.createElement('div');
+    sideDivInner.id = 'sidedivinner';
+    sideDivInner.classList.add('sidedivinner');
+    sideDiv.appendChild(sideDivInner);
     const lineMetricsDiv = outerDocument.createElement('div');
     lineMetricsDiv.id = 'linemetricsdiv';
     lineMetricsDiv.appendChild(outerDocument.createTextNode('x'));
@@ -241,8 +240,7 @@ const Ace2Editor = function () {
     innerFrame.allowTransparency = true; // for IE
     // The iframe MUST have a src or srcdoc property to avoid browser quirks. See the comment above
     // outerFrame.srcdoc.
-    innerFrame.srcdoc = '<!DOCTYPE html>';
-    innerFrame.ace_outerWin = outerWindow;
+    innerFrame.src = 'empty.html';
     outerDocument.body.insertBefore(innerFrame, outerDocument.body.firstChild);
     const innerWindow = innerFrame.contentWindow;
 
@@ -278,14 +276,12 @@ const Ace2Editor = function () {
     innerDocument.head.appendChild(innerStyle);
     const headLines = [];
     hooks.callAll('aceInitInnerdocbodyHead', {iframeHTML: headLines});
-    const tmp = innerDocument.createElement('div');
-    tmp.innerHTML = headLines.join('\n');
-    while (tmp.firstChild) innerDocument.head.appendChild(tmp.firstChild);
+    innerDocument.head.appendChild(
+        innerDocument.createRange().createContextualFragment(headLines.join('\n')));
 
     // <body> tag
     innerDocument.body.id = 'innerdocbody';
     innerDocument.body.classList.add('innerdocbody');
-    innerDocument.body.setAttribute('role', 'application');
     innerDocument.body.setAttribute('spellcheck', 'false');
     innerDocument.body.appendChild(innerDocument.createTextNode('\u00A0')); // &nbsp;
 

@@ -19,7 +19,7 @@ All of the following instructions are as a member of the `docker` group.
 By default, the Etherpad Docker image is built and run in `production` mode: no development dependencies are installed, and asset bundling speeds up page load time.
 
 ### Rebuilding with custom settings
-Edit `<BASEDIR>/settings.json.docker` at your will. When rebuilding the image, this file will be copied inside your image and renamed to `setting.json`.
+Edit `<BASEDIR>/settings.json.docker` at your will. When rebuilding the image, this file will be copied inside your image and renamed to `settings.json`.
 
 **Each configuration parameter can also be set via an environment variable**, using the syntax `"${ENV_VAR}"` or `"${ENV_VAR:default_value}"`. For details, refer to `settings.json.template`.
 
@@ -102,7 +102,7 @@ The `settings.json.docker` available by default allows to control almost every s
 | `DB_USER`     | a database user with sufficient permissions to create tables   |                                                                       |
 | `DB_PASS`     | the password for the database username                         |                                                                       |
 | `DB_CHARSET`  | the character set for the tables (only required for MySQL)     |                                                                       |
-| `DB_FILENAME` | in case `DB_TYPE` is `DirtyDB`, the database filename.         | `var/dirty.db`                                                        |
+| `DB_FILENAME` | in case `DB_TYPE` is `DirtyDB` or `sqlite`, the database file. | `var/dirty.db`, `var/etherpad.sq3`                                    |
 
 If your database needs additional settings, you will have to use a personalized `settings.json.docker` and rebuild the container (or otherwise put the updated `settings.json` inside your image).
 
@@ -211,7 +211,9 @@ For the editor container, you can also make it full width by adding `full-width-
 | `FOCUS_LINE_PERCENTAGE_ARROW_UP`  | Percentage of viewport height to be additionally scrolled when user presses arrow up in the line of the top of the viewport. Set to 0 to let the scroll to be handled as default by Etherpad           | `0`                |
 | `FOCUS_LINE_DURATION`             | Time (in milliseconds) used to animate the scroll transition. Set to 0 to disable animation                                                                                                            | `0`                |
 | `FOCUS_LINE_CARET_SCROLL`         | Flag to control if it should scroll when user places the caret in the last line of the viewport                                                                                                        | `false`            |
+| `SOCKETIO_MAX_HTTP_BUFFER_SIZE`   | The maximum size (in bytes) of a single message accepted via Socket.IO. If a client sends a larger message, its connection gets closed to prevent DoS (memory exhaustion) attacks.                     | `10000`            |
 | `LOAD_TEST`                       | Allow Load Testing tools to hit the Etherpad Instance. WARNING: this will disable security on the instance.                                                                                            | `false`            |
+| `DUMP_ON_UNCLEAN_EXIT`            | Enable dumping objects preventing a clean exit of Node.js. WARNING: this has a significant performance impact.                                                                                         | `false`            |
 | `EXPOSE_VERSION`                  | Expose Etherpad version in the web interface and in the Server http header. Do not enable on production machines.                                                                                      | `false`            |
 
 

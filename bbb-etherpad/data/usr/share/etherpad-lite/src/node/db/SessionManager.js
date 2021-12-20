@@ -250,12 +250,12 @@ const listSessionsWithDBKey = async (dbkey) => {
   const sessions = sessionObject ? sessionObject.sessionIDs : null;
 
   // iterate through the sessions and get the sessioninfos
-  for (const sessionID in sessions) {
+  for (const sessionID of Object.keys(sessions || {})) {
     try {
       const sessionInfo = await exports.getSessionInfo(sessionID);
       sessions[sessionID] = sessionInfo;
     } catch (err) {
-      if (err === 'apierror: sessionID does not exist') {
+      if (err.name === 'apierror') {
         console.warn(`Found bad session ${sessionID} in ${dbkey}`);
         sessions[sessionID] = null;
       } else {
