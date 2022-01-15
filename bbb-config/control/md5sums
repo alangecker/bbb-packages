@@ -1,7 +1,7 @@
 bedb327cba5a3bff3713ad6a0ec58bb0  etc/bigbluebutton/bbb-conf/apply-lib.sh
-185d0c8230237112bd3c7b278b8bf19b  etc/bigbluebutton/bigbluebutton-release
+a23d88f281382ee5a057d531ad8ddefe  etc/bigbluebutton/bigbluebutton-release
 184ae11f3de1bc29b27f476f4bbab785  etc/bigbluebutton/nopdfmark.ps
-6e6f925450d2d40295cc55e76daf2e4c  etc/cron.daily/bigbluebutton
+db406b6079f9638e86ecaaaaf1cd8364  etc/cron.daily/bigbluebutton
 f25c9d2399ddb1ae6b56cf901ab62d3d  etc/cron.hourly/bbb-resync-freeswitch
 f3c8590c62bc3b4f35229d65b2ffd885  usr/bin/bbb-conf
 a2ddb1748b0f372ea54c98b8cce9d2a5  usr/bin/bbb-record
@@ -10,7 +10,7 @@ a8f4e47e37495025e8145a4bed92e62e  usr/share/bigbluebutton/blank/blank-presentati
 2d8c3c408f80030ab4e8bf1c02af56ed  usr/share/bigbluebutton/blank/blank-slide.swf
 b3c208be3b219429bcdb13ca1f979cac  usr/share/bigbluebutton/blank/blank-svg.svg
 ba3ddcef465d28c19663272909c980ab  usr/share/bigbluebutton/blank/blank-thumb.png
-82cf2d16e3febaf4c802a6e9e7cab003  usr/share/doc/bbb-config/changelog.gz
+f799a8fd9ab6c445e7525e89f2891084  usr/share/doc/bbb-config/changelog.gz
 dfd6448df1e1c78edc0887a1dd5c908b  var/bigbluebutton/blank/blank-png.png
 a8f4e47e37495025e8145a4bed92e62e  var/bigbluebutton/blank/blank-presentation.pdf
 2d8c3c408f80030ab4e8bf1c02af56ed  var/bigbluebutton/blank/blank-slide.swf
@@ -42,8 +42,8 @@ b5b3a38e60065ace209bb6606a4d333a  var/www/bigbluebutton-default/images/bbb-setup
 88e36b5b7b7a742408eba41fdcec27ec  var/www/bigbluebutton-default/images/blankoverview.png
 8144728ef803e95413be657c6f6d54d5  var/www/bigbluebutton-default/images/favicon.png
 20aa3e336f71aa9700f65c047be9fb4c  var/www/bigbluebutton-default/images/logo.png
-ebf77863118d4c586b593145e4f42c23  var/www/bigbluebutton-default/index.html
-207cff86f52263fc1e7050f16d468517  var/www/bigbluebutton-default/index_html5_vs_flash.html
+0b4dacaea88996c207f79e9645155fb0  var/www/bigbluebutton-default/index.html
+24be82cd852c15e6bbad50008c9887f0  var/www/bigbluebutton-default/index_html5_vs_flash.html
 c8504eb26d8081e2dbeb6e8ec7fda70f  var/www/bigbluebutton-default/js/bigbluebutton.js
 c5b5b2fa19bd66ff23211d9f844e0131  var/www/bigbluebutton-default/js/bootstrap.min.js
 cbb11b58473b2d672f4ed53abbb67336  var/www/bigbluebutton-default/js/jquery.min.js
