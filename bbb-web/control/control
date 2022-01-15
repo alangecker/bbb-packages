@@ -1,10 +1,10 @@
 Package: bbb-web
-Version: 1:2.4.0-77
+Version: 1:2.4.0-84
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 126553
+Installed-Size: 126580
 Depends: zip,unzip,imagemagick,redis-server,xpdf-utils,bbb-libreoffice-docker,psmisc,fonts-crosextra-carlito,fonts-crosextra-caladea,fonts-noto,openjdk-8-jdk
 Section: default
 Priority: extra
