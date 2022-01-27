@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.7.1"
   },
-  "totalMinifiedBytes": 3679691,
-  "totalMinifiedGzipBytes": 902221,
+  "totalMinifiedBytes": 3680392,
+  "totalMinifiedGzipBytes": 902375,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9329,
     "packages/meteor-base.js": 31,
@@ -2808,7 +2808,7 @@
       {}
     ],
     "app/app.js": [
-      1552759,
+      1553460,
       {
         "imports": {
           "ui": {
@@ -2902,7 +2902,7 @@
                     "message-chat-item": {
                       "component.jsx": 2514
                     },
-                    "component.jsx": 5483,
+                    "component.jsx": 5654,
                     "container.jsx": 1211,
                     "styles.scss": 56,
                     "styles.scss.js": 4355
@@ -3001,7 +3001,7 @@
                 "slide": {
                   "component.jsx": 544
                 },
-                "component.jsx": 15035,
+                "component.jsx": 15009,
                 "container.jsx": 3236,
                 "service.js": 2456,
                 "styles.scss": 56,
@@ -3387,7 +3387,7 @@
                   "customLayout.jsx": 13957,
                   "presentationFocusLayout.jsx": 10370,
                   "smartLayout.jsx": 10798,
-                  "videoFocusLayout.jsx": 10556
+                  "videoFocusLayout.jsx": 10618
                 },
                 "context.jsx": 13634,
                 "defaultValues.js": 1083,
@@ -3499,7 +3499,7 @@
                   "styles.scss": 56,
                   "styles.scss.js": 4395
                 },
-                "component.jsx": 14462,
+                "component.jsx": 14630,
                 "container.jsx": 1957,
                 "service.js": 4172,
                 "styles.scss": 56,
@@ -3585,7 +3585,7 @@
                 "container.jsx": 5168,
                 "service.js": 698,
                 "styles.scss": 56,
-                "styles.scss.js": 9781
+                "styles.scss.js": 9727
               },
               "authenticated-handler": {
                 "component.jsx": 1520
@@ -3626,7 +3626,7 @@
                 "styles.scss.js": 4986
               },
               "error-boundary": {
-                "component.jsx": 581
+                "component.jsx": 752
               },
               "error-screen": {
                 "component.jsx": 1719,
@@ -3710,7 +3710,7 @@
                 "styles.scss.js": 819
               },
               "sidebar-content": {
-                "component.jsx": 2447,
+                "component.jsx": 2656,
                 "container.jsx": 513
               },
               "sidebar-navigation": {
