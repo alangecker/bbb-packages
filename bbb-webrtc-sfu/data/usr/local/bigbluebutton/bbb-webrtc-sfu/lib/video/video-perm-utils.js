@@ -5,12 +5,19 @@ const C = require('../bbb/messages/Constants');
 
 const PERMISSION_PROBES = config.get('permissionProbes');
 
-const getCamBroadcastPermission = (gateway, meetingId, userId, sfuSessionId) => {
+const getCamBroadcastPermission = (
+  gateway,
+  meetingId,
+  userId,
+  streamId,
+  sfuSessionId
+) => {
   if (!PERMISSION_PROBES) return Promise.resolve();
   return new Promise((resolve, reject) => {
     const onResp = (payload) => {
       if (meetingId === payload.meetingId
         && userId === payload.userId
+        && streamId === payload.streamId
         && payload.allowed) {
         return resolve();
       }
@@ -21,6 +28,7 @@ const getCamBroadcastPermission = (gateway, meetingId, userId, sfuSessionId) => 
     const msg = Messaging.generateGetCamBroadcastPermissionReqMsg(
       meetingId,
       userId,
+      streamId,
       sfuSessionId
     );
 
@@ -49,7 +57,9 @@ const getCamSubscribePermission = (gateway, meetingId, userId, streamId, sfuSess
       sfuSessionId
     );
 
-    gateway.once(C.GET_CAM_SUBSCRIBE_PERM_RESP_MSG+sfuSessionId, onResp);
+    const suffix = `${sfuSessionId}/${streamId}`;
+    const enrichedEventId = `${C.GET_CAM_SUBSCRIBE_PERM_RESP_MSG}/${suffix}`
+    gateway.once(enrichedEventId, onResp);
     gateway.publish(msg, C.TO_AKKA_APPS_CHAN_2x);
   });
 }

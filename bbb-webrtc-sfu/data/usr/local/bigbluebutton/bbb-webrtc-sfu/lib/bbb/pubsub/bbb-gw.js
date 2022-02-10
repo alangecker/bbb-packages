@@ -132,15 +132,23 @@ module.exports = class BigBlueButtonGW extends EventEmitter {
         case C.GET_SCREEN_BROADCAST_PERM_RESP_MSG:
           this.emit(C.GET_SCREEN_BROADCAST_PERM_RESP_MSG+payload.sfuSessionId, payload);
           break;
-        case C.GET_SCREEN_SUBSCRIBE_PERM_RESP_MSG:
-          this.emit(C.GET_SCREEN_SUBSCRIBE_PERM_RESP_MSG+payload.sfuSessionId, payload);
+        case C.GET_SCREEN_SUBSCRIBE_PERM_RESP_MSG: {
+          const suffix = `${payload.sfuSessionId}/${payload.streamId}`;
+          const enrichedEventId = `${C.GET_SCREEN_SUBSCRIBE_PERM_RESP_MSG}/${suffix}`
+          this.emit(enrichedEventId, payload);
+          this.emit(C.GET_SCREEN_SUBSCRIBE_PERM_RESP_MSG, payload);
           break;
+        }
         case C.GET_CAM_BROADCAST_PERM_RESP_MSG:
           this.emit(C.GET_CAM_BROADCAST_PERM_RESP_MSG+payload.sfuSessionId, payload);
           break;
-        case C.GET_CAM_SUBSCRIBE_PERM_RESP_MSG:
-          this.emit(C.GET_CAM_SUBSCRIBE_PERM_RESP_MSG+payload.sfuSessionId, payload);
+        case C.GET_CAM_SUBSCRIBE_PERM_RESP_MSG: {
+          const suffix = `${payload.sfuSessionId}/${payload.streamId}`;
+          const enrichedEventId= `${C.GET_CAM_SUBSCRIBE_PERM_RESP_MSG}/${suffix}`
+          this.emit(enrichedEventId, payload);
+          this.emit(C.GET_CAM_SUBSCRIBE_PERM_RESP_MSG, payload);
           break;
+        }
         case C.CAM_STREAM_UNSUBSCRIBE_SYS_MSG: {
           const eventName = `${C.CAM_STREAM_UNSUBSCRIBE_SYS_MSG}-${payload.userId}-${payload.streamId}`;
           this.emit(eventName, payload);
@@ -151,6 +159,13 @@ module.exports = class BigBlueButtonGW extends EventEmitter {
           this.emit(eventName, payload);
           break;
         }
+        case C.SCREEN_BROADCAST_STOP_SYS_MSG: {
+          meetingId = payload[C.MEETING_ID_2x];
+          this.emit(C.SCREEN_BROADCAST_STOP_SYS_MSG+meetingId, payload);
+          this.emit(C.SCREEN_BROADCAST_STOP_SYS_MSG, payload);
+          break;
+        }
+
         default:
           this.emit(C.GATEWAY_MESSAGE, msg);
       }

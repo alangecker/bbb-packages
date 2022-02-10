@@ -16,6 +16,7 @@ const config = require('config');
 const {
   getScreenBroadcastPermission, getScreenSubscribePermission
 } = require('./screen-perm-utils.js');
+const Messaging = require('../bbb/messages/Messaging');
 
 const EJECT_ON_USER_LEFT = config.get('ejectOnUserLeft');
 const SCREENSHARE_MEDIA_SERVER = config.get('screenshareMediaServer');
@@ -31,8 +32,7 @@ module.exports = class ScreenshareManager extends BaseManager {
     this.mcs.on(C.MCS_CONNECTED, () => {
       this.mcs.onEvent('roomCreated', 'all', this._handleRoomCreated.bind(this));
     });
-    // listen for presenter change to avoid inconsistent states on reconnection
-    this._trackPresenterChangeEvent();
+    this._trackScreenBroadcastStopSysMsg();
   }
 
   static _getLifecycleQueueId (message) {
@@ -106,24 +106,37 @@ module.exports = class ScreenshareManager extends BaseManager {
     }
   }
 
-  _trackPresenterChangeEvent () {
-    this._bbbGW.on(C.PRESENTER_ASSIGNED_2x, (payload) => {
+  _trackScreenBroadcastStopSysMsg () {
+    this._bbbGW.on(C.SCREEN_BROADCAST_STOP_SYS_MSG, (payload) => {
       const meetingId = payload[C.MEETING_ID_2x];
-      const presenterId = payload.presenterId;
+      const streamId = payload[C.STREAM_ID];
+      const voiceBridge = payload[C.VOICE_CONF_2x];
       const sessionId = this._meetings[meetingId];
       const session = this._fetchSession(sessionId);
-      if (session && session.userId !== presenterId) {
-        Logger.info(this._logPrefix, "Presenter changed, closing screensharing session",
-          { ...session._getFullPresenterLogMetadata(), oldPresenterId: session.userId, presenterId });
-        const queue = this._fetchLifecycleQueue(sessionId);
-        queue.push(() => {
-          return this._terminatePresenterSession(session, sessionId);
-        });
-        this.sendToClient({
-          connectionId: session._connectionId,
-          type: C.SCREENSHARE_APP,
-          id : 'close',
-        }, C.FROM_SCREENSHARE);
+
+      if (session) {
+        if (session._presenterEndpoint == streamId) {
+          Logger.info(this._logPrefix, "Acting on ScreenBroadcastStopSysMsg",
+            { ...session._getFullPresenterLogMetadata() });
+          const queue = this._fetchLifecycleQueue(sessionId);
+          queue.push(() => {
+            return this._terminatePresenterSession(session, sessionId);
+          });
+          this.sendToClient({
+            connectionId: session._connectionId,
+            type: C.SCREENSHARE_APP,
+            id : 'close',
+          }, C.FROM_SCREENSHARE);
+        }
+      } else {
+        Logger.info(this._logPrefix, "Acting on ScreenBroadcastStopSysMsg, but no session", {
+              meetingId, streamId, voiceBridge,
+        })
+        const timestamp = Math.floor(new Date());
+        const dsrstom = Messaging.generateScreenshareRTMPBroadcastStoppedEvent2x(
+          voiceBridge, voiceBridge, streamId, 0, 0, timestamp,
+        );
+        this._bbbGW.publish(dsrstom, C.TO_AKKA_APPS);
       }
     });
   }
