@@ -42,5 +42,5 @@ b09d81bc51516b5e4260dd45cc2c43a7  usr/local/bigbluebutton/core/playback/screensh
 90f9c0125deeb25d62b27a103eb5f698  usr/local/bigbluebutton/core/playback/screenshare/video-js/video.min.js
 99ce19d26b3666054e196afe1986f9f6  usr/local/bigbluebutton/core/scripts/process/screenshare.rb
 156dd096af251861f6c4a7cc5185d584  usr/local/bigbluebutton/core/scripts/publish/screenshare.rb
-86c10b74384cc8ea7b7b832e305b3ea9  usr/local/bigbluebutton/core/scripts/screenshare.yml
-2dca79d0c839598194f40de0837b83f8  usr/share/doc/bbb-playback-screenshare/changelog.gz
+2ee103ea57f962e85291da0964ebeda9  usr/local/bigbluebutton/core/scripts/screenshare.yml
+d81325824a63d17c56c66c53baff8023  usr/share/doc/bbb-playback-screenshare/changelog.gz
