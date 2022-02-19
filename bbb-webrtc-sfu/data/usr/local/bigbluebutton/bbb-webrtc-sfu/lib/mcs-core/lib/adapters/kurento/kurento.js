@@ -9,7 +9,7 @@ const isError = Util.isError;
 const ERRORS = require('./errors.js');
 const KMS_CLIENT = require('kurento-client');
 const SdpWrapper = require('../../utils/sdp-wrapper');
-const GLOBAL_EVENT_EMITTER = require('../../utils/emitter');
+const GLOBAL_EVENT_EMITTER = require('../../../../common/emitter.js');
 const SDPMedia = require('../../model/sdp-media');
 const RecordingMedia = require('../../model/recording-media');
 
@@ -43,7 +43,7 @@ module.exports = class Kurento extends EventEmitter {
       this._pipelinePromises = [];
       this._transposingQueue = [];
       this.balancer.on(C.EVENT.MEDIA_SERVER_OFFLINE, this._destroyElementsFromHost.bind(this));
-      this._globalEmitter.on(C.EVENT.ROOM_EMPTY, this._releaseAllRoomPipelines.bind(this));
+      this._globalEmitter.on(C.EVENT.ROOM_DESTROYED, this._releaseAllRoomPipelines.bind(this));
       instance = this;
     }
 
@@ -139,11 +139,11 @@ module.exports = class Kurento extends EventEmitter {
     }
   }
 
-  _releaseAllRoomPipelines (room) {
+  _releaseAllRoomPipelines ({ roomId }) {
     try {
-      if (this._mediaPipelines[room]) {
-        Object.keys(this._mediaPipelines[room]).forEach(async pk => {
-          await this._releasePipeline(room, pk);
+      if (this._mediaPipelines[roomId]) {
+        Object.keys(this._mediaPipelines[roomId]).forEach(async pk => {
+          await this._releasePipeline(roomId, pk);
         });
       }
     } catch (e) {
@@ -1243,5 +1243,26 @@ module.exports = class Kurento extends EventEmitter {
       err.stackWasLogged = true;
     }
     return err;
+  }
+
+  // Here be dragons
+
+  // no-op
+  // eslint-disable-next-line no-unused-vars
+  consume (sinkId, sourceId, type) {
+    return new Promise((resolve, reject) => {
+      const sink = this.getMediaElement(sinkId);
+
+      if (sink == null) {
+        return reject(this._handleError(ERRORS[40101].error));
+      }
+
+      sink.getLocalSessionDescriptor((error, localDescriptor) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(localDescriptor);
+      });
+    });
   }
 };

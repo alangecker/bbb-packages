@@ -1,26 +1,48 @@
 'use strict';
 
-const ws = require('ws');
+const { WebSocketServer } = require('ws');
 const C = require('../bbb/messages/Constants');
-const Logger = require('../utils/Logger');
+const Logger = require('../common/logger.js');
 const { v4: uuidv4 } = require('uuid');
-const { extractUserInfos } = require('./utils.js');
 const config = require('config');
-
+const { PrometheusAgent, SFUM_NAMES } = require('./metrics/main-metrics.js');
 
 const LOG_PREFIX = '[WebsocketConnectionManager]';
 const WS_STRICT_HEADER_PARSING = config.get('wsStrictHeaderParsing');
 
 module.exports = class WebsocketConnectionManager {
-  constructor (server, path) {
-    this.wss = new ws.Server({
-      server,
-      path
-    });
+  static extractUserInfosFromWsReq (websocketReq) {
+    // Websocket req should probably be an upgrade req.
+    // User infos are: user-id, meeting-id and voice-bridge.
+    // They are set as custom HTTP headers in bbb-web _only if_ the upgrade req
+    // goes through the _checkAuthorization_ endpoint && is authorized.
+    // If by any reason something here is botched or missing, the method Throws
+    // and the WebSocket connection should be closed
 
-    this.webSockets = {};
+    const { headers } = websocketReq;
+    const userId = headers['user-id'];
+    const meetingId = headers['meeting-id']
+    const voiceBridge = headers['voice-bridge'];
+
+    if (typeof userId === 'string'
+      && typeof meetingId === 'string'
+      && typeof voiceBridge === 'string') {
+      return { userId, meetingId, voiceBridge };
+    } else {
+      throw new Error('InvalidHeaders');
+    }
+  }
+
+  constructor (host, port, path, wsServerOptions) {
+    this.wss = new WebSocketServer({
+      host, port, path, ...wsServerOptions,
+    });
+    this.webSockets = new Map(); // <uuid, WebSocket>
 
     this.wss.on('connection', this._onNewConnection.bind(this));
+    PrometheusAgent.setCollectorWithGenerator(SFUM_NAMES.WEBSOCKETS, () => {
+      return this.webSockets.size;
+    });
   }
 
   setEventEmitter (emitter) {
@@ -42,7 +64,7 @@ module.exports = class WebsocketConnectionManager {
 
   _onServerResponse (data) {
     const connectionId = data ? data.connectionId : null;
-    const ws = this.webSockets[connectionId];
+    const ws = this.webSockets.get(connectionId);
     if (ws) {
       if (data.id === 'close') {
         this._closeSocket(ws);
@@ -57,16 +79,16 @@ module.exports = class WebsocketConnectionManager {
   _onNewConnection (ws, req) {
     try {
       ws.id = uuidv4();
-      this.webSockets[ws.id] = ws;
-      ws.userInfos = extractUserInfos(req);
+      this.webSockets.set(ws.id, ws);
+      ws.userInfos = WebsocketConnectionManager.extractUserInfosFromWsReq(req);
       Logger.debug(LOG_PREFIX, "WS connection opened", { connectionId: ws.id });
     } catch (error) {
-      if (WS_STRICT_HEADER_PARSING) {
-        Logger.debug(LOG_PREFIX, 'Failure on WS connection startup', {
+      if (WS_STRICT_HEADER_PARSING && error.message === 'InvalidHeaders') {
+        Logger.error(LOG_PREFIX, 'Failure on WS connection startup', {
           errorMessage: error.message,
         });
         this._closeSocket(ws);
-        this._onError(ws, error);
+        this._onError(ws, error, 'InvalidHeaders');
         return;
       }
     }
@@ -80,7 +102,7 @@ module.exports = class WebsocketConnectionManager {
     });
 
     ws.on('error', (error) => {
-      this._onError(ws, error);
+      this._onError(ws, error, 'ServerError');
     });
   }
 
@@ -120,11 +142,12 @@ module.exports = class WebsocketConnectionManager {
     // Test for empty or invalid JSON
     // FIXME yuck, maybe this should be reviewed. - prlanzarin
     if (Object.getOwnPropertyNames(message).length !== 0) {
+      PrometheusAgent.increment(SFUM_NAMES.WEBSOCKET_IN_MSGS);
       this.emitter.emit(C.CLIENT_REQ, message);
     }
   }
 
-  _onError (ws, error) {
+  _onError (ws, error, reason = 'UnknownReason') {
     Logger.debug(LOG_PREFIX, "WS error event", {
       connectionId: ws.id || 'unknown',
       errorMessage: error.message,
@@ -141,8 +164,8 @@ module.exports = class WebsocketConnectionManager {
     }
 
     this.emitter.emit(C.CLIENT_REQ, message);
-
-    delete this.webSockets[ws.id];
+    this.webSockets.delete(ws.id);
+    PrometheusAgent.increment(SFUM_NAMES.WEBSOCKET_ERRORS, { reason, code: error.code });
   }
 
   _onClose (ws) {
@@ -158,8 +181,7 @@ module.exports = class WebsocketConnectionManager {
     }
 
     this.emitter.emit(C.CLIENT_REQ, message);
-
-    delete this.webSockets[ws.id];
+    this.webSockets.delete(ws.id);
   }
 
   sendMessage (ws, json) {
@@ -168,7 +190,7 @@ module.exports = class WebsocketConnectionManager {
         connectionId: ws ? ws.id : 'unknown',
         requestId: json.id,
       });
-      this._onError(ws, new Error('WS closed'));
+      this._onError(ws, new Error('SendWhileClosed'), 'SendWhileClosed');
     }
 
     return ws.send(JSON.stringify(json), (error) => {
@@ -179,7 +201,11 @@ module.exports = class WebsocketConnectionManager {
           requestId: json.id,
         });
 
-        return this._onError(ws, error);
+        return this._onError(ws, error, 'SendFailure');
+      }
+
+      if (json.id !== 'pong') {
+        PrometheusAgent.increment(SFUM_NAMES.WEBSOCKET_OUT_MSGS);
       }
     });
   }

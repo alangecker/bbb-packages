@@ -1,7 +1,7 @@
 'use strict'
 
 const EventEmitter = require('events').EventEmitter;
-const Logger = require('../utils/Logger');
+const Logger = require('../common/logger.js');
 const MCS = require('mcs-js');
 const C = require('../bbb/messages/Constants');
 
@@ -181,9 +181,7 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
 
   async connect (source, sinks, type) {
     try {
-      await this._mcs.connect(source, sinks, type);
-      //await this._mediaController.connect(source, sink, type);
-      return ;
+      return this._mcs.connect(source, sinks, type);
     }
     catch (error) {
       throw (this._handleError(error, 'connect', { source, sinks, type }));
@@ -198,6 +196,15 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
     }
     catch (error) {
       throw (this._handleError(error, 'disconnect', { source, sinks, type }));
+    }
+  }
+
+  async consume (source, sink, type) {
+    try {
+      const { remoteDescriptor } = await this._mcs.consume(source, sink, type);
+      return remoteDescriptor;
+    } catch (error) {
+      throw (this._handleError(error, 'consume', { source, sink, type }));
     }
   }
 
@@ -272,6 +279,32 @@ module.exports = class MCSAPIWrapper extends EventEmitter {
     }
     catch (error) {
       throw (this._handleError(error, 'getMedias', { memberType, identifier, options }));
+    }
+  }
+
+  async dtmf (mediaId, tones, options = {}) {
+    try {
+      const { tones: sentDigits } = await this._mcs.dtmf(mediaId, tones, options);
+      return sentDigits;
+    } catch (error) {
+      throw (this._handleError(error, 'dtmf', { mediaId, tones }));
+    }
+  }
+
+  async createRoom (options) {
+    try {
+      const { room } = await this._mcs.createRoom(options);
+      return room;
+    } catch (error) {
+      throw (this._handleError(error, 'createRoom', { options }));
+    }
+  }
+
+  async destroyRoom (roomId) {
+    try {
+      await this._mcs.destroyRoom(roomId);
+    } catch (error) {
+      throw (this._handleError(error, 'destroyRoom', { roomId }));
     }
   }
 

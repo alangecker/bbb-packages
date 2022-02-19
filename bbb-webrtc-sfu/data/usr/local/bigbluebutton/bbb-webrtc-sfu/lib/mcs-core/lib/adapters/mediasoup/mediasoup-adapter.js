@@ -11,7 +11,7 @@ process.env.DEBUG = DEBUG;
 const C = require('../../constants/constants.js');
 const EventEmitter = require('events').EventEmitter;
 const Logger = require('../../utils/logger');
-const GLOBAL_EVENT_EMITTER = require('../../utils/emitter');
+const GLOBAL_EVENT_EMITTER = require('../../../../common/emitter.js');
 const SDPMedia = require('../../model/sdp-media');
 const RecordingMedia =require('../../model/recording-media');
 const MediaElements = require('./media-elements.js');
@@ -33,7 +33,7 @@ module.exports = class MediasoupAdapter extends EventEmitter {
       this.name = name;
       this.balancer = balancer;
       this._globalEmitter = GLOBAL_EVENT_EMITTER;
-      this._globalEmitter.on(C.EVENT.ROOM_EMPTY, Routers.releaseAllRoutersWithIdSuffix.bind(this));
+      this._globalEmitter.on(C.EVENT.ROOM_DESTROYED, Routers.releaseAllRoutersWithIdSuffix.bind(this));
       Workers.createWorkers(
         NOF_WORKERS,
         WORKER_SETTINGS,
@@ -69,7 +69,6 @@ module.exports = class MediasoupAdapter extends EventEmitter {
   async _negotiateSDPEndpoint (roomId, userId, mediaSessionId, descriptor, type, options) {
     Logger.debug(LOG_PREFIX, 'Negotiating SDP endpoint', { userId, roomId });
     try {
-      const { mediaElement } = await this._createSDPMediaElement(roomId, type, options);
       const sdpMediaModel = new SDPMedia(
         roomId, userId, mediaSessionId, descriptor, null, type, this, null, null, options
       );
@@ -78,6 +77,7 @@ module.exports = class MediasoupAdapter extends EventEmitter {
         options.remoteDescriptor = sdpMediaModel.remoteDescriptor._jsonSdp;
       }
 
+      const { mediaElement } = await this._createSDPMediaElement(roomId, type, options);
       const localDescriptor = await mediaElement.negotiate(
         sdpMediaModel.mediaTypes, options
       );
@@ -134,24 +134,41 @@ module.exports = class MediasoupAdapter extends EventEmitter {
     }
   }
 
-  async _getOrCreateRouter (routerIdSuffix, { sourceAdapterElementIds = [] }) {
-    let targetRouterId;
-    if (sourceAdapterElementIds.length >= 1) {
-      const sourceElement = MediaElements.getElement(sourceAdapterElementIds[0]);
-      if (sourceElement) {
-        targetRouterId = sourceElement.routerId;
-      }
-    }
+  async _getOrCreateRouter (routerIdSuffix, {
+    adapterOptions = {},
+    sourceAdapterElementIds = [],
+    remoteDescriptor,
+  }) {
+    const {
+      dedicatedRouter = false,
+      overrideRouterCodecs = false,
+    } = adapterOptions;
 
-    if (targetRouterId) {
-      const targetRouter = Routers.getRouter(targetRouterId);
-      if (targetRouter) return targetRouter;
+    if (!dedicatedRouter || !overrideRouterCodecs) {
+      let targetRouterId;
+      if (sourceAdapterElementIds.length >= 1) {
+        const sourceElement = MediaElements.getElement(sourceAdapterElementIds[0]);
+        if (sourceElement) {
+          targetRouterId = sourceElement.routerId;
+        }
+      }
+
+      if (targetRouterId) {
+        const targetRouter = Routers.getRouter(targetRouterId);
+        if (targetRouter) return targetRouter;
+      }
     }
 
     const worker = await Workers.getWorkerRR();
     const routerSettings = config.util.cloneDeep(ROUTER_SETTINGS);
 
-    return Routers.getOrCreateRouter(worker, { routerIdSuffix, routerSettings });
+    return Routers.getOrCreateRouter(worker, {
+      routerIdSuffix,
+      routerSettings,
+      dedicatedRouter,
+      overrideRouterCodecs,
+      remoteDescriptor,
+    });
   }
 
   _getSDPElementConstructor(options) {
@@ -325,6 +342,25 @@ module.exports = class MediasoupAdapter extends EventEmitter {
     return Promise.resolve();
   }
 
+  async consume (sinkId, sourceId, type) {
+    try {
+      const sourceElement = MediaElements.getElement(sourceId);
+      const sinkElement = MediaElements.getElement(sinkId)
+      if (sourceElement && sinkElement) {
+        const updatedDescriptor = await sinkElement.connect(sourceElement, type);
+        return updatedDescriptor;
+      } else {
+        throw handleError({
+          ...C.ERROR.MEDIA_NOT_FOUND,
+          details: "MEDIASOUP_CONSUME_ELEMENTS_NOT_FOUND",
+        });
+      }
+    } catch (error) {
+      throw (handleError(error));
+    }
+  }
+
+
   // See contract comment @connect method
   // eslint-disable-next-line no-unused-vars
   disconnect (sourceId, sinkId, type) {
@@ -340,7 +376,7 @@ module.exports = class MediasoupAdapter extends EventEmitter {
   }
 
   // eslint-disable-next-line no-unused-vars
-  dtmf (elementId, tone) {
+  dtmf (elementId, tone, options) {
     return this._unsupported("MEDIASOUP_DTMF_NOT_IMPLEMENTED");
   }
 };

@@ -2,8 +2,8 @@ const {
   register,
   collectDefaultMetrics,
 } = require('prom-client');
-const HTTPServer = require('../../../connection-manager/HttpServer.js');
-const Logger = require('../../../utils/Logger.js');
+const HTTPServer = require('./http-server.js');
+const Logger = require('./logger.js');
 const LOG_PREFIX = '[prom-scrape-agt]';
 
 module.exports = class PrometheusScrapeAgent {
@@ -17,6 +17,10 @@ module.exports = class PrometheusScrapeAgent {
     this.collectDefaultMetrics = options.collectDefaultMetrics || false;
     this.metricsPrefix = options.prefix || '';
     this.collectionTimeout = options.collectionTimeout || 10000;
+  }
+
+  getMetric (name) {
+    return this.metrics[name];
   }
 
   async collect (response) {
@@ -85,6 +89,23 @@ module.exports = class PrometheusScrapeAgent {
     const metric = this.metrics[metricName];
     if (metric) {
       metric.set(labelsObject, value)
+    }
+  }
+
+  setCollectorWithGenerator (metricName, generator) {
+    const metric = this.getMetric(metricName);
+    if (metric) {
+      metric.collect = () => {
+        metric.set(generator());
+      };
+    }
+  }
+
+  setCollector (metricName, collector) {
+    const metric = this.getMetric(metricName);
+
+    if (metric) {
+      metric.collect = collector.bind(metric);
     }
   }
 }

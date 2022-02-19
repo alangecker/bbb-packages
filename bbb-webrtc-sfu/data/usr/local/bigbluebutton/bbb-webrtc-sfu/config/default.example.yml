@@ -37,6 +37,11 @@ clientHost: 127.0.0.1
 # Whether RPCs and WS conns should be rejected/shutdown on user info header
 # anomalies
 wsStrictHeaderParsing: true
+# wsServerOptions: see https://github.com/websockets/ws/blob/HEAD/doc/ws.md#new-websocketserveroptions-callback).
+# It's a passthrough mapping of all config literal (strings, booleans, numbers).
+wsServerOptions:
+  maxPayload: 51200
+
 mediaFlowTimeoutDuration: 30000
 mediaStateTimeoutDuration: 30000
 requestQueueTimeout: 30000
@@ -51,11 +56,10 @@ videoSubscriberSpecSlave: false
 # Following three configurations: see media-server-adapters config
 # to get a list of implemented adapters. The configuration values
 # here are the adapter's name of choice
-listenOnlyMediaServer: Kurento
-videoMediaServer: Kurento
-screenshareMediaServer: Kurento
-audioMediaServer: Kurento
-fullAudioMediaServer: Kurento
+listenOnlyMediaServer: mediasoup
+videoMediaServer: mediasoup
+screenshareMediaServer: mediasoup
+fullAudioMediaServer: mediasoup
 fullAudioProxyActiveDirection: true
 # RTP|WebRTC. Dictates how the FS <-> [audioMediaServer] bridge is established:
 # via plain RTP or via a WebRTC-backed RTP stream
@@ -91,6 +95,8 @@ redisExpireTime: 1209600
 # Time to wait before ejecting an user which has the autoLeave flag marked
 # as true and has no more media sessions under its ownership
 mcsUserEjectionTimer: 60000
+# Time to wait before destroying a room (on all scenarios)
+mcsRoomDestructionTimer: 90000
 # mcs-core entrypoint configured on nginx
 mcs-path: /mcs
 mcs-port: 3010
@@ -252,19 +258,22 @@ mediaThresholds:
 allowDuplicateExtUserId: true
 ejectOnUserLeft: true
 permissionProbes: true
+destroyRoomOnEject: true
 
-# Direct Prometheus instrumentation. Currently operating only over mcs-core.
-# EXPERIMENTAL, so disabled by default.
+# Direct Prometheus instrumentation. EXPERIMENTAL, so disabled by default.
 prometheus:
   enabled: false
-  # Scrape route host
+  # mcs-core specific metrics, top level of prometheus dictionary for now
   host: localhost
-  # Scrape route port
   port: 3014
-  # Metrics endpoint path
   path: '/metrics'
-  # Whether default metrics for Node.js processes should be exported
   collectDefaultMetrics: false
+  # Main process metrics endpoint (main == websocket entrypoint, module manager)
+  main:
+    host: localhost
+    port: 3016
+    path: '/metrics'
+    collectDefaultMetrics: false
 
 mediasoup:
   workers: "auto"

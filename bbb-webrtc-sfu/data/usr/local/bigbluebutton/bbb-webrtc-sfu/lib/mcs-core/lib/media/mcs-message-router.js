@@ -1,7 +1,7 @@
 'use strict'
 
 const C = require('../constants/constants');
-const GLOBAL_EVENT_EMITTER = require('../utils/emitter');
+const GLOBAL_EVENT_EMITTER = require('../../../common/emitter.js');
 const Logger = require('../utils/logger');
 const {
   MCSPrometheusAgent,
@@ -46,6 +46,24 @@ module.exports = class MCSRouter {
     }
     catch (error) {
       throw (this._handleError(error, 'join', { roomId, type, params }));
+    }
+  }
+
+  createRoom (options) {
+    try {
+      const { roomId } = options;
+      const room = this._mediaController.createRoom(roomId);
+      return room.id;
+    } catch (error) {
+      throw (this._handleError(error, 'createRoom', { options }));
+    }
+  }
+
+  destroyRoom (roomId) {
+    try {
+      this._mediaController.removeRoom(roomId);
+    } catch (error) {
+      throw (this._handleError(error, 'destroyRoom', { roomId }));
     }
   }
 
@@ -163,6 +181,17 @@ module.exports = class MCSRouter {
       throw (this._handleError(error, 'disconnect', { source_id, sink_ids, type }));
     }
   }
+
+  consume (args) {
+    const { sourceMediaId, sinkMediaId, type } = args;
+    try {
+      return this._mediaController.consume(sourceMediaId, sinkMediaId, type);
+    }
+    catch (error) {
+      throw (this._handleError(error, 'consume', { sourceMediaId, sinkMediaId, type }));
+    }
+  }
+
 
   async onEvent (args) {
     const { eventName, identifier } = args;
@@ -323,9 +352,9 @@ module.exports = class MCSRouter {
   }
 
   dtmf (args) {
-    const { mediaId, tone } = args
+    const { mediaId, tone, options } = args
     try {
-      return this._mediaController.dtmf(mediaId, tone)
+      return this._mediaController.dtmf(mediaId, tone, options)
     }
     catch (error) {
       throw (this._handleError(error, 'dtmf', { mediaId, tone }));
@@ -434,6 +463,28 @@ module.exports = class MCSRouter {
       }
     });
 
+    client.on('createRoom', (args) =>  {
+      let transactionId, options;
+      try {
+        ({ transactionId, options, } = args);
+        const roomId = this.createRoom(options);
+        client.roomCreated(roomId, { transactionId });
+      } catch (error) {
+        this._notifyMethodError(client, error, 'createRoom', transactionId);
+      }
+    });
+
+    client.on('destroyRoom', (args) =>  {
+      let transactionId, roomId;
+      try {
+        ({ transactionId, roomId } = args);
+        this.destroyRoom(roomId);
+        client.roomDestroyed(roomId, { transactionId });
+      } catch (error) {
+        this._notifyMethodError(client, error, 'createRoom', transactionId);
+      }
+    });
+
     client.on('publishAndSubscribe', async (args) => {
       let transactionId;
       try {
@@ -530,6 +581,17 @@ module.exports = class MCSRouter {
         client.disconnected(source_id, sink_ids, { transactionId });
       } catch (error) {
         this._notifyMethodError(client, error, 'disconnect', transactionId);
+      }
+    });
+
+    client.on('consume', async (args) => {
+      let transactionId, sourceMediaId, sinkMediaId;
+      try {
+        ({ transactionId, sourceMediaId, sinkMediaId } = args);
+        const remoteDescriptor = await this.consume(args);
+        client.consumed(sourceMediaId, sinkMediaId, remoteDescriptor, { transactionId });
+      } catch (error) {
+        this._notifyMethodError(client, error, 'consume', transactionId);
       }
     });
 

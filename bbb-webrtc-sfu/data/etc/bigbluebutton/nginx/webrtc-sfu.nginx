@@ -19,4 +19,3 @@ location /bbb-webrtc-sfu {
     client_body_timeout 6h;
     send_timeout 6h;
 }
-

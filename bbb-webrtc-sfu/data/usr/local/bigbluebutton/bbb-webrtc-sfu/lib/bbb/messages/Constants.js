@@ -50,6 +50,7 @@
         TO_LISTEN_ONLY: 'to-sfu-listen-only',
         FROM_SFU: 'from-sfu-redis-channel',
         TO_SFU: 'to-sfu-redis-channel',
+        TO_VOICE_CONF: 'to-voice-conf-redis-channel',
 
         // RedisWrapper events
         REDIS_MESSAGE : "redis_message",
@@ -135,20 +136,15 @@
 
         FILENAME: 'filename',
 
-      // Log prefixes
-        BASE_PROCESS_PREFIX: '[BaseProcess]',
+        // Log prefixes
         BASE_MANAGER_PREFIX: '[BaseManager]',
         BASE_PROVIDER_PREFIX: '[BaseProvider]',
-        LISTENONLY_PROCESS_PREFIX: '[ListenOnlyProcess]',
         LISTENONLY_MANAGER_PREFIX: '[ListenOnlyManager]',
         LISTENONLY_PROVIDER_PREFIX: '[ListenOnly]',
-        SCREENSHARE_PROCESS_PREFIX: '[ScreenshareProcess]',
         SCREENSHARE_MANAGER_PREFIX: '[ScreenshareManager]',
         SCREENSHARE_PROVIDER_PREFIX: '[ScreenshareProvider]',
-        VIDEO_PROCESS_PREFIX: '[VideoProcess]',
         VIDEO_MANAGER_PREFIX: '[VideoManager]',
         VIDEO_PROVIDER_PREFIX: '[VideoProvider]',
-        AUDIO_PROCESS_PREFIX: '[AudioProcess]',
         AUDIO_MANAGER_PREFIX: '[AudioManager]',
         AUDIO_PROVIDER_PREFIX: '[AudioProvider]',
         FULLAUDIO_PROCESS_PREFIX: '[FullAudioProcess]',

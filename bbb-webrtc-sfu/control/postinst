@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 ############################
 ### BEGIN DEB-HELPERS.SH ###
@@ -289,6 +289,8 @@ fi
 ### END DEB-HELPERS.SH ###
 ##########################
 
+source /etc/lsb-release
+
 case "$1" in
   configure|upgrade|1|2)
 
@@ -298,12 +300,10 @@ case "$1" in
     cp /usr/local/bigbluebutton/bbb-webrtc-sfu/config/default.example.yml $TARGET
     chown bigbluebutton:bigbluebutton $TARGET
 
-      yq w -i $TARGET localIpAddress "$IP"
       yq w -i $TARGET kurento[0].ip  "$IP"
 
       # https://github.com/bigbluebutton/bbb-webrtc-sfu/pull/37
       # yq w -i $TARGET kurento[0].url "ws://$SERVER_URL:8888/kurento"
-
 
       # Set mediasoup IPs
       yq w -i $TARGET mediasoup.webrtc.listenIps[0].announcedIp "$IP"
@@ -312,11 +312,13 @@ case "$1" in
       FREESWITCH_IP=$(xmlstarlet sel -t -v '//X-PRE-PROCESS[@cmd="set" and starts-with(@data, "local_ip_v4=")]/@data' /opt/freeswitch/conf/vars.xml | sed 's/local_ip_v4=//g')
       if [ "$FREESWITCH_IP" != "" ]; then
         yq w -i $TARGET freeswitch.ip $FREESWITCH_IP
+#	if [ "$DISTRIB_RELEASE" == "18.04" ]; then
         yq w -i $TARGET freeswitch.sip_ip $FREESWITCH_IP
+#	fi
       else
         # Looks like the FreeSWITCH package is being installed, let's fall back to the default value
         yq w -i $TARGET freeswitch.ip $IP
-	if [ "$DISTRIB_CODENAME" != "xenial" ]; then
+	if [ "$DISTRIB_RELEASE" == "18.04" ]; then
           yq w -i $TARGET freeswitch.sip_ip $IP
 	fi
       fi
@@ -326,8 +328,8 @@ case "$1" in
 
     # there's a problem rebuilding bufferutil
     # do not abort in case npm rebuild return something different than 0
-    # npm config set unsafe-perm true
-    # npm rebuild || true
+    #npm config set unsafe-perm true
+    #npm rebuild || true
 
     mkdir -p /var/log/bbb-webrtc-sfu/
     touch /var/log/bbb-webrtc-sfu/bbb-webrtc-sfu.log

@@ -11,13 +11,14 @@
 const Audio = require('./fullaudio');
 const BaseManager = require('../base/BaseManager');
 const C = require('../bbb/messages/Constants');
-const Logger = require('../utils/Logger');
+const Logger = require('../common/logger.js');
 const errors = require('../base/errors');
 const config = require('config');
 const ERRORS = require('../base/errors.js');
 
 const AUDIO_MEDIA_SERVER = config.get('fullAudioMediaServer');
 const WS_STRICT_HEADER_PARSING = config.get('wsStrictHeaderParsing');
+const DTMF_DIGITS_CAP = '20';
 
 module.exports = class AudioManager extends BaseManager {
   constructor (connectionChannel, additionalChannels, logPrefix) {
@@ -139,6 +140,7 @@ module.exports = class AudioManager extends BaseManager {
       mediaServer = AUDIO_MEDIA_SERVER,
       role,
       caleeName,
+      extension,
     } = message;
 
     let session = this._fetchSession(connectionId);
@@ -146,7 +148,14 @@ module.exports = class AudioManager extends BaseManager {
 
     if ((session == null) || (role === 'sendrecv')) {
       session = new Audio(
-        this._bbbGW, sessionId, this.mcs, internalMeetingId, userId, connectionId, mediaServer
+        this._bbbGW,
+        sessionId,
+        this.mcs,
+        internalMeetingId,
+        userId,
+        connectionId,
+        mediaServer,
+        extension,
       );
       this._sessions[connectionId] = session;
     }
@@ -279,6 +288,21 @@ module.exports = class AudioManager extends BaseManager {
     }
   }
 
+  handleDtmf (message) {
+    const {
+      connectionId,
+      tones,
+    } = message;
+
+    const session = this._fetchSession(connectionId);
+
+    if (session && typeof tones === 'string' && tones.length <= DTMF_DIGITS_CAP) {
+      session.dtmf(connectionId, tones);
+    } else {
+      this._handleInvalidRequest(message);
+    }
+  }
+
   _handleInvalidRequest (message) {
     const { connectionId }  = message;
     const errorMessage = this._handleError(this._logPrefix, connectionId, null, null, errors.SFU_INVALID_REQUEST);
@@ -319,6 +343,10 @@ module.exports = class AudioManager extends BaseManager {
 
       case 'iceCandidate':
         this.handleIceCandidate(message);
+        break;
+
+      case 'dtmf':
+        this.handleDtmf(message);
         break;
 
       case 'close':

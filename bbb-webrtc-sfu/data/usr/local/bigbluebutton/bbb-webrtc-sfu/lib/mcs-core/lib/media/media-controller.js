@@ -5,7 +5,7 @@ const C = require('../constants/constants');
 const Logger = require('../utils/logger');
 const User = require('../model/user');
 const Room = require('../model/room');
-const GLOBAL_EVENT_EMITTER = require('../utils/emitter');
+const GLOBAL_EVENT_EMITTER = require('../../../common/emitter.js');
 const { handleError } = require('../utils/util');
 const Balancer = require('./balancer');
 const AdapterFactory = require('../adapters/adapter-factory');
@@ -66,6 +66,7 @@ class MediaControllerC {
     AdapterFactory.getAdapters({});
 
     GLOBAL_EVENT_EMITTER.on(C.EVENT.ROOM_EMPTY, this.removeRoom.bind(this));
+    GLOBAL_EVENT_EMITTER.on(C.EVENT.ROOM_DESTROYED, this._handleRoomDestroyed.bind(this));
     GLOBAL_EVENT_EMITTER.on(C.EVENT.CONFERENCE_NEW_VIDEO_FLOOR, this._handleNewVideoFloor.bind(this));
     // FIXME remove this once all audio goes through mcs-core's API
     GLOBAL_EVENT_EMITTER.on(C.EVENT.MEDIA_EXTERNAL_AUDIO_CONNECTED, this._handleExternalAudioMediaConnected.bind(this));
@@ -101,28 +102,6 @@ class MediaControllerC {
     } catch (e) {
       throw (this._handleError(e));
     }
-
-  }
-
-  _leave (room, user) {
-    const { id: userId, externalUserId } = user;
-    user.leave().then((killedMedias) => {
-      Logger.info(LOG_PREFIX, "User left", { userId, externalUserId });
-      killedMedias.forEach((mediaId) => {
-        try {
-          this.removeMediaSession(mediaId);
-          room.removeMediaSession(mediaId);
-        } catch (e) {
-          // Media was probably not found, just log it here and go on
-          this._handleError(e);
-        }
-      });
-
-      room.destroyUser(user.id);
-      this.removeUser(user);
-    }).catch(err => {
-      throw (this._handleError(err));
-    });
   }
 
   _ejectUser (userInfo) {
@@ -144,25 +123,37 @@ class MediaControllerC {
   }
 
   leave (roomId, userId) {
-    let user, room;
-    try {
-      user = this.getUser(userId);
+    let room;
+    const user = this.getUser(userId);
+
+    if (user) {
       room = this.getRoom(user.roomId);
-    } catch (error) {
-      // User or room were already closed or not found, resolving as it is
-      const normalizedError = this._handleError(error);
-      Logger.warn(LOG_PREFIX, `Leave for ${userId} failed due to ${error.message}`, { roomId, userId, error });
-      throw (normalizedError);
+      const { id: userId, externalUserId } = user;
+      user.leave().then((killedMedias) => {
+        Logger.info(LOG_PREFIX, "User left", { userId, externalUserId });
+        killedMedias.forEach((mediaId) => {
+          try {
+            this.removeMediaSession(mediaId);
+            if (room) {
+              room.removeMediaSession(mediaId);
+            }
+          } catch (error) {
+            // Media was probably not found, just log it here and go on
+            this._handleError(error);
+          }
+        });
+
+        this.removeUser(user);
+      }).catch(error => {
+        Logger.error(LOG_PREFIX, "CRITICAL: exception on user leave cleanup", {
+          roomId, userId, errorMessage: error.message, errorCode: error.code,
+        })
+      });
     }
 
-    try  {
-      this._leave(room, user);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `Leave for ${userId} failed due to ${error.message}`, { roomId, userId, error });
-      throw error;
+    if (room) {
+      room.destroyUser(userId);
     }
-
-    return;
   }
 
   isAboveGlobalMediaThreshold ({ mediaId, ignoreThresholds = false }) {
@@ -219,15 +210,13 @@ class MediaControllerC {
     }
 
     try {
-      user = this.getUser(userId);
-      this.getRoom(user.roomId);
-    } catch (error) {
-      throw (this._handleError(error));
-    }
-
-    try {
+      user = this.getUserThrowable(userId);
+      this.getRoomThrowable(user.roomId);
       ({ session, answer } = await user.publish(params.descriptor, type, params));
     } catch (error) {
+      Logger.error(LOG_PREFIX, 'PublishAndSubscribe failed: publish phase', {
+        userId, roomId, sourceId, type, errorMessage: error.message,
+      });
       throw (this._handleError(error));
     }
 
@@ -249,7 +238,7 @@ class MediaControllerC {
   }
 
   async publish (userId, roomId, type, params = {}) {
-    let user, session, answer;
+    let session, answer;
     type = C.EMAP[type];
 
     Logger.trace(LOG_PREFIX, 'Publish request', { userId, roomId, descriptor: params.descriptor });
@@ -270,16 +259,14 @@ class MediaControllerC {
     }
 
     try {
-      user = this.getUser(userId);
-      this.getRoom(user.roomId);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `Publish for ${userId} failed due to ${error.message}`, { roomId, userId, error });
-      throw (this._handleError(error));
-    }
+      const user = this.getUserThrowable(userId);
+      this.getRoomThrowable(user.roomId);
 
-    try {
       ({ session, answer } = await user.publish(params.descriptor, type, params));
     } catch (error) {
+      Logger.error(LOG_PREFIX, 'Publish failed', {
+        userId, roomId, type, errorMessage: error.message,
+      });
       throw (this._handleError(error));
     }
 
@@ -289,7 +276,7 @@ class MediaControllerC {
   }
 
   async subscribe (userId, sourceId, type, params = {}) {
-    let source, user, room, session, answer;
+    let source, session, answer;
     type = C.EMAP[type];
 
     Logger.trace(LOG_PREFIX, 'Subscribe request', {
@@ -312,85 +299,59 @@ class MediaControllerC {
     }
 
     try {
-      user = this.getUser(userId);
-      room = this.getRoom(user.roomId);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `Subscribe for ${userId} failed due to ${error.message}`, { userId, error });
-      throw error;
-    }
+      const user = this.getUserThrowable(userId);
+      const room = this.getRoomThrowable(user.roomId);
 
-    try {
       if (sourceId === C.MEDIA_PROFILE.CONTENT) {
-        source = this.getMediaSession(room._contentFloor.id);
+        source = this.getMediaSessionThrowable(room._contentFloor.id);
         params.content = true;
       } else {
-        source = this.getMediaSession(sourceId);
+        source = this.getMediaSessionThrowable(sourceId);
       }
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `Subscribe for ${userId} failed due to ${error.message}`, { roomId: room.id, userId, error });
-      throw error;
-    }
 
-    try {
       ({ session, answer } = await user.subscribe(params.descriptor, type, source, params));
     } catch (error) {
+      Logger.error(LOG_PREFIX, 'Subscribe failed', {
+        userId, sourceId, type, errorMessage: error.message,
+      });
       throw (this._handleError(error));
     }
 
     this.addMediaSession(session);
     session.sessionStarted();
-    return ({descriptor: answer, mediaId: session.id});
+    return ({ descriptor: answer, mediaId: session.id });
   }
 
   unpublish (userId, mediaId) {
-    let user, room;
+    const user = this.getUser(userId);
 
-    try {
-      user = this.getUser(userId);
-      room = this.getRoom(user.roomId);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `Unpublish from user ${userId} for media ${mediaId} failed due to ${error.message}`,
-        { userId, mediaId, error });
-      throw (this._handleError(error));
-    }
+    this.removeMediaSession(mediaId);
 
-    try {
-      this.removeMediaSession(mediaId);
-      room.removeMediaSession(mediaId);
+    if (user) {
+      const room = this.getRoom(user.roomId);
+      if (room) room.removeMediaSession(mediaId);
       return user.unpublish(mediaId);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `Unpublish from user ${userId} for media ${mediaId} failed due to ${error.message}`,
-        { roomId: room.id, userId, mediaId, error })
-      throw (this._handleError(error));
     }
+
+    return Promise.resolve();
   }
 
   unsubscribe (userId, mediaId) {
-    let user, room;
+    const user = this.getUser(userId);
 
-    try {
-      user = this.getUser(userId);
-      room = this.getRoom(user.roomId);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `Unsubscribe from user ${userId} for media ${mediaId} failed due to ${error.message}`,
-        { userId, mediaId, error });
-      throw (this._handleError(error));
-    }
+    this.removeMediaSession(mediaId);
 
-    try {
-      this.removeMediaSession(mediaId);
-      room.removeMediaSession(mediaId);
+    if (user) {
+      const room = this.getRoom(user.roomId);
+      if (room) room.removeMediaSession(mediaId);
       return user.unsubscribe(mediaId);
     }
-    catch (error) {
-      Logger.warn(LOG_PREFIX, `Unsubscribe from user ${userId} for media ${mediaId} failed due to ${error.message}`,
-        { roomId: room.id, userId, mediaId, error })
-      throw (this._handleError(error));
-    }
+
+    return Promise.resolve();
   }
 
   async startRecording (userId, sourceId, recordingPath, params = {}) {
-    let user, sourceSession, recordingSession, answer;
+    let recordingSession, answer;
 
     if (!this._validateAdapterFromOptions(params)) {
       throw (this._handleError(C.ERROR.MEDIA_ADAPTER_OBJECT_NOT_FOUND));
@@ -404,16 +365,10 @@ class MediaControllerC {
     }
 
     try {
-      user = this.getUser(userId);
-      this.getRoom(user.roomId);
-      sourceSession = this.getMediaSession(sourceId);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `startRecording from user ${userId} of media ${sourceId} failed due to ${error.message}`,
-        { userId, mediaId: sourceId, error });
-      throw (this._handleError(error));
-    }
+      const user = this.getUserThrowable(userId);
+      this.getRoomThrowable(user.roomId);
+      const sourceSession = this.getMediaSessionThrowable(sourceId);
 
-    try {
       ({ recordingSession, answer } = await user.startRecording(
         recordingPath,
         C.MEDIA_TYPE.RECORDING,
@@ -421,8 +376,9 @@ class MediaControllerC {
         params
       ));
     } catch (error) {
-      Logger.warn(LOG_PREFIX, `startRecording from user ${userId} of media ${sourceId} failed due to ${error.message}`,
-        { userId, mediaId: sourceId, error });
+      Logger.warn(LOG_PREFIX, 'startRecording failed', {
+        userId, sourceId, recordingPath, errorMessage: error.message
+      });
       throw (this._handleError(error));
     }
 
@@ -432,43 +388,33 @@ class MediaControllerC {
   }
 
   stopRecording (userId, recId) {
-    let user, room;
+    const user = this.getUser(userId);
 
-    try {
-      user = this.getUser(userId);
-      room = this.getRoom(user.roomId);
-    } catch (error) {
-      Logger.warn(LOG_PREFIX, `stopRecording for user ${userId} of recording ${recId} failed due to ${error.message}`,
-        { userId, mediaId: recId, error });
-      throw (this._handleError(error));
-    }
+    this.removeMediaSession(recId);
 
-    try {
-      this.removeMediaSession(recId);
-      room.removeMediaSession(recId);
+    if (user) {
+      const room = this.getRoom(user.roomId);
+      if (room) room.removeMediaSession(recId);
       return user.unsubscribe(recId);
-    } catch (error) {
-      Logger.error(LOG_PREFIX, `stopRecording from user ${userId} of recording ${recId} failed due to ${error.message}`,
-        { roomId: room.id, userId, mediaId: recId, error })
-      throw (this._handleError(error));
     }
+
+    return Promise.resolve();
   }
 
   async connect (sourceId, sinkId, type = 'ALL') {
     try {
-      const sourceSession = this.getMediaSession(sourceId);
-      const sinkSession = this.getMediaSession(sinkId);
+      const sourceSession = this.getMediaSessionThrowable(sourceId);
+      const sinkSession = this.getMediaSessionThrowable(sinkId);
       await sourceSession.connect(sinkSession, type);
-    }
-    catch (error) {
+    } catch (error) {
       throw (this._handleError(error));
     }
   }
 
   async disconnect (sourceId, sinkId, type = 'ALL') {
     try {
-      const sourceSession = this.getMediaSession(sourceId);
-      const sinkSession = this.getMediaSession(sinkId);
+      const sourceSession = this.getMediaSessionThrowable(sourceId);
+      const sinkSession = this.getMediaSessionThrowable(sinkId);
       await sourceSession.disconnect(sinkSession, type);
     } catch (error) {
       throw (this._handleError(error));
@@ -477,7 +423,7 @@ class MediaControllerC {
 
   async addIceCandidate (mediaId, candidate) {
     try {
-      const session = this.getMediaSession(mediaId);
+      const session = this.getMediaSessionThrowable(mediaId);
       await session.addIceCandidate(candidate);
     } catch (error) {
       throw (this._handleError(error));
@@ -491,7 +437,7 @@ class MediaControllerC {
         case C.EVENT.MEDIA_STATE.MEDIA_EVENT:
         case C.EVENT.MEDIA_STATE.ICE: {
           const session = this.getMediaSession(identifier);
-          session.onEvent(mappedEvent);
+          if (session) session.onEvent(mappedEvent);
           break;
         }
         case C.EVENT.MEDIA_CONNECTED:
@@ -524,11 +470,15 @@ class MediaControllerC {
    * @param {String} roomId
    */
   createRoom (roomId)  {
-    let room = this._untaintedGetRoom(roomId);
+    let room;
+
+    if (roomId) {
+      room = this.getRoom(roomId);
+    }
 
     if (room == null) {
       room = new Room(roomId);
-      this.rooms.set(roomId, room);
+      this.rooms.set(room.id, room);
       MCSPrometheusAgent.set(METRIC_NAMES.ROOMS, this.getNumberOfRooms());
       Logger.info(LOG_PREFIX, 'New room created', { coreRoomInfo: room.getInfo() });
       this.emitter.emit(C.EVENT.ROOM_CREATED, room);
@@ -537,17 +487,16 @@ class MediaControllerC {
     return room;
   }
 
-  // Internal method while we don't fix the vexing exception in getRoom which
-  // is just making me crazy
-  _untaintedGetRoom (roomId) {
-    return this.rooms.get(roomId)
+  getRoomThrowable (roomId) {
+    const room = this.getRoom(roomId);
+
+    if (room) return room;
+
+    throw C.ERROR.ROOM_NOT_FOUND;
   }
 
   getRoom (roomId) {
-    const room = this.rooms.get(roomId);
-    if (room) return room;
-    // FIXME Vexing exception
-    throw C.ERROR.ROOM_NOT_FOUND;
+    return this.rooms.get(roomId);
   }
 
   getRooms () {
@@ -562,22 +511,33 @@ class MediaControllerC {
     return this.rooms.has(userId);
   }
 
+  _handleRoomDestroyed ({ roomId }) {
+    const room = this.getRoom(roomId);
+
+    if (room) {
+      room.getUsers().forEach(user => {
+        this.leave(roomId, user.userId);
+      });
+      this.rooms.delete(roomId);
+      Logger.info(LOG_PREFIX, "Room destroyed", { roomId });
+    }
+
+    MCSPrometheusAgent.set(METRIC_NAMES.ROOMS, this.getNumberOfRooms());
+  }
+
   removeRoom (roomId) {
     let removed = false;
     try {
-      const room = this._untaintedGetRoom(roomId);
-      if (room == null) return true;
+      const room = this.getRoom(roomId);
 
-      this.emitter.emit(C.EVENT.ROOM_DESTROYED, room.getInfo());
-      room.destroy();
-      removed = this.rooms.delete(roomId)
-
-      if (removed) {
-        MCSPrometheusAgent.set(METRIC_NAMES.ROOMS, this.getNumberOfRooms());
-        Logger.info(LOG_PREFIX, "Room destroyed", { roomId });
+      if (room == null) {
+        this.emitter.emit(C.EVENT.ROOM_DESTROYED, Room.ROOM_INFO(roomId));
+        return true;
       }
 
-      return removed;
+      room.destroy();
+
+      return true;
     } catch (error) {
       Logger.error(LOG_PREFIX, "CRITICAL: Room deletion failed",
         { roomId, errorMessage: error.message, errorCode: error.code });
@@ -602,8 +562,8 @@ class MediaControllerC {
     let user;
 
     if (externalUserId) {
-      try {
-        user = this.getUser(externalUserId);
+      user = this.getUser(externalUserId);
+      if (user) {
         // If user is found and duplicate EXT_USER_IDs aren't allowed, throw error
         if (!ALLOW_DUPLICATE_EXT_USER_ID) {
           throw this._handleError({
@@ -612,8 +572,6 @@ class MediaControllerC {
           });
         }
         return user;
-      } catch (e) {
-        // User was not found, just ignore it and create a new one
       }
     }
 
@@ -645,11 +603,16 @@ class MediaControllerC {
     }
   }
 
-  getUser (userId) {
-    const user = this.users.get(userId)
+  getUserThrowable (userId) {
+    const user = this.getUser(userId)
+
     if (user) return user;
-    // FIXME Vexing exception
+
     throw C.ERROR.USER_NOT_FOUND;
+  }
+
+  getUser (userId) {
+    return this.users.get(userId)
   }
 
   getNumberOfUsers () {
@@ -658,7 +621,7 @@ class MediaControllerC {
 
   getUsers (roomId) {
     try {
-      const room = this.getRoom(roomId);
+      const room = this.getRoomThrowable(roomId);
       return room.getUsers();
     } catch (error) {
       Logger.error(LOG_PREFIX, `getUsers failed for room ${roomId} due to ${error.message}`,
@@ -668,25 +631,13 @@ class MediaControllerC {
   }
 
   getUserMedias (userId) {
-    try {
-      const user = this.getUser(userId);
-      return user.getMediaInfos();
-    } catch (error) {
-      Logger.error(LOG_PREFIX, `getUserMedias failed for user ${userId} due to ${error.message}`,
-        { userId, error });
-      throw (this._handleError(error));
-    }
+    const user = this.getUserThrowable(userId);
+    return user.getMediaInfos();
   }
 
   getRoomMedias (roomId) {
-    try {
-      const room = this.getRoom(roomId);
-      return room.getMediaInfos();
-    } catch (error) {
-      Logger.error(LOG_PREFIX, `getRoomMedias failed for room ${roomId} due to ${error.message}`,
-        { roomId, error });
-      throw (this._handleError(error));
-    }
+    const room = this.getRoomThrowable(roomId);
+    return room.getMediaInfos();
   }
 
   hasMediaSession (mediaSessionId) {
@@ -718,26 +669,29 @@ class MediaControllerC {
 
   getMediaSession (mediaId) {
     // Automatic source
-    // FIXME get rid of this ...
+    // FIXME get rid of this ... really - prlanzarin feb 22
     if (mediaId == 'default') {
       return mediaId;
     }
 
-    let media = this.mediaSessions.get(mediaId);
+    const mediaSession = this.mediaSessions.get(mediaId);
+    if (mediaSession) return mediaSession;
 
-    // Session not found by ID, fallback to media units
-    if (media == null) {
-      media = this.getMedia(mediaId);
-    }
+    // Session not found by ID, fallback to media units.
+    // This is kind of aberrational; media units were an afterthought. Review
+    // soon. - prlanzarin feb 22
+    return this.getMedia(mediaId);
+  }
 
-    if (media == null) {
-      throw this._handleError({
-        ...C.ERROR.MEDIA_NOT_FOUND,
-        details: `mediaId: ${mediaId}`,
-      });
-    }
+  getMediaSessionThrowable (mediaId) {
+    const mediaSession = this.getMediaSession(mediaId);
 
-    return media;
+    if (mediaSession) return mediaSession;
+
+    throw this._handleError({
+      ...C.ERROR.MEDIA_NOT_FOUND,
+      details: `mediaId: ${mediaId}`,
+    });
   }
 
   getNumberOfMediaSessions () {
@@ -778,8 +732,8 @@ class MediaControllerC {
 
   setContentFloor (roomId, mediaId) {
     try {
-      const room = this.getRoom(roomId);
-      const media = this.getMediaSession(mediaId);
+      const room = this.getRoomThrowable(roomId);
+      const media = this.getMediaSessionThrowable(mediaId);
       return room.setContentFloor(media);
     } catch (error) {
       Logger.error(LOG_PREFIX, `setContentFloor for room ${roomId} as media ${mediaId} failed due to ${error.message}`,
@@ -790,8 +744,8 @@ class MediaControllerC {
 
   setConferenceFloor (roomId, mediaId) {
     try {
-      const room = this.getRoom(roomId);
-      const media = this.getMediaSession(mediaId);
+      const room = this.getRoomThrowable(roomId);
+      const media = this.getMediaSessionThrowable(mediaId);
       return room.setConferenceFloor(media);
     } catch (error) {
       Logger.error(LOG_PREFIX, `setConferenceFloor for room ${roomId} as media ${mediaId} failed due to ${error.message}`,
@@ -801,40 +755,18 @@ class MediaControllerC {
   }
 
   releaseContentFloor (roomId) {
-    try {
-      const room = this.getRoom(roomId);
-      return room.releaseContentFloor();
-    } catch (error) {
-      Logger.error(LOG_PREFIX, `releaseContentFloor for room ${roomId} failed due to ${error.message}`,
-        { roomId, error });
-      throw (this._handleError(error));
-    }
+    const room = this.getRoom(roomId);
+    if (room) return room.releaseContentFloor();
   }
 
   releaseConferenceFloor(roomId, preserve = true) {
-    try {
-      const room = this.getRoom(roomId);
-
-      if (!room) return;
-
-      return room.releaseConferenceFloor(preserve);
-    } catch (error) {
-      if (error.message === C.ERROR.ROOM_NOT_FOUND.message) {
-        Logger.info(LOG_PREFIX, `Ignoring releaseConferenceFloor for room ` +
-          `${roomId}. This room was already removed`);
-          return;
-      }
-
-      Logger.error(LOG_PREFIX, `releaseConferenceFloor for room ${roomId} failed due to ${error.message}`,
-        { roomId, error });
-
-      throw (this._handleError(error));
-    }
+    const room = this.getRoom(roomId);
+    if (room) return room.releaseConferenceFloor(preserve);
   }
 
   getContentFloor (roomId) {
     try {
-      const room = this.getRoom(roomId);
+      const room = this.getRoomThrowable(roomId);
       return room.getContentFloor();
     } catch (error) {
       Logger.error(LOG_PREFIX, `getContentFloor for room ${roomId} failed due to ${error.message}`,
@@ -845,7 +777,7 @@ class MediaControllerC {
 
   getConferenceFloor (roomId) {
     try {
-      const room = this.getRoom(roomId);
+      const room = this.getRoomThrowable(roomId);
       return room.getConferenceFloor();
     } catch (error) {
       Logger.error(LOG_PREFIX, `getConferenceFloor for room ${roomId} failed due to ${error.message}`,
@@ -856,7 +788,7 @@ class MediaControllerC {
 
   setVolume (mediaId, volume) {
     try {
-      const mediaSession = this.getMediaSession(mediaId);
+      const mediaSession = this.getMediaSessionThrowable(mediaId);
       return mediaSession.setVolume(volume);
     } catch (error) {
       Logger.error(LOG_PREFIX, `setVolume for media$ ${mediaId} failed due to ${error.message}`,
@@ -867,7 +799,7 @@ class MediaControllerC {
 
   mute (mediaId) {
     try {
-      const mediaSession = this.getMediaSession(mediaId);
+      const mediaSession = this.getMediaSessionThrowable(mediaId);
       return mediaSession.mute();
     } catch (error) {
       Logger.error(LOG_PREFIX, `mute for media$ ${mediaId} failed due to ${error.message}`,
@@ -878,7 +810,7 @@ class MediaControllerC {
 
   unmute (mediaId) {
     try {
-      const mediaSession = this.getMediaSession(mediaId);
+      const mediaSession = this.getMediaSessionThrowable(mediaId);
       return mediaSession.unmute();
     } catch (error) {
       Logger.error(LOG_PREFIX, `unmute for media$ ${mediaId} failed due to ${error.message}`,
@@ -919,21 +851,21 @@ class MediaControllerC {
    */
   _getMemberByIdentifier (identifier) {
     try {
-      const media = this.getMediaSession(identifier);
+      const media = this.getMediaSessionThrowable(identifier);
       return media;
     } catch (e) {
       Logger.debug(LOG_PREFIX, "Media not found, falling back to user", e);
     }
 
     try {
-      const user = this.getUser(identifier);
+      const user = this.getUserThrowable(identifier);
       return user;
     } catch (e) {
       Logger.debug(LOG_PREFIX, "User not found, falling back to room", e);
     }
 
     try {
-      const room = this.getRoom(identifier);
+      const room = this.getRoomThrowable(identifier);
       return room;
     } catch (e) {
       Logger.debug(LOG_PREFIX, "Room not found, no valid member for", identifier);
@@ -947,10 +879,16 @@ class MediaControllerC {
         return this.getUserMedias(identifier);
       case C.MEMBERS.ROOM:
         return this.getRoomMedias(identifier);
-      case C.MEMBERS.MEDIA_SESSION:
-        return this.getMediaSession(identifier).getMediaInfo();
-      case C.MEMBERS.MEDIA:
-        return this.getMedia(identifier).getMediaInfo();
+      case C.MEMBERS.MEDIA_SESSION: {
+        const mediaSession = this.getMediaSession(identifier);
+        if (mediaSession) return mediaSession.getMediaInfo();
+        return {};
+      }
+      case C.MEMBERS.MEDIA: {
+        const media = this.getMedia(identifier);
+        if (media) return media.getMediaInfo();
+        return {};
+      }
       default:
         throw (this._handleError({
           ...C.ERROR.MEDIA_INVALID_TYPE,
@@ -999,11 +937,11 @@ class MediaControllerC {
     }
   }
 
-  dtmf (mediaId, tone) {
+  dtmf (mediaId, tone, options) {
     try {
       Logger.debug(LOG_PREFIX, "Sending DTMF tone", { mediaId, tone });
-      const mediaSession = this.getMediaSession(mediaId);
-      return mediaSession.dtmf(tone);
+      const mediaSession = this.getMediaSessionThrowable(mediaId);
+      return mediaSession.dtmf(tone, options);
     }
     catch (error) {
       throw (this._handleError(error));
@@ -1013,7 +951,7 @@ class MediaControllerC {
   requestKeyframe (mediaId) {
     try {
       Logger.debug(LOG_PREFIX, "Requesting keyframe from media", { mediaId });
-      const mediaSession = this.getMediaSession(mediaId);
+      const mediaSession = this.getMediaSessionThrowable(mediaId);
       return mediaSession.requestKeyframe();
     }
     catch (error) {
@@ -1056,6 +994,17 @@ class MediaControllerC {
       }
 
       return mediaSessions;
+    } catch (error) {
+      throw (this._handleError(error));
+    }
+  }
+
+  async consume (sourceId, sinkId, type = 'ALL') {
+    try {
+      const sourceSession = this.getMediaSessionThrowable(sourceId);
+      const sinkSession = this.getMediaSessionThrowable(sinkId);
+
+      return sinkSession.consume(sourceSession, type);
     } catch (error) {
       throw (this._handleError(error));
     }

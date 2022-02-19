@@ -11,7 +11,7 @@ const C = require('../messages/Constants.js');
 const RedisWrapper = require('./RedisWrapper.js');
 const config = require('config');
 const EventEmitter = require('events').EventEmitter;
-const Logger = require('../../utils/Logger');
+const Logger = require('../../common/logger.js');
 
 const LOG_PREFIX = "[bbb-gw]";
 let instance = null;
@@ -86,7 +86,7 @@ module.exports = class BigBlueButtonGW extends EventEmitter {
       payload = msg.core.body;
     }
 
-    if (header){
+    if (header) {
       switch (header.name) {
         // interoperability with 1.1
         case C.DISCONNECT_ALL_USERS:
@@ -167,7 +167,7 @@ module.exports = class BigBlueButtonGW extends EventEmitter {
         }
 
         default:
-          this.emit(C.GATEWAY_MESSAGE, msg);
+          this.emit(header.name, { header, body: payload, });
       }
     } else {
       this.emit(C.GATEWAY_MESSAGE, msg);

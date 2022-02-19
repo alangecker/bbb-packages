@@ -1,5 +1,8 @@
 const { MEDIA_TYPE, MEDIA_PROFILE } = require('../../constants/constants');
 const { MS_KINDS } = require('./constants.js');
+const { extractCodecsListFromSDP } = require('./sdp-translator.js');
+const Logger = require('../../utils/logger');
+const { LOG_PREFIX } = require('./configs.js');
 
 const getMappedTransportType = (mcsCoreType) => {
   switch (mcsCoreType) {
@@ -73,6 +76,30 @@ const mapMTypesOrProfilesToKindDirection = (mTypesOrProfiles) => {
   return kindDirectionArray;
 };
 
+const mapConnectionTypeToKind = (connectionType) => {
+  switch (connectionType) {
+    case 'AUDIO':
+      return [MS_KINDS.AUDIO];
+    case 'VIDEO':
+      return [MS_KINDS.VIDEO];
+    case 'ALL':
+      return [MS_KINDS.AUDIO, MS_KINDS.VIDEO];
+  }
+}
+
+const replaceRouterCodecsWithSdpCodecs = (settings, sdp) => {
+  try {
+    const codecs = extractCodecsListFromSDP(sdp);
+    settings.mediaCodecs = codecs;
+  } catch (error) {
+    Logger.warn(LOG_PREFIX, 'Failed to replace router mediaCodecs, fallback', {
+      errorMessage: error.message,
+    });
+  }
+
+  return settings;
+}
+
 module.exports = {
   getMappedTransportType,
   getCodecFromMimeType,
@@ -81,4 +108,6 @@ module.exports = {
   mapMTypesOrProfilesToKind,
   mapMTypesOrProfilesToKindDirection,
   filterValidMediaTypes,
+  mapConnectionTypeToKind,
+  replaceRouterCodecsWithSdpCodecs,
 }
