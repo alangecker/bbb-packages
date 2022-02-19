@@ -39,4 +39,3 @@ location /html5client {
   alias /usr/share/meteor/bundle/programs/web.browser;
   try_files $uri @html5client;
 }
-

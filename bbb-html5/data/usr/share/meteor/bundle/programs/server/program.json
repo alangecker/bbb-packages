@@ -234,10 +234,6 @@
       "path": "packages/session.js"
     },
     {
-      "sourceMap": "packages/nathantreid_css-modules.js.map",
-      "path": "packages/nathantreid_css-modules.js"
-    },
-    {
       "sourceMap": "packages/rocketchat_streamer.js.map",
       "path": "packages/rocketchat_streamer.js"
     },

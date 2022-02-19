@@ -9,8 +9,4 @@ if [ ! -f /.dockerenv ]; then
   mount -t tmpfs -o size=512m tmpfs /mnt/mongo-ramdisk
 fi
 
-if id mongod > /dev/null; then
-  chown -R mongod:mongod /mnt/mongo-ramdisk
-else
-  chown -R mongodb:mongodb /mnt/mongo-ramdisk
-fi
+chown -R mongodb:mongodb /mnt/mongo-ramdisk
