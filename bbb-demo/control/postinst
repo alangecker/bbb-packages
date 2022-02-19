@@ -295,7 +295,6 @@ fi
 
 
 DEPLOY_DIR=/var/lib/$TOMCAT_SERVICE/webapps
-BBB_WEB_ETC_CONFIG=/etc/bigbluebutton/bbb-web.properties
 
 rm -rf /tmp/demo
 unzip /var/tmp/demo.war -d /tmp/demo > /dev/null
@@ -305,15 +304,15 @@ if [ -f $DEPLOY_DIR/demo/bbb_api_conf.jsp ]; then
 else
 	if [ -f $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties ]; then
     if grep -q securitySalt $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties; then
-       SALT=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | tr -d '\r' | sed -n '/securitySalt/{s/.*=//;p}' | tail -n 1 )
-	HOST=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}' | tail -n 1)
+      SALT=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | tr -d '\r' | sed -n '/securitySalt/{s/.*=//;p}')
+			HOST=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}')
 			echo -n "<%" > /tmp/demo/bbb_api_conf.jsp
 			echo "!
 // This is the security salt that must match the value set in the BigBlueButton server
 String salt = \"$SALT\";
 
 // This is the URL for the BigBlueButton server
-String BigBlueButtonURL = \"https://$HOST/bigbluebutton/\";
+String BigBlueButtonURL = \"http://$HOST/bigbluebutton/\";
 %>
 " >> /tmp/demo/bbb_api_conf.jsp
     fi
