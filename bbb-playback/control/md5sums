@@ -1,8 +1,8 @@
 935019735339dc2d571cbaa19d41f370  etc/bigbluebutton/nginx/playback.nginx
-e1ffd43883ba734e7412f66d8704afce  usr/share/doc/bbb-playback/changelog.gz
-924b645474b15a7db9eea3bb5d898f79  var/bigbluebutton/playback/presentation/2.3/asset-manifest.json
+7354907beceb247f597f282656ac1c1f  usr/share/doc/bbb-playback/changelog.gz
+6ee7c2d625f0ba410cb80d3716e3d006  var/bigbluebutton/playback/presentation/2.3/asset-manifest.json
 b9a4f3e43e9d04cd2277118ac6787886  var/bigbluebutton/playback/presentation/2.3/favicon.ico
-437adf767510e7234717025070e3b8cf  var/bigbluebutton/playback/presentation/2.3/index.html
+865a89e56fb9ed98665cfef0145ca39f  var/bigbluebutton/playback/presentation/2.3/index.html
 d0323393c0d386fda99d4c0011df86e1  var/bigbluebutton/playback/presentation/2.3/manifest.json
 3ad0652bd17ff826a31fa29366021cfd  var/bigbluebutton/playback/presentation/2.3/robots.txt
 fb06b276c93e880b2266980400694afe  var/bigbluebutton/playback/presentation/2.3/static/css/main.e64efa86.chunk.css
@@ -10,8 +10,8 @@ fb06b276c93e880b2266980400694afe  var/bigbluebutton/playback/presentation/2.3/st
 d1487c2be8257f25164140c2f4186990  var/bigbluebutton/playback/presentation/2.3/static/js/2.6fec41ae.chunk.js
 4d61aa1b398c9287a625f9252382db9f  var/bigbluebutton/playback/presentation/2.3/static/js/2.6fec41ae.chunk.js.LICENSE.txt
 dccbe0a33fda82a2a15abebb8ab8f8f1  var/bigbluebutton/playback/presentation/2.3/static/js/2.6fec41ae.chunk.js.map
-3bdae206dd20850790b8eb9f501fd53d  var/bigbluebutton/playback/presentation/2.3/static/js/main.e1a26d4d.chunk.js
-d40efeae89f535e7730478e939dc1545  var/bigbluebutton/playback/presentation/2.3/static/js/main.e1a26d4d.chunk.js.map
+3695931f96c343b1422aea9b130b902e  var/bigbluebutton/playback/presentation/2.3/static/js/main.36e0ed4b.chunk.js
+d480ad3c31c33e80d083727c9e1fe418  var/bigbluebutton/playback/presentation/2.3/static/js/main.36e0ed4b.chunk.js.map
 552025b26512edae8b78dc126370cde8  var/bigbluebutton/playback/presentation/2.3/static/js/runtime-main.e34840b1.js
 50626ab98f9298c6c1a4e3c1e673cdd7  var/bigbluebutton/playback/presentation/2.3/static/js/runtime-main.e34840b1.js.map
 9381a7e996d0c900320a087cf90fc451  var/bigbluebutton/playback/presentation/2.3/static/media/icons.c2f6ec67.woff
