@@ -1,0 +1,12 @@
+Package: bbb-pads
+Version: 1:2.5-3
+License: unknown
+Vendor: BigBlueButon
+Architecture: amd64
+Maintainer: ffdixon@bigbluebutton.org
+Installed-Size: 5154
+Depends: nodejs,npm,bbb-etherpad
+Section: default
+Priority: extra
+Homepage: http://bigbluebutton.org/
+Description: BigBlueButton Pads
