@@ -331,7 +331,7 @@ bbb_config() {
 		fi
 	fi
 
-     sed -i "s/securitySalt=.*/securitySalt=$SECRET/g" \
+  sed -i "s/securitySalt=.*/securitySalt=$SECRET/g" \
      $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
 
 	# XXX
@@ -395,21 +395,6 @@ bbb_config() {
   # Restart bbb-web to deploy new 
   startService bbb-web.service || echo "bbb-web.service could not be registered or started"
   # sed -i 's/8080/8090/g' /etc/bigbluebutton/nginx/web
-
-  # Added for 2.3 to create a default /etc/bigbluebutton/bbb-web.properties if it does not exist
-  if [ ! -f /etc/lsb-release ] || ! grep -q xenial /etc/lsb-release; then
-    if [ ! -f /etc/bigbluebutton/bbb-web.properties ]; then
-       cat > /etc/bigbluebutton/bbb-web.properties <<HERE
-#
-# Use this file to override default entries in /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
-#
-
-bigbluebutton.web.serverURL=https://$IP
-securitySalt=$SECRET
-HERE
-    fi
-  fi
-
 }
 
 case "$1" in
