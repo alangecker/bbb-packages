@@ -303,7 +303,7 @@ case "$1" in
     SOURCE=/tmp/notes.yml
     TARGET=/usr/local/bigbluebutton/core/scripts/notes.yml
 
-    if [ -f $SOURCE ] && [ -f $TARGET ] ; then
+    if [ -f $SOURCE ]; then
       #
       # upgrade, so let's propagate values
 
@@ -314,9 +314,7 @@ case "$1" in
       mv -f $SOURCE "${SOURCE}_"
     fi
    
-    if [ -f $TARGET ] ; then
-      chmod +r $TARGET
-    fi
+    chmod +r $TARGET
  
     mkdir -p /var/bigbluebutton/published/notes
     chown -R $BIGBLUEBUTTON_USER:$BIGBLUEBUTTON_USER /var/bigbluebutton/published/notes
@@ -332,7 +330,7 @@ case "$1" in
       rm /var/bigbluebutton/published/notes/index.html
     fi
     
-    systemctl reload nginx    
+    systemctl reload nginx
   ;;
   
   failed-upgrade)
