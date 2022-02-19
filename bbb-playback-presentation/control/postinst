@@ -289,6 +289,12 @@ fi
 ### END DEB-HELPERS.SH ###
 ##########################
 
+if [ -f /etc/redhat-release ]; then
+  DISTRIB_ID=centos
+else
+  . /etc/lsb-release    # Get value for DISTRIB_ID
+fi
+
 BIGBLUEBUTTON_USER=bigbluebutton
 
 case "$1" in
