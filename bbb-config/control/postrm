@@ -1,4 +1,4 @@
-#!/bin/bash
+#if [ -L /etc/nginx/sites-enabled/bigbluebutton ]; then
 
 ############################
 ### BEGIN DEB-HELPERS.SH ###
@@ -288,8 +288,6 @@ fi
 ##########################
 ### END DEB-HELPERS.SH ###
 ##########################
-
-#if [ -L /etc/nginx/sites-enabled/bigbluebutton ]; then
 #  rm /etc/nginx/sites-enabled/bigbluebutton
 #fi
 

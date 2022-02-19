@@ -311,12 +311,12 @@ fi
 #
 # Set the permissions to /var/bigbluebutton so both red5 and tomcat can write
 #
-if [ -d /var/bigbluebutton ] || [ -L /var/bigbluebutton ]; then
+if [ -d /var/bigbluebutton ]; then
   echo -n "."
-  chown -R $BIGBLUEBUTTON_USER:$BIGBLUEBUTTON_USER /var/bigbluebutton/
+  chown -R $BIGBLUEBUTTON_USER:$BIGBLUEBUTTON_USER /var/bigbluebutton
   echo -n "."
   
-  chmod o+rx /var/bigbluebutton/
+  chmod o+rx /var/bigbluebutton
  
   #
   # Setup for recordings XXX
@@ -368,6 +368,10 @@ if [ -f /usr/share/bbb-apps-akka/conf/application.conf ]; then
   fi
 fi
 
+if [ -d /var/bigbluebutton/screenshare ]; then
+  chown red5:red5 /var/bigbluebutton/screenshare
+fi
+
 #
 # Added to enable bbb-record-core to move files #8901
 #
@@ -389,16 +393,22 @@ if [ -d /var/kurento/screenshare ]; then
   chmod 0775 /var/kurento/screenshare
 fi
 
+if [ -f /usr/lib/systemd/system/red5.service ]; then
+  chown root:root /usr/lib/systemd/system/red5.service
+fi
+
 # Verify mediasoup raw media directories ownership and perms
-mkdir -p /var/mediasoup/recordings
-mkdir -p /var/mediasoup/screenshare
-chown bigbluebutton:bigbluebutton /var/mediasoup/recordings /var/mediasoup/screenshare
+if [ -d /var/mediasoup ]; then
+  chown bigbluebutton:bigbluebutton /var/mediasoup
+  chmod 0700 /var/mediasoup
+fi
 
-chmod 0700 /var/mediasoup/screenshare
-chmod 0700 /var/mediasoup/recordings
+if [ -d /var/mediasoup/recordings ]; then
+  chmod 0700 /var/mediasoup/recordings
+fi
 
-if [ -d /var/log/bbb-fsesl-akka ]; then
-  chown bigbluebutton:bigbluebutton /var/log/bbb-fsesl-akka
+if [ -d /var/mediasoup/screenshare ]; then
+  chmod 0700 /var/mediasoup/screenshare
 fi
 
 sed -i 's/worker_connections 768/worker_connections 4000/g' /etc/nginx/nginx.conf
