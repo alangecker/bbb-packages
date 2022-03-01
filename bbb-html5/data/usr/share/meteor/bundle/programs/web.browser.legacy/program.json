@@ -23,14 +23,14 @@
       "sri": "fu2hlG62NGfvrORtBClAQ0ms4GQbiVfvecuHSUzqZUCIFGqNyelVGzcmOfXj0UnBSzH5Ph+edvC9QD8+TaSzaQ=="
     },
     {
-      "path": "b1dc4b5f39164e55dc7e63aad20db099f6ef6bd2.css",
+      "path": "b8114bef96e9ea4da5db27c8c1f1ccef9733b981.css",
       "where": "client",
       "type": "css",
       "cacheable": true,
-      "url": "/b1dc4b5f39164e55dc7e63aad20db099f6ef6bd2.css?meteor_css_resource=true",
-      "size": 19758,
-      "hash": "b1dc4b5f39164e55dc7e63aad20db099f6ef6bd2",
-      "sri": "ycjoqVVzBnUXwhDOQQh7WYTIaZ4fAoYyzWHdVqM7ul94bTLHzWJUxP9WAeUH+r4ibRlmxO/2AhIWIBYgWhYfag=="
+      "url": "/b8114bef96e9ea4da5db27c8c1f1ccef9733b981.css?meteor_css_resource=true",
+      "size": 19784,
+      "hash": "b8114bef96e9ea4da5db27c8c1f1ccef9733b981",
+      "sri": "qouxmdXl4swTBCFxwq8cpp0t7KiGn4PbISmqt0CmoplcbbHGjZI1HN60A3q2sjEKDNNeKX1Brjk8L96FVcHlbQ=="
     },
     {
       "path": "app/compatibility/adapter.js",
@@ -198,8 +198,8 @@
       "type": "asset",
       "cacheable": false,
       "url": "/locales/en.json",
-      "size": 68186,
-      "hash": "5490a7bd6d793bc17a9c8fe6158db51fe1c93153",
+      "size": 69997,
+      "hash": "e52d94c3f58410124df5cb63a14713c7751b2ffc",
       "sri": null
     },
     {

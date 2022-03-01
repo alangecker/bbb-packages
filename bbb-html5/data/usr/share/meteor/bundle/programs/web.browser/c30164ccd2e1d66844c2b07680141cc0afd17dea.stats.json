@@ -1,0 +1,3955 @@
+{
+  "minifier": {
+    "name": "standard-minifier-js",
+    "version": "2.7.1"
+  },
+  "totalMinifiedBytes": 3564640,
+  "totalMinifiedGzipBytes": 896035,
+  "minifiedBytesByPackage": {
+    "packages/meteor.js": 9329,
+    "packages/meteor-base.js": 31,
+    "packages/mobile-experience.js": 37,
+    "packages/modules-runtime.js": 4254,
+    "packages/modules.js": [
+      1905715,
+      {
+        "node_modules": {
+          "meteor": {
+            "modules": {
+              "client.js": 126,
+              "css.js": 263,
+              "install-packages.js": 2098,
+              "process.js": 349,
+              "reify.js": 73,
+              "stubs.js": 99,
+              "node_modules": {
+                "reify": {
+                  "lib": {
+                    "runtime": {
+                      "index.js": 948,
+                      "utils.js": 1309,
+                      "entry.js": 3503
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "is-plain-object": {
+            "dist": {
+              "is-plain-object.mjs": 416
+            },
+            "package.json": 134
+          },
+          "klona": {
+            "dist": {
+              "index.mjs": 927
+            },
+            "package.json": 104
+          },
+          "tippy.js": {
+            "animations": {
+              "shift-away.css": 577
+            },
+            "dist": {
+              "svg-arrow.css": 950,
+              "tippy.esm.js": 6708,
+              "tippy.chunk.esm.js": 20777
+            },
+            "package.json": 114
+          },
+          "react": {
+            "package.json": 77,
+            "index.js": 76,
+            "cjs": {
+              "react.production.min.js": 6455,
+              "react.development.js": 270
+            }
+          },
+          "object-assign": {
+            "package.json": 67,
+            "index.js": 998
+          },
+          "prop-types": {
+            "checkPropTypes.js": 136,
+            "lib": {
+              "ReactPropTypesSecret.js": 96
+            },
+            "package.json": 81,
+            "index.js": 70,
+            "factoryWithTypeCheckers.js": 5680,
+            "factoryWithThrowingShims.js": 678
+          },
+          "react-dom": {
+            "package.json": 177,
+            "index.js": 289,
+            "cjs": {
+              "react-dom.production.min.js": 117173,
+              "react-dom.development.js": 276
+            },
+            "node_modules": {
+              "scheduler": {
+                "package.json": 80,
+                "index.js": 80,
+                "cjs": {
+                  "scheduler.production.min.js": 4853,
+                  "scheduler.development.js": 273,
+                  "scheduler-tracing.production.min.js": 625,
+                  "scheduler-tracing.development.js": 281
+                },
+                "tracing.js": 88
+              }
+            }
+          },
+          "@babel": {
+            "runtime": {
+              "helpers": {
+                "objectWithoutProperties.js": 368,
+                "objectWithoutPropertiesLoose.js": 216,
+                "objectSpread2.js": 688,
+                "defineProperty.js": 202,
+                "extends.js": 352,
+                "taggedTemplateLiteral.js": 196,
+                "classCallCheck.js": 176,
+                "createClass.js": 305,
+                "possibleConstructorReturn.js": 236,
+                "typeof.js": 445,
+                "assertThisInitialized.js": 205,
+                "getPrototypeOf.js": 276,
+                "inherits.js": 341,
+                "setPrototypeOf.js": 239,
+                "toConsumableArray.js": 256,
+                "arrayWithoutHoles.js": 161,
+                "arrayLikeToArray.js": 188,
+                "iterableToArray.js": 196,
+                "unsupportedIterableToArray.js": 401,
+                "nonIterableSpread.js": 251,
+                "slicedToArray.js": 262,
+                "arrayWithHoles.js": 125,
+                "iterableToArrayLimit.js": 386,
+                "nonIterableRest.js": 256,
+                "esm": {
+                  "extends.js": 252,
+                  "objectWithoutProperties.js": 355,
+                  "objectWithoutPropertiesLoose.js": 178,
+                  "typeof.js": 278,
+                  "defineProperty.js": 164,
+                  "createClass.js": 267,
+                  "inheritsLoose.js": 188,
+                  "setPrototypeOf.js": 139,
+                  "assertThisInitialized.js": 167,
+                  "toConsumableArray.js": 318,
+                  "arrayWithoutHoles.js": 148,
+                  "arrayLikeToArray.js": 150,
+                  "iterableToArray.js": 158,
+                  "unsupportedIterableToArray.js": 388,
+                  "nonIterableSpread.js": 213,
+                  "classCallCheck.js": 138,
+                  "slicedToArray.js": 324,
+                  "arrayWithHoles.js": 87,
+                  "iterableToArrayLimit.js": 348,
+                  "nonIterableRest.js": 218,
+                  "toArray.js": 313,
+                  "inherits.js": 328,
+                  "possibleConstructorReturn.js": 240,
+                  "getPrototypeOf.js": 176
+                },
+                "interopRequireDefault.js": 133
+              },
+              "package.json": 24248
+            }
+          },
+          "lodash": {
+            "package.json": 79,
+            "lodash.js": 72706,
+            "fp.js": 95,
+            "lodash.min.js": 72342,
+            "fp": {
+              "_baseConvert.js": 4263,
+              "_mapping.js": 6731,
+              "placeholder.js": 31
+            },
+            "isString.js": 175,
+            "_baseGetTag.js": 234,
+            "_Symbol.js": 58,
+            "_root.js": 147,
+            "_freeGlobal.js": 80,
+            "_getRawTag.js": 252,
+            "_objectToString.js": 95,
+            "isArray.js": 50,
+            "isObjectLike.js": 79,
+            "forOwn.js": 114,
+            "_baseForOwn.js": 101,
+            "_baseFor.js": 62,
+            "_createBaseFor.js": 169,
+            "keys.js": 134,
+            "_arrayLikeKeys.js": 469,
+            "_baseTimes.js": 96,
+            "isArguments.js": 249,
+            "_baseIsArguments.js": 135,
+            "isBuffer.js": 217,
+            "stubFalse.js": 52,
+            "_isIndex.js": 187,
+            "isTypedArray.js": 131,
+            "_baseIsTypedArray.js": 806,
+            "isLength.js": 112,
+            "_baseUnary.js": 76,
+            "_nodeUtil.js": 287,
+            "_baseKeys.js": 230,
+            "_isPrototype.js": 142,
+            "_nativeKeys.js": 74,
+            "_overArg.js": 81,
+            "isArrayLike.js": 121,
+            "isFunction.js": 245,
+            "isObject.js": 104,
+            "_castFunction.js": 97,
+            "identity.js": 53,
+            "isPlainObject.js": 384,
+            "_getPrototype.js": 84,
+            "map.js": 160,
+            "_arrayMap.js": 124,
+            "_baseIteratee.js": 239,
+            "_baseMatches.js": 221,
+            "_baseIsMatch.js": 409,
+            "_Stack.js": 309,
+            "_ListCache.js": 350,
+            "_listCacheClear.js": 72,
+            "_listCacheDelete.js": 196,
+            "_assocIndexOf.js": 120,
+            "eq.js": 71,
+            "_listCacheGet.js": 126,
+            "_listCacheHas.js": 100,
+            "_listCacheSet.js": 156,
+            "_stackClear.js": 99,
+            "_stackDelete.js": 104,
+            "_stackGet.js": 72,
+            "_stackHas.js": 72,
+            "_stackSet.js": 295,
+            "_Map.js": 78,
+            "_getNative.js": 126,
+            "_baseIsNative.js": 422,
+            "_isMasked.js": 163,
+            "_coreJsData.js": 73,
+            "_toSource.js": 159,
+            "_getValue.js": 73,
+            "_MapCache.js": 345,
+            "_mapCacheClear.js": 162,
+            "_Hash.js": 325,
+            "_hashClear.js": 109,
+            "_nativeCreate.js": 73,
+            "_hashDelete.js": 113,
+            "_hashGet.js": 227,
+            "_hashHas.js": 162,
+            "_hashSet.js": 185,
+            "_mapCacheDelete.js": 121,
+            "_getMapData.js": 143,
+            "_isKeyable.js": 142,
+            "_mapCacheGet.js": 93,
+            "_mapCacheHas.js": 93,
+            "_mapCacheSet.js": 144,
+            "_baseIsEqual.js": 177,
+            "_baseIsEqualDeep.js": 701,
+            "_equalArrays.js": 575,
+            "_SetCache.js": 240,
+            "_setCacheAdd.js": 113,
+            "_setCacheHas.js": 72,
+            "_arraySome.js": 120,
+            "_cacheHas.js": 62,
+            "_equalByTag.js": 951,
+            "_Uint8Array.js": 62,
+            "_mapToArray.js": 119,
+            "_setToArray.js": 113,
+            "_equalObjects.js": 703,
+            "_getAllKeys.js": 124,
+            "_baseGetAllKeys.js": 124,
+            "_arrayPush.js": 109,
+            "_getSymbols.js": 241,
+            "_arrayFilter.js": 138,
+            "stubArray.js": 52,
+            "_getTag.js": 594,
+            "_DataView.js": 83,
+            "_Promise.js": 82,
+            "_Set.js": 78,
+            "_WeakMap.js": 82,
+            "_getMatchData.js": 166,
+            "_isStrictComparable.js": 85,
+            "_matchesStrictComparable.js": 123,
+            "_baseMatchesProperty.js": 298,
+            "get.js": 120,
+            "_baseGet.js": 170,
+            "_castPath.js": 157,
+            "_isKey.js": 294,
+            "isSymbol.js": 151,
+            "_stringToPath.js": 310,
+            "_memoizeCapped.js": 147,
+            "memoize.js": 364,
+            "toString.js": 94,
+            "_baseToString.js": 298,
+            "_toKey.js": 151,
+            "hasIn.js": 113,
+            "_baseHasIn.js": 77,
+            "_hasPath.js": 330,
+            "property.js": 155,
+            "_baseProperty.js": 91,
+            "_basePropertyDeep.js": 100,
+            "_baseMap.js": 174,
+            "_baseEach.js": 85,
+            "_createBaseEach.js": 219,
+            "cloneDeep.js": 90,
+            "_baseClone.js": 1832,
+            "_arrayEach.js": 115,
+            "_assignValue.js": 189,
+            "_baseAssignValue.js": 161,
+            "_defineProperty.js": 139,
+            "_baseAssign.js": 107,
+            "_copyObject.js": 244,
+            "_baseAssignIn.js": 109,
+            "keysIn.js": 139,
+            "_baseKeysIn.js": 255,
+            "_nativeKeysIn.js": 106,
+            "_cloneBuffer.js": 296,
+            "_copyArray.js": 112,
+            "_copySymbols.js": 111,
+            "_copySymbolsIn.js": 113,
+            "_getSymbolsIn.js": 207,
+            "_getAllKeysIn.js": 128,
+            "_initCloneArray.js": 210,
+            "_initCloneByTag.js": 888,
+            "_cloneArrayBuffer.js": 139,
+            "_cloneDataView.js": 160,
+            "_cloneRegExp.js": 134,
+            "_cloneSymbol.js": 139,
+            "_cloneTypedArray.js": 156,
+            "_initCloneObject.js": 170,
+            "_baseCreate.js": 207,
+            "isMap.js": 117,
+            "_baseIsMap.js": 125,
+            "isSet.js": 117,
+            "_baseIsSet.js": 125
+          },
+          "react-intl": {
+            "package.json": 112,
+            "lib": {
+              "index.js": 1185,
+              "components": {
+                "createFormattedComponent.js": 1732,
+                "injectIntl.js": 732,
+                "useIntl.js": 228,
+                "provider.js": 3055,
+                "relative.js": 2230,
+                "plural.js": 364,
+                "message.js": 1386,
+                "html-message.js": 769
+              },
+              "utils.js": 1691,
+              "formatters": {
+                "number.js": 881,
+                "relativeTime.js": 646,
+                "dateTime.js": 1336,
+                "plural.js": 435,
+                "message.js": 1981,
+                "list.js": 797,
+                "displayName.js": 469
+              }
+            }
+          },
+          "intl-messageformat": {
+            "package.json": 115,
+            "lib": {
+              "index.js": 144,
+              "core.js": 2630,
+              "formatters.js": 4934
+            }
+          },
+          "intl-messageformat-parser": {
+            "package.json": 122,
+            "lib": {
+              "index.js": 322,
+              "parser.js": 17454,
+              "types.js": 1063,
+              "normalize.js": 778,
+              "skeleton.js": 5070
+            }
+          },
+          "intl-format-cache": {
+            "package.json": 109,
+            "lib": {
+              "index.js": 646
+            }
+          },
+          "@formatjs": {
+            "intl-utils": {
+              "package.json": 117,
+              "lib": {
+                "index.js": 1092,
+                "diff.js": 1057,
+                "polyfill-utils.js": 3250,
+                "aliases.js": 4582,
+                "parentLocales.js": 2212,
+                "invariant.js": 107,
+                "resolve-locale.js": 3579,
+                "get-canonical-locales.js": 175,
+                "units.js": 872,
+                "number-types.js": 560
+              }
+            }
+          },
+          "hoist-non-react-statics": {
+            "package.json": 120,
+            "dist": {
+              "hoist-non-react-statics.cjs.js": 984
+            }
+          },
+          "react-is": {
+            "package.json": 80,
+            "index.js": 79,
+            "cjs": {
+              "react-is.production.min.js": 2386,
+              "react-is.development.js": 273
+            }
+          },
+          "shallow-equal": {
+            "objects": {
+              "index.js": 279
+            }
+          },
+          "browser-bunyan": {
+            "package.json": 116,
+            "lib": {
+              "index.m.js": 10314
+            }
+          },
+          "@browser-bunyan": {
+            "console-formatted-stream": {
+              "package.json": 142,
+              "lib": {
+                "index.m.js": 1610
+              }
+            },
+            "console-raw-stream": {
+              "package.json": 136,
+              "lib": {
+                "index.m.js": 392
+              }
+            },
+            "server-stream": {
+              "package.json": 131,
+              "lib": {
+                "index.m.js": 2129
+              }
+            },
+            "levels": {
+              "package.json": 124,
+              "lib": {
+                "index.m.js": 357
+              }
+            }
+          },
+          "react-toastify": {
+            "package.json": 88,
+            "lib": {
+              "index.js": 439,
+              "components": {
+                "ToastContainer.js": 6788,
+                "Toast.js": 6501,
+                "ProgressBar.js": 1454,
+                "CloseButton.js": 483,
+                "Transitions.js": 589
+              },
+              "utils": {
+                "constant.js": 420,
+                "propValidator.js": 829,
+                "cssTransition.js": 1260,
+                "eventManager.js": 494
+              },
+              "toast.js": 1998
+            }
+          },
+          "classnames": {
+            "package.json": 80,
+            "index.js": 750
+          },
+          "react-transition-group": {
+            "TransitionGroup.js": 2137,
+            "utils": {
+              "ChildMapping.js": 1379,
+              "PropTypes.js": 222
+            },
+            "Transition.js": 4423,
+            "package.json": 92,
+            "index.js": 304,
+            "CSSTransition.js": 3001,
+            "ReplaceTransition.js": 2263
+          },
+          "react-lifecycles-compat": {
+            "package.json": 154,
+            "react-lifecycles-compat.es.js": 2358
+          },
+          "styled-components": {
+            "package.json": 309,
+            "dist": {
+              "styled-components.esm.js": 71,
+              "styled-components.browser.esm.js": 19751
+            }
+          },
+          "shallowequal": {
+            "package.json": 82,
+            "index.js": 440
+          },
+          "@emotion": {
+            "stylis": {
+              "package.json": 241,
+              "dist": {
+                "stylis.esm.js": 58,
+                "stylis.browser.esm.js": 8214
+              }
+            },
+            "unitless": {
+              "package.json": 255,
+              "dist": {
+                "unitless.esm.js": 62,
+                "unitless.browser.esm.js": 683
+              }
+            },
+            "is-prop-valid": {
+              "package.json": 290,
+              "dist": {
+                "is-prop-valid.esm.js": 72,
+                "is-prop-valid.browser.esm.js": 4195
+              }
+            },
+            "memoize": {
+              "package.json": 248,
+              "dist": {
+                "memoize.esm.js": 60,
+                "memoize.browser.esm.js": 119
+              }
+            }
+          },
+          "bowser": {
+            "package.json": 115,
+            "es5.js": 25963
+          },
+          "react-player": {
+            "package.json": 86,
+            "lib": {
+              "index.js": 278,
+              "players": {
+                "index.js": 3087,
+                "YouTube.js": 7671,
+                "SoundCloud.js": 5211,
+                "Vimeo.js": 5774,
+                "Facebook.js": 5076,
+                "Streamable.js": 4580,
+                "Wistia.js": 5764,
+                "Twitch.js": 5247,
+                "DailyMotion.js": 6189,
+                "Mixcloud.js": 4891,
+                "Vidyard.js": 5102,
+                "Kaltura.js": 4627,
+                "FilePlayer.js": 10886
+              },
+              "utils.js": 3862,
+              "patterns.js": 3991,
+              "ReactPlayer.js": 7517,
+              "props.js": 2460,
+              "Player.js": 7317,
+              "Preview.js": 4957
+            }
+          },
+          "load-script": {
+            "package.json": 65,
+            "index.js": 787
+          },
+          "deepmerge": {
+            "package.json": 82,
+            "dist": {
+              "cjs.js": 1585
+            }
+          },
+          "memoize-one": {
+            "package.json": 129,
+            "dist": {
+              "memoize-one.esm.js": 461
+            }
+          },
+          "react-fast-compare": {
+            "package.json": 88,
+            "index.js": 1630
+          },
+          "@jitsi": {
+            "sdp-interop": {
+              "package.json": 87,
+              "lib": {
+                "index.js": 41,
+                "interop.js": 7622,
+                "transform.js": 1467,
+                "array-equals.js": 253
+              },
+              "node_modules": {
+                "sdp-transform": {
+                  "package.json": 81,
+                  "lib": {
+                    "index.js": 322,
+                    "parser.js": 1455,
+                    "grammar.js": 5299,
+                    "writer.js": 1256
+                  }
+                }
+              }
+            }
+          },
+          "sdp-transform": {
+            "package.json": 81,
+            "lib": {
+              "index.js": 322,
+              "parser.js": 1495,
+              "grammar.js": 5736,
+              "writer.js": 1256
+            }
+          },
+          "use-context-selector": {
+            "package.json": 133,
+            "dist": {
+              "index.modern.js": 1685
+            }
+          },
+          "scheduler": {
+            "package.json": 80,
+            "index.js": 80,
+            "cjs": {
+              "scheduler.production.min.js": 4640,
+              "scheduler.development.js": 273
+            }
+          },
+          "react-modal": {
+            "package.json": 111,
+            "lib": {
+              "index.js": 206,
+              "components": {
+                "Modal.js": 5301,
+                "ModalPortal.js": 7261
+              },
+              "helpers": {
+                "focusManager.js": 1114,
+                "tabbable.js": 978,
+                "scopeTab.js": 711,
+                "ariaAppHider.js": 1054,
+                "safeHTMLElement.js": 258,
+                "classList.js": 571
+              }
+            }
+          },
+          "warning": {
+            "package.json": 100,
+            "browser.js": 62
+          },
+          "exenv": {
+            "package.json": 75,
+            "index.js": 593
+          },
+          "popper.js": {
+            "package.json": 118,
+            "dist": {
+              "esm": {
+                "popper.js": 22319
+              }
+            }
+          },
+          "react-virtualized": {
+            "package.json": 128,
+            "dist": {
+              "es": {
+                "index.js": 1305,
+                "ArrowKeyStepper": {
+                  "index.js": 240,
+                  "ArrowKeyStepper.js": 3910,
+                  "types.js": 124
+                },
+                "Grid": {
+                  "index.js": 1156,
+                  "Grid.js": 24342,
+                  "utils": {
+                    "calculateSizeAndPositionDataAndUpdateScrollOffset.js": 345,
+                    "ScalingCellSizeAndPositionManager.js": 3430,
+                    "CellSizeAndPositionManager.js": 3868,
+                    "maxElementSize.js": 199,
+                    "updateScrollIndexHelper.js": 688
+                  },
+                  "types.js": 1001,
+                  "defaultOverscanIndicesGetter.js": 618,
+                  "defaultCellRangeRenderer.js": 1140,
+                  "accessibilityOverscanIndicesGetter.js": 638
+                },
+                "utils": {
+                  "createCallbackMemoizer.js": 422,
+                  "requestAnimationTimeout.js": 431,
+                  "animationFrame.js": 484,
+                  "getUpdatedOffsetForIndex.js": 292
+                },
+                "AutoSizer": {
+                  "index.js": 108,
+                  "AutoSizer.js": 3397
+                },
+                "vendor": {
+                  "detectElementResize.js": 3890,
+                  "intervalTree.js": 4345,
+                  "binarySearchBounds.js": 1780
+                },
+                "CellMeasurer": {
+                  "index.js": 195,
+                  "CellMeasurer.js": 2721,
+                  "types.js": 127,
+                  "CellMeasurerCache.js": 3605
+                },
+                "Collection": {
+                  "index.js": 115,
+                  "Collection.js": 3649,
+                  "CollectionView.js": 7614,
+                  "utils": {
+                    "calculateSizeAndPositionData.js": 671
+                  },
+                  "SectionManager.js": 1772,
+                  "Section.js": 795,
+                  "types.js": 289
+                },
+                "ColumnSizer": {
+                  "index.js": 117,
+                  "ColumnSizer.js": 1625
+                },
+                "InfiniteLoader": {
+                  "index.js": 123,
+                  "InfiniteLoader.js": 3321
+                },
+                "List": {
+                  "index.js": 215,
+                  "List.js": 4385,
+                  "types.js": 281
+                },
+                "Masonry": {
+                  "index.js": 191,
+                  "createCellPositioner.js": 540,
+                  "Masonry.js": 7313,
+                  "PositionCache.js": 1299
+                },
+                "MultiGrid": {
+                  "index.js": 113,
+                  "MultiGrid.js": 14517,
+                  "CellMeasurerCacheDecorator.js": 2172
+                },
+                "ScrollSync": {
+                  "index.js": 115,
+                  "ScrollSync.js": 1353
+                },
+                "Table": {
+                  "index.js": 786,
+                  "createMultiSort.js": 763,
+                  "defaultCellDataGetter.js": 204,
+                  "types.js": 329,
+                  "defaultCellRenderer.js": 174,
+                  "defaultHeaderRowRenderer.js": 333,
+                  "defaultHeaderRenderer.js": 546,
+                  "SortIndicator.js": 677,
+                  "SortDirection.js": 67,
+                  "defaultRowRenderer.js": 953,
+                  "Column.js": 954,
+                  "Table.js": 9083
+                },
+                "WindowScroller": {
+                  "index.js": 181,
+                  "WindowScroller.js": 4725,
+                  "utils": {
+                    "onScroll.js": 1065,
+                    "dimensions.js": 848
+                  }
+                }
+              }
+            },
+            "node_modules": {
+              "dom-helpers": {
+                "scrollbarSize": {
+                  "package.json": 127
+                },
+                "esm": {
+                  "scrollbarSize.js": 386,
+                  "canUseDOM.js": 115
+                }
+              }
+            }
+          },
+          "clsx": {
+            "package.json": 102,
+            "dist": {
+              "clsx.m.js": 380
+            }
+          },
+          "wasm-check": {
+            "package.json": 117,
+            "dist": {
+              "wasm-check.min.js": 1865
+            }
+          },
+          "eventemitter2": {
+            "package.json": 97,
+            "lib": {
+              "eventemitter2.js": 9810
+            }
+          },
+          "immutability-helper": {
+            "package.json": 89,
+            "index.js": 3715
+          },
+          "invariant": {
+            "package.json": 104,
+            "browser.js": 385
+          },
+          "react-dropzone": {
+            "package.json": 115,
+            "dist": {
+              "es": {
+                "index.js": 8686,
+                "utils": {
+                  "index.js": 1503,
+                  "styles.js": 357
+                }
+              }
+            }
+          },
+          "attr-accept": {
+            "package.json": 86,
+            "dist": {
+              "index.js": 6978
+            }
+          },
+          "re-resizable": {
+            "package.json": 117,
+            "lib": {
+              "index.js": 12692
+            }
+          },
+          "react-draggable": {
+            "package.json": 134,
+            "dist": {
+              "react-draggable.js": 23604
+            }
+          },
+          "reconnecting-websocket": {
+            "package.json": 166,
+            "dist": {
+              "reconnecting-websocket-mjs.js": 10024
+            }
+          },
+          "@material-ui": {
+            "core": {
+              "Menu": {
+                "package.json": 60
+              },
+              "esm": {
+                "Menu": {
+                  "index.js": 57,
+                  "Menu.js": 2501
+                },
+                "styles": {
+                  "withStyles.js": 260,
+                  "defaultTheme.js": 97,
+                  "createTheme.js": 1347,
+                  "createBreakpoints.js": 1025,
+                  "createMixins.js": 913,
+                  "createPalette.js": 3400,
+                  "colorManipulator.js": 2765,
+                  "createTypography.js": 1548,
+                  "shadows.js": 1581,
+                  "shape.js": 60,
+                  "createSpacing.js": 564,
+                  "transitions.js": 1073,
+                  "zIndex.js": 140,
+                  "useTheme.js": 221,
+                  "index.js": 835,
+                  "createMuiStrictModeTheme.js": 308,
+                  "createStyles.js": 131,
+                  "makeStyles.js": 322,
+                  "responsiveFontSizes.js": 1187,
+                  "cssUtils.js": 1179,
+                  "styled.js": 294,
+                  "withTheme.js": 175
+                },
+                "colors": {
+                  "common.js": 71,
+                  "grey.js": 244,
+                  "indigo.js": 244,
+                  "pink.js": 244,
+                  "red.js": 244,
+                  "orange.js": 244,
+                  "blue.js": 244,
+                  "green.js": 244,
+                  "index.js": 826,
+                  "purple.js": 244,
+                  "deepPurple.js": 244,
+                  "lightBlue.js": 244,
+                  "cyan.js": 244,
+                  "teal.js": 244,
+                  "lightGreen.js": 244,
+                  "lime.js": 244,
+                  "yellow.js": 244,
+                  "amber.js": 244,
+                  "deepOrange.js": 244,
+                  "brown.js": 244,
+                  "blueGrey.js": 244
+                },
+                "Popover": {
+                  "index.js": 60,
+                  "Popover.js": 4868
+                },
+                "utils": {
+                  "debounce.js": 329,
+                  "ownerDocument.js": 94,
+                  "ownerWindow.js": 148,
+                  "createChainedFunction.js": 313,
+                  "deprecatedPropType.js": 91,
+                  "setRef.js": 103,
+                  "useForkRef.js": 233,
+                  "useEventCallback.js": 287,
+                  "getScrollbarSize.js": 313,
+                  "index.js": 902,
+                  "capitalize.js": 215,
+                  "createSvgIcon.js": 327,
+                  "isMuiElement.js": 157,
+                  "requirePropFactory.js": 95,
+                  "unsupportedProp.js": 84,
+                  "useControlled.js": 295,
+                  "unstable_useId.js": 234,
+                  "useIsFocusVisible.js": 1304,
+                  "scrollLeft.js": 744
+                },
+                "Modal": {
+                  "index.js": 110,
+                  "Modal.js": 3852,
+                  "ModalManager.js": 3253,
+                  "SimpleBackdrop.js": 701
+                },
+                "Portal": {
+                  "index.js": 59,
+                  "Portal.js": 951
+                },
+                "Unstable_TrapFocus": {
+                  "index.js": 71,
+                  "Unstable_TrapFocus.js": 1770
+                },
+                "Grow": {
+                  "index.js": 57,
+                  "Grow.js": 2633
+                },
+                "transitions": {
+                  "utils.js": 266
+                },
+                "Paper": {
+                  "index.js": 58,
+                  "Paper.js": 1207
+                },
+                "MenuList": {
+                  "index.js": 61,
+                  "MenuList.js": 3278
+                },
+                "List": {
+                  "index.js": 57,
+                  "List.js": 1064,
+                  "ListContext.js": 101
+                },
+                "index.js": 10853,
+                "SvgIcon": {
+                  "index.js": 60,
+                  "SvgIcon.js": 1792
+                },
+                "Accordion": {
+                  "index.js": 62,
+                  "Accordion.js": 2769,
+                  "AccordionContext.js": 101
+                },
+                "Collapse": {
+                  "index.js": 61,
+                  "Collapse.js": 3506
+                },
+                "AccordionActions": {
+                  "index.js": 69,
+                  "AccordionActions.js": 781
+                },
+                "AccordionDetails": {
+                  "index.js": 69,
+                  "AccordionDetails.js": 655
+                },
+                "AccordionSummary": {
+                  "index.js": 69,
+                  "AccordionSummary.js": 2192
+                },
+                "ButtonBase": {
+                  "index.js": 63,
+                  "ButtonBase.js": 4396,
+                  "TouchRipple.js": 4005,
+                  "Ripple.js": 800
+                },
+                "IconButton": {
+                  "index.js": 63,
+                  "IconButton.js": 2398
+                },
+                "AppBar": {
+                  "index.js": 59,
+                  "AppBar.js": 1730
+                },
+                "Avatar": {
+                  "index.js": 59,
+                  "Avatar.js": 2034
+                },
+                "internal": {
+                  "svg-icons": {
+                    "Person.js": 283,
+                    "MoreHoriz.js": 324,
+                    "CheckBoxOutlineBlank.js": 278,
+                    "CheckBox.js": 307,
+                    "IndeterminateCheckBox.js": 282,
+                    "Cancel.js": 349,
+                    "ArrowDropDown.js": 195,
+                    "RadioButtonUnchecked.js": 312,
+                    "RadioButtonChecked.js": 357,
+                    "CheckCircle.js": 265,
+                    "Warning.js": 225,
+                    "KeyboardArrowLeft.js": 235,
+                    "KeyboardArrowRight.js": 234,
+                    "ArrowDownward.js": 243
+                  },
+                  "SwitchBase.js": 2062,
+                  "animate.js": 646
+                },
+                "Backdrop": {
+                  "index.js": 61,
+                  "Backdrop.js": 1118
+                },
+                "Fade": {
+                  "index.js": 57,
+                  "Fade.js": 2045
+                },
+                "Badge": {
+                  "index.js": 58,
+                  "Badge.js": 5438
+                },
+                "BottomNavigation": {
+                  "index.js": 69,
+                  "BottomNavigation.js": 1138
+                },
+                "BottomNavigationAction": {
+                  "index.js": 75,
+                  "BottomNavigationAction.js": 1735
+                },
+                "Box": {
+                  "index.js": 86,
+                  "Box.js": 443
+                },
+                "Breadcrumbs": {
+                  "index.js": 64,
+                  "Breadcrumbs.js": 2093,
+                  "BreadcrumbCollapsed.js": 1059
+                },
+                "Typography": {
+                  "index.js": 63,
+                  "Typography.js": 2339
+                },
+                "Button": {
+                  "index.js": 59,
+                  "Button.js": 5713
+                },
+                "ButtonGroup": {
+                  "index.js": 64,
+                  "ButtonGroup.js": 3925
+                },
+                "Card": {
+                  "index.js": 57,
+                  "Card.js": 689
+                },
+                "CardActionArea": {
+                  "index.js": 67,
+                  "CardActionArea.js": 1257
+                },
+                "CardActions": {
+                  "index.js": 64,
+                  "CardActions.js": 750
+                },
+                "CardContent": {
+                  "index.js": 64,
+                  "CardContent.js": 677
+                },
+                "CardHeader": {
+                  "index.js": 63,
+                  "CardHeader.js": 1581
+                },
+                "CardMedia": {
+                  "index.js": 62,
+                  "CardMedia.js": 1100
+                },
+                "Checkbox": {
+                  "index.js": 61,
+                  "Checkbox.js": 2310
+                },
+                "FormControl": {
+                  "useFormControl.js": 171,
+                  "FormControlContext.js": 168,
+                  "formControlState.js": 199,
+                  "index.js": 120,
+                  "FormControl.js": 2334
+                },
+                "Chip": {
+                  "index.js": 57,
+                  "Chip.js": 6744
+                },
+                "CircularProgress": {
+                  "index.js": 69,
+                  "CircularProgress.js": 2720
+                },
+                "ClickAwayListener": {
+                  "index.js": 70,
+                  "ClickAwayListener.js": 1828
+                },
+                "Container": {
+                  "index.js": 62,
+                  "Container.js": 1787
+                },
+                "CssBaseline": {
+                  "index.js": 64,
+                  "CssBaseline.js": 981
+                },
+                "Dialog": {
+                  "index.js": 59,
+                  "Dialog.js": 4507
+                },
+                "DialogActions": {
+                  "index.js": 66,
+                  "DialogActions.js": 794
+                },
+                "DialogContent": {
+                  "index.js": 66,
+                  "DialogContent.js": 914
+                },
+                "DialogContentText": {
+                  "index.js": 70,
+                  "DialogContentText.js": 502
+                },
+                "DialogTitle": {
+                  "index.js": 64,
+                  "DialogTitle.js": 817
+                },
+                "Divider": {
+                  "index.js": 60,
+                  "Divider.js": 1426
+                },
+                "Drawer": {
+                  "index.js": 59,
+                  "Drawer.js": 3103
+                },
+                "Slide": {
+                  "index.js": 58,
+                  "Slide.js": 3447
+                },
+                "ExpansionPanel": {
+                  "index.js": 67,
+                  "ExpansionPanel.js": 2789,
+                  "ExpansionPanelContext.js": 101
+                },
+                "ExpansionPanelActions": {
+                  "index.js": 74,
+                  "ExpansionPanelActions.js": 791
+                },
+                "ExpansionPanelDetails": {
+                  "index.js": 74,
+                  "ExpansionPanelDetails.js": 665
+                },
+                "ExpansionPanelSummary": {
+                  "index.js": 74,
+                  "ExpansionPanelSummary.js": 2190
+                },
+                "Fab": {
+                  "index.js": 56,
+                  "Fab.js": 3010
+                },
+                "FilledInput": {
+                  "index.js": 64,
+                  "FilledInput.js": 3278
+                },
+                "InputBase": {
+                  "index.js": 62,
+                  "InputBase.js": 6324,
+                  "utils.js": 339
+                },
+                "TextareaAutosize": {
+                  "index.js": 69,
+                  "TextareaAutosize.js": 2254
+                },
+                "FormControlLabel": {
+                  "index.js": 69,
+                  "FormControlLabel.js": 1944
+                },
+                "FormGroup": {
+                  "index.js": 62,
+                  "FormGroup.js": 706
+                },
+                "FormHelperText": {
+                  "index.js": 67,
+                  "FormHelperText.js": 1645
+                },
+                "FormLabel": {
+                  "index.js": 62,
+                  "FormLabel.js": 1708
+                },
+                "Grid": {
+                  "index.js": 57,
+                  "Grid.js": 3999
+                },
+                "GridList": {
+                  "index.js": 61,
+                  "GridList.js": 1203
+                },
+                "GridListTile": {
+                  "index.js": 65,
+                  "GridListTile.js": 2051
+                },
+                "GridListTileBar": {
+                  "index.js": 68,
+                  "GridListTileBar.js": 1893
+                },
+                "Hidden": {
+                  "index.js": 59,
+                  "Hidden.js": 1005,
+                  "HiddenJs.js": 1022,
+                  "HiddenCss.js": 1195
+                },
+                "withWidth": {
+                  "index.js": 96,
+                  "withWidth.js": 1618
+                },
+                "useMediaQuery": {
+                  "index.js": 66,
+                  "useMediaQuery.js": 913
+                },
+                "Icon": {
+                  "index.js": 57,
+                  "Icon.js": 1463
+                },
+                "ImageList": {
+                  "index.js": 62,
+                  "ImageList.js": 1313
+                },
+                "ImageListItem": {
+                  "index.js": 66,
+                  "ImageListItem.js": 2047
+                },
+                "ImageListItemBar": {
+                  "index.js": 69,
+                  "ImageListItemBar.js": 1966
+                },
+                "Input": {
+                  "index.js": 58,
+                  "Input.js": 2219
+                },
+                "InputAdornment": {
+                  "index.js": 67,
+                  "InputAdornment.js": 1552
+                },
+                "InputLabel": {
+                  "index.js": 63,
+                  "InputLabel.js": 2212
+                },
+                "LinearProgress": {
+                  "index.js": 67,
+                  "LinearProgress.js": 3871
+                },
+                "Link": {
+                  "index.js": 57,
+                  "Link.js": 1935
+                },
+                "ListItem": {
+                  "index.js": 61,
+                  "ListItem.js": 3246
+                },
+                "ListItemAvatar": {
+                  "index.js": 67,
+                  "ListItemAvatar.js": 772
+                },
+                "ListItemIcon": {
+                  "index.js": 65,
+                  "ListItemIcon.js": 843
+                },
+                "ListItemSecondaryAction": {
+                  "index.js": 76,
+                  "ListItemSecondaryAction.js": 705
+                },
+                "ListItemText": {
+                  "index.js": 65,
+                  "ListItemText.js": 1468
+                },
+                "ListSubheader": {
+                  "index.js": 66,
+                  "ListSubheader.js": 1368
+                },
+                "MenuItem": {
+                  "index.js": 61,
+                  "MenuItem.js": 1365
+                },
+                "MobileStepper": {
+                  "index.js": 66,
+                  "MobileStepper.js": 2016
+                },
+                "NativeSelect": {
+                  "index.js": 65,
+                  "NativeSelect.js": 2211,
+                  "NativeSelectInput.js": 875
+                },
+                "NoSsr": {
+                  "index.js": 58,
+                  "NoSsr.js": 471
+                },
+                "OutlinedInput": {
+                  "index.js": 66,
+                  "OutlinedInput.js": 2470,
+                  "NotchedOutline.js": 2203
+                },
+                "Popper": {
+                  "index.js": 59,
+                  "Popper.js": 2685
+                },
+                "Radio": {
+                  "index.js": 58,
+                  "Radio.js": 2086,
+                  "RadioButtonIcon.js": 1048
+                },
+                "RadioGroup": {
+                  "useRadioGroup.js": 170,
+                  "RadioGroupContext.js": 99,
+                  "index.js": 117,
+                  "RadioGroup.js": 1259
+                },
+                "RootRef": {
+                  "index.js": 60,
+                  "RootRef.js": 1667
+                },
+                "Select": {
+                  "index.js": 59,
+                  "Select.js": 2188,
+                  "SelectInput.js": 5170
+                },
+                "Slider": {
+                  "index.js": 59,
+                  "Slider.js": 11648,
+                  "ValueLabel.js": 1219
+                },
+                "Snackbar": {
+                  "index.js": 61,
+                  "Snackbar.js": 3895
+                },
+                "SnackbarContent": {
+                  "index.js": 68,
+                  "SnackbarContent.js": 1441
+                },
+                "Step": {
+                  "index.js": 57,
+                  "Step.js": 1457
+                },
+                "StepButton": {
+                  "index.js": 63,
+                  "StepButton.js": 1400
+                },
+                "StepLabel": {
+                  "index.js": 62,
+                  "StepLabel.js": 2180
+                },
+                "StepIcon": {
+                  "index.js": 61,
+                  "StepIcon.js": 1299
+                },
+                "StepConnector": {
+                  "index.js": 66,
+                  "StepConnector.js": 1416
+                },
+                "StepContent": {
+                  "index.js": 64,
+                  "StepContent.js": 1361
+                },
+                "Stepper": {
+                  "index.js": 60,
+                  "Stepper.js": 1505
+                },
+                "SwipeableDrawer": {
+                  "index.js": 68,
+                  "SwipeableDrawer.js": 6974,
+                  "SwipeArea.js": 1092
+                },
+                "Switch": {
+                  "index.js": 59,
+                  "Switch.js": 3476
+                },
+                "Tab": {
+                  "index.js": 56,
+                  "Tab.js": 2627
+                },
+                "Table": {
+                  "index.js": 58,
+                  "Table.js": 1288,
+                  "TableContext.js": 99,
+                  "Tablelvl2Context.js": 99
+                },
+                "TableBody": {
+                  "index.js": 62,
+                  "TableBody.js": 804
+                },
+                "TableCell": {
+                  "index.js": 62,
+                  "TableCell.js": 2653
+                },
+                "TableContainer": {
+                  "index.js": 67,
+                  "TableContainer.js": 665
+                },
+                "TableFooter": {
+                  "index.js": 64,
+                  "TableFooter.js": 811
+                },
+                "TableHead": {
+                  "index.js": 62,
+                  "TableHead.js": 807
+                },
+                "TablePagination": {
+                  "index.js": 68,
+                  "TablePagination.js": 3443,
+                  "TablePaginationActions.js": 1265
+                },
+                "Toolbar": {
+                  "index.js": 60,
+                  "Toolbar.js": 1082
+                },
+                "TableRow": {
+                  "index.js": 61,
+                  "TableRow.js": 1226
+                },
+                "TableSortLabel": {
+                  "index.js": 67,
+                  "TableSortLabel.js": 1703
+                },
+                "Tabs": {
+                  "index.js": 57,
+                  "Tabs.js": 6770,
+                  "ScrollbarSize.js": 859,
+                  "TabIndicator.js": 1005
+                },
+                "TabScrollButton": {
+                  "index.js": 68,
+                  "TabScrollButton.js": 1176
+                },
+                "TextField": {
+                  "index.js": 62,
+                  "TextField.js": 2833
+                },
+                "Tooltip": {
+                  "index.js": 60,
+                  "Tooltip.js": 8113
+                },
+                "useScrollTrigger": {
+                  "index.js": 69,
+                  "useScrollTrigger.js": 936
+                },
+                "withMobileDialog": {
+                  "index.js": 69,
+                  "withMobileDialog.js": 485
+                },
+                "Zoom": {
+                  "index.js": 57,
+                  "Zoom.js": 2078
+                }
+              },
+              "node_modules": {
+                "react-transition-group": {
+                  "package.json": 118,
+                  "esm": {
+                    "index.js": 340,
+                    "CSSTransition.js": 2916,
+                    "Transition.js": 4205,
+                    "config.js": 49,
+                    "utils": {
+                      "PropTypes.js": 137,
+                      "ChildMapping.js": 1293
+                    },
+                    "TransitionGroupContext.js": 99,
+                    "ReplaceTransition.js": 2143,
+                    "TransitionGroup.js": 1838,
+                    "SwitchTransition.js": 2208
+                  }
+                },
+                "dom-helpers": {
+                  "addClass": {
+                    "package.json": 112
+                  },
+                  "esm": {
+                    "addClass.js": 276,
+                    "hasClass.js": 177,
+                    "removeClass.js": 342
+                  },
+                  "removeClass": {
+                    "package.json": 121
+                  }
+                },
+                "popper.js": {
+                  "package.json": 122,
+                  "dist": {
+                    "esm": {
+                      "popper.js": 22323
+                    }
+                  }
+                }
+              },
+              "package.json": 114,
+              "MenuItem": {
+                "package.json": 64
+              }
+            },
+            "utils": {
+              "package.json": 115,
+              "esm": {
+                "index.js": 588,
+                "chainPropTypes.js": 91,
+                "deepmerge.js": 498,
+                "elementAcceptingRef.js": 703,
+                "elementTypeAcceptingRef.js": 630,
+                "exactProp.js": 259,
+                "formatMuiErrorMessage.js": 272,
+                "getDisplayName.js": 760,
+                "HTMLElementType.js": 86,
+                "ponyfillGlobal.js": 161,
+                "refType.js": 121
+              }
+            },
+            "styles": {
+              "package.json": 116,
+              "esm": {
+                "index.js": 1254,
+                "createGenerateClassName": {
+                  "index.js": 76,
+                  "createGenerateClassName.js": 740
+                },
+                "ThemeProvider": {
+                  "nested.js": 125,
+                  "index.js": 66,
+                  "ThemeProvider.js": 651
+                },
+                "createStyles": {
+                  "index.js": 65,
+                  "createStyles.js": 67
+                },
+                "getThemeProps": {
+                  "index.js": 66,
+                  "getThemeProps.js": 195
+                },
+                "jssPreset": {
+                  "index.js": 62,
+                  "jssPreset.js": 525
+                },
+                "makeStyles": {
+                  "index.js": 63,
+                  "makeStyles.js": 3245,
+                  "multiKeyStore.js": 236,
+                  "indexCounter.js": 83
+                },
+                "mergeClasses": {
+                  "index.js": 65,
+                  "mergeClasses.js": 418
+                },
+                "useTheme": {
+                  "index.js": 61,
+                  "useTheme.js": 177,
+                  "ThemeContext.js": 107
+                },
+                "StylesProvider": {
+                  "index.js": 106,
+                  "StylesProvider.js": 1138
+                },
+                "getStylesCreator": {
+                  "index.js": 69,
+                  "getStylesCreator.js": 543,
+                  "noopTheme.js": 46
+                },
+                "ServerStyleSheets": {
+                  "index.js": 70,
+                  "ServerStyleSheets.js": 1072
+                },
+                "styled": {
+                  "index.js": 59,
+                  "styled.js": 1409
+                },
+                "withStyles": {
+                  "index.js": 63,
+                  "withStyles.js": 1140
+                },
+                "withTheme": {
+                  "index.js": 96,
+                  "withTheme.js": 771
+                }
+              }
+            },
+            "system": {
+              "package.json": 116,
+              "esm": {
+                "index.js": 938,
+                "borders.js": 710,
+                "style.js": 693,
+                "responsivePropType.js": 93,
+                "breakpoints.js": 1078,
+                "merge.js": 139,
+                "compose.js": 419,
+                "styleFunctionSx.js": 755,
+                "display.js": 480,
+                "flexbox.js": 706,
+                "grid.js": 724,
+                "palette.js": 284,
+                "positions.js": 366,
+                "shadows.js": 128,
+                "sizing.js": 677,
+                "spacing.js": 1515,
+                "memoize.js": 126,
+                "typography.js": 538
+              }
+            }
+          },
+          "jss-plugin-rule-value-function": {
+            "package.json": 187,
+            "dist": {
+              "jss-plugin-rule-value-function.esm.js": 572
+            }
+          },
+          "tiny-warning": {
+            "package.json": 132,
+            "dist": {
+              "tiny-warning.esm.js": 68
+            }
+          },
+          "jss": {
+            "package.json": 106,
+            "dist": {
+              "jss.esm.js": 22103
+            }
+          },
+          "is-in-browser": {
+            "package.json": 112,
+            "dist": {
+              "module.js": 427
+            }
+          },
+          "jss-plugin-global": {
+            "package.json": 148,
+            "dist": {
+              "jss-plugin-global.esm.js": 1897
+            }
+          },
+          "jss-plugin-nested": {
+            "package.json": 148,
+            "dist": {
+              "jss-plugin-nested.esm.js": 1047
+            }
+          },
+          "jss-plugin-camel-case": {
+            "package.json": 160,
+            "dist": {
+              "jss-plugin-camel-case.esm.js": 528
+            }
+          },
+          "hyphenate-style-name": {
+            "package.json": 112,
+            "index.js": 206
+          },
+          "jss-plugin-default-unit": {
+            "package.json": 166,
+            "dist": {
+              "jss-plugin-default-unit.esm.js": 3337
+            }
+          },
+          "jss-plugin-vendor-prefixer": {
+            "package.json": 175,
+            "dist": {
+              "jss-plugin-vendor-prefixer.esm.js": 616
+            }
+          },
+          "css-vendor": {
+            "package.json": 130,
+            "dist": {
+              "css-vendor.esm.js": 4902
+            }
+          },
+          "jss-plugin-props-sort": {
+            "package.json": 160,
+            "dist": {
+              "jss-plugin-props-sort.esm.js": 278
+            }
+          },
+          "react-tether": {
+            "package.json": 93,
+            "lib": {
+              "react-tether.js": 248,
+              "TetherComponent.js": 8522
+            }
+          },
+          "tether": {
+            "package.json": 85,
+            "dist": {
+              "js": {
+                "tether.js": 25215
+              }
+            }
+          },
+          "makeup-screenreader-trap": {
+            "package.json": 94,
+            "index.js": 981,
+            "util.js": 858
+          },
+          "react-toggle": {
+            "package.json": 97,
+            "dist": {
+              "component": {
+                "index.js": 5019,
+                "check.js": 449,
+                "x.js": 493,
+                "util.js": 265
+              }
+            }
+          },
+          "react-tabs": {
+            "package.json": 106,
+            "esm": {
+              "index.js": 270,
+              "components": {
+                "Tabs.js": 1762,
+                "UncontrolledTabs.js": 4718,
+                "TabList.js": 989,
+                "Tab.js": 1696,
+                "TabPanel.js": 1224
+              },
+              "helpers": {
+                "propTypes.js": 1898,
+                "childrenDeepMap.js": 1069,
+                "elementTypes.js": 243,
+                "uuid.js": 119,
+                "count.js": 316
+              }
+            }
+          },
+          "dom-helpers": {
+            "class": {
+              "addClass.js": 357,
+              "hasClass.js": 212,
+              "removeClass.js": 340
+            }
+          },
+          "react-autosize-textarea": {
+            "package.json": 88,
+            "lib": {
+              "index.js": 104,
+              "TextareaAutosize.js": 2702
+            }
+          },
+          "autosize": {
+            "package.json": 86,
+            "dist": {
+              "autosize.js": 3633
+            }
+          },
+          "line-height": {
+            "package.json": 88,
+            "lib": {
+              "line-height.js": 754
+            }
+          },
+          "computed-style": {
+            "package.json": 106,
+            "dist": {
+              "computedStyle.commonjs.js": 171
+            }
+          },
+          "fastdom": {
+            "package.json": 80,
+            "fastdom.js": 1474
+          },
+          "react-color": {
+            "package.json": 107,
+            "es": {
+              "index.js": 1088,
+              "components": {
+                "alpha": {
+                  "Alpha.js": 918,
+                  "AlphaPointer.js": 504
+                },
+                "common": {
+                  "index.js": 366,
+                  "Alpha.js": 3616,
+                  "Checkboard.js": 833,
+                  "EditableInput.js": 4058,
+                  "Hue.js": 3623,
+                  "Raised.js": 1377,
+                  "Saturation.js": 3838,
+                  "ColorWrap.js": 2277,
+                  "Swatch.js": 1084
+                },
+                "block": {
+                  "Block.js": 2171,
+                  "BlockSwatches.js": 702
+                },
+                "circle": {
+                  "Circle.js": 1410,
+                  "CircleSwatch.js": 916
+                },
+                "chrome": {
+                  "Chrome.js": 2638,
+                  "ChromeFields.js": 5638,
+                  "ChromePointer.js": 410,
+                  "ChromePointerCircle.js": 368
+                },
+                "compact": {
+                  "Compact.js": 1686,
+                  "CompactColor.js": 958,
+                  "CompactFields.js": 1624
+                },
+                "github": {
+                  "Github.js": 2403,
+                  "GithubSwatch.js": 595
+                },
+                "hue": {
+                  "Hue.js": 1061,
+                  "HuePointer.js": 505
+                },
+                "material": {
+                  "Material.js": 2118
+                },
+                "photoshop": {
+                  "Photoshop.js": 3686,
+                  "PhotoshopFields.js": 2660,
+                  "PhotoshopPointerCircle.js": 465,
+                  "PhotoshopPointer.js": 1004,
+                  "PhotoshopButton.js": 634,
+                  "PhotoshopPreviews.js": 879
+                },
+                "sketch": {
+                  "Sketch.js": 2988,
+                  "SketchFields.js": 1875,
+                  "SketchPresetColors.js": 1353
+                },
+                "slider": {
+                  "Slider.js": 915,
+                  "SliderSwatches.js": 1179,
+                  "SliderSwatch.js": 661,
+                  "SliderPointer.js": 410
+                },
+                "swatches": {
+                  "Swatches.js": 2673,
+                  "SwatchesGroup.js": 608,
+                  "SwatchesColor.js": 1118
+                },
+                "twitter": {
+                  "Twitter.js": 2908
+                },
+                "google": {
+                  "Google.js": 2089,
+                  "GooglePointerCircle.js": 627,
+                  "GooglePointer.js": 572,
+                  "GoogleFields.js": 3020
+                }
+              },
+              "helpers": {
+                "alpha.js": 581,
+                "checkboard.js": 491,
+                "hue.js": 630,
+                "saturation.js": 446,
+                "color.js": 1118,
+                "interaction.js": 1712
+              }
+            }
+          },
+          "reactcss": {
+            "package.json": 82,
+            "lib": {
+              "index.js": 629,
+              "flattenNames.js": 593,
+              "mergeClasses.js": 653,
+              "autoprefix.js": 1520,
+              "components": {
+                "hover.js": 1574,
+                "active.js": 1576
+              },
+              "loop.js": 341
+            }
+          },
+          "lodash-es": {
+            "merge.js": 179,
+            "_baseMerge.js": 536,
+            "_Stack.js": 484,
+            "_ListCache.js": 497,
+            "_listCacheClear.js": 79,
+            "_listCacheDelete.js": 235,
+            "_assocIndexOf.js": 155,
+            "eq.js": 78,
+            "_listCacheGet.js": 161,
+            "_listCacheHas.js": 135,
+            "_listCacheSet.js": 191,
+            "_stackClear.js": 134,
+            "_stackDelete.js": 111,
+            "_stackGet.js": 79,
+            "_stackHas.js": 79,
+            "_stackSet.js": 390,
+            "_Map.js": 149,
+            "_getNative.js": 189,
+            "_baseIsNative.js": 545,
+            "isFunction.js": 312,
+            "_baseGetTag.js": 329,
+            "_Symbol.js": 99,
+            "_root.js": 186,
+            "_freeGlobal.js": 87,
+            "_getRawTag.js": 291,
+            "_objectToString.js": 102,
+            "isObject.js": 111,
+            "_isMasked.js": 202,
+            "_coreJsData.js": 114,
+            "_toSource.js": 166,
+            "_getValue.js": 80,
+            "_MapCache.js": 492,
+            "_mapCacheClear.js": 253,
+            "_Hash.js": 472,
+            "_hashClear.js": 144,
+            "_nativeCreate.js": 114,
+            "_hashDelete.js": 120,
+            "_hashGet.js": 266,
+            "_hashHas.js": 201,
+            "_hashSet.js": 224,
+            "_mapCacheDelete.js": 156,
+            "_getMapData.js": 178,
+            "_isKeyable.js": 149,
+            "_mapCacheGet.js": 128,
+            "_mapCacheHas.js": 128,
+            "_mapCacheSet.js": 179,
+            "_assignMergeValue.js": 211,
+            "_baseAssignValue.js": 196,
+            "_defineProperty.js": 178,
+            "_baseFor.js": 103,
+            "_createBaseFor.js": 176,
+            "_baseMergeDeep.js": 1144,
+            "_cloneBuffer.js": 335,
+            "_cloneTypedArray.js": 191,
+            "_cloneArrayBuffer.js": 174,
+            "_Uint8Array.js": 103,
+            "_copyArray.js": 119,
+            "_initCloneObject.js": 261,
+            "_baseCreate.js": 246,
+            "_getPrototype.js": 125,
+            "_overArg.js": 88,
+            "_isPrototype.js": 149,
+            "isArguments.js": 316,
+            "_baseIsArguments.js": 202,
+            "isObjectLike.js": 86,
+            "isArray.js": 57,
+            "isArrayLikeObject.js": 172,
+            "isArrayLike.js": 184,
+            "isLength.js": 119,
+            "isBuffer.js": 284,
+            "stubFalse.js": 59,
+            "isPlainObject.js": 479,
+            "isTypedArray.js": 226,
+            "_baseIsTypedArray.js": 901,
+            "_baseUnary.js": 83,
+            "_nodeUtil.js": 326,
+            "_safeGet.js": 129,
+            "toPlainObject.js": 165,
+            "_copyObject.js": 307,
+            "_assignValue.js": 256,
+            "keysIn.js": 230,
+            "_arrayLikeKeys.js": 648,
+            "_baseTimes.js": 103,
+            "_isIndex.js": 194,
+            "_baseKeysIn.js": 350,
+            "_nativeKeysIn.js": 113,
+            "_createAssigner.js": 388,
+            "_baseRest.js": 224,
+            "identity.js": 60,
+            "_overRest.js": 313,
+            "_apply.js": 218,
+            "_setToString.js": 153,
+            "_baseSetToString.js": 289,
+            "constant.js": 79,
+            "_shortOut.js": 212,
+            "_isIterateeCall.js": 346,
+            "throttle.js": 357,
+            "debounce.js": 1094,
+            "now.js": 122,
+            "toNumber.js": 507,
+            "_baseTrim.js": 165,
+            "_trimmedEndIndex.js": 117,
+            "isSymbol.js": 218,
+            "each.js": 63,
+            "forEach.js": 279,
+            "_arrayEach.js": 122,
+            "_baseEach.js": 154,
+            "_baseForOwn.js": 164,
+            "keys.js": 225,
+            "_baseKeys.js": 297,
+            "_nativeKeys.js": 115,
+            "_createBaseEach.js": 254,
+            "_castFunction.js": 132,
+            "map.js": 279,
+            "_arrayMap.js": 131,
+            "_baseIteratee.js": 386,
+            "_baseMatches.js": 312,
+            "_baseIsMatch.js": 476,
+            "_baseIsEqual.js": 240,
+            "_baseIsEqualDeep.js": 936,
+            "_equalArrays.js": 670,
+            "_SetCache.js": 331,
+            "_setCacheAdd.js": 120,
+            "_setCacheHas.js": 79,
+            "_arraySome.js": 127,
+            "_cacheHas.js": 69,
+            "_equalByTag.js": 1130,
+            "_mapToArray.js": 126,
+            "_setToArray.js": 120,
+            "_equalObjects.js": 742,
+            "_getAllKeys.js": 215,
+            "_baseGetAllKeys.js": 187,
+            "_arrayPush.js": 116,
+            "_getSymbols.js": 308,
+            "_arrayFilter.js": 145,
+            "stubArray.js": 59,
+            "_getTag.js": 801,
+            "_DataView.js": 154,
+            "_Promise.js": 153,
+            "_Set.js": 149,
+            "_WeakMap.js": 153,
+            "_getMatchData.js": 229,
+            "_isStrictComparable.js": 120,
+            "_matchesStrictComparable.js": 130,
+            "_baseMatchesProperty.js": 505,
+            "get.js": 155,
+            "_baseGet.js": 233,
+            "_castPath.js": 276,
+            "_isKey.js": 361,
+            "_stringToPath.js": 349,
+            "_memoizeCapped.js": 186,
+            "memoize.js": 403,
+            "toString.js": 129,
+            "_baseToString.js": 421,
+            "_toKey.js": 190,
+            "hasIn.js": 176,
+            "_baseHasIn.js": 84,
+            "_hasPath.js": 505,
+            "property.js": 274,
+            "_baseProperty.js": 98,
+            "_basePropertyDeep.js": 135,
+            "_baseMap.js": 237,
+            "isUndefined.js": 69
+          },
+          "tinycolor2": {
+            "package.json": 86,
+            "tinycolor.js": 14672
+          },
+          "material-colors": {
+            "package.json": 122,
+            "dist": {
+              "colors.es2015.js": 4733
+            }
+          },
+          "@icons": {
+            "material": {
+              "UnfoldMoreHorizontalIcon.js": 889,
+              "CheckIcon.js": 831
+            }
+          },
+          "hark": {
+            "package.json": 73,
+            "hark.js": 1728
+          },
+          "wildemitter": {
+            "package.json": 87,
+            "wildemitter.js": 1490
+          },
+          "sanitize-html": {
+            "package.json": 83,
+            "index.js": 7919,
+            "node_modules": {
+              "escape-string-regexp": {
+                "package.json": 74,
+                "index.js": 178
+              }
+            }
+          },
+          "htmlparser2": {
+            "package.json": 85,
+            "lib": {
+              "index.js": 1848,
+              "Parser.js": 6272,
+              "Tokenizer.js": 13671,
+              "FeedHandler.js": 4210
+            }
+          },
+          "entities": {
+            "lib": {
+              "decode_codepoint.js": 460,
+              "maps": {
+                "decode.json": 271,
+                "entities.json": 28753,
+                "legacy.json": 1170,
+                "xml.json": 70
+              },
+              "index.js": 2048,
+              "decode.js": 1100,
+              "encode.js": 1557
+            },
+            "package.json": 82
+          },
+          "domhandler": {
+            "package.json": 84,
+            "lib": {
+              "index.js": 2872,
+              "node.js": 5549
+            }
+          },
+          "domelementtype": {
+            "package.json": 88,
+            "lib": {
+              "index.js": 631
+            }
+          },
+          "domutils": {
+            "package.json": 82,
+            "lib": {
+              "index.js": 1147,
+              "stringify.js": 588,
+              "traversal.js": 1010,
+              "manipulation.js": 1156,
+              "querying.js": 1074,
+              "legacy.js": 1457,
+              "helpers.js": 896
+            }
+          },
+          "dom-serializer": {
+            "package.json": 88,
+            "lib": {
+              "index.js": 2737,
+              "foreignNames.js": 3169
+            }
+          },
+          "parse-srcset": {
+            "package.json": 93,
+            "src": {
+              "parse-srcset.js": 1516
+            }
+          },
+          "postcss": {
+            "package.json": 178,
+            "lib": {
+              "terminal-highlight.js": 14,
+              "postcss.js": 1350,
+              "css-syntax-error.js": 1223,
+              "declaration.js": 293,
+              "node.js": 3470,
+              "stringifier.js": 4286,
+              "symbols.js": 67,
+              "stringify.js": 124,
+              "lazy-result.js": 6437,
+              "map-generator.js": 4438,
+              "warn-once.js": 140,
+              "result.js": 475,
+              "warning.js": 400,
+              "parse.js": 217,
+              "container.js": 5179,
+              "comment.js": 136,
+              "parser.js": 6765,
+              "tokenize.js": 2389,
+              "at-rule.js": 312,
+              "root.js": 659,
+              "rule.js": 384,
+              "list.js": 408,
+              "input.js": 2419,
+              "previous-map.js": 2299,
+              "document.js": 293,
+              "processor.js": 773,
+              "fromJSON.js": 735
+            }
+          },
+          "colorette": {
+            "package.json": 98,
+            "index.js": 1583
+          },
+          "source-map-js": {
+            "package.json": 90,
+            "source-map.js": 204,
+            "lib": {
+              "source-map-generator.js": 4713,
+              "base64-vlq.js": 534,
+              "base64.js": 343,
+              "util.js": 4127,
+              "array-set.js": 1046,
+              "mapping-list.js": 639,
+              "source-map-consumer.js": 12105,
+              "binary-search.js": 439,
+              "quick-sort.js": 491,
+              "source-node.js": 3663
+            }
+          },
+          "meteor-node-stubs": {
+            "deps": {
+              "path.js": 35,
+              "url.js": 24,
+              "fs.js": 14,
+              "process.js": 38
+            },
+            "node_modules": {
+              "path-browserify": {
+                "package.json": 85,
+                "index.js": 4173
+              },
+              "url": {
+                "package.json": 74,
+                "url.js": 7528,
+                "node_modules": {
+                  "punycode": {
+                    "package.json": 81,
+                    "punycode.js": 2697
+                  }
+                },
+                "util.js": 229
+              },
+              "querystring": {
+                "package.json": 65,
+                "index.js": 95,
+                "decode.js": 548,
+                "encode.js": 533
+              },
+              "process": {
+                "browser.js": 1688
+              }
+            },
+            "package.json": 87,
+            "index.js": 358,
+            "map.json": 1008
+          },
+          "nanoid": {
+            "non-secure": {
+              "package.json": 65,
+              "index.js": 284
+            }
+          }
+        }
+      }
+    ],
+    "packages/modern-browsers.js": 35,
+    "packages/babel-compiler.js": 34,
+    "packages/react-fast-refresh.js": [
+      2901,
+      {
+        "node_modules": {
+          "meteor": {
+            "react-fast-refresh": {
+              "client.js": 327,
+              "client-runtime.js": 1331,
+              "node_modules": {
+                "react-refresh": {
+                  "runtime.js": 92,
+                  "cjs": {
+                    "react-refresh-runtime.production.min.js": 370,
+                    "react-refresh-runtime.development.js": 286
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "packages/ecmascript.js": 30,
+    "packages/ecmascript-runtime.js": 38,
+    "packages/babel-runtime.js": [
+      949,
+      {
+        "node_modules": {
+          "meteor": {
+            "babel-runtime": {
+              "babel-runtime.js": 631
+            }
+          }
+        }
+      }
+    ],
+    "packages/promise.js": [
+      1339,
+      {
+        "node_modules": {
+          "meteor": {
+            "promise": {
+              "modern.js": 25,
+              "client.js": 73,
+              "extensions.js": 403,
+              "node_modules": {
+                "meteor-promise": {
+                  "package.json": 121,
+                  "promise_client.js": 268
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "packages/fetch.js": [
+      410,
+      {
+        "node_modules": {
+          "meteor": {
+            "fetch": {
+              "modern.js": 94
+            }
+          }
+        }
+      }
+    ],
+    "packages/dynamic-import.js": [
+      5434,
+      {
+        "node_modules": {
+          "meteor": {
+            "dynamic-import": {
+              "client.js": 1923,
+              "cache.js": 1952,
+              "common.js": 62,
+              "dynamic-versions.js": 1094
+            }
+          }
+        }
+      }
+    ],
+    "packages/es5-shim.js": 28,
+    "packages/ecmascript-runtime-client.js": [
+      22393,
+      {
+        "node_modules": {
+          "meteor": {
+            "ecmascript-runtime-client": {
+              "modern.js": 766,
+              "node_modules": {
+                "core-js": {
+                  "modules": {
+                    "es.object.get-own-property-descriptors.js": 414,
+                    "es.object.is.js": 108,
+                    "es.function.name.js": 274,
+                    "es.number.is-finite.js": 120,
+                    "es.number.is-nan.js": 107,
+                    "es.array.flat.js": 404,
+                    "es.array.flat-map.js": 401,
+                    "es.object.from-entries.js": 232,
+                    "es.string.pad-start.js": 256,
+                    "es.string.pad-end.js": 252,
+                    "es.string.trim-start.js": 260,
+                    "es.string.trim-end.js": 253,
+                    "es.symbol.async-iterator.js": 80
+                  },
+                  "internals": {
+                    "export.js": 612,
+                    "global.js": 264,
+                    "object-get-own-property-descriptor.js": 428,
+                    "descriptors.js": 144,
+                    "fails.js": 76,
+                    "object-property-is-enumerable.js": 178,
+                    "create-property-descriptor.js": 113,
+                    "to-indexed-object.js": 140,
+                    "indexed-object.js": 225,
+                    "classof-raw.js": 88,
+                    "require-object-coercible.js": 104,
+                    "to-primitive.js": 354,
+                    "is-object.js": 96,
+                    "has.js": 136,
+                    "to-object.js": 110,
+                    "ie8-dom-define.js": 231,
+                    "document-create-element.js": 173,
+                    "create-non-enumerable-property.js": 229,
+                    "object-define-property.js": 359,
+                    "an-object.js": 140,
+                    "redefine.js": 684,
+                    "set-global.js": 163,
+                    "inspect-source.js": 185,
+                    "shared-store.js": 131,
+                    "internal-state.js": 968,
+                    "native-weak-map.js": 153,
+                    "shared-key.js": 133,
+                    "shared.js": 259,
+                    "is-pure.js": 31,
+                    "uid.js": 131,
+                    "hidden-keys.js": 31,
+                    "copy-constructor-properties.js": 279,
+                    "own-keys.js": 284,
+                    "get-built-in.js": 222,
+                    "path.js": 61,
+                    "object-get-own-property-names.js": 187,
+                    "object-keys-internal.js": 306,
+                    "array-includes.js": 363,
+                    "to-length.js": 125,
+                    "to-integer.js": 104,
+                    "to-absolute-index.js": 138,
+                    "enum-bug-keys.js": 138,
+                    "object-get-own-property-symbols.js": 49,
+                    "is-forced.js": 279,
+                    "create-property.js": 226,
+                    "same-value.js": 96,
+                    "number-is-finite.js": 133,
+                    "flatten-into-array.js": 399,
+                    "is-array.js": 114,
+                    "function-bind-context.js": 358,
+                    "a-function.js": 122,
+                    "array-species-create.js": 320,
+                    "well-known-symbol.js": 359,
+                    "native-symbol.js": 232,
+                    "engine-v8-version.js": 266,
+                    "engine-user-agent.js": 96,
+                    "use-symbol-as-uid.js": 116,
+                    "iterate.js": 885,
+                    "is-array-iterator-method.js": 190,
+                    "iterators.js": 31,
+                    "get-iterator-method.js": 204,
+                    "classof.js": 435,
+                    "to-string-tag-support.js": 124,
+                    "iterator-close.js": 130,
+                    "string-pad.js": 378,
+                    "string-repeat.js": 280,
+                    "string-pad-webkit-bug.js": 145,
+                    "string-trim.js": 305,
+                    "whitespaces.js": 107,
+                    "string-trim-forced.js": 181,
+                    "define-well-known-symbol.js": 245,
+                    "well-known-symbol-wrapped.js": 64
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "packages/base64.js": [
+      1808,
+      {
+        "node_modules": {
+          "meteor": {
+            "base64": {
+              "base64.js": 1488
+            }
+          }
+        }
+      }
+    ],
+    "packages/ejson.js": [
+      6761,
+      {
+        "node_modules": {
+          "meteor": {
+            "ejson": {
+              "ejson.js": 4751,
+              "stringify.js": 911,
+              "utils.js": 733
+            }
+          }
+        }
+      }
+    ],
+    "packages/diff-sequence.js": [
+      2872,
+      {
+        "node_modules": {
+          "meteor": {
+            "diff-sequence": {
+              "diff.js": 2505
+            }
+          }
+        }
+      }
+    ],
+    "packages/geojson-utils.js": [
+      5191,
+      {
+        "node_modules": {
+          "meteor": {
+            "geojson-utils": {
+              "main.js": 50,
+              "geojson-utils.js": 4805
+            }
+          }
+        }
+      }
+    ],
+    "packages/id-map.js": [
+      1156,
+      {
+        "node_modules": {
+          "meteor": {
+            "id-map": {
+              "id-map.js": 813
+            }
+          }
+        }
+      }
+    ],
+    "packages/random.js": [
+      3682,
+      {
+        "node_modules": {
+          "meteor": {
+            "random": {
+              "main_client.js": 305,
+              "AbstractRandomGenerator.js": 649,
+              "AleaRandomGenerator.js": 987,
+              "BrowserRandomGenerator.js": 232,
+              "createAleaGenerator.js": 669,
+              "createRandom.js": 378
+            }
+          }
+        }
+      }
+    ],
+    "packages/mongo-id.js": [
+      1693,
+      {
+        "node_modules": {
+          "meteor": {
+            "mongo-id": {
+              "id.js": 1324
+            }
+          }
+        }
+      }
+    ],
+    "packages/ordered-dict.js": [
+      3032,
+      {
+        "node_modules": {
+          "meteor": {
+            "ordered-dict": {
+              "ordered_dict.js": 2675
+            }
+          }
+        }
+      }
+    ],
+    "packages/tracker.js": [
+      4526,
+      {
+        "node_modules": {
+          "meteor": {
+            "tracker": {
+              "tracker.js": 4193
+            }
+          }
+        }
+      }
+    ],
+    "packages/minimongo.js": [
+      43899,
+      {
+        "node_modules": {
+          "meteor": {
+            "minimongo": {
+              "minimongo_client.js": 50,
+              "common.js": 12282,
+              "cursor.js": 4617,
+              "local_collection.js": 20040,
+              "matcher.js": 2662,
+              "minimongo_common.js": 210,
+              "observe_handle.js": 54,
+              "sorter.js": 3173
+            }
+          }
+        }
+      }
+    ],
+    "packages/check.js": [
+      6125,
+      {
+        "node_modules": {
+          "meteor": {
+            "check": {
+              "match.js": 5438,
+              "isPlainObject.js": 321
+            }
+          }
+        }
+      }
+    ],
+    "packages/retry.js": [
+      1048,
+      {
+        "node_modules": {
+          "meteor": {
+            "retry": {
+              "retry.js": 710
+            }
+          }
+        }
+      }
+    ],
+    "packages/callback-hook.js": [
+      1559,
+      {
+        "node_modules": {
+          "meteor": {
+            "callback-hook": {
+              "hook.js": 1218
+            }
+          }
+        }
+      }
+    ],
+    "packages/ddp-common.js": [
+      4583,
+      {
+        "node_modules": {
+          "meteor": {
+            "ddp-common": {
+              "namespace.js": 18,
+              "heartbeat.js": 1293,
+              "utils.js": 1377,
+              "method_invocation.js": 487,
+              "random_stream.js": 628
+            }
+          }
+        }
+      }
+    ],
+    "packages/reload.js": [
+      2692,
+      {
+        "node_modules": {
+          "meteor": {
+            "reload": {
+              "reload.js": 2372
+            }
+          }
+        }
+      }
+    ],
+    "packages/socket-stream-client.js": [
+      36475,
+      {
+        "node_modules": {
+          "meteor": {
+            "socket-stream-client": {
+              "browser.js": 2855,
+              "common.js": 2468,
+              "sockjs-0.3.4.js": 30045,
+              "urls.js": 747
+            }
+          }
+        }
+      }
+    ],
+    "packages/ddp-client.js": [
+      22315,
+      {
+        "node_modules": {
+          "meteor": {
+            "ddp-client": {
+              "client": {
+                "client.js": 136,
+                "client_convenience.js": 827
+              },
+              "common": {
+                "MethodInvoker.js": 1146,
+                "livedata_connection.js": 18535,
+                "namespace.js": 875
+              }
+            }
+          }
+        }
+      }
+    ],
+    "packages/ddp.js": 78,
+    "packages/ddp-server.js": 30,
+    "packages/allow-deny.js": [
+      5789,
+      {
+        "node_modules": {
+          "meteor": {
+            "allow-deny": {
+              "allow-deny.js": 5288
+            }
+          }
+        }
+      }
+    ],
+    "packages/logging.js": [
+      3936,
+      {
+        "node_modules": {
+          "meteor": {
+            "logging": {
+              "logging.js": 3462,
+              "logging_browser.js": 53
+            }
+          }
+        }
+      }
+    ],
+    "packages/mongo.js": [
+      9356,
+      {
+        "node_modules": {
+          "meteor": {
+            "mongo": {
+              "local_collection_driver.js": 362,
+              "collection.js": 8214
+            }
+          }
+        }
+      }
+    ],
+    "packages/reactive-var.js": 818,
+    "packages/minifier-css.js": 66,
+    "packages/standard-minifier-css.js": 41,
+    "packages/standard-minifier-js.js": 40,
+    "packages/shell-server.js": 32,
+    "packages/static-html.js": 31,
+    "packages/tmeasday_check-npm-versions.js": [
+      14301,
+      {
+        "node_modules": {
+          "meteor": {
+            "tmeasday:check-npm-versions": {
+              "check-npm-versions.js": 948,
+              "node_modules": {
+                "semver": {
+                  "package.json": 77,
+                  "semver.js": 12825
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "packages/react-meteor-data.js": [
+      3711,
+      {
+        "node_modules": {
+          "meteor": {
+            "react-meteor-data": {
+              "react-meteor-data.jsx": 331,
+              "ReactMeteorData.jsx": 2441,
+              "createContainer.jsx": 449
+            }
+          }
+        }
+      }
+    ],
+    "packages/url.js": [
+      1194,
+      {
+        "node_modules": {
+          "meteor": {
+            "url": {
+              "modern.js": 110,
+              "bc": {
+                "url_client.js": 172,
+                "url_common.js": 569
+              }
+            }
+          }
+        }
+      }
+    ],
+    "packages/http.js": [
+      3430,
+      {
+        "node_modules": {
+          "meteor": {
+            "http": {
+              "httpcall_client.js": 2122,
+              "httpcall_common.js": 932
+            }
+          }
+        }
+      }
+    ],
+    "packages/reactive-dict.js": [
+      3891,
+      {
+        "node_modules": {
+          "meteor": {
+            "reactive-dict": {
+              "migration.js": 778,
+              "reactive-dict.js": 2665
+            }
+          }
+        }
+      }
+    ],
+    "packages/session.js": [
+      519,
+      {
+        "node_modules": {
+          "meteor": {
+            "session": {
+              "session.js": 131
+            }
+          }
+        }
+      }
+    ],
+    "packages/rocketchat_streamer.js": [
+      4594,
+      {
+        "node_modules": {
+          "meteor": {
+            "rocketchat:streamer": {
+              "lib": {
+                "ev.js": 791
+              },
+              "client": {
+                "client.js": 3228
+              }
+            }
+          }
+        }
+      }
+    ],
+    "packages/deps.js": 111,
+    "packages/cfs_reactive-list.js": 2414,
+    "packages/webapp.js": [
+      651,
+      {
+        "node_modules": {
+          "meteor": {
+            "webapp": {
+              "webapp_client.js": 317
+            }
+          }
+        }
+      }
+    ],
+    "packages/hot-code-push.js": 33,
+    "packages/launch-screen.js": 71,
+    "packages/autoupdate.js": [
+      3524,
+      {
+        "node_modules": {
+          "meteor": {
+            "autoupdate": {
+              "autoupdate_client.js": 1928,
+              "client_versions.js": 1117
+            }
+          }
+        }
+      }
+    ],
+    "app/global-imports.js": [
+      753,
+      {}
+    ],
+    "app/app.js": [
+      1402734,
+      {
+        "imports": {
+          "ui": {
+            "components": {
+              "chat": {
+                "time-window-list": {
+                  "time-window-chat-item": {
+                    "message-chat-item": {
+                      "component.jsx": 2514
+                    },
+                    "component.jsx": 5266,
+                    "container.jsx": 1331,
+                    "styles.js": 4443
+                  },
+                  "component.jsx": 5567,
+                  "container.jsx": 734,
+                  "styles.js": 1492
+                },
+                "alert": {
+                  "push-alert": {
+                    "component.jsx": 1249
+                  },
+                  "component.jsx": 4168,
+                  "container.jsx": 2950,
+                  "styles.js": 1186
+                },
+                "message-form": {
+                  "typing-indicator": {
+                    "component.jsx": 1531,
+                    "container.jsx": 1024,
+                    "styles.js": 1758
+                  },
+                  "component.jsx": 5105,
+                  "container.jsx": 848,
+                  "styles.js": 2100
+                },
+                "chat-dropdown": {
+                  "component.jsx": 3066,
+                  "container.jsx": 756
+                },
+                "chat-logger": {
+                  "ChatLogger.js": 529
+                },
+                "component.jsx": 3653,
+                "container.jsx": 5551,
+                "service.js": 5288,
+                "styles.js": 2022
+              },
+              "presentation": {
+                "presentation-toolbar": {
+                  "zoom-tool": {
+                    "holdButton": {
+                      "component.jsx": 1736
+                    },
+                    "component.jsx": 4269,
+                    "styles.js": 1127
+                  },
+                  "component.jsx": 7798,
+                  "container.jsx": 1932,
+                  "service.js": 666,
+                  "styles.js": 4408
+                },
+                "cursor": {
+                  "cursor-wrapper-container": {
+                    "container.jsx": 1177,
+                    "service.js": 742
+                  },
+                  "component.jsx": 4136,
+                  "container.jsx": 868,
+                  "service.js": 328
+                },
+                "download-presentation-button": {
+                  "component.jsx": 811,
+                  "styles.js": 1435
+                },
+                "presentation-area": {
+                  "component.jsx": 291,
+                  "container.jsx": 335
+                },
+                "presentation-close-button": {
+                  "component.jsx": 630,
+                  "styles.js": 668
+                },
+                "presentation-overlay": {
+                  "component.jsx": 9052,
+                  "container.jsx": 650
+                },
+                "presentation-placeholder": {
+                  "component.jsx": 676,
+                  "styles.js": 808
+                },
+                "presentation-uploader": {
+                  "component.jsx": 21632,
+                  "container.jsx": 1644,
+                  "service.js": 3751,
+                  "styles.js": 11776
+                },
+                "resize-wrapper": {
+                  "component.jsx": 303
+                },
+                "slide": {
+                  "component.jsx": 544
+                },
+                "component.jsx": 15537,
+                "container.jsx": 3109,
+                "service.js": 2204,
+                "styles.js": 3418
+              },
+              "user-list": {
+                "user-list-content": {
+                  "user-participants": {
+                    "user-list-item": {
+                      "component.jsx": 14085,
+                      "container.jsx": 1579,
+                      "styles.js": 3558
+                    },
+                    "user-options": {
+                      "component.jsx": 7932,
+                      "container.jsx": 2544,
+                      "styles.js": 797
+                    },
+                    "component.jsx": 4511,
+                    "container.jsx": 1446,
+                    "styles.js": 2261
+                  },
+                  "breakout-room": {
+                    "component.jsx": 1337,
+                    "container.jsx": 593,
+                    "styles.js": 620
+                  },
+                  "user-captions": {
+                    "component.jsx": 1452,
+                    "container.jsx": 620,
+                    "styles.js": 1255
+                  },
+                  "user-messages": {
+                    "component.jsx": 2100,
+                    "container.jsx": 798,
+                    "styles.js": 1333
+                  },
+                  "user-notes": {
+                    "component.jsx": 2528,
+                    "container.jsx": 819,
+                    "styles.js": 1185
+                  },
+                  "user-polls": {
+                    "component.jsx": 1354,
+                    "container.jsx": 633,
+                    "styles.js": 620
+                  },
+                  "waiting-users": {
+                    "component.jsx": 1433,
+                    "container.jsx": 417,
+                    "styles.js": 742
+                  },
+                  "component.jsx": 1205,
+                  "container.jsx": 985,
+                  "styles.js": 3784
+                },
+                "captions-list-item": {
+                  "component.jsx": 1412,
+                  "styles.js": 295
+                },
+                "chat-list-item": {
+                  "component.jsx": 3168,
+                  "container.jsx": 637,
+                  "styles.js": 2329
+                },
+                "custom-logo": {
+                  "component.jsx": 322,
+                  "styles.js": 777
+                },
+                "component.jsx": 746,
+                "container.jsx": 528,
+                "service.js": 10655,
+                "styles.js": 1783
+              },
+              "actions-bar": {
+                "create-breakout-room": {
+                  "sort-user-list": {
+                    "component.jsx": 2619,
+                    "styles.js": 2717
+                  },
+                  "component.jsx": 22165,
+                  "container.jsx": 788,
+                  "styles.js": 6556
+                },
+                "actions-dropdown": {
+                  "component.jsx": 6108,
+                  "container.jsx": 1118,
+                  "styles.js": 501
+                },
+                "presentation-options": {
+                  "component.jsx": 1725,
+                  "styles.js": 594
+                },
+                "quick-poll-dropdown": {
+                  "component.jsx": 3222,
+                  "container.jsx": 592,
+                  "styles.js": 1024
+                },
+                "screenshare": {
+                  "component.jsx": 4653,
+                  "container.jsx": 579,
+                  "styles.js": 1205
+                },
+                "component.jsx": 2317,
+                "container.jsx": 2566,
+                "service.js": 2070,
+                "styles.js": 1758
+              },
+              "audio": {
+                "audio-controls": {
+                  "input-stream-live-selector": {
+                    "component.jsx": 5350,
+                    "container.jsx": 616,
+                    "styles.js": 396
+                  },
+                  "component.jsx": 3735,
+                  "container.jsx": 2518,
+                  "styles.js": 2506
+                },
+                "audio-dial": {
+                  "component.jsx": 1357,
+                  "styles.js": 1048
+                },
+                "audio-modal": {
+                  "component.jsx": 9869,
+                  "container.jsx": 2580,
+                  "service.js": 1304,
+                  "styles.js": 3733
+                },
+                "audio-settings": {
+                  "component.jsx": 3194,
+                  "styles.js": 3901
+                },
+                "audio-test": {
+                  "component.jsx": 953,
+                  "container.jsx": 618,
+                  "styles.js": 818
+                },
+                "autoplay": {
+                  "component.jsx": 918,
+                  "styles.js": 533
+                },
+                "device-selector": {
+                  "component.jsx": 1986
+                },
+                "echo-test": {
+                  "component.jsx": 1631,
+                  "styles.js": 842
+                },
+                "help": {
+                  "component.jsx": 1133,
+                  "styles.js": 1004
+                },
+                "permissions-overlay": {
+                  "component.jsx": 988,
+                  "styles.js": 2831
+                },
+                "container.jsx": 4712,
+                "service.js": 3092
+              },
+              "common": {
+                "button": {
+                  "base": {
+                    "component.jsx": 3650
+                  },
+                  "button-emoji": {
+                    "ButtonEmoji.jsx": 1090,
+                    "styles.js": 1545
+                  },
+                  "component.jsx": 2942,
+                  "styles.js": 24477
+                },
+                "fallback-errors": {
+                  "fallback-modal": {
+                    "component.jsx": 692
+                  },
+                  "fallback-view": {
+                    "component.jsx": 1209,
+                    "styles.js": 1288
+                  }
+                },
+                "modal": {
+                  "base": {
+                    "component.jsx": 1579,
+                    "styles.js": 711
+                  },
+                  "fullscreen": {
+                    "component.jsx": 2934,
+                    "styles.js": 2038
+                  },
+                  "random-user": {
+                    "component.jsx": 3739,
+                    "container.jsx": 1972,
+                    "styles.js": 1331
+                  },
+                  "remove-user": {
+                    "component.jsx": 1727,
+                    "styles.js": 1922
+                  },
+                  "simple": {
+                    "component.jsx": 2002,
+                    "styles.js": 1808
+                  },
+                  "container.jsx": 216,
+                  "service.js": 556
+                },
+                "toast": {
+                  "inject-notify": {
+                    "component.jsx": 259
+                  },
+                  "component.jsx": 1055,
+                  "container.jsx": 584,
+                  "styles.js": 4223
+                },
+                "checkbox": {
+                  "component.jsx": 1667,
+                  "styles.js": 936
+                },
+                "error-boundary": {
+                  "component.jsx": 752
+                },
+                "fullscreen-button": {
+                  "component.jsx": 1665,
+                  "container.jsx": 652,
+                  "service.js": 986,
+                  "styles.js": 1631
+                },
+                "icon": {
+                  "component.jsx": 707
+                },
+                "loading-screen": {
+                  "component.jsx": 471,
+                  "styles.js": 1611
+                },
+                "locales-dropdown": {
+                  "component.jsx": 1006
+                },
+                "menu": {
+                  "component.jsx": 3493,
+                  "styles.js": 1773
+                },
+                "switch": {
+                  "component.jsx": 1799,
+                  "styles.js": 3596
+                },
+                "tooltip": {
+                  "bbbtip.css": 240,
+                  "component.jsx": 3115,
+                  "container.jsx": 354
+                }
+              },
+              "dropdown": {
+                "list": {
+                  "item": {
+                    "component.jsx": 1563,
+                    "styles.js": 2139
+                  },
+                  "separator": {
+                    "component.jsx": 297,
+                    "styles.js": 589
+                  },
+                  "title": {
+                    "component.jsx": 362,
+                    "styles.js": 351
+                  },
+                  "component.jsx": 2719,
+                  "styles.js": 1221
+                },
+                "content": {
+                  "component.jsx": 825,
+                  "styles.js": 3748
+                },
+                "trigger": {
+                  "component.jsx": 1724
+                },
+                "component.jsx": 5374,
+                "styles.js": 1075
+              },
+              "settings": {
+                "submenus": {
+                  "application": {
+                    "component.jsx": 10454,
+                    "styles.js": 2076
+                  },
+                  "base": {
+                    "component.jsx": 358
+                  },
+                  "data-saving": {
+                    "component.jsx": 2064,
+                    "styles.js": 600
+                  },
+                  "notification": {
+                    "component.jsx": 6076,
+                    "styles.js": 819
+                  },
+                  "styles.js": 2173
+                },
+                "component.jsx": 6304,
+                "container.jsx": 856,
+                "service.js": 739,
+                "styles.js": 2660
+              },
+              "video-provider": {
+                "video-list": {
+                  "video-list-item": {
+                    "component.jsx": 6939,
+                    "container.jsx": 871,
+                    "styles.js": 7231
+                  },
+                  "component.jsx": 6809,
+                  "container.jsx": 852,
+                  "styles.js": 2554
+                },
+                "many-users-notify": {
+                  "component.jsx": 1813,
+                  "container.jsx": 1270,
+                  "styles.js": 827
+                },
+                "video-button": {
+                  "component.jsx": 2165,
+                  "container.jsx": 1019,
+                  "styles.js": 639
+                },
+                "component.jsx": 17597,
+                "container.jsx": 756,
+                "service.js": 15948,
+                "stream-sorting.js": 1675
+              },
+              "whiteboard": {
+                "annotation-factory": {
+                  "reactive-annotation": {
+                    "component.jsx": 545,
+                    "container.jsx": 1391,
+                    "service.js": 175
+                  },
+                  "static-annotation": {
+                    "component.jsx": 660,
+                    "service.js": 169
+                  },
+                  "component.jsx": 1927
+                },
+                "annotations": {
+                  "ellipse": {
+                    "component.jsx": 1172
+                  },
+                  "line": {
+                    "component.jsx": 1075
+                  },
+                  "pencil": {
+                    "component.jsx": 2708
+                  },
+                  "poll": {
+                    "component.jsx": 8484,
+                    "styles.js": 437
+                  },
+                  "rectangle": {
+                    "component.jsx": 1191
+                  },
+                  "text": {
+                    "component.jsx": 3571,
+                    "container.jsx": 974,
+                    "service.js": 428
+                  },
+                  "triangle": {
+                    "component.jsx": 1166
+                  },
+                  "helpers.js": 311
+                },
+                "whiteboard-overlay": {
+                  "cursor-listener": {
+                    "component.jsx": 3268
+                  },
+                  "pencil-draw-listener": {
+                    "component.jsx": 4875
+                  },
+                  "pencil-pointer-listener": {
+                    "component.jsx": 5718
+                  },
+                  "shape-draw-listener": {
+                    "component.jsx": 5737
+                  },
+                  "shape-pointer-listener": {
+                    "component.jsx": 6557
+                  },
+                  "text-draw-listener": {
+                    "component.jsx": 8343
+                  },
+                  "component.jsx": 4338,
+                  "container.jsx": 960,
+                  "service.js": 1113
+                },
+                "whiteboard-toolbar": {
+                  "toolbar-menu-item": {
+                    "component.jsx": 2046,
+                    "styles.js": 2707
+                  },
+                  "toolbar-submenu": {
+                    "component.jsx": 5772,
+                    "styles.js": 1239
+                  },
+                  "toolbar-submenu-item": {
+                    "component.jsx": 1485,
+                    "styles.js": 1864
+                  },
+                  "component.jsx": 14622,
+                  "container.jsx": 1233,
+                  "service.js": 1690,
+                  "styles.js": 2902
+                },
+                "annotation-group": {
+                  "component.jsx": 575,
+                  "container.jsx": 815,
+                  "service.js": 416
+                },
+                "service.js": 4341
+              },
+              "breakout-room": {
+                "breakout-remaining-time": {
+                  "component.jsx": 163,
+                  "container.jsx": 2092
+                },
+                "invitation": {
+                  "component.jsx": 1808,
+                  "container.jsx": 783
+                },
+                "message-form": {
+                  "component.jsx": 4450,
+                  "container.jsx": 770,
+                  "styles.js": 2322
+                },
+                "component.jsx": 10844,
+                "container.jsx": 1749,
+                "service.js": 3194,
+                "styles.js": 5826
+              },
+              "captions": {
+                "button": {
+                  "component.jsx": 840,
+                  "container.jsx": 620,
+                  "styles.js": 583
+                },
+                "live": {
+                  "component.jsx": 1223,
+                  "container.jsx": 327
+                },
+                "reader-menu": {
+                  "component.jsx": 7271,
+                  "container.jsx": 567,
+                  "styles.js": 2432
+                },
+                "speech": {
+                  "component.jsx": 2345,
+                  "container.jsx": 380,
+                  "service.js": 661
+                },
+                "writer-menu": {
+                  "component.jsx": 3080,
+                  "container.jsx": 958,
+                  "styles.js": 2348
+                },
+                "component.jsx": 3001,
+                "container.jsx": 1118,
+                "service.js": 2968,
+                "styles.js": 1982
+              },
+              "components-data": {
+                "chat-context": {
+                  "adapter.jsx": 2567,
+                  "context.jsx": 5648
+                },
+                "group-chat-context": {
+                  "adapter.jsx": 547,
+                  "context.jsx": 1233
+                },
+                "users-context": {
+                  "adapter.jsx": 1146,
+                  "context.jsx": 1853
+                }
+              },
+              "connection-status": {
+                "button": {
+                  "component.jsx": 1893,
+                  "container.jsx": 385,
+                  "styles.js": 325
+                },
+                "icon": {
+                  "component.jsx": 508,
+                  "styles.js": 1635
+                },
+                "modal": {
+                  "component.jsx": 12285,
+                  "container.jsx": 621,
+                  "styles.js": 7743
+                },
+                "status-helper": {
+                  "component.jsx": 1478,
+                  "container.jsx": 292,
+                  "styles.js": 852
+                },
+                "service.js": 5770
+              },
+              "external-video-player": {
+                "custom-players": {
+                  "arc-player.jsx": 2592,
+                  "panopto.jsx": 273,
+                  "peertube.jsx": 2659
+                },
+                "modal": {
+                  "component.jsx": 2620,
+                  "container.jsx": 468,
+                  "styles.js": 2717
+                },
+                "volume-slider": {
+                  "component.jsx": 1280,
+                  "styles.js": 698
+                },
+                "component.jsx": 10755,
+                "container.jsx": 1186,
+                "service.js": 1236,
+                "styles.js": 1630
+              },
+              "layout": {
+                "layout-manager": {
+                  "customLayout.jsx": 8248,
+                  "layoutEngine.jsx": 3739,
+                  "presentationFocusLayout.jsx": 5854,
+                  "smartLayout.jsx": 6627,
+                  "videoFocusLayout.jsx": 6027
+                },
+                "context.jsx": 13580,
+                "defaultValues.js": 1025,
+                "enums.js": 3254,
+                "initState.js": 2447,
+                "service.js": 149,
+                "utils.js": 996
+              },
+              "lock-viewers": {
+                "context": {
+                  "consumer.jsx": 265,
+                  "container.jsx": 963,
+                  "context.js": 437,
+                  "provider.jsx": 181,
+                  "withContext.jsx": 300
+                },
+                "notify": {
+                  "component.jsx": 2508,
+                  "container.jsx": 414
+                },
+                "component.jsx": 7640,
+                "container.jsx": 923,
+                "service.js": 232,
+                "styles.js": 3043
+              },
+              "media": {
+                "autoplay-overlay": {
+                  "component.jsx": 1021,
+                  "styles.js": 1005
+                },
+                "service.js": 1739
+              },
+              "meeting-ended": {
+                "rating": {
+                  "component.jsx": 1353,
+                  "styles.js": 2780
+                },
+                "component.jsx": 8020,
+                "service.js": 371,
+                "styles.js": 1682
+              },
+              "nav-bar": {
+                "recording-indicator": {
+                  "component.jsx": 4178,
+                  "container.jsx": 850,
+                  "styles.js": 2850
+                },
+                "settings-dropdown": {
+                  "component.jsx": 6068,
+                  "container.jsx": 794,
+                  "styles.js": 924
+                },
+                "talking-indicator": {
+                  "component.jsx": 2532,
+                  "container.jsx": 1534,
+                  "service.js": 152,
+                  "styles.js": 3000
+                },
+                "component.jsx": 4927,
+                "container.jsx": 2854,
+                "styles.js": 2709
+              },
+              "pads": {
+                "content": {
+                  "component.jsx": 281,
+                  "container.jsx": 368,
+                  "styles.js": 989
+                },
+                "sessions": {
+                  "container.jsx": 303,
+                  "service.js": 510
+                },
+                "component.jsx": 1078,
+                "container.jsx": 527,
+                "service.js": 1308,
+                "styles.js": 1104
+              },
+              "poll": {
+                "dragAndDrop": {
+                  "component.jsx": 2636,
+                  "styles.js": 727
+                },
+                "live-result": {
+                  "component.jsx": 4585,
+                  "service.js": 415,
+                  "styles.js": 4443
+                },
+                "component.jsx": 15050,
+                "container.jsx": 2154,
+                "service.js": 4046,
+                "styles.js": 7192
+              },
+              "screenshare": {
+                "switch-button": {
+                  "component.jsx": 997,
+                  "container.jsx": 179,
+                  "styles.js": 1356
+                },
+                "component.jsx": 9084,
+                "container.jsx": 1430,
+                "service.js": 2779,
+                "styles.js": 2132
+              },
+              "video-preview": {
+                "virtual-background": {
+                  "component.jsx": 4857,
+                  "styles.js": 2442
+                },
+                "component.jsx": 15172,
+                "container.jsx": 734,
+                "service.js": 2250,
+                "styles.js": 4933
+              },
+              "waiting-users": {
+                "alert": {
+                  "component.jsx": 1877,
+                  "container.jsx": 1106,
+                  "styles.js": 420
+                },
+                "guest-policy": {
+                  "component.jsx": 2556,
+                  "container.jsx": 793,
+                  "styles.js": 1625
+                },
+                "component.jsx": 6597,
+                "container.jsx": 1385,
+                "service.js": 1432,
+                "styles.js": 5367
+              },
+              "webcam": {
+                "drop-areas": {
+                  "component.jsx": 642,
+                  "container.jsx": 308,
+                  "styles.js": 1080
+                },
+                "component.jsx": 4264,
+                "container.jsx": 1950,
+                "styles.js": 851
+              },
+              "about": {
+                "component.jsx": 1464,
+                "container.jsx": 307
+              },
+              "activity-check": {
+                "component.jsx": 2379,
+                "container.jsx": 204,
+                "styles.js": 576
+              },
+              "app": {
+                "component.jsx": 10949,
+                "container.jsx": 5123,
+                "service.js": 698,
+                "styles.js": 610
+              },
+              "authenticated-handler": {
+                "component.jsx": 1570
+              },
+              "banner-bar": {
+                "component.jsx": 610,
+                "container.jsx": 598,
+                "styles.js": 416
+              },
+              "breakout-join-confirmation": {
+                "component.jsx": 4253,
+                "container.jsx": 1277,
+                "styles.js": 526
+              },
+              "context-providers": {
+                "component.jsx": 567
+              },
+              "cursor": {
+                "service.js": 1277
+              },
+              "debug-window": {
+                "component.jsx": 3840,
+                "styles.js": 2465
+              },
+              "end-meeting-confirmation": {
+                "component.jsx": 1816,
+                "container.jsx": 793,
+                "service.js": 495,
+                "styles.js": 1330
+              },
+              "error-screen": {
+                "component.jsx": 1676,
+                "styles.js": 1084
+              },
+              "join-handler": {
+                "component.jsx": 4166
+              },
+              "learning-dashboard": {
+                "service.js": 1329
+              },
+              "muted-alert": {
+                "component.jsx": 2919,
+                "styles.js": 1444
+              },
+              "notes": {
+                "component.jsx": 1611,
+                "container.jsx": 733,
+                "service.js": 1205,
+                "styles.js": 1978
+              },
+              "notifications-bar": {
+                "component.jsx": 606,
+                "container.jsx": 4302,
+                "styles.js": 1491
+              },
+              "polling": {
+                "component.jsx": 6066,
+                "container.jsx": 1160,
+                "service.js": 734,
+                "styles.js": 4488
+              },
+              "presentation-pod": {
+                "component.jsx": 462,
+                "container.jsx": 937,
+                "service.js": 284
+              },
+              "recording": {
+                "component.jsx": 1894,
+                "container.jsx": 733,
+                "styles.js": 1658
+              },
+              "reload-button": {
+                "component.jsx": 386,
+                "styles.js": 917
+              },
+              "shortcut-help": {
+                "component.jsx": 4630,
+                "service.jsx": 837,
+                "styles.js": 728
+              },
+              "sidebar-content": {
+                "component.jsx": 2655,
+                "container.jsx": 501,
+                "styles.js": 1013
+              },
+              "sidebar-navigation": {
+                "component.jsx": 1541,
+                "container.jsx": 401
+              },
+              "status-notifier": {
+                "component.jsx": 4186,
+                "container.jsx": 1200,
+                "styles.js": 2595
+              },
+              "subscriptions": {
+                "component.jsx": 3491
+              },
+              "text-input": {
+                "component.jsx": 1323,
+                "styles.js": 1873
+              },
+              "user-avatar": {
+                "component.jsx": 1277,
+                "styles.js": 5433
+              },
+              "user-info": {
+                "component.jsx": 1156,
+                "container.jsx": 204,
+                "service.js": 152,
+                "styles.js": 777
+              }
+            },
+            "services": {
+              "LiveDataEventBroker": {
+                "LiveDataEventBroker.js": 1442
+              },
+              "LocalCollectionSynchronizer": {
+                "LocalCollectionSynchronizer.js": 2197
+              },
+              "api": {
+                "index.js": 695
+              },
+              "audio-manager": {
+                "error-codes.js": 99,
+                "index.js": 15517
+              },
+              "auth": {
+                "index.js": 4667
+              },
+              "bbb-webrtc-sfu": {
+                "broker-base-errors.js": 844,
+                "fullaudio-broker.js": 88,
+                "listenonly-broker.js": 3253,
+                "load-play.js": 354,
+                "screenshare-broker.js": 4500,
+                "sfu-base-broker.js": 4493,
+                "stream-state-service.js": 572,
+                "utils.js": 335
+              },
+              "features": {
+                "index.js": 481
+              },
+              "meeting-settings": {
+                "index.js": 313
+              },
+              "notification": {
+                "index.js": 1158
+              },
+              "settings": {
+                "index.js": 1792
+              },
+              "storage": {
+                "reactive.js": 1165,
+                "session.js": 128
+              },
+              "subscription-registry": {
+                "subscriptionRegistry.js": 570
+              },
+              "unread-messages": {
+                "index.js": 990
+              },
+              "users-settings": {
+                "index.js": 283
+              },
+              "virtual-background": {
+                "TimeWorker.js": 665,
+                "index.js": 5992,
+                "service.js": 2195
+              },
+              "webrtc-base": {
+                "bbb-video-stream.js": 2314
+              }
+            },
+            "stylesheets": {
+              "styled-components": {
+                "breakpoints.js": 654,
+                "general.js": 2509,
+                "globalStyles.js": 3273,
+                "palette.js": 5410,
+                "placeholders.js": 1200,
+                "scrollable.js": 4137,
+                "typography.js": 568
+              }
+            }
+          },
+          "api": {
+            "audio": {
+              "client": {
+                "bridge": {
+                  "FullAudioBridge.js": 252,
+                  "base.js": 864,
+                  "bridge-whitelist.js": 2,
+                  "kurento.js": 5611,
+                  "sip.js": 23274
+                }
+              }
+            },
+            "screenshare": {
+              "client": {
+                "bridge": {
+                  "errors.js": 855,
+                  "index.js": 97,
+                  "kurento.js": 6110,
+                  "service.js": 3106
+                }
+              },
+              "index.js": 208
+            },
+            "voice-call-states": {
+              "utils": {
+                "callStates.js": 157
+              },
+              "index.js": 185
+            },
+            "annotations": {
+              "addAnnotation.js": 1518,
+              "index.js": 257
+            },
+            "auth-token-validation": {
+              "index.js": 338
+            },
+            "breakouts": {
+              "index.js": 245
+            },
+            "breakouts-history": {
+              "index.js": 214
+            },
+            "captions": {
+              "index.js": 214
+            },
+            "connection-status": {
+              "index.js": 223
+            },
+            "external-videos": {
+              "index.js": 175
+            },
+            "group-chat": {
+              "index.js": 363
+            },
+            "group-chat-msg": {
+              "index.js": 365
+            },
+            "guest-users": {
+              "index.js": 164
+            },
+            "meetings": {
+              "index.js": 532
+            },
+            "pads": {
+              "index.js": 430
+            },
+            "polls": {
+              "index.js": 289
+            },
+            "presentation-pods": {
+              "index.js": 222
+            },
+            "presentation-upload-token": {
+              "index.js": 136
+            },
+            "presentations": {
+              "index.js": 223
+            },
+            "slides": {
+              "index.js": 366
+            },
+            "users": {
+              "index.js": 298
+            },
+            "users-infos": {
+              "index.js": 217
+            },
+            "users-persistent-data": {
+              "index.js": 227
+            },
+            "users-settings": {
+              "index.js": 220
+            },
+            "video-streams": {
+              "index.js": 210
+            },
+            "voice-users": {
+              "index.js": 243
+            },
+            "whiteboard-multi-user": {
+              "index.js": 218
+            }
+          },
+          "startup": {
+            "client": {
+              "base.jsx": 8977,
+              "intl.jsx": 3523,
+              "logger.js": 1870
+            }
+          },
+          "utils": {
+            "browserInfo.js": 560,
+            "caseInsensitiveReducer.js": 262,
+            "deviceInfo.js": 591,
+            "dom-utils.js": 1164,
+            "fetchStunTurnServers.js": 1144,
+            "hexInt.js": 271,
+            "humanizeSeconds.js": 151,
+            "ios-webview-audio-polyfills.js": 1826,
+            "keyCodes.js": 352,
+            "logoutRouteHandler.js": 228,
+            "media-stream-utils.js": 614,
+            "mediaElementPlayRetry.js": 316,
+            "sdpUtils.js": 5082,
+            "slideCalcUtils.js": 632,
+            "stats.js": 2025,
+            "statuses.js": 256
+          }
+        },
+        "client": {
+          "collection-mirror-initializer.js": 3778,
+          "main.jsx": 1767
+        }
+      }
+    ]
+  }
+}
