@@ -1,7 +1,7 @@
 e3daaf3a8df0304e5e47268cd2104a10  usr/lib/systemd/system/bbb-pads.service
 b3fcbd4ec30f8c363469e1473a6f1d85  usr/local/bigbluebutton/bbb-pads/.eslintignore
 cad94c5dff8e26b5cab0546add92014d  usr/local/bigbluebutton/bbb-pads/.eslintrc.json
-63ace04e383eedc37aab8a7822ca7c89  usr/local/bigbluebutton/bbb-pads/.git/FETCH_HEAD
+2c2e65004c1e30ebb3a1f6d74fa4360c  usr/local/bigbluebutton/bbb-pads/.git/FETCH_HEAD
 e0f4d9f30992c2c8d54f4ef63a0d62eb  usr/local/bigbluebutton/bbb-pads/.git/HEAD
 9a1c7bde4ce27ffd5fef36417bd43bf6  usr/local/bigbluebutton/bbb-pads/.git/config
 a0a7c3fff21f2aea3cfa1d0316dd816c  usr/local/bigbluebutton/bbb-pads/.git/description
@@ -17,9 +17,10 @@ e4db8c12ee125a8a085907b757359ef0  usr/local/bigbluebutton/bbb-pads/.git/hooks/pr
 2ad18ec82c20af7b5926ed9cea6aeedd  usr/local/bigbluebutton/bbb-pads/.git/hooks/pre-receive.sample
 2b5c047bdb474555e1787db32b2d2fc5  usr/local/bigbluebutton/bbb-pads/.git/hooks/prepare-commit-msg.sample
 517f14b9239689dff8bda3022ebd9004  usr/local/bigbluebutton/bbb-pads/.git/hooks/update.sample
-d01d4441248a5bf12bd34b65a2fc462f  usr/local/bigbluebutton/bbb-pads/.git/index
+777c3d4ce2301fda9ed7a7d9d4482dcf  usr/local/bigbluebutton/bbb-pads/.git/index
 036208b4a1ab4a235d75c181e685e5a3  usr/local/bigbluebutton/bbb-pads/.git/info/exclude
 1812ed13a7d14640e6dbd33d1ff5ae85  usr/local/bigbluebutton/bbb-pads/.git/logs/HEAD
+afbb10ab378cdd54f319d5960e6c4958  usr/local/bigbluebutton/bbb-pads/.git/logs/refs/remotes/origin/develop
 d4f1e34f230d564b6d441fe378972370  usr/local/bigbluebutton/bbb-pads/.git/logs/refs/remotes/origin/main
 2433d0b89ec64c701931076523637231  usr/local/bigbluebutton/bbb-pads/.git/objects/00/4290d734192c81e4100f47844a18c7e26fe800
 67970c8b390ad0ad5cff1c0ba8c157b5  usr/local/bigbluebutton/bbb-pads/.git/objects/02/4b0b106f9064ffb96215aa33e66f7a52e180fd
@@ -34,6 +35,7 @@ aa1982ab6c0c6e172efae055420c1dc6  usr/local/bigbluebutton/bbb-pads/.git/objects/
 2ec24b946f17d62eed48ae041fd48bb3  usr/local/bigbluebutton/bbb-pads/.git/objects/e5/2c2116226679e75fa6e2cd74068d89e05f6269
 21ffb742e3c6e20f69c2ecef4833717a  usr/local/bigbluebutton/bbb-pads/.git/objects/pack/pack-85b88d9715359368fa91867ea16e3a1b4d68473d.idx
 f322cd8e8781a575861f818087eae672  usr/local/bigbluebutton/bbb-pads/.git/objects/pack/pack-85b88d9715359368fa91867ea16e3a1b4d68473d.pack
+e0f4d9f30992c2c8d54f4ef63a0d62eb  usr/local/bigbluebutton/bbb-pads/.git/refs/remotes/origin/develop
 e0f4d9f30992c2c8d54f4ef63a0d62eb  usr/local/bigbluebutton/bbb-pads/.git/refs/remotes/origin/main
 f927747e76e3fcba6bf3b905c14c70be  usr/local/bigbluebutton/bbb-pads/.git/refs/tags/v1.0.0
 8551ee6f8ccc8025041fea9a4727b7da  usr/local/bigbluebutton/bbb-pads/.git/refs/tags/v1.0.1
@@ -1664,4 +1666,4 @@ d7add56e89e476e09f62ad4a926f1f7a  usr/local/bigbluebutton/bbb-pads/node_modules/
 481eb82b797c32dfbee925f545fab5ac  usr/local/bigbluebutton/bbb-pads/opts-global.sh
 18f55789effc9146e2dc842ac496ebbe  usr/local/bigbluebutton/bbb-pads/package-lock.json
 1b46b42788a0baa5f46ed2141b293e28  usr/local/bigbluebutton/bbb-pads/package.json
-74a5a7e15de42b6a6a886437750a8917  usr/share/doc/bbb-pads/changelog.gz
+a99b83d6294e3f21c83732209be6c738  usr/share/doc/bbb-pads/changelog.gz
