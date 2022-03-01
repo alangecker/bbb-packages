@@ -32,6 +32,7 @@ const buildDefaultMetrics = () => {
       [MS_METRIC_NAMES.MEDIASOUP_WORKERS]: new Gauge({
         name: `${MS_METRICS_PREFIX}workers`,
         help: 'Active mediasoup workers',
+        labelNames: ['pool'],
       }),
 
       [MS_METRIC_NAMES.MEDIASOUP_ROUTERS]: new Gauge({
@@ -172,6 +173,7 @@ const buildWorkerResouceMetrics = async (collector) => {
 
 const exportWorkerResourceUsageMetrics = async (collector) => {
   try {
+    if (WORKER_RESOURCE_METRICS) return;
     const metrics = await buildWorkerResouceMetrics(collector);
     injectMetrics(metrics);
   } catch (error) {
