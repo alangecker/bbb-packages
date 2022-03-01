@@ -256,7 +256,7 @@ if [ -f /etc/lsb-release ]; then
   if grep -q bionic /etc/lsb-release; then
     TOMCAT_SERVICE=tomcat8
   else
-    TOMCAT_SERVICE=tomcat7
+    TOMCAT_SERVICE=tomcat9
   fi
 fi
 
@@ -421,6 +421,9 @@ if grep "worker_rlimit_nofile" /etc/nginx/nginx.conf; then
 else
   sed -i 's/events {/worker_rlimit_nofile 10000;\n\nevents {/g' /etc/nginx/nginx.conf
 fi
+
+# Fix permissions for logging
+chown bigbluebutton:bigbluebutton /var/log/bbb-fsesl-akka
 
 # Load the overrides
 systemctl daemon-reload
