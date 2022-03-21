@@ -1,10 +1,10 @@
 aadf975f71b3d5653dde00c0b6bc6f90  etc/bigbluebutton/nginx/learning-dashboard.nginx
-91c4afb1249b50c69e6c2ec3c297b5cd  usr/share/doc/bbb-learning-dashboard/changelog.gz
+3d54aa51761fe9e438ecf1872338dec8  usr/share/doc/bbb-learning-dashboard/changelog.gz
 ea9281c436bb8f25f1175a999f682ef3  var/bigbluebutton/learning-dashboard/asset-manifest.json
 b591a12aff228feae97aacaeefb97fad  var/bigbluebutton/learning-dashboard/favicon.ico
 56088404c140e5d9b1fd493358c32f05  var/bigbluebutton/learning-dashboard/index.html
 4718462d8b8f02830b513d877d29d3ce  var/bigbluebutton/learning-dashboard/static/css/main.1066a49c.css
-3f52dc62685744ed0c370bcfcd08ece0  var/bigbluebutton/learning-dashboard/static/css/main.1066a49c.css.map
+7b01e9cc173aeb8270d26004e185a5a7  var/bigbluebutton/learning-dashboard/static/css/main.1066a49c.css.map
 2ac2fee5ec97df64994b8b5d6764ea7d  var/bigbluebutton/learning-dashboard/static/js/787.13feef5e.chunk.js
 5185294d89362f022b853c5db9db77e3  var/bigbluebutton/learning-dashboard/static/js/787.13feef5e.chunk.js.map
 9e08ca546a0d9ec565e93326cf7a71ef  var/bigbluebutton/learning-dashboard/static/js/main.0b5accc6.js
