@@ -509,6 +509,8 @@ module.exports = class Screenshare extends BaseProvider {
         // the plain transport. This is OK, but neither FS nor KMS support that with
         // plain RTP endpoints.
         splitTransport: this.hasAudio,
+        // Up the chances that rtcp-fb is signaled on the remote end
+        msHackRTPAVPtoRTPAVPF: true,
       },
     };
 
@@ -527,6 +529,11 @@ module.exports = class Screenshare extends BaseProvider {
         content: 'sendonly',
       },
       mediaProfile: 'content',
+      // Disable REMB for recordings; unless there are buffer issues, we don't
+      // need it because the connection is internal
+      adapterOptions: {
+        kurentoRemoveRembRtcpFb: true,
+      }
     };
 
     const { mediaId: hgaMediaId, answer: hgaAnswer } = await this.mcs.publish(

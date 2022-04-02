@@ -9,6 +9,10 @@ const { PrometheusAgent, SFUM_NAMES } = require('./metrics/main-metrics.js');
 
 const LOG_PREFIX = '[WebsocketConnectionManager]';
 const WS_STRICT_HEADER_PARSING = config.get('wsStrictHeaderParsing');
+const WS_HEARTBEAT_INTERVAL = config.has('wsHeartbeatInterval')
+  ? config.get('wsHeartbeatInterval')
+  : 20000;
+const WS_PING_DELAY = 2000;
 
 module.exports = class WebsocketConnectionManager {
   static extractUserInfosFromWsReq (websocketReq) {
@@ -50,6 +54,14 @@ module.exports = class WebsocketConnectionManager {
     this.emitter.on('response', this._onServerResponse.bind(this));
   }
 
+  _updateLastMsgTime (ws) {
+    ws.lastMsgTime = Date.now()
+  }
+
+  _getTimeSinceLastMsg (ws) {
+    return Date.now() - ws.lastMsgTime;
+  }
+
   _closeSocket (ws) {
     try {
       ws.close();
@@ -76,11 +88,55 @@ module.exports = class WebsocketConnectionManager {
     }
   }
 
+  _setupServerHeartbeat (ws) {
+    if (WS_HEARTBEAT_INTERVAL === 0) return;
+
+    ws.isAlive = true;
+
+    ws.on('pong', () => {
+      this._updateLastMsgTime(ws);
+      ws.isAlive = true;
+    });
+
+    ws.pingRoutine = setInterval(() => {
+      if (ws.isAlive === false) {
+        Logger.error(LOG_PREFIX, "Terminating websocket: heartbeat failure", {
+          connectionId: ws.id,
+        });
+        PrometheusAgent.increment(SFUM_NAMES.WEBSOCKET_ERRORS, { reason: 'HeartbeatFailure' });
+        return ws.terminate();
+      }
+
+      if (this._getTimeSinceLastMsg(ws) < WS_HEARTBEAT_INTERVAL) {
+        return;
+      }
+
+      ws.isAlive = false;
+
+      setTimeout(() => {
+        try {
+          ws.ping();
+        } catch (error) {
+          Logger.error(LOG_PREFIX, "Ping routine failed", {
+            connectionId: ws.id, errorMessage: error.message, errorCode: error.code
+          });
+        }
+      }, WS_PING_DELAY);
+    }, WS_HEARTBEAT_INTERVAL);
+  }
+
+  _clearServerHeartbeat (ws) {
+    if (ws && ws.pingRoutine) {
+      clearInterval(ws.pingRoutine);
+    }
+  }
+
   _onNewConnection (ws, req) {
     try {
       ws.id = uuidv4();
       this.webSockets.set(ws.id, ws);
       ws.userInfos = WebsocketConnectionManager.extractUserInfosFromWsReq(req);
+      this._updateLastMsgTime(ws);
       Logger.debug(LOG_PREFIX, "WS connection opened", { connectionId: ws.id });
     } catch (error) {
       if (WS_STRICT_HEADER_PARSING && error.message === 'InvalidHeaders') {
@@ -92,6 +148,8 @@ module.exports = class WebsocketConnectionManager {
         return;
       }
     }
+
+    this._setupServerHeartbeat(ws);
 
     ws.on('message', (data) => {
       this._onMessage(ws, data);
@@ -107,6 +165,7 @@ module.exports = class WebsocketConnectionManager {
   }
 
   _onMessage (ws, data) {
+    this._updateLastMsgTime(ws);
     let message = {};
 
     try {
@@ -149,9 +208,10 @@ module.exports = class WebsocketConnectionManager {
 
   _onError (ws, error, reason = 'UnknownReason') {
     Logger.debug(LOG_PREFIX, "WS error event", {
-      connectionId: ws.id || 'unknown',
+      connectionId: ws.id || 'Unknown',
       errorMessage: error.message,
-      errorCode: error.code
+      errorCode: error.code,
+      reason,
     });
 
     const message = {
@@ -164,8 +224,9 @@ module.exports = class WebsocketConnectionManager {
     }
 
     this.emitter.emit(C.CLIENT_REQ, message);
+    this._clearServerHeartbeat(ws);
     this.webSockets.delete(ws.id);
-    PrometheusAgent.increment(SFUM_NAMES.WEBSOCKET_ERRORS, { reason, code: error.code });
+    PrometheusAgent.increment(SFUM_NAMES.WEBSOCKET_ERRORS, { reason });
   }
 
   _onClose (ws) {
@@ -181,6 +242,7 @@ module.exports = class WebsocketConnectionManager {
     }
 
     this.emitter.emit(C.CLIENT_REQ, message);
+    this._clearServerHeartbeat(ws);
     this.webSockets.delete(ws.id);
   }
 

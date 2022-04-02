@@ -191,6 +191,7 @@ module.exports = class Kurento extends EventEmitter {
             mediaElement.host = pipeline.host;
             mediaElement.pipeline = pipeline;
             mediaElement.transposers = {};
+            mediaElement.mcsCoreMediaType = type;
             const ret = this.setMediaElement(mediaElement);
             if (ret === true) {
               return resolve(mediaElement);
@@ -887,8 +888,10 @@ module.exports = class Kurento extends EventEmitter {
             return resolve();
           }
 
-          if (KURENTO_REMOVE_REMB_RTCPFB) {
-            sdpOffer = sdpOffer.replace(/a=rtcp-fb:.* goog-remb/ig, '');
+          const { adapterOptions = {} } = params;
+
+          if (KURENTO_REMOVE_REMB_RTCPFB || adapterOptions.kurentoRemoveRembRtcpFb === true) {
+            sdpOffer = sdpOffer.replace(/a=rtcp-fb:.* goog-remb\r*\n*/ig, '');
           }
 
           Logger.trace(LOG_PREFIX, `Processing ${elementId} offer`, { offer: sdpOffer });
@@ -900,8 +903,10 @@ module.exports = class Kurento extends EventEmitter {
 
             mediaElement.negotiated = true;
 
-            if (replaceIp) {
-              answer = answer.replace(/(IP4\s[0-9.]*)/g, 'IP4 ' + mediaElement.host.ip);
+            if (replaceIp || mediaElement.mcsCoreMediaType === C.MEDIA_TYPE.RTP) {
+              if (mediaElement.host.ip && typeof mediaElement.host.ip === 'string') {
+                answer = SdpWrapper.stReplaceServerIpv4(answer, mediaElement.host.ip);
+              }
             }
 
             if (trickle || typeof mediaElement.gatherCandidates !== 'function') {
@@ -1006,6 +1011,12 @@ module.exports = class Kurento extends EventEmitter {
             }
 
             const sanitize = (descriptor) => {
+              if (mediaElement.mcsCoreMediaType === C.MEDIA_TYPE.RTP) {
+                if (mediaElement.host.ip && typeof mediaElement.host.ip === 'string') {
+                  descriptor = SdpWrapper.stReplaceServerIpv4(descriptor, mediaElement.host.ip);
+                }
+              }
+
               if (options.filterOptions && options.filterOptions.length > 0) {
                 options.filterOptions.forEach(({ reg, val }) => {
                   descriptor = descriptor.replace(reg, val);

@@ -1,5 +1,5 @@
 kurento:
-  - ip: ""
+  - ip: 0.0.0.0
     url: ws://127.0.0.1:8888/kurento
     # mediaType: (main|audio|content)
     ipClassMappings:
@@ -37,6 +37,8 @@ clientHost: 127.0.0.1
 # Whether RPCs and WS conns should be rejected/shutdown on user info header
 # anomalies
 wsStrictHeaderParsing: true
+# Time (ms) between server-initiated ping-pong checks
+wsHeartbeatInterval: 20000
 # wsServerOptions: see https://github.com/websockets/ws/blob/HEAD/doc/ws.md#new-websocketserveroptions-callback).
 # It's a passthrough mapping of all config literal (strings, booleans, numbers).
 wsServerOptions:

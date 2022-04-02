@@ -541,6 +541,8 @@ module.exports = class Video extends BaseProvider {
           rtcpMux: false,
           comedia: false,
         },
+        // Up the chances that rtcp-fb is signaled on the remote end
+        msHackRTPAVPtoRTPAVPF: true,
       }
     };
 
@@ -558,6 +560,11 @@ module.exports = class Video extends BaseProvider {
         video: 'sendonly',
       },
       mediaProfile: 'main',
+      // Disable REMB for recordings; unless there are buffer issues, we don't
+      // need it because the connection is internal
+      adapterOptions: {
+        kurentoRemoveRembRtcpFb: true,
+      }
     };
 
     const { mediaId: hgaMediaId, answer: hgaAnswer } = await this.mcs.publish(
