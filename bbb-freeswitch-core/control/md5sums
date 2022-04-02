@@ -21,7 +21,7 @@ e24dea42fa05e89c4650126be6f96138  opt/freeswitch/bin/sip-options
 f8fba4cbd0af9539b8a9edfbccd76aae  opt/freeswitch/etc/freeswitch/autoload_configs/console.conf.xml
 ff126a79f4c1580c3ce2ccf830ecd303  opt/freeswitch/etc/freeswitch/autoload_configs/event_socket.conf.xml
 75643c9f160d252953df13e4a81328a4  opt/freeswitch/etc/freeswitch/autoload_configs/logfile.conf.xml
-baa34a5b0c01b721c82f724a2c424f1e  opt/freeswitch/etc/freeswitch/autoload_configs/modules.conf.xml
+dafce44bbe3a92416f502fca4e9be97b  opt/freeswitch/etc/freeswitch/autoload_configs/modules.conf.xml
 9cf23cfb5c6f4b666af68077a2a2d6ef  opt/freeswitch/etc/freeswitch/autoload_configs/opus.conf.xml
 b0a3e95dffebdae0f121ad96a5deb1e3  opt/freeswitch/etc/freeswitch/autoload_configs/sndfile.conf.xml
 565a541eb30e248ef0cc1e68b7d0561f  opt/freeswitch/etc/freeswitch/autoload_configs/sofia.conf.xml
@@ -268,5 +268,5 @@ f11e41bdc8a118ea03b32fa4d9b2eb5c  opt/freeswitch/share/freeswitch/htdocs/slimtes
 d210b2c08b6dbf35ba6099fcbbf49b8b  opt/freeswitch/var/lib/freeswitch/images/default-avatar.png
 e916e54794a0ac7593903c343b99b0db  opt/freeswitch/var/lib/freeswitch/images/default-mute.png
 b6b14e3d1100956e7a559e786342be09  usr/local/bin/fs_clibbb
-3fe83ab944b47cf70a3f8cdf8819f660  usr/share/doc/bbb-freeswitch-core/changelog.gz
+f65ab70f16f971ab48db1ca1b26311e7  usr/share/doc/bbb-freeswitch-core/changelog.gz
 85eace8f35ade18104b9ac9630dcc4fe  var/freeswitch/meetings/readme.txt
