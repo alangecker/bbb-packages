@@ -1,10 +1,9 @@
 #!/bin/bash -e
+#!/bin/bash -e
 
 ############################
 ### BEGIN DEB-HELPERS.SH ###
 ############################
-
-# set -x
 
 #
 # Adding service to autostart
@@ -46,7 +45,7 @@ stopService() {
       app_name="$app_name.service"
     fi
     echo "Removing $app_name from autostart using systemd"
-    if systemctl status $app_name | grep running > /dev/null 2>&1; then
+    if systemctl -q is-active $app_name; then
       systemctl stop $app_name
     fi
     if systemctl is-enabled $app_name > /dev/null 2>&1; then
@@ -198,65 +197,19 @@ deleteGroup() {
   fi
 }
 
-get_yml_properties() {
-  cat ${1} | grep : | grep -v \# | grep -v :$ | sed -e "s/ //g" -e "s/:.*/ /g" | tr -d '\n'
-}
-
-get_yml_value() {
-  # cat ${1} | tr -d '\r' | sed -n "/^[[:blank:]#]*${2}:[ ]*/{s/^[[:blank:]#]*${2}:[ ]*//;p}"
-  cat ${1} | tr -d '\r' | sed -n "/${2}/{s/[^:]*:[ ]*//;p}"
-}
-
-change_yml_value () {
-  sed -i "s<^\([[:blank:]#]*\)\(${2}\): .*<\1\2: ${3}<" $1
-}
-
-
-create_keep_file() {
-  SOURCE=$1
-  SOURCE_ORIG=$SOURCE.orig
-  TARGET="/tmp/$(basename $SOURCE).keep"
-  rm -f $TARGET
-  if [ -f $SOURCE ] && [ -f $SOURCE_ORIG ]; then
-    VARS=$(get_yml_properties $SOURCE_ORIG)
-    for v in $VARS ; do
-      orig_val=$(get_yml_value $SOURCE_ORIG $v)
-      val=$(get_yml_value $SOURCE $v)
-      if [ "$orig_val" != "$val" ]; then
-        echo "$v: $val" | tee -a $TARGET
-      fi
-    done
-  fi
-}
-
-propagate_keep_file() {
-  TARGET=$1
-  SOURCE="/tmp/$(basename $TARGET).keep"
-  if [ -f $SOURCE ] && [ -f $TARGET ]; then
-    VARS=$(get_yml_properties $SOURCE)
-    for v in $VARS ; do
-      old_val=$(get_yml_value $SOURCE $v)
-      change_yml_value $TARGET $v $old_val
-    done
-  fi
-}
-
 if LANG=c ifconfig | grep -q 'venet0:0'; then
   # IP detection for OpenVZ environment
   IP=$(ifconfig | grep -v '127.0.0.1' | grep -E "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | tail -1 | cut -d: -f2 | awk '{ print $1}')
 else
-  IP=$(hostname -I | sed 's/ .*//g')
+  # use IP address of interface used for primary default route
+  IP=$(ifconfig $(route | grep ^default | head -1 | sed "s/.* //") | awk '/inet /{ print $2}' | cut -d: -f2)
 fi
 
-if [ -f /etc/redhat-release ] || [ -f /etc/system-release ]; then
+if [ -f /etc/redhat-release ]; then
   TOMCAT_SERVICE=tomcat
-fi
-
-if [ -f /etc/lsb-release ]; then
+else
   if grep -q bionic /etc/lsb-release; then
     TOMCAT_SERVICE=tomcat8
-  else
-    TOMCAT_SERVICE=tomcat9
   fi
 fi
 
@@ -266,20 +219,10 @@ else
   SERVLET_DIR=/usr/share/bbb-web
 fi
 
-# Added for 2.3
-BBB_WEB_ETC_CONFIG=/etc/bigbluebutton/bbb-web.properties
-
-if [ -f /etc/lsb-release ]; then
-  source /etc/lsb-release
-  if [ "$DISTRIB_CODENAME" == "xenial" ]; then
-    unset BBB_WEB_ETC_CONFIG
-  fi
-fi
-
 PROTOCOL=http
 if [ -f $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties ]; then
-  SERVER_URL=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}' | tail -n 1)
-  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties $BBB_WEB_ETC_CONFIG | grep -v '#' | grep ^bigbluebutton.web.serverURL | tail -n 1 | grep -q https; then
+  SERVER_URL=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}')
+  if cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | grep bigbluebutton.web.serverURL | grep -q https; then
     PROTOCOL=https
   fi
 fi
@@ -307,15 +250,7 @@ bbb_new_properties() {
 }
 
 bbb_config() {
-      if [ -f /tmp/bigbluebutton.properties ]; then
-	      VARS=$(cat /tmp/bigbluebutton.properties | grep = | grep -v \# | sed -e "s/ //g" -e "s/=.*/ /g" | tr -d '\n')
-			  for v in $VARS ; do
-				  old_val=$(cat /tmp/bigbluebutton.properties | tr -d '\r' | sed -n "/^${v}[# ]*=[ ]*/{s/${v}[ ]*=[ ]*//;p}" )
-				  sed -i "s|^$v=.*|$v=$old_val|" $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
-			  done
-      else
-        bbb_new_properties
-      fi
+	bbb_new_properties
 	
   #
   # Now update the API examples
@@ -324,19 +259,8 @@ bbb_config() {
 
 	HOST=$(cat $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties | sed -n '/^bigbluebutton.web.serverURL/{s/.*\///;p}')
 
-	if [ -f /tmp/bigbluebutton.properties ]; then
-		if grep -q securitySalt /tmp/bigbluebutton.properties; then 
-			# Use existing salt in bigbluebutton.properties
-			SECRET=$(cat /tmp/bigbluebutton.properties | tr -d '\r' | sed -n '/securitySalt/{s/.*=//;p}')
-		fi
-	fi
-
   sed -i "s/securitySalt=.*/securitySalt=$SECRET/g" \
      $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
-
-	# XXX
-	sed -i "s/^swfToolsDir=\/bin$/swfToolsDir=\/usr\/bin/g" \
-		$SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
 
 	#
 	# XXX
@@ -352,28 +276,12 @@ bbb_config() {
 	sed -i 's/imageTagThreshold=8000/imageTagThreshold=800/g'     $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
 
 	#
-	# Update the API version to 2.0
-	sed -i 's/apiVersion=1.1/apiVersion=2.0/g' $SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
-
-	#
-	# Propagate settings for TURN server
-	if [ -f /tmp/turn-stun-servers.xml ]; then
-		cp /tmp/turn-stun-servers.xml $SERVLET_DIR/WEB-INF/classes/spring
-		mv /tmp/turn-stun-servers.xml /tmp/turn-stun-servers.xml_
-	fi
-
-	#
 	# Fix links in welcome text
 	sed -i 's#<a href="event:http://www.bigbluebutton.org/html5">#<a href="https://www.bigbluebutton.org/html5" target="_blank">#g' \
 		$SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
 
 	sed -i 's#<a href="http://docs.bigbluebutton.org/" target="_blank">#<a href="https://docs.bigbluebutton.org/" target="_blank">#g' \
 		$SERVLET_DIR/WEB-INF/classes/bigbluebutton.properties
-
-
-	if [ -f /tmp/bigbluebutton.properties ]; then
-          mv /tmp/bigbluebutton.properties /tmp/bigbluebutton.properties_
-        fi
 
   if [ ! -L /etc/bigbluebutton/nginx/web.nginx ]; then
     ln -s /etc/bigbluebutton/nginx/web /etc/bigbluebutton/nginx/web.nginx
@@ -394,7 +302,6 @@ bbb_config() {
 
   # Restart bbb-web to deploy new 
   startService bbb-web.service || echo "bbb-web.service could not be registered or started"
-  # sed -i 's/8080/8090/g' /etc/bigbluebutton/nginx/web
 }
 
 case "$1" in
