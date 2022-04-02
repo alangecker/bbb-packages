@@ -3,7 +3,7 @@ ca7dbf9d91a741d62f6960b3df9154ea  usr/local/bigbluebutton/core/scripts/caption/p
 13dec602250b444f0005236848e8db4e  usr/local/bigbluebutton/core/scripts/presentation.yml
 14afe286cbacc3e7bb3b8759939f7433  usr/local/bigbluebutton/core/scripts/process/presentation.rb
 cad18f18de85eac4aa7237f40feaa571  usr/local/bigbluebutton/core/scripts/publish/presentation.rb
-0e0bdde3b580f4254438e20d915f7de7  usr/share/doc/bbb-playback-presentation/changelog.gz
+b3e56df1c1b53af33173d1d2c57143e1  usr/share/doc/bbb-playback-presentation/changelog.gz
 d899df82f4b9bd613722fbc58df01b95  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/acornmediaplayer.base.css
 a4e7611323f80843a7e4f457646d4834  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/jquery.acornmediaplayer.js
 ea8e76ae3e6577c57444d2af69b76171  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/themes/access/access-captions-dark.png
