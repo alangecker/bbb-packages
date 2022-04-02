@@ -157,3 +157,8 @@ html {
         transform: scale(1.0);
     }
 }
+
+.buttonicon-import_export::before {
+    /* file-download icon */
+    content: "\e858" !important;
+}
