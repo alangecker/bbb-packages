@@ -1,6 +1,6 @@
-79a83af7907931fceebf02829dc6d8d5  etc/bigbluebutton/nginx/notes-playback.nginx
 79a83af7907931fceebf02829dc6d8d5  usr/local/bigbluebutton/core/scripts/notes-playback.nginx
 3feae3aca914a11eaf4b8bcd865bf325  usr/local/bigbluebutton/core/scripts/notes.yml
 6ce6270e2080bc9a8cf3e06f68d89985  usr/local/bigbluebutton/core/scripts/process/notes.rb
 7bdc7e49ac248577faaeade962c19b73  usr/local/bigbluebutton/core/scripts/publish/notes.rb
-67d90e05e921625f431a312abe18404b  usr/share/doc/bbb-playback-notes/changelog.gz
+79a83af7907931fceebf02829dc6d8d5  usr/share/bigbluebutton/nginx/notes-playback.nginx
+1b070ee06f2b0413682d4002f8dc4605  usr/share/doc/bbb-playback-notes/changelog.gz
