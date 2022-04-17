@@ -1,4 +1,3 @@
-1db9f29ae9187a78233ecc858bca65c4  etc/bigbluebutton/nginx/recording-screenshare.nginx
 5743a1a1d31e36b25475d22bf64166e5  usr/local/bigbluebutton/core/playback/screenshare/css/normalize.css
 d306a19a83c3a842b5fb5ccc82b8b97a  usr/local/bigbluebutton/core/playback/screenshare/css/screenshare.css
 8b235fb5ce04e62affb52b5d2d68a393  usr/local/bigbluebutton/core/playback/screenshare/index.html.erb
@@ -43,4 +42,5 @@ b09d81bc51516b5e4260dd45cc2c43a7  usr/local/bigbluebutton/core/playback/screensh
 99ce19d26b3666054e196afe1986f9f6  usr/local/bigbluebutton/core/scripts/process/screenshare.rb
 156dd096af251861f6c4a7cc5185d584  usr/local/bigbluebutton/core/scripts/publish/screenshare.rb
 2ee103ea57f962e85291da0964ebeda9  usr/local/bigbluebutton/core/scripts/screenshare.yml
-f8e0101d82eb43f75a4d781ba3d964ac  usr/share/doc/bbb-playback-screenshare/changelog.gz
+1db9f29ae9187a78233ecc858bca65c4  usr/share/bigbluebutton/nginx/recording-screenshare.nginx
+2b8bc9aa0adad33a50610e94029a1cc3  usr/share/doc/bbb-playback-screenshare/changelog.gz
