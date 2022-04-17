@@ -5,7 +5,9 @@ html {
     background: #fff;
 }
 
-#innerdocbody { 
+#innerdocbody {
+  padding-top: 2px;
+  padding-bottom: unset;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color: #4e5a66;
 }
@@ -107,6 +109,8 @@ html {
 }
 
 #sidediv {
+    padding-top: 2px;
+    padding-bottom: unset;
     border: none;
 }
 
