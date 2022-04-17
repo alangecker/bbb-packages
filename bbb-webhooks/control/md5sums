@@ -1,4 +1,3 @@
-f0453e1594bda2d5ce2c7c9cc86f38f7  etc/bigbluebutton/nginx/webhooks.nginx
 da1a442b7035e56ba5adc7ab24202ad0  usr/lib/systemd/system/bbb-webhooks.service
 4fe79b6fb2d539633f983c74c8677ea9  usr/local/bigbluebutton/bbb-webhooks/.dockerignore
 5846a47b63a4f3a8385f695cdc1a86d5  usr/local/bigbluebutton/bbb-webhooks/.git/FETCH_HEAD
@@ -17,11 +16,11 @@ e4db8c12ee125a8a085907b757359ef0  usr/local/bigbluebutton/bbb-webhooks/.git/hook
 2ad18ec82c20af7b5926ed9cea6aeedd  usr/local/bigbluebutton/bbb-webhooks/.git/hooks/pre-receive.sample
 2b5c047bdb474555e1787db32b2d2fc5  usr/local/bigbluebutton/bbb-webhooks/.git/hooks/prepare-commit-msg.sample
 517f14b9239689dff8bda3022ebd9004  usr/local/bigbluebutton/bbb-webhooks/.git/hooks/update.sample
-abd36f2a071d02a9a91be52f90a34fa9  usr/local/bigbluebutton/bbb-webhooks/.git/index
+691185df496d1c64447476b95cd57a66  usr/local/bigbluebutton/bbb-webhooks/.git/index
 036208b4a1ab4a235d75c181e685e5a3  usr/local/bigbluebutton/bbb-webhooks/.git/info/exclude
-2548b4e5050561bdf043c0c08b3c8cdd  usr/local/bigbluebutton/bbb-webhooks/.git/logs/HEAD
-1b92645a7ac4644883a1da2898217f9e  usr/local/bigbluebutton/bbb-webhooks/.git/logs/refs/remotes/origin/develop
-1b92645a7ac4644883a1da2898217f9e  usr/local/bigbluebutton/bbb-webhooks/.git/logs/refs/remotes/origin/main
+6545158a26331fffdc73842c9dfe9569  usr/local/bigbluebutton/bbb-webhooks/.git/logs/HEAD
+8f146997aa3cf2acb4657bbf005f7487  usr/local/bigbluebutton/bbb-webhooks/.git/logs/refs/remotes/origin/develop
+8f146997aa3cf2acb4657bbf005f7487  usr/local/bigbluebutton/bbb-webhooks/.git/logs/refs/remotes/origin/main
 29e88a81a3743985856c306a7f18d0a7  usr/local/bigbluebutton/bbb-webhooks/.git/objects/pack/pack-bb85c6d9562c55f777ca6041b5d9bcd388d07abc.idx
 d710b0357f958053ba72aa649b566aa4  usr/local/bigbluebutton/bbb-webhooks/.git/objects/pack/pack-bb85c6d9562c55f777ca6041b5d9bcd388d07abc.pack
 6fce279528584435f75a7776f87f11f6  usr/local/bigbluebutton/bbb-webhooks/.git/refs/remotes/origin/develop
@@ -3034,4 +3033,5 @@ b8b259ff9553bd99dad8bf54244e2a64  usr/local/bigbluebutton/bbb-webhooks/userMappi
 a9599b30eb5872a2d17f068f25e9ac72  usr/local/bigbluebutton/bbb-webhooks/utils.js
 33ac6a44d9c4d7e8ddb1c3692a5ccf2d  usr/local/bigbluebutton/bbb-webhooks/web_hooks.js
 8fe31e4477ca93fa52817db4003114cd  usr/local/bigbluebutton/bbb-webhooks/web_server.js
-a23b6309e0a8a7e99008a2291eed3738  usr/share/doc/bbb-webhooks/changelog.gz
+f0453e1594bda2d5ce2c7c9cc86f38f7  usr/share/bigbluebutton/nginx/webhooks.nginx
+9bfcb9f3ea102080d5ff4a3df809935a  usr/share/doc/bbb-webhooks/changelog.gz
