@@ -1,0 +1,22 @@
+AllCops:
+  Exclude:
+    - "spec/**/*"
+    - "vendor/**/*"
+  TargetRubyVersion: 2.5
+  SuggestExtensions: false
+  NewCops: enable
+
+Layout:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+Style:
+  Enabled: false
+
+Naming:
+  Enabled: false
+
+Lint/EndAlignment:
+  Enabled: false

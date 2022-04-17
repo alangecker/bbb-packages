@@ -1,0 +1,202 @@
+have_header: checking for systemd/sd-journal.h... -------------------- yes
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-2.7  -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return !!argv[argc];
+6: }
+/* end */
+
+"gcc -E -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <systemd/sd-journal.h>
+/* end */
+
+--------------------
+
+have_library: checking for -lsystemd... -------------------- yes
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-2.7 -lsystemd  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     int (* volatile tp)(void)=(int (*)(void))&t;
+ 9:     printf("%d", (*tp)());
+10:   }
+11: 
+12:   return !!argv[argc];
+13: }
+14: 
+15: int t(void) { ; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for sd_journal_print()... -------------------- yes
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic    -lsystemd  -lruby-2.7 -lsystemd  -lm   -lc"
+conftest.c: In function 't':
+conftest.c:14:57: error: 'sd_journal_print' undeclared (first use in this function)
+   14 | int t(void) { void ((*volatile p)()); p = (void ((*)()))sd_journal_print; return !p; }
+      |                                                         ^~~~~~~~~~~~~~~~
+conftest.c:14:57: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     int (* volatile tp)(void)=(int (*)(void))&t;
+ 9:     printf("%d", (*tp)());
+10:   }
+11: 
+12:   return !!argv[argc];
+13: }
+14: int t(void) { void ((*volatile p)()); p = (void ((*)()))sd_journal_print; return !p; }
+/* end */
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic    -lsystemd  -lruby-2.7 -lsystemd  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     int (* volatile tp)(void)=(int (*)(void))&t;
+ 9:     printf("%d", (*tp)());
+10:   }
+11: 
+12:   return !!argv[argc];
+13: }
+14: extern void sd_journal_print();
+15: int t(void) { sd_journal_print(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for sd_journal_sendv()... -------------------- yes
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic    -lsystemd  -lruby-2.7 -lsystemd  -lm   -lc"
+conftest.c: In function 't':
+conftest.c:14:57: error: 'sd_journal_sendv' undeclared (first use in this function)
+   14 | int t(void) { void ((*volatile p)()); p = (void ((*)()))sd_journal_sendv; return !p; }
+      |                                                         ^~~~~~~~~~~~~~~~
+conftest.c:14:57: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     int (* volatile tp)(void)=(int (*)(void))&t;
+ 9:     printf("%d", (*tp)());
+10:   }
+11: 
+12:   return !!argv[argc];
+13: }
+14: int t(void) { void ((*volatile p)()); p = (void ((*)()))sd_journal_sendv; return !p; }
+/* end */
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic    -lsystemd  -lruby-2.7 -lsystemd  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     int (* volatile tp)(void)=(int (*)(void))&t;
+ 9:     printf("%d", (*tp)());
+10:   }
+11: 
+12:   return !!argv[argc];
+13: }
+14: extern void sd_journal_sendv();
+15: int t(void) { sd_journal_sendv(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for sd_journal_perror()... -------------------- yes
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic    -lsystemd  -lruby-2.7 -lsystemd  -lm   -lc"
+conftest.c: In function 't':
+conftest.c:14:57: error: 'sd_journal_perror' undeclared (first use in this function)
+   14 | int t(void) { void ((*volatile p)()); p = (void ((*)()))sd_journal_perror; return !p; }
+      |                                                         ^~~~~~~~~~~~~~~~~
+conftest.c:14:57: note: each undeclared identifier is reported only once for each function it appears in
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     int (* volatile tp)(void)=(int (*)(void))&t;
+ 9:     printf("%d", (*tp)());
+10:   }
+11: 
+12:   return !!argv[argc];
+13: }
+14: int t(void) { void ((*volatile p)()); p = (void ((*)()))sd_journal_perror; return !p; }
+/* end */
+
+"gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-2.7.0 -I/usr/include/ruby-2.7.0/ruby/backward -I/usr/include/ruby-2.7.0 -I. -I/usr/include -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -fdebug-prefix-map=/build/ruby2.7-sl7GmE/ruby2.7-2.7.0=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC -std=c11 conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L/usr/lib -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic    -lsystemd  -lruby-2.7 -lsystemd  -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     int (* volatile tp)(void)=(int (*)(void))&t;
+ 9:     printf("%d", (*tp)());
+10:   }
+11: 
+12:   return !!argv[argc];
+13: }
+14: extern void sd_journal_perror();
+15: int t(void) { sd_journal_perror(); return 0; }
+/* end */
+
+--------------------
+
+extconf.h is:
+/* begin */
+1: #ifndef EXTCONF_H
+2: #define EXTCONF_H
+3: #define HAVE_SYSTEMD_SD_JOURNAL_H 1
+4: #define HAVE_SD_JOURNAL_PRINT 1
+5: #define HAVE_SD_JOURNAL_SENDV 1
+6: #define HAVE_SD_JOURNAL_PERROR 1
+7: #endif
+/* end */
+
