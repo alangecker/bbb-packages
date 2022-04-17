@@ -1,3 +1,4 @@
+var process = process || {env: {NODE_ENV: "development"}};
 /**
  * Date / time formats often from back from server APIs in a format that you
  * don't wish to display to your end users (ISO8601 for example). This rendering

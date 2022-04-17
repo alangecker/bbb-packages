@@ -12,7 +12,7 @@ info:
     app:
         name: 'bbb-lti'
         version: '0.5'
-        grailsVersion: '3.3.10'
+        grailsVersion: '5.0.1'
 spring:
     main:
         banner-mode: "off"
@@ -21,10 +21,19 @@ spring:
             check-template-location: false
 
 # Spring Actuator Endpoints are Disabled by Default
-endpoints:
-    enabled: false
+
     jmx:
-        enabled: true
+        unique-names: true
+    devtools:
+        restart:
+            exclude:
+                - grails-app/views/**
+                - grails-app/i18n/**
+                - grails-app/conf/**
+
+management:
+    endpoints:
+        enabled-by-default: false
 
 ---
 grails:

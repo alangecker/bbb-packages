@@ -1,2 +1,0 @@
-//# sourceMappingURL=dataTables.plugin.datetime.js.map
-jQuery.fn.dataTable.render.moment=function(a,c,b){1===arguments.length?(b="en",c=a,a="YYYY-MM-DD"):2===arguments.length&&(b="en");return function(e,d,f){return window.moment(e,a,b,!0).format("sort"===d||"type"===d?"x":c)}};

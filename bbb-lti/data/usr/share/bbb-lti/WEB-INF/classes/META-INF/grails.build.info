@@ -1,6 +1,6 @@
-#Fri, 04 Mar 2022 03:03:02 +0000
+#Mon, 28 Mar 2022 19:54:50 +0000
 
 info.app.version=0.5
 info.app.name=bbb-lti
 grails.env=production
-info.app.grailsVersion=3.3.10
+info.app.grailsVersion=5.0.1

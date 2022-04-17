@@ -1,10 +1,10 @@
 Package: bbb-lti
-Version: 1:2.5-4
+Version: 1:2.5-10
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 47257
+Installed-Size: 90824
 Depends: unzip, bbb-web
 Section: default
 Priority: extra

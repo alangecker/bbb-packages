@@ -1,3 +1,4 @@
+var process = process || {env: {NODE_ENV: "development"}};
 /*
     BigBlueButton open source conferencing system - http://www.bigbluebutton.org/
 
