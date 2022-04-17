@@ -1,3 +1,2 @@
-/etc/bigbluebutton/nginx/webrtc-sfu.nginx
 /etc/cron.hourly/bbb-restart-kms
 /etc/logrotate.d/bbb-webrtc-sfu.logrotate

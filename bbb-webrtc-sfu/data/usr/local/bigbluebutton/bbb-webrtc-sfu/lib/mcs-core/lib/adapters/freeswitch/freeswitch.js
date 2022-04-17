@@ -6,13 +6,11 @@ const EventEmitter = require('events').EventEmitter;
 const SIPMediaHandlerV2 = require('./sip-media-handler-v2');
 const Logger = require('../../utils/logger');
 const SIPJS = require('sip.js');
-const Kurento = require('../kurento/kurento');
 const convertRange = require('../../utils/util').convertRange;
 const { v4: uuidv4 } = require('uuid');
 const { handleError } = require('../../utils/util');
 const LOG_PREFIX = "[mcs-freeswitch]";
 const GLOBAL_EVENT_EMITTER = require('../../../../common/emitter.js');
-const SdpWrapper = require('../../utils/sdp-wrapper');
 const SDPMedia = require('../../model/sdp-media');
 const EslWrapper = require('./esl-wrapper');
 
@@ -28,7 +26,6 @@ const {
   ip: FREESWITCH_CONNECTION_IP,
   sip_ip: FREESWITCH_SIP_IP,
   port: FREESWITCH_PORT,
-  handleExternalConnections: FS_HANDLE_EXTERNAL_CONNECTIONS,
 } = config.get('freeswitch');
 const IP_CLASS_MAPPINGS = config.has('freeswitch.ipClassMappings')
   ? config.get('freeswitch.ipClassMappings')
@@ -47,12 +44,10 @@ module.exports = class Freeswitch extends EventEmitter {
       this.name = name;
       this.balancer = balancer;
       this._userAgents = {};
-      this._rtpConverters = {};
       this._rtpProxies = {};
       this._channelIds = {};
       this._channelIdInfos = {};
       this._memberIdsToUa = {};
-      this._Kurento = new Kurento(balancer);
       this._eslWrapper = new EslWrapper();
       this._eslWrapper.start();
       this._trackESLEvents();
@@ -75,7 +70,7 @@ module.exports = class Freeswitch extends EventEmitter {
       this._eslWrapper.on(EslWrapper.EVENTS.FLOOR_CHANGED, this._handleFloorChanged.bind(this));
   }
 
-  _handleChannelAnswer (channelId, callId, sdpOffer, sdpAnswer) {
+  _handleChannelAnswer (channelId, callId) {
     Logger.debug(LOG_PREFIX, 'Associating channel', { channelId, callId });
     this._channelIds[callId] = channelId;
 
@@ -86,8 +81,6 @@ module.exports = class Freeswitch extends EventEmitter {
     }
 
     channelInfo.callId = callId;
-    channelInfo.sdpOffer = sdpOffer;
-    channelInfo.sdpAnswer = sdpAnswer;
 
     for (var ua in this._userAgents) {
       let userAgent = this._userAgents[ua];
@@ -128,73 +121,13 @@ module.exports = class Freeswitch extends EventEmitter {
     this.emit(C.EVENT.MEDIA_STOP_TALKING+elementId);
   }
 
-  // FIXME
-  // this is temporary workaround to create media that joins freeswitch externally
-  _handleExternalMediaConnected (channelId, callerIdNumber, roomId) {
-    let userId, userName, elementId;
-    const callerNamePattern = /(.*)-bbbID-(.*)$/;
-    const callerNameWithSessIdPattern = /^(.*)_(\d+)-bbbID-(.*)$/;
-
-    let match = null;
-    if ((match = callerNameWithSessIdPattern.exec(callerIdNumber)) !== null) {
-      userId = match[1];
-      userName = match[3];
-    } else if ((match = callerNamePattern.exec(callerIdNumber)) !== null) {
-      userId = match[1];
-      userName = match[2];
-    } else {
-      throw (this._handleError({
-        ...C.ERROR.MEDIA_INVALID_OPERATION,
-        details: `handleExternalMediaConnected failure on regex for: ${callerIdNumber}`,
-      }));
-    }
-
-    const channelInfo = this._channelIdInfos[channelId];
-    const { sdpOffer, sdpAnswer } = this._channelIdInfos[channelId];
-    return this.createMediaElement(roomId, C.MEDIA_TYPE.WEBRTC, {})
-      .then(({ mediaElement, host }) => {
-        elementId = mediaElement;
-        //mediaSessionId is empty because we don't have it yet, will be set later
-        let media = new SDPMedia(roomId, userId, "", sdpOffer, sdpAnswer, C.MEDIA_TYPE.WEBRTC, this, elementId, host, {});
-        media.trackMedia();
-        let userAgent = this._userAgents[elementId];
-        userAgent.callId = channelInfo.callId;
-        userAgent.channelId = channelId;
-        channelInfo.ua = elementId;
-        const event = {
-          roomId,
-          userId,
-          userName,
-          sdpOffer,
-          sdpAnswer,
-          media
-        }
-        Logger.info(LOG_PREFIX, `External audio media joined at ${roomId}: ${callerIdNumber}`,
-          { roomId, callerIdNumber, channelId });
-        GLOBAL_EVENT_EMITTER.emit(C.EVENT.MEDIA_EXTERNAL_AUDIO_CONNECTED, event);
-        return elementId;
-      })
-  }
-
   _handleConferenceMember (channelId, memberId, callerIdNumber, roomId) {
     Logger.debug(LOG_PREFIX, "New conference member, associating UUID to mID",
       { roomId, channelId, memberId, callerIdNumber });
     const channelInfo = this._channelIdInfos[channelId];
     channelInfo.memberId = memberId;
     const elementId = channelInfo.ua;
-
-    if (elementId == null && FS_HANDLE_EXTERNAL_CONNECTIONS) {
-      this._handleExternalMediaConnected(channelId, callerIdNumber, roomId)
-        .then((newElementId) => {
-          this._memberIdsToUa[memberId] = newElementId;
-        })
-        .catch(error => {
-          Logger.error(LOG_PREFIX, `External audio media handling failed due to ${error.message}`,
-            { channelId, callerIdNumber, roomId, error });
-        });
-    } else {
-      this._memberIdsToUa[memberId] = elementId;
-    }
+    this._memberIdsToUa[memberId] = elementId;
   }
 
   _handleVolumeChanged (channelId, volume) {
@@ -286,18 +219,12 @@ module.exports = class Freeswitch extends EventEmitter {
   async connect (sourceId, sinkId, type) {
     const userAgent = this._userAgents[sourceId];
     const { session } = userAgent;
-    const rtpConverter = this._rtpConverters[sourceId];
 
     if (session) {
-        if (rtpConverter == null) {
-          throw (this._handleError(C.ERROR.MEDIA_NOT_FOUND));
-        }
-
         switch (type) {
           case C.CONNECTION_TYPE.ALL:
           case C.CONNECTION_TYPE.AUDIO:
           case C.CONNECTION_TYPE.VIDEO:
-              return this._Kurento.connect(rtpConverter.elementId, sinkId, type);
           default:
             throw (C.ERROR.MEDIA_INVALID_OPERATION);
         }
@@ -313,20 +240,6 @@ module.exports = class Freeswitch extends EventEmitter {
       await this._stopUserAgent(elementId);
     } catch (error) {
       Logger.error(LOG_PREFIX, `Error when stopping userAgent for ${elementId} at room ${roomId}`,
-        { type, error: this._handleError(error) });
-    }
-
-    try {
-      await this._stopRtpConverter(roomId, elementId);
-    } catch (error) {
-      Logger.error(LOG_PREFIX, `Error when stopping RTP converter for ${elementId} at room ${roomId}`,
-        { type, error: this._handleError(error) });
-    }
-
-    try {
-      await this._stopRtpProxy(roomId, elementId);
-    } catch (error) {
-      Logger.error(LOG_PREFIX, `Error when stopping RTP proxy for ${elementId} at room ${roomId}`,
         { type, error: this._handleError(error) });
     }
 
@@ -379,53 +292,6 @@ module.exports = class Freeswitch extends EventEmitter {
     }
   }
 
-  _stopRtpConverter (voiceBridge, elementId) {
-    const rtpConverter = this._rtpConverters[elementId];
-    if (rtpConverter) {
-      Logger.debug(LOG_PREFIX, `Stopping converter element ${rtpConverter.elementId}`);
-      this.balancer.decrementHostStreams(rtpConverter.host.id, C.MEDIA_PROFILE.AUDIO);
-      delete this._rtpConverters[elementId];
-      return this._Kurento.stop(voiceBridge, C.MEDIA_TYPE.RTP, rtpConverter.elementId);
-    } else {
-      return Promise.resolve();
-    }
-  }
-
-  async _stopRtpProxy (voiceBridge, elementId) {
-    const rtpProxy = this._rtpProxies[elementId];
-    if (rtpProxy) {
-      Logger.debug(LOG_PREFIX, `Stopping proxy element ${rtpProxy.elementId}`);
-      this.balancer.decrementHostStreams(rtpProxy.host.id, C.MEDIA_PROFILE.AUDIO);
-      delete this._rtpProxies[elementId];
-      return this._Kurento.stop(voiceBridge, C.MEDIA_TYPE.RTP, rtpProxy.elementId);
-    }
-    else {
-      return Promise.resolve();
-    }
-  }
-
-  async _processProxyElement (voiceBridge, elementId, offer) {
-    try {
-      let mediaElement, host;
-
-      ({ mediaElement, host }  = await this._Kurento.createMediaElement(voiceBridge, C.MEDIA_TYPE.RTP, { mediaProfile: C.MEDIA_PROFILE.AUDIO }));
-      this._rtpProxies[elementId] = { elementId: mediaElement, host };
-      let answer;
-
-      if (offer) {
-        answer = await this._Kurento.processOffer(mediaElement, offer, { replaceIp: true });
-      } else {
-        answer = await this._Kurento.generateOffer(mediaElement);
-      }
-
-      this.balancer.incrementHostStreams(host.id, C.MEDIA_PROFILE.AUDIO);
-
-      return answer;
-    } catch (error) {
-      throw (this._handleError(error));
-    }
-  }
-
   processAnswer (elementId, descriptor) {
     const { session } = this._userAgents[elementId];
 
@@ -436,42 +302,21 @@ module.exports = class Freeswitch extends EventEmitter {
     return session.mediaHandler.setRemoteOffer(descriptor);
   }
 
-  // TODO this method is screaming for a refactor.
   async processOffer (elementId, sdpOffer, params) {
     const userAgent = this._userAgents[elementId];
     const { voiceBridge } = userAgent;
-    const { name, hackProxyViaKurento } = params
-    let mediaElement, host, proxyAnswer, isNegotiated = false;
+    const { name } = params
+    let isNegotiated = false;
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       try {
         if (userAgent) {
-          if (hackProxyViaKurento) {
-            if (this._rtpConverters[elementId]) {
-              mediaElement = this._rtpConverters[elementId].elementId;
-            }
-            else {
-              ({ mediaElement, host }  = await this._Kurento.createMediaElement(voiceBridge, C.MEDIA_TYPE.RTP, { mediaProfile: C.MEDIA_PROFILE.AUDIO }));
-              this._rtpConverters[elementId] = { elementId: mediaElement, host };
-              this.balancer.incrementHostStreams(host.id, C.MEDIA_PROFILE.AUDIO);
-            }
-
-            Logger.info(LOG_PREFIX,"Proxying audio to FS via Kurento for", elementId, "at", voiceBridge);
-            proxyAnswer = await this._processProxyElement(voiceBridge, elementId, sdpOffer);
-            this._Kurento.connect(this._rtpProxies[elementId].elementId, this._rtpConverters[elementId].elementId, C.CONNECTION_TYPE.AUDIO);
-            this._Kurento.connect(this._rtpConverters[elementId].elementId, this._rtpProxies[elementId].elementId, C.CONNECTION_TYPE.AUDIO);
-
-            sdpOffer = null;
-
-            Logger.info(LOG_PREFIX,"RTP endpoint equivalent to SIP instance is", mediaElement, "indexed at", voiceBridge);
-          }
-
-          const session = this.sipCall(userAgent,
+          const session = this.sipCall(
+            userAgent,
             name,
             userAgent.voiceBridge,
             FREESWITCH_SIP_IP,
             FREESWITCH_PORT,
-            this._rtpConverters[elementId]? this._rtpConverters[elementId].elementId : null,
             sdpOffer,
             userAgent.extension,
           );
@@ -481,17 +326,7 @@ module.exports = class Freeswitch extends EventEmitter {
           userAgent.session = session;
 
           const handleOffer = async (offer) => {
-            if (!hackProxyViaKurento) {
-              return resolve(offer);
-            }
-
-            const procOffer = SdpWrapper.getAudioSDP(offer);
-            const procAns = await this._Kurento.processOffer(
-              this._rtpConverters[elementId].elementId,
-              procOffer,
-              { replaceIp: true }
-            );
-            session.mediaHandler.setRemoteOffer(procAns);
+            return resolve(offer);
           }
 
           const handleReinvite = (reinviteSDP) => {
@@ -516,7 +351,7 @@ module.exports = class Freeswitch extends EventEmitter {
               session.callId = response.call_id;
             }
 
-            const answer = hackProxyViaKurento ? proxyAnswer : session.mediaHandler._sdpResponse;
+            const answer = session.mediaHandler._sdpResponse;
             session.localSDP = answer;
             isNegotiated = true;
 
@@ -742,12 +577,12 @@ module.exports = class Freeswitch extends EventEmitter {
   /**
    * Makes a sip call to a Freeswitch instance
    * @param {UA} caller's SIP.js User Agent
-   * @param {String} username The user identifier (Kurento Endpoint ID)
+   * @param {String} username The user identifier
    * @param {String} voiceBridge The voiceBridge we are going to call to
    * @param {String} host Freeswitch host address
    * @param {String} port Freeswitch port
    */
-  sipCall (userAgent, username, voiceBridge, host, port, rtp, descriptor, extension) {
+  sipCall (userAgent, username, voiceBridge, host, port, descriptor, extension) {
     const inviteWithoutSdp = !descriptor;
     const targetExtension = (extension &&
       (typeof extension === 'string' || typeof extension == 'number'))

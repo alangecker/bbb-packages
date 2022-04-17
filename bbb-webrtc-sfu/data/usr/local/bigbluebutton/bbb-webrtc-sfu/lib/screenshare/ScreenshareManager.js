@@ -8,7 +8,7 @@
 "use strict";
 
 const Screenshare = require('./screenshare');
-const BaseManager = require('../base/BaseManager');
+const BaseManager = require('../base/base-manager.js');
 const C = require('../bbb/messages/Constants');
 const Logger = require('../common/logger.js');
 const errors = require('../base/errors');
@@ -184,20 +184,22 @@ module.exports = class ScreenshareManager extends BaseManager {
 
     session = this._fetchSession(voiceBridge);
 
-    if (!session) {
-      session = new Screenshare(
-        connectionId,
-        this._bbbGW,
-        voiceBridge,
-        userId,
-        vh, vw,
-        internalMeetingId,
-        this.mcs,
-        hasAudio,
-      );
-      this._sessions[voiceBridge] = session;
-      this._meetings[internalMeetingId] = voiceBridge;
+    if (session) {
+      await this.closeSession(session, voiceBridge, session._connectionId);
     }
+
+    session = new Screenshare(
+      connectionId,
+      this._bbbGW,
+      voiceBridge,
+      userId,
+      vh, vw,
+      internalMeetingId,
+      this.mcs,
+      hasAudio,
+    );
+    this._sessions[voiceBridge] = session;
+    this._meetings[internalMeetingId] = voiceBridge;
 
     const options = {
       bitrate,
