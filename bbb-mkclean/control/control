@@ -1,10 +1,10 @@
 Package: bbb-mkclean
-Version: 1:2.5-1
+Version: 1:2.5-5
 License: unknown
 Vendor: none
 Architecture: amd64
-Maintainer: <@c17815569218>
-Installed-Size: 589
+Maintainer: <@c39ce6150977>
+Installed-Size: 569
 Section: default
 Priority: extra
 Homepage: http://example.com/no-uri-given
