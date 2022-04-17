@@ -55,7 +55,7 @@ function enableReactRefreshBabelPlugin(babel) {
       let path = state.path;
       let method = t.identifier("___INIT_METEOR_FAST_REFRESH");
       let call = t.callExpression(
-        t.memberExpression(t.identifier('global'), method),
+        method,
         [t.identifier("module")]
       );
       path.unshiftContainer("body", t.expressionStatement(call));

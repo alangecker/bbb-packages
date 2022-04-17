@@ -324,7 +324,7 @@ function Profile(bucketName, f) {
     print("(#".concat(reportNum, ") Total: ").concat(formatMs(getTopLevelTotal())) + " (".concat(runningName, ")"));
     print('');
   }
-})(Profile || module.runSetters(Profile = {}));
+})(Profile || module.runSetters(Profile = {}, ["Profile"]));
 
 let entries = [];
 const prefix = "| ";

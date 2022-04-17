@@ -214,21 +214,10 @@
       "path": "packages/static-html.js"
     },
     {
-      "node_modules": "npm/node_modules/meteor/tmeasday_check-npm-versions/node_modules",
-      "sourceMap": "packages/tmeasday_check-npm-versions.js.map",
-      "path": "packages/tmeasday_check-npm-versions.js"
+      "path": "packages/typescript.js"
     },
     {
-      "sourceMap": "packages/react-meteor-data.js.map",
       "path": "packages/react-meteor-data.js"
-    },
-    {
-      "node_modules": "npm/node_modules/meteor/url/node_modules",
-      "path": "packages/url.js"
-    },
-    {
-      "node_modules": "npm/node_modules/meteor/http/node_modules",
-      "path": "packages/http.js"
     },
     {
       "path": "packages/session.js"
@@ -236,12 +225,6 @@
     {
       "sourceMap": "packages/rocketchat_streamer.js.map",
       "path": "packages/rocketchat_streamer.js"
-    },
-    {
-      "path": "packages/deps.js"
-    },
-    {
-      "path": "packages/cfs_reactive-list.js"
     },
     {
       "path": "packages/hot-code-push.js"
