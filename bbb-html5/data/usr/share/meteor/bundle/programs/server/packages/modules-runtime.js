@@ -8,13 +8,13 @@ var meteorEnv = Package.meteor.meteorEnv;
 /* Package-scope variables */
 var makeInstaller, meteorInstall;
 
-///////////////////////////////////////////////////////////////////////////////
-//                                                                           //
-// packages/modules-runtime/.npm/package/node_modules/install/install.js     //
-// This file is in bare mode and is not in its own closure.                  //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// packages/modules-runtime/.npm/package/node_modules/install/install.js       //
+// This file is in bare mode and is not in its own closure.                    //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+                                                                               //
 makeInstaller = function (options) {
   "use strict";
 
@@ -572,7 +572,7 @@ if (typeof exports === "object") {
   exports.makeInstaller = makeInstaller;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -582,12 +582,12 @@ if (typeof exports === "object") {
 
 (function(){
 
-///////////////////////////////////////////////////////////////////////////////
-//                                                                           //
-// packages/modules-runtime/server.js                                        //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// packages/modules-runtime/server.js                                          //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+                                                                               //
 // Options that will be populated below and then passed to makeInstaller.
 var makeInstallerOptions = {};
 
@@ -638,35 +638,26 @@ var Module = meteorInstall.Module;
 Module.prototype.useNode = function () {
   if (typeof npmRequire !== "function") {
     // Can't use Node if npmRequire is not defined.
-    return false;
-  }
-
-  var parts = this.id.split("/");
-  var start = 0;
-  if (parts[start] === "") ++start;
-  if (parts[start] === "node_modules" &&
-      parts[start + 1] === "meteor") {
-    start += 2;
-  }
-
-  if (parts.indexOf("node_modules", start) < 0) {
-    // Don't try to use Node for modules that aren't in node_modules
-    // directories.
-    return false;
+    throw new Error('npmRequire must be defined to use useNode');
   }
 
   try {
     npmRequire.resolve(this.id);
   } catch (e) {
-    return false;
+    throw new Error(
+      `Cannot find module "${this.id}". ` +
+      `Try installing the npm package or make sure it is not a devDependency.`
+    );
   }
 
+  // See tools/static-assets/server/npm-require.js for the implementation
+  // of npmRequire. Note that this strategy fails when importing ESM
+  // modules (typically, a .js file in a package with "type": "module" in
+  // its package.json), as of Node 12.16.0 (Meteor 1.9.1).
   this.exports = npmRequire(this.id);
-
-  return true;
 };
 
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 }).call(this);
 
@@ -677,12 +668,12 @@ Module.prototype.useNode = function () {
 
 (function(){
 
-///////////////////////////////////////////////////////////////////////////////
-//                                                                           //
-// packages/modules-runtime/profile.js                                       //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+//                                                                             //
+// packages/modules-runtime/profile.js                                         //
+//                                                                             //
+/////////////////////////////////////////////////////////////////////////////////
+                                                                               //
 if (typeof Profile === "function" &&
     process.env.METEOR_PROFILE) {
   var Mp = meteorInstall.Module.prototype;
@@ -691,7 +682,7 @@ if (typeof Profile === "function" &&
   }, Mp.require);
 }
 
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 }).call(this);
 

@@ -233,7 +233,7 @@ module.useNode();
                                                                                                                        //
 module.exports = {
   "name": "@babel/runtime",
-  "version": "7.14.0",
+  "version": "7.17.9",
   "description": "babel's modular runtime helpers",
   "license": "MIT",
   "publishConfig": {
@@ -245,11 +245,29 @@ module.exports = {
     "directory": "packages/babel-runtime"
   },
   "homepage": "https://babel.dev/docs/en/next/babel-runtime",
-  "author": "Sebastian McKenzie <sebmck@gmail.com>",
+  "author": "The Babel Team (https://babel.dev/team)",
   "dependencies": {
     "regenerator-runtime": "^0.13.4"
   },
   "exports": {
+    "./helpers/applyDecs": [
+      {
+        "node": "./helpers/applyDecs.js",
+        "import": "./helpers/esm/applyDecs.js",
+        "default": "./helpers/applyDecs.js"
+      },
+      "./helpers/applyDecs.js"
+    ],
+    "./helpers/esm/applyDecs": "./helpers/esm/applyDecs.js",
+    "./helpers/asyncIterator": [
+      {
+        "node": "./helpers/asyncIterator.js",
+        "import": "./helpers/esm/asyncIterator.js",
+        "default": "./helpers/asyncIterator.js"
+      },
+      "./helpers/asyncIterator.js"
+    ],
+    "./helpers/esm/asyncIterator": "./helpers/esm/asyncIterator.js",
     "./helpers/jsx": [
       {
         "node": "./helpers/jsx.js",
@@ -286,15 +304,6 @@ module.exports = {
       "./helpers/wrapRegExp.js"
     ],
     "./helpers/esm/wrapRegExp": "./helpers/esm/wrapRegExp.js",
-    "./helpers/asyncIterator": [
-      {
-        "node": "./helpers/asyncIterator.js",
-        "import": "./helpers/esm/asyncIterator.js",
-        "default": "./helpers/asyncIterator.js"
-      },
-      "./helpers/asyncIterator.js"
-    ],
-    "./helpers/esm/asyncIterator": "./helpers/esm/asyncIterator.js",
     "./helpers/AwaitValue": [
       {
         "node": "./helpers/AwaitValue.js",
@@ -1033,6 +1042,33 @@ module.exports = {
       "./helpers/classPrivateMethodGet.js"
     ],
     "./helpers/esm/classPrivateMethodGet": "./helpers/esm/classPrivateMethodGet.js",
+    "./helpers/checkPrivateRedeclaration": [
+      {
+        "node": "./helpers/checkPrivateRedeclaration.js",
+        "import": "./helpers/esm/checkPrivateRedeclaration.js",
+        "default": "./helpers/checkPrivateRedeclaration.js"
+      },
+      "./helpers/checkPrivateRedeclaration.js"
+    ],
+    "./helpers/esm/checkPrivateRedeclaration": "./helpers/esm/checkPrivateRedeclaration.js",
+    "./helpers/classPrivateFieldInitSpec": [
+      {
+        "node": "./helpers/classPrivateFieldInitSpec.js",
+        "import": "./helpers/esm/classPrivateFieldInitSpec.js",
+        "default": "./helpers/classPrivateFieldInitSpec.js"
+      },
+      "./helpers/classPrivateFieldInitSpec.js"
+    ],
+    "./helpers/esm/classPrivateFieldInitSpec": "./helpers/esm/classPrivateFieldInitSpec.js",
+    "./helpers/classPrivateMethodInitSpec": [
+      {
+        "node": "./helpers/classPrivateMethodInitSpec.js",
+        "import": "./helpers/esm/classPrivateMethodInitSpec.js",
+        "default": "./helpers/classPrivateMethodInitSpec.js"
+      },
+      "./helpers/classPrivateMethodInitSpec.js"
+    ],
+    "./helpers/esm/classPrivateMethodInitSpec": "./helpers/esm/classPrivateMethodInitSpec.js",
     "./helpers/classPrivateMethodSet": [
       {
         "node": "./helpers/classPrivateMethodSet.js",
@@ -1042,11 +1078,23 @@ module.exports = {
       "./helpers/classPrivateMethodSet.js"
     ],
     "./helpers/esm/classPrivateMethodSet": "./helpers/esm/classPrivateMethodSet.js",
+    "./helpers/identity": [
+      {
+        "node": "./helpers/identity.js",
+        "import": "./helpers/esm/identity.js",
+        "default": "./helpers/identity.js"
+      },
+      "./helpers/identity.js"
+    ],
+    "./helpers/esm/identity": "./helpers/esm/identity.js",
     "./package": "./package.json",
     "./package.json": "./package.json",
     "./regenerator": "./regenerator/index.js",
     "./regenerator/*.js": "./regenerator/*.js",
     "./regenerator/": "./regenerator/"
+  },
+  "engines": {
+    "node": ">=6.9.0"
   }
 };
 
@@ -1133,33 +1181,6 @@ module.exports = {
 module.useNode();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"useragent":{"package.json":function module(require,exports,module){
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                                     //
-// node_modules/useragent/package.json                                                                                 //
-//                                                                                                                     //
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                                       //
-module.exports = {
-  "name": "useragent",
-  "version": "2.3.0",
-  "main": "./index.js"
-};
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-},"index.js":function module(require,exports,module){
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                                                     //
-// node_modules/useragent/index.js                                                                                     //
-//                                                                                                                     //
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                                       //
-module.useNode();
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 }},"winston":{"package.json":function module(require,exports,module){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1170,7 +1191,7 @@ module.useNode();
                                                                                                                        //
 module.exports = {
   "name": "winston",
-  "version": "3.3.3",
+  "version": "3.7.2",
   "main": "./lib/winston"
 };
 
@@ -1224,7 +1245,7 @@ module.useNode();
                                                                                                                        //
 module.exports = {
   "name": "winston-transport",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "main": "index.js"
 };
 
