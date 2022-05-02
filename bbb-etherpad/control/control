@@ -1,10 +1,10 @@
 Package: bbb-etherpad
-Version: 1:2.5-6
+Version: 1:2.5-7
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 145035
+Installed-Size: 145020
 Section: default
 Priority: extra
 Homepage: http://bigbluebutton.org/
