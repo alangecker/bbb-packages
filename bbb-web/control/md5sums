@@ -3,7 +3,7 @@ aff8c9c114151487f185f8f368b84c72  usr/share/bbb-web/META-INF/MANIFEST.MF
 a6c2afe26d803273b0a1b3c47e73b6d5  usr/share/bbb-web/WEB-INF/classes/ApplicationResources.groovy
 b150c087269afbbb4d6fd5cfb96d2c32  usr/share/bbb-web/WEB-INF/classes/BigBlueButtonFilters.groovy
 52b0e70eaf618188086424648d8c02a5  usr/share/bbb-web/WEB-INF/classes/BuildConfig.groovy
-90b4d6ebceac82ed42e40a7bfe1b7b91  usr/share/bbb-web/WEB-INF/classes/META-INF/grails.build.info
+a65e2f5120d79ce9cd55d841b9182b6c  usr/share/bbb-web/WEB-INF/classes/META-INF/grails.build.info
 1c9f6ad3f885893afbb03140c4764d7c  usr/share/bbb-web/WEB-INF/classes/WEB-INF/freemarker/api-error.ftlx
 416ac2118161634da3f23a4f631b7485  usr/share/bbb-web/WEB-INF/classes/WEB-INF/freemarker/api-errors.ftlx
 8019f6518c64cfce783552939421c4cb  usr/share/bbb-web/WEB-INF/classes/WEB-INF/freemarker/api-version.ftlx
@@ -325,7 +325,7 @@ a08ca19201b2133149854d9c58b89ad7  usr/share/bbb-web/WEB-INF/freemarker/get-sessi
 e37e0334120344fded342cf3493caf67  usr/share/bbb-web/WEB-INF/freemarker/insert-document.ftlx
 fb775d9e83c024591982058abcd2bf11  usr/share/bbb-web/WEB-INF/freemarker/is-meeting-running.ftlx
 f0b9119defc29a97a96137abbe32d0cb  usr/share/bbb-web/WEB-INF/freemarker/join-meeting.ftlx
-4bc44819c7b3a2dbf7bbe9d786e246c3  usr/share/bbb-web/WEB-INF/layers.idx
+cd0f7e736652f8f173524bb97a16b7c8  usr/share/bbb-web/WEB-INF/layers.idx
 f8699dc8b97c2b383c3419b5152a4092  usr/share/bbb-web/WEB-INF/lib/GroovyConfigWriter-0.2.jar
 4b1acf3448b750cb485da7e37384fcd8  usr/share/bbb-web/WEB-INF/lib/HdrHistogram-2.1.12.jar
 2ad12e1ef7614cecfb0483fa9ac6da73  usr/share/bbb-web/WEB-INF/lib/LatencyUtils-2.0.3.jar
@@ -339,8 +339,8 @@ f5d81f5a0cd7568efb78137f99243e89  usr/share/bbb-web/WEB-INF/lib/ant-junit-1.10.1
 691514b4bb663b216d18dd4f2be7d573  usr/share/bbb-web/WEB-INF/lib/asset-pipeline-core-3.3.6.jar
 62c5164b2d196622ffaa516b3e0202d0  usr/share/bbb-web/WEB-INF/lib/asset-pipeline-grails-3.3.6.jar
 8c3bf5893e246cb15108fd28bac80633  usr/share/bbb-web/WEB-INF/lib/async-4.0.0.jar
-c45e8c268d94dca245a29836ab5745f1  usr/share/bbb-web/WEB-INF/lib/bbb-common-message_2.13-0.0.1649796473-SNAPSHOT.jar
-20bdd2676b076bfacc977f726e71076d  usr/share/bbb-web/WEB-INF/lib/bbb-common-web-0.0.1649796473-SNAPSHOT.jar
+6fb6dff730c37464a295d0c970f9b6b0  usr/share/bbb-web/WEB-INF/lib/bbb-common-message_2.13-0.0.1650912884-SNAPSHOT.jar
+72efd59022fc26a7402f6d7112e0b305  usr/share/bbb-web/WEB-INF/lib/bbb-common-web-0.0.1650912884-SNAPSHOT.jar
 f0a6cb636ec2f15c79acdc8e68032f74  usr/share/bbb-web/WEB-INF/lib/cache-4.0.3.jar
 7aa86dc0c185691ebfedf507cd02f0bf  usr/share/bbb-web/WEB-INF/lib/caffeine-2.9.2.jar
 d7e964cf19235ee401c48383306aec86  usr/share/bbb-web/WEB-INF/lib/checker-qual-3.10.0.jar
@@ -607,7 +607,7 @@ d98fd2f7982d781829607122acf7c940  usr/share/bbb-web/assets/grails.css.gz
 f7f9b8e7dc6a2965522549e11bdad8f1  usr/share/bbb-web/assets/main-ae29fbf5e8f2e67263127bab65c86dc7.css.gz
 00a041cb625c1dedcc398bb62a499a1e  usr/share/bbb-web/assets/main.css
 f7f9b8e7dc6a2965522549e11bdad8f1  usr/share/bbb-web/assets/main.css.gz
-c3be425d0237a454d9b137e6b3b57f92  usr/share/bbb-web/assets/manifest.properties
+b3faec707009c9f397a3aec362e36917  usr/share/bbb-web/assets/manifest.properties
 de02487513cda3f9db3d2969608747f8  usr/share/bbb-web/assets/mobile-61b8607741e97aa19553f856bc5da637.css
 86db0bee1acbc1053ef81b614749e74a  usr/share/bbb-web/assets/mobile-61b8607741e97aa19553f856bc5da637.css.gz
 de02487513cda3f9db3d2969608747f8  usr/share/bbb-web/assets/mobile.css
@@ -748,9 +748,9 @@ eb93238250a386d57ff70564796cf777  usr/share/bbb-web/org/springframework/boot/loa
 fcecad46d3a85b5af869c342ec1e2656  usr/share/bigbluebutton/nginx/loadbalancer.nginx
 fede2ae08a94733d3740eca0114b547f  usr/share/bigbluebutton/nginx/presentation-slides.nginx
 f3728aa1de877c75c6eb2cf68827e9d0  usr/share/bigbluebutton/nginx/web
-db31ae497d59a16fe81e2421ec51f319  usr/share/doc/bbb-web/changelog.gz
+f87622da21256c9d8c8eec592b75c47c  usr/share/doc/bbb-web/changelog.gz
 1c6032441aec11b523e1a7bfa96d60cf  usr/share/prescheck/lib/SparseBitSet-1.2.jar
-4c1a5f737428a4e7e29546246d5427d1  usr/share/prescheck/lib/bbb-pres-check-0.0.1.jar
+f838e30477737c48ad1a61249e050d6f  usr/share/prescheck/lib/bbb-pres-check-0.0.1.jar
 5085f186156822fa3a02e55bcd5584a8  usr/share/prescheck/lib/commons-codec-1.13.jar
 4a37023740719b391f10030362c86be6  usr/share/prescheck/lib/commons-collections4-4.4.jar
 3f7237fb56029591b5bdd2698c196220  usr/share/prescheck/lib/commons-compress-1.20.jar
