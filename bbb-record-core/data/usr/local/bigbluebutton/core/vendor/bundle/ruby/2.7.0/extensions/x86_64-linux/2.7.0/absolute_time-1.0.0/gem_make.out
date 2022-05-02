@@ -1,5 +1,5 @@
 current directory: /var/tmp/bbb-record-core_2.5_focal_m25f/staging/usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext
-/usr/bin/ruby2.7 -I /usr/lib/ruby/2.7.0 -r ./siteconf20220412-28-1dmqg0s.rb extconf.rb
+/usr/bin/ruby2.7 -I /usr/lib/ruby/2.7.0 -r ./siteconf20220425-27-316u5y.rb extconf.rb
 checking for mach/mach.h... no
 checking for mach/mach_time.h... no
 checking for clock_gettime()... yes
@@ -15,4 +15,4 @@ linking shared-object absolute_time.so
 
 current directory: /var/tmp/bbb-record-core_2.5_focal_m25f/staging/usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 absolute_time.so ./.gem.20220412-28-1jpb7a4
+/usr/bin/install -c -m 0755 absolute_time.so ./.gem.20220425-27-1myd9tw

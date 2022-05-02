@@ -27,7 +27,7 @@ e0392d3563d1519b836b1bc6d3395ec0  usr/local/bigbluebutton/core/lib/recordandplay
 cc1417edab5016cd105b751831bb087e  usr/local/bigbluebutton/core/lib/recordandplayback/workers/publish_worker.rb
 83a98484497f9dab3402b9ab6b0ed1b6  usr/local/bigbluebutton/core/lib/recordandplayback/workers/sanity_worker.rb
 2cbb6bb0adaa98d809d6870843ad803a  usr/local/bigbluebutton/core/lib/recordandplayback/workers.rb
-d1362e7c6a5c12862b1021a949b4100e  usr/local/bigbluebutton/core/lib/recordandplayback.rb
+07b2eaecea9aab98c30bd6cfb63cbde1  usr/local/bigbluebutton/core/lib/recordandplayback.rb
 1006e4ffb59059e345e5dee9741b9d4b  usr/local/bigbluebutton/core/scripts/README
 4ac3490915b06ca81d3974482a5101d0  usr/local/bigbluebutton/core/scripts/archive/archive.rb
 31b02a3eb052bb4b180e6e283f2c5824  usr/local/bigbluebutton/core/scripts/bbb-0.9-beta-recording-update
@@ -61,18 +61,18 @@ f98d29a705e6d257a6b4df782a853898  usr/local/bigbluebutton/core/vendor/bundle/rub
 486c4a170d9d980d90417327eb6e3104  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/bin/tilt
 7bed3bd193ce7e216cab250ae933d8ef  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/absolute_time-1.0.0/absolute_time.so
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/absolute_time-1.0.0/gem.build_complete
-b689b36fb7b1725d2632e3e9f532df85  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/absolute_time-1.0.0/gem_make.out
+eece5867e8e6a1f6be34529f73f60825  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/absolute_time-1.0.0/gem_make.out
 cb6a64b3cf2261fa721f91828a92ae79  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/absolute_time-1.0.0/mkmf.log
 085d3d1dc4b76e7142af47244c4a20df  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/ffi-1.15.5/ffi_c.so
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/ffi-1.15.5/gem.build_complete
-dc1e88dd90f6d5d26abf74a6459fb8a4  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/ffi-1.15.5/gem_make.out
+7fde57cd579b94a37742afd901facce6  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/ffi-1.15.5/gem_make.out
 b28a116223163dc1ff6ffa7c827f3887  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/ffi-1.15.5/mkmf.log
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/journald-native-1.0.12/gem.build_complete
-64c8e6ee211c78f32703099c010c22b8  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/journald-native-1.0.12/gem_make.out
+3e0d0e99e6840c6f517008f33fbf8713  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/journald-native-1.0.12/gem_make.out
 af1aa6c01da2170fef2fa760f718840a  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/journald-native-1.0.12/journald_native.so
 1202b63a478e07a99bedc43a5ef6f59e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/journald-native-1.0.12/mkmf.log
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/racc-1.6.0/gem.build_complete
-26ed5a07e35ec32f27f057fff9b9b8b0  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/racc-1.6.0/gem_make.out
+e64cb52e3c0aaede69ff7d3b9a8bc136  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/racc-1.6.0/gem_make.out
 f310a2e93aec98d2f658c6831c5591e9  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/racc-1.6.0/mkmf.log
 2cab39f34187adf2b7e2ef070d0dd1c2  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/extensions/x86_64-linux/2.7.0/racc-1.6.0/racc/cparse.so
 d78d8e79dc45302ab539fcc62c1060e1  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/.gitignore
@@ -81,7 +81,7 @@ d78d8e79dc45302ab539fcc62c1060e1  usr/local/bigbluebutton/core/vendor/bundle/rub
 2ddf03851cffc2c4145fbad694c127a7  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/Rakefile
 12022ddbf2403eab9146d1cdd89c79a1  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/absolute_time.gemspec
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext/.sitearchdir.time
-ca32d7b21792e6a52168054797008c2a  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext/Makefile
+28efc5fbf9fcd13af2a544f4c24462fd  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext/Makefile
 cff779fbcb2e3fe1f8401f71e29670a6  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext/absolute_time.c
 7bed3bd193ce7e216cab250ae933d8ef  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext/absolute_time.so
 ec4e1cd58747d4fa30547975027562d7  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/absolute_time-1.0.0/ext/extconf.rb
@@ -565,7 +565,7 @@ e3b66bb6605c0f96d28b1561d91e8168  usr/local/bigbluebutton/core/vendor/bundle/rub
 297bcd9c10522370180912c8cdbd3e7d  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/LastError.h
 6483fab9093e9dd6abbdb80cb0b129b0  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/LongDouble.c
 dc38331c9379e732f3d182baacd3593b  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/LongDouble.h
-13fd2b1110f494d554f845e30313404f  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/Makefile
+d99b19e3944a7183c84c36adc18e0ff3  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/Makefile
 22c504762f82dcceaa6bc8a9d3a4b3c1  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/MappedType.c
 6ae7b81b77504fa05e440d35e07abfd1  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/MappedType.h
 9b73cdf881309a9d2b48b67a83465c10  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/MemoryPointer.c
@@ -1019,7 +1019,7 @@ bccb176b85170e3cb6baaabbecbc56c9  usr/local/bigbluebutton/core/vendor/bundle/rub
 ed16e9c938e769d9db8360c64659dcec  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/.libs/libffi_convenience.a
 cc172c9a4b1b8d08f0c85827d204d97a  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/Makefile
 f6d8252edd7a05fdfea57b96e2554f5d  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/a.out
-df066ca103cf0fec970e8701ce4e01f2  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/config.log
+846a0202ec33ae8ac9301cce1281708c  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/config.log
 8e1dd55f794d9dc3a8641d719694fda8  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/config.status
 4e2b30f207b1128e6cc13e2da0593c42  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/doc/Makefile
 4d99f156d7b3ef7d1369fc6646f3959a  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/fficonfig.h
@@ -1030,7 +1030,7 @@ fe62dc24b3c46c6745fa21ac5fbce1b9  usr/local/bigbluebutton/core/vendor/bundle/rub
 6548a543273e636b3d3d32fd11d2e493  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/libffi.map
 f306a8fc2426b52093d9d2fbda265211  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/libffi.pc
 3ece9bc44eb76e5e6543aa0388eb39af  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/libffi_convenience.la
-553ee6e4fde83172f7f4d0ead8e68d85  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/libtool
+d884c89288af0776091eebfd641c3ca9  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/libtool
 1fff15a09a6cd4a7ba72a5a51c787417  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/local.exp
 39ba3487033a9d12a6a63b20e46ad475  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/man/Makefile
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c/libffi-x86_64-linux-gnu/src/.deps/.dirstamp
@@ -1234,7 +1234,7 @@ ada019f9cfa1b92583900a91c3f0a50d  usr/local/bigbluebutton/core/vendor/bundle/rub
 3a3cb944cd9363233de2d64cd18da6ad  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/COPYING.md
 fae8d7568934451c36676ef72765a822  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/README.md
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native/.sitearchdir.time
-ed63e98b3b8cd91f0db3449af701b932  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native/Makefile
+fdbc8b1f7bf651a24326554432f397d6  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native/Makefile
 10f1e3b4b8beb49b4bffe89ad2db5b39  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native/extconf.h
 c484937194718b1dd4ab32267340a8e8  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native/extconf.rb
 42c9bb4d94f23e1cfb93e72eeb12a4da  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native/journald_dummy.c
@@ -1754,7 +1754,7 @@ da486e987458bbad15966526f961fb15  usr/local/bigbluebutton/core/vendor/bundle/rub
 ce3e1fa06079e55d310ad49c3e6a7fc0  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/doc/ja/usage.ja.html
 bdb8fd5b5932f0b0a85e6e6415591642  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/ext/racc/MANIFEST
 d41d8cd98f00b204e9800998ecf8427e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/ext/racc/cparse/.sitearchdir.-.racc.time
-34f76a4c10cb17df900efb3bd1824070  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/ext/racc/cparse/Makefile
+6c6614a67fdac4e37b8a11cfca09e1c4  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/ext/racc/cparse/Makefile
 3dc3f1d39108e4ccb595b86c71a914fd  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/ext/racc/cparse/cparse.c
 2cab39f34187adf2b7e2ef070d0dd1c2  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/ext/racc/cparse/cparse.so
 2c117508a0877387fbd69b487bda919d  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/racc-1.6.0/ext/racc/cparse/extconf.rb
@@ -2418,4 +2418,4 @@ bc5a1660dc323850ced3890a96d73343  usr/local/bigbluebutton/core/vendor/bundle/rub
 1ea705cf87097d3f0baea87c95232e9e  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/specifications/tilt-2.0.10.gemspec
 6d99562103381a7146b615315717a025  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/specifications/tzinfo-1.2.9.gemspec
 74ec381fa4c1f7c7d214b5cfae49c45b  usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/specifications/vegas-0.1.11.gemspec
-db9e6f2643ad94da776c0ca6e54ed3e9  usr/share/doc/bbb-record-core/changelog.gz
+6c8ae5de2ca23f1b6afea53c90a4f91e  usr/share/doc/bbb-record-core/changelog.gz
