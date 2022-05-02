@@ -1,9 +1,9 @@
-ca7dbf9d91a741d62f6960b3df9154ea  usr/local/bigbluebutton/core/scripts/caption/presentation
+b7b88a931d478d5c18a27d38baf2c1d6  usr/local/bigbluebutton/core/scripts/caption/presentation
 13dec602250b444f0005236848e8db4e  usr/local/bigbluebutton/core/scripts/presentation.yml
-14afe286cbacc3e7bb3b8759939f7433  usr/local/bigbluebutton/core/scripts/process/presentation.rb
-1527a13ee1f2413e302a814a8b4332df  usr/local/bigbluebutton/core/scripts/publish/presentation.rb
+496f86f4a760f41f7a9dd1038feecbd8  usr/local/bigbluebutton/core/scripts/process/presentation.rb
+00a2b5708d235722e63bb7d253f96051  usr/local/bigbluebutton/core/scripts/publish/presentation.rb
 5453678ce01a1fff192858ed38f62ba7  usr/share/bigbluebutton/nginx/presentation.nginx
-0d63d84c7758915393721fc21b67f20d  usr/share/doc/bbb-playback-presentation/changelog.gz
+25958475220a0ba29dfe3d6fdba91f68  usr/share/doc/bbb-playback-presentation/changelog.gz
 d899df82f4b9bd613722fbc58df01b95  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/acornmediaplayer.base.css
 a4e7611323f80843a7e4f457646d4834  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/jquery.acornmediaplayer.js
 ea8e76ae3e6577c57444d2af69b76171  var/bigbluebutton/playback/presentation/0.81/acornmediaplayer/themes/access/access-captions-dark.png

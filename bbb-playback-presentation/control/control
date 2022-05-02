@@ -1,11 +1,11 @@
 Package: bbb-playback-presentation
-Version: 1:2.5-7
+Version: 1:2.5-9
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 2788
-Depends: bbb-record-core
+Installed-Size: 2789
+Depends: bbb-record-core, yq (>= 3), yq (<< 4)
 Section: default
 Priority: extra
 Homepage: http://bigbluebutton.org/
