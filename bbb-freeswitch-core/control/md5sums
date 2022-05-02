@@ -27,9 +27,9 @@ b0a3e95dffebdae0f121ad96a5deb1e3  opt/freeswitch/etc/freeswitch/autoload_configs
 565a541eb30e248ef0cc1e68b7d0561f  opt/freeswitch/etc/freeswitch/autoload_configs/sofia.conf.xml
 c35aa33177848991991f946a14636860  opt/freeswitch/etc/freeswitch/autoload_configs/switch.conf.xml
 d47b77e2e3298d915d2550578b0c52ed  opt/freeswitch/etc/freeswitch/autoload_configs/timezones.conf.xml
-45a01e5c8cb6b7a29d9690b85f52053e  opt/freeswitch/etc/freeswitch/dialplan/default/bbb_conference.xml
+e87ab9ee9f719746d6562502f75ed772  opt/freeswitch/etc/freeswitch/dialplan/default/bbb_conference.xml
 86ac701fd711deaec6de85f5018815f8  opt/freeswitch/etc/freeswitch/dialplan/default/bbb_echo_test.xml
-be7c781997da2486d30b3637a32a6311  opt/freeswitch/etc/freeswitch/dialplan/default/bbb_echo_to_conference.xml
+52d543c144a141313de49f09a67ca1b6  opt/freeswitch/etc/freeswitch/dialplan/default/bbb_echo_to_conference.xml
 bf674a6fda7be09a1d81c991d722fe54  opt/freeswitch/etc/freeswitch/dialplan/default.xml
 b4b0c3a73cb927985a7848db8212de64  opt/freeswitch/etc/freeswitch/dialplan/public/bbb_sfu.xml
 c8b2e5c1d18ddbfacf62b68721ff9d7b  opt/freeswitch/etc/freeswitch/dialplan/public/bbb_sip.xml
@@ -267,5 +267,5 @@ f11e41bdc8a118ea03b32fa4d9b2eb5c  opt/freeswitch/share/freeswitch/htdocs/slimtes
 d210b2c08b6dbf35ba6099fcbbf49b8b  opt/freeswitch/var/lib/freeswitch/images/default-avatar.png
 e916e54794a0ac7593903c343b99b0db  opt/freeswitch/var/lib/freeswitch/images/default-mute.png
 b6b14e3d1100956e7a559e786342be09  usr/local/bin/fs_clibbb
-5f6be86028ac34a9ce2a103297f99cc7  usr/share/doc/bbb-freeswitch-core/changelog.gz
+0de0c02d319e5f5c56513e7e78f09f74  usr/share/doc/bbb-freeswitch-core/changelog.gz
 85eace8f35ade18104b9ac9630dcc4fe  var/freeswitch/meetings/readme.txt
