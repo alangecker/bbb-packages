@@ -1,11 +1,11 @@
 Package: bbb-webrtc-sfu
-Version: 1:2.5-15
+Version: 1:2.5-21
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 25850
-Depends: git-core,nginx,kurento-media-server,openh264-gst-plugins-bad-1.5,bbb-apps-akka,nodejs,npm,build-essential,xmlstarlet
+Installed-Size: 27201
+Depends: git-core,nginx,kurento-media-server,openh264-gst-plugins-bad-1.5,bbb-apps-akka,nodejs,npm,build-essential,xmlstarlet, yq (>= 3), yq (<< 4)
 Section: default
 Priority: extra
 Homepage: http://bigbluebutton.org/
