@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.8.0"
   },
-  "totalMinifiedBytes": 3598243,
-  "totalMinifiedGzipBytes": 904668,
+  "totalMinifiedBytes": 3600739,
+  "totalMinifiedGzipBytes": 905304,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9329,
     "packages/meteor-base.js": 31,
@@ -2827,7 +2827,7 @@
       {}
     ],
     "app/app.js": [
-      1428168,
+      1430664,
       {
         "imports": {
           "ui": {
@@ -3029,7 +3029,7 @@
                       "component.jsx": 1019,
                       "styles.js": 249
                     },
-                    "component.jsx": 3281,
+                    "component.jsx": 3385,
                     "container.jsx": 878,
                     "styles.js": 4007
                   },
@@ -3220,8 +3220,8 @@
                   "styles.js": 1905
                 },
                 "switch": {
-                  "component.jsx": 1799,
-                  "styles.js": 3596
+                  "component.jsx": 1858,
+                  "styles.js": 3671
                 },
                 "tooltip": {
                   "bbbtip.css": 240,
@@ -3469,14 +3469,18 @@
                   "container.jsx": 468,
                   "styles.js": 2717
                 },
+                "subtitles": {
+                  "component.jsx": 395,
+                  "styles.js": 855
+                },
                 "volume-slider": {
                   "component.jsx": 1280,
                   "styles.js": 698
                 },
-                "component.jsx": 11033,
+                "component.jsx": 11959,
                 "container.jsx": 1186,
                 "service.js": 1236,
-                "styles.js": 1974
+                "styles.js": 2145
               },
               "layout": {
                 "layout-manager": {
@@ -3496,7 +3500,7 @@
               "lock-viewers": {
                 "context": {
                   "consumer.jsx": 265,
-                  "container.jsx": 1000,
+                  "container.jsx": 1004,
                   "context.js": 458,
                   "provider.jsx": 181,
                   "withContext.jsx": 300
@@ -3709,7 +3713,7 @@
               },
               "reload-button": {
                 "component.jsx": 386,
-                "styles.js": 917
+                "styles.js": 782
               },
               "shortcut-help": {
                 "component.jsx": 5189,
