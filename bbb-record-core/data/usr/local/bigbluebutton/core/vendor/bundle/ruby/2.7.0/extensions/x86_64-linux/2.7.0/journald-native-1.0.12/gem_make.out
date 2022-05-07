@@ -1,5 +1,5 @@
 current directory: /var/tmp/bbb-record-core_2.5_focal_m25f/staging/usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native
-/usr/bin/ruby2.7 -I /usr/lib/ruby/2.7.0 -r ./siteconf20220425-27-11c5ovr.rb extconf.rb
+/usr/bin/ruby2.7 -I /usr/lib/ruby/2.7.0 -r ./siteconf20220502-28-msb8sn.rb extconf.rb
 checking for systemd/sd-journal.h... yes
 checking for -lsystemd... yes
 checking for sd_journal_print()... yes
@@ -19,4 +19,4 @@ linking shared-object journald_native.so
 
 current directory: /var/tmp/bbb-record-core_2.5_focal_m25f/staging/usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/journald-native-1.0.12/ext/journald_native
 make "DESTDIR=" install
-/usr/bin/install -c -m 0755 journald_native.so ./.gem.20220425-27-14s82ch
+/usr/bin/install -c -m 0755 journald_native.so ./.gem.20220502-28-1betv8i
