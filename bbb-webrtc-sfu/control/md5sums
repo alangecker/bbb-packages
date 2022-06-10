@@ -18,7 +18,7 @@ d0fe9dacdd87e42c534fc7e95744c735  usr/local/bigbluebutton/bbb-webrtc-sfu/docs/me
 8f972c7f42ca27541cb19eab651a9a4d  usr/local/bigbluebutton/bbb-webrtc-sfu/docs/nodejs-compatibility.md
 1d9c293dff4e9cd31d35186d74fba7a2  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/audio-process.js
 2cc607af70fb1b4c3952307f70e0a5a3  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/audio-req-hdlr.js
-534248e516f29c504e37a996bd37e17a  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/audio-session.js
+898eadc91dec6ba4111c596bf2dd6aab  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/audio-session.js
 acd468c66009c438b92132b6e1752e05  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/client-audio-consumer.js
 e2276d01544463fba1d76af2f5469b71  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/client-static-transceiver.js
 0e57465c3de00310a79b92e71b454142  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/audio/consumer-bridge-storage.js
@@ -71,14 +71,14 @@ f1d135a9bcb5a0d9578a62b769d645ef  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs
 d4b692352d6c1cc9681324569869c223  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/kurento/errors.js
 372bc692a4ccef1fb0fd6cd35827117b  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/kurento/kurento.js
 75111733c362a2bf239390102a8b527c  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/loopback/tainted-loopback.js
-d872137da0c0cef9704da09b55360a03  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/base-element.js
+8d248d352e5e082429f89742fc08e9b6  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/base-element.js
 4b34f06d09f5c69c7f2c7aec6d6031d8  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/configs.js
 fb6988f2094787cda8c7057fbfca3ac3  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/constants.js
 b7736bda2c7a74c22426c49f6731d414  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/errors.js
 1cc405bd37e48b270009358f07735f8e  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/media-elements.js
 8578acaa420f8f1d7965861a18a53702  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/mediasoup-adapter.js
 9d6568e1a2373a990d1cb346d08d53f0  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/mtransport-sdp-element.js
-f1e53be66465131bba26aa5c5111add5  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/prom-metrics.js
+482281e8132e96d7ebb42c06c8c5aac1  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/prom-metrics.js
 98221d880f30bce429d66f439031c584  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/rec-port-warden.js
 70228408d59f24ebb1c4bedba94b37d7  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/recorder-element.js
 92d3c7e0886bfeae60f4c90d1917249a  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/routers.js
@@ -86,7 +86,7 @@ f1e53be66465131bba26aa5c5111add5  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs
 2aae4b10770a1f4eb1bbd98c5b440295  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/sdp-translator.js
 e35ca9d1fbe0f65ffca7beacc0007dcf  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/transports.js
 8664c647725fd4a27b3ec44cc9c01ef6  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/utils.js
-9d04ba750084ed7e0786afbaaba29185  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/workers.js
+26fc270abc2e6dcb911a476e8392f319  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/adapters/mediasoup/workers.js
 ca6c5bb1afbcc6a5590fbcacdfb67cc1  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/api/mcs-message-router.js
 1a741e8a83e5506c675f5e047806d431  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/constants/constants.js
 7294b01c5d5f209c8f59277f91829338  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/mcs-core/lib/events/base-event.js
@@ -118,8 +118,8 @@ fd23b2b7270d9e5fbc14ffdd47a0f119  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/scr
 a65865da9d234c5bf8eebd334f845b36  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/VideoManager.js
 f101c56fce41dfacdfe6613d08ee9bdd  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/VideoProcess.js
 eacc197d1f7beb9daf51458a44634330  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/video-perm-utils.js
-f2a1c091a34f74f8c90392eb9bf96a6e  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/video.js
-44389c32c656bbe5c6b27548d14a2c9a  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/.package-lock.json
+db86db1f8bbcb5a72a8c0c0c88a08acc  usr/local/bigbluebutton/bbb-webrtc-sfu/lib/video/video.js
+692cefbba89030f2b8bedcf3a8347a1e  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/.package-lock.json
 12d99be4215ea44df59ce831ed79d258  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/@colors/colors/LICENSE
 e0bf879f1df335bc43076a5a66b16628  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/@colors/colors/README.md
 eece3971254c2ddcba55c1259ae999ce  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/@colors/colors/examples/normal-usage.js
@@ -2808,8 +2808,8 @@ c0f6f052bb0eaa911c3a189a9d307c4d  usr/local/bigbluebutton/bbb-webrtc-sfu/node_mo
 9bc986ff5a5081702901358a040a98e2  usr/local/bigbluebutton/bbb-webrtc-sfu/node_modules/xtend/test.js
 d0000fe40bfb7e906c743487d796194b  usr/local/bigbluebutton/bbb-webrtc-sfu/nodemon.json
 481eb82b797c32dfbee925f545fab5ac  usr/local/bigbluebutton/bbb-webrtc-sfu/opts-global.sh
-296571b8c4ac3a03ab618d17c50763ea  usr/local/bigbluebutton/bbb-webrtc-sfu/package-lock.json
-4042a50501e3a8edae7952f444915c03  usr/local/bigbluebutton/bbb-webrtc-sfu/package.json
+c69339b6a2a7647f4668e80faa5e3462  usr/local/bigbluebutton/bbb-webrtc-sfu/package-lock.json
+095b0781c8f81c28a0da5040dd1a5326  usr/local/bigbluebutton/bbb-webrtc-sfu/package.json
 f6f70ad4829f891f4957e4b555d0f678  usr/local/bigbluebutton/bbb-webrtc-sfu/server.js
 396445c1cc43e80bae0f64efacad84ec  usr/share/bigbluebutton/nginx/webrtc-sfu.nginx
-2eee53774b9222532332eafe8b56c008  usr/share/doc/bbb-webrtc-sfu/changelog.gz
+d59be640c7f3d1a82c1d18bf5429f514  usr/share/doc/bbb-webrtc-sfu/changelog.gz
