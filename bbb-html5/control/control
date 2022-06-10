@@ -1,10 +1,10 @@
 Package: bbb-html5
-Version: 1:2.5-73
+Version: 1:2.5-2807
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 396058
+Installed-Size: 396091
 Depends: bc,bbb-pads,bbb-webrtc-sfu,bbb-web,mongodb-org, yq (>= 3), yq (<< 4)
 Section: default
 Priority: extra
