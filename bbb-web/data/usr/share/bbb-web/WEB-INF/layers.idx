@@ -226,8 +226,8 @@
 - "spring-boot-loader":
   - "org/"
 - "snapshot-dependencies":
-  - "WEB-INF/lib/bbb-common-message_2.13-0.0.1650912884-SNAPSHOT.jar"
-  - "WEB-INF/lib/bbb-common-web-0.0.1650912884-SNAPSHOT.jar"
+  - "WEB-INF/lib/bbb-common-message_2.13-0.0.1653946328-SNAPSHOT.jar"
+  - "WEB-INF/lib/bbb-common-web-0.0.1653946328-SNAPSHOT.jar"
 - "application":
   - "META-INF/"
   - "WEB-INF/classes/"
