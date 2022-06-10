@@ -1,7 +1,7 @@
 b6e1d50922feab2e81826447f1758f51  lib/systemd/system/bbb-lti.service
 0e8ad11c644a98c00bb4a5fa47632305  usr/share/bbb-lti/META-INF/MANIFEST.MF
 52b0e70eaf618188086424648d8c02a5  usr/share/bbb-lti/WEB-INF/classes/BuildConfig.groovy
-7216f7317d4d36fefbc8643c8747d658  usr/share/bbb-lti/WEB-INF/classes/META-INF/grails.build.info
+6390798ec49e7a938a6e45c72857577e  usr/share/bbb-lti/WEB-INF/classes/META-INF/grails.build.info
 0b0e0f90d59106fa73ae45bd5f00db84  usr/share/bbb-lti/WEB-INF/classes/application.groovy
 8244d735b4f2d844660faa0a43556d22  usr/share/bbb-lti/WEB-INF/classes/application.yml
 c40f6dfa37738f1a663f89157b54324d  usr/share/bbb-lti/WEB-INF/classes/assets/bbb.jpg
@@ -38,7 +38,7 @@ ced3fc81e9a7fd1802f2c83d274f93e1  usr/share/bbb-lti/WEB-INF/classes/grails-app/v
 df94b771dcf14d1f05be50c01f5c4d79  usr/share/bbb-lti/WEB-INF/classes/grails-app/views/notFound.gsp
 eba4db7e49deb0db28be2b3656caa6df  usr/share/bbb-lti/WEB-INF/classes/grails-app/views/tool/error.gsp
 e7eba4a6f96e8a86ba748e9bdca8e6ea  usr/share/bbb-lti/WEB-INF/classes/grails-app/views/tool/index.gsp
-9dcb5d43dca2248cfc2965fe5c7f1226  usr/share/bbb-lti/WEB-INF/classes/gsp/views.properties
+ffae1a5cf722bc49c32bbf4bbbfe172c  usr/share/bbb-lti/WEB-INF/classes/gsp/views.properties
 e8bff5bbdc7c38016c3f43b916a48156  usr/share/bbb-lti/WEB-INF/classes/gsp_bbb_lti_layoutsmain_gsp$_run_closure1$_closure3$_closure4.class
 c37d5b3dc90634d0a57e7f0c947b3210  usr/share/bbb-lti/WEB-INF/classes/gsp_bbb_lti_layoutsmain_gsp$_run_closure1$_closure3.class
 797c4c4734c867054ae08d027e6935ad  usr/share/bbb-lti/WEB-INF/classes/gsp_bbb_lti_layoutsmain_gsp$_run_closure1.class
@@ -125,7 +125,7 @@ ed0caa80154e8970e0600a4fc41ddf7b  usr/share/bbb-lti/WEB-INF/classes/org/bigblueb
 63491ed37a362705ea0fb05d4e41bc0b  usr/share/bbb-lti/WEB-INF/classes/org/bigbluebutton/lti/controllers/ToolController$_closure4.class
 2152f844d291b29ae6ffa9b3d393c6c9  usr/share/bbb-lti/WEB-INF/classes/org/bigbluebutton/lti/controllers/ToolController$_closure5.class
 ae6005705ff0c1f3f1bafa610b8f8d92  usr/share/bbb-lti/WEB-INF/classes/org/bigbluebutton/lti/controllers/ToolController$_getCartridgeXML_closure6.class
-d8967f6d7584ece22032cafbcb791b1d  usr/share/bbb-lti/WEB-INF/classes/org/bigbluebutton/lti/controllers/ToolController.class
+fe76d9cd0546d3e100c7ee8289a118d3  usr/share/bbb-lti/WEB-INF/classes/org/bigbluebutton/lti/controllers/ToolController.class
 19f16a99259a9ede3cc656697f179ed7  usr/share/bbb-lti/WEB-INF/classes/org/bigbluebuttoni/Application.class
 91240ef4eaf6f64051571e97d66032ba  usr/share/bbb-lti/WEB-INF/classes/org/bigbluebuttoni/ApplicationLoader.class
 4e3c8a2024cd0ac67c1fa8b70188452d  usr/share/bbb-lti/WEB-INF/classes/org/imsglobal/basiclti/Base64.class
@@ -503,7 +503,7 @@ cb73a0b16d6ae717d2cd1c5a3b7d46ff  usr/share/bbb-lti/assets/loading.gif
 f7f9b8e7dc6a2965522549e11bdad8f1  usr/share/bbb-lti/assets/main-ae29fbf5e8f2e67263127bab65c86dc7.css.gz
 00a041cb625c1dedcc398bb62a499a1e  usr/share/bbb-lti/assets/main.css
 f7f9b8e7dc6a2965522549e11bdad8f1  usr/share/bbb-lti/assets/main.css.gz
-b1d5a55c4e4708a0ff9e408d7af99fa1  usr/share/bbb-lti/assets/manifest.properties
+55256ddcf4bca8d973564cbf93fe1908  usr/share/bbb-lti/assets/manifest.properties
 de02487513cda3f9db3d2969608747f8  usr/share/bbb-lti/assets/mobile-61b8607741e97aa19553f856bc5da637.css
 86db0bee1acbc1053ef81b614749e74a  usr/share/bbb-lti/assets/mobile-61b8607741e97aa19553f856bc5da637.css.gz
 de02487513cda3f9db3d2969608747f8  usr/share/bbb-lti/assets/mobile.css
@@ -677,4 +677,4 @@ dece64489cd6a78b660687e106650775  usr/share/bbb-lti/tld/grails.tld
 d03fd4715ad14d489299615617ac70cf  usr/share/bbb-lti/tld/spring-form.tld
 10a79f1a9a329414dfdfec190b52e8da  usr/share/bbb-lti/tld/spring.tld
 a87c9ef95cb14cd6ce72c5f2f0ef0d3c  usr/share/bigbluebutton/nginx/lti.nginx
-17cefc4002358474b190018108c1e976  usr/share/doc/bbb-lti/changelog.gz
+e1e99748756d6885b58c356e134afdbe  usr/share/doc/bbb-lti/changelog.gz
