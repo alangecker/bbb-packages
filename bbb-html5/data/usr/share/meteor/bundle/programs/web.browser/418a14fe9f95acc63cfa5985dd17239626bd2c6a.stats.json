@@ -3,8 +3,8 @@
     "name": "standard-minifier-js",
     "version": "2.8.0"
   },
-  "totalMinifiedBytes": 3602228,
-  "totalMinifiedGzipBytes": 905744,
+  "totalMinifiedBytes": 3603143,
+  "totalMinifiedGzipBytes": 906063,
   "minifiedBytesByPackage": {
     "packages/meteor.js": 9329,
     "packages/meteor-base.js": 31,
@@ -2827,7 +2827,7 @@
       {}
     ],
     "app/app.js": [
-      1432153,
+      1433068,
       {
         "imports": {
           "ui": {
@@ -2838,7 +2838,7 @@
                     "message-chat-item": {
                       "component.jsx": 2514
                     },
-                    "component.jsx": 5258,
+                    "component.jsx": 5373,
                     "container.jsx": 1331,
                     "styles.js": 4469
                   },
@@ -2850,7 +2850,7 @@
                   "push-alert": {
                     "component.jsx": 1249
                   },
-                  "component.jsx": 3569,
+                  "component.jsx": 3673,
                   "container.jsx": 1625,
                   "styles.js": 1186
                 },
@@ -2871,9 +2871,9 @@
                 "chat-logger": {
                   "ChatLogger.js": 529
                 },
-                "component.jsx": 3536,
+                "component.jsx": 3560,
                 "container.jsx": 5622,
-                "service.js": 5328,
+                "service.js": 5344,
                 "styles.js": 794
               },
               "presentation": {
@@ -2912,7 +2912,7 @@
                   "styles.js": 668
                 },
                 "presentation-menu": {
-                  "component.jsx": 4898,
+                  "component.jsx": 4884,
                   "container.jsx": 1108,
                   "styles.js": 3379
                 },
@@ -2925,7 +2925,7 @@
                   "styles.js": 808
                 },
                 "presentation-uploader": {
-                  "component.jsx": 21671,
+                  "component.jsx": 21708,
                   "container.jsx": 1644,
                   "service.js": 3829,
                   "styles.js": 11776
@@ -3159,7 +3159,7 @@
                     "component.jsx": 502,
                     "styles.js": 761
                   },
-                  "component.jsx": 586,
+                  "component.jsx": 633,
                   "styles.js": 490
                 },
                 "fallback-errors": {
@@ -3237,7 +3237,7 @@
                 },
                 "tooltip": {
                   "bbbtip.css": 240,
-                  "component.jsx": 3115,
+                  "component.jsx": 3135,
                   "container.jsx": 354
                 }
               },
@@ -3400,7 +3400,7 @@
                 },
                 "component.jsx": 11414,
                 "container.jsx": 2338,
-                "service.js": 3194,
+                "service.js": 3193,
                 "styles.js": 5770
               },
               "captions": {
@@ -3436,7 +3436,7 @@
               "components-data": {
                 "chat-context": {
                   "adapter.jsx": 2567,
-                  "context.jsx": 5663
+                  "context.jsx": 5916
                 },
                 "group-chat-context": {
                   "adapter.jsx": 547,
@@ -3464,9 +3464,9 @@
                   "styles.js": 7743
                 },
                 "status-helper": {
-                  "component.jsx": 1446,
+                  "component.jsx": 1478,
                   "container.jsx": 292,
-                  "styles.js": 852
+                  "styles.js": 835
                 },
                 "service.js": 5786
               },
@@ -3567,7 +3567,7 @@
                 "content": {
                   "component.jsx": 421,
                   "container.jsx": 368,
-                  "styles.js": 1012
+                  "styles.js": 1016
                 },
                 "sessions": {
                   "container.jsx": 303,
@@ -3576,7 +3576,7 @@
                 "component.jsx": 1078,
                 "container.jsx": 527,
                 "service.js": 1559,
-                "styles.js": 1104
+                "styles.js": 1130
               },
               "poll": {
                 "dragAndDrop": {
@@ -3589,7 +3589,7 @@
                   "styles.js": 4443
                 },
                 "component.jsx": 15063,
-                "container.jsx": 2154,
+                "container.jsx": 2156,
                 "service.js": 4013,
                 "styles.js": 6169
               },
@@ -3603,6 +3603,11 @@
                 "container.jsx": 1430,
                 "service.js": 2779,
                 "styles.js": 2132
+              },
+              "utils": {
+                "hooks": {
+                  "index.js": 217
+                }
               },
               "video-preview": {
                 "virtual-background": {
@@ -3761,7 +3766,7 @@
               },
               "user-avatar": {
                 "component.jsx": 1430,
-                "styles.js": 5622
+                "styles.js": 5644
               },
               "user-info": {
                 "component.jsx": 1156,

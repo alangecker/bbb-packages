@@ -31,7 +31,7 @@ public:
     bbbServerVersion: HTML5_FULL_BBB_VERSION
     displayBbbServerVersion: true
     copyright: '©2022 BigBlueButton Inc.'
-    html5ClientBuild: 2807
+    html5ClientBuild: 2815
     helpLink: https://bigbluebutton.org/html5/
     lockOnJoin: true
     cdn: ''
