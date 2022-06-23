@@ -1,10 +1,10 @@
 Package: bbb-learning-dashboard
-Version: 1:2.5-16
+Version: 1:2.5-17
 License: unknown
 Vendor: BigBlueButon
 Architecture: amd64
 Maintainer: ffdixon@bigbluebutton.org
-Installed-Size: 1060
+Installed-Size: 1094
 Depends: unzip, nginx
 Section: default
 Priority: extra

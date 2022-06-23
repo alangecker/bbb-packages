@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/learning-analytics-dashboard/static/css/main.31ab9598.css",
-    "main.js": "/learning-analytics-dashboard/static/js/main.1dec58fe.js",
+    "main.css": "/learning-analytics-dashboard/static/css/main.fcea8bf9.css",
+    "main.js": "/learning-analytics-dashboard/static/js/main.28417865.js",
     "static/js/787.13feef5e.chunk.js": "/learning-analytics-dashboard/static/js/787.13feef5e.chunk.js",
     "static/media/bbb-icons.woff": "/learning-analytics-dashboard/static/media/bbb-icons.1b4ec364994645317829.woff",
     "index.html": "/learning-analytics-dashboard/index.html",
-    "main.31ab9598.css.map": "/learning-analytics-dashboard/static/css/main.31ab9598.css.map",
-    "main.1dec58fe.js.map": "/learning-analytics-dashboard/static/js/main.1dec58fe.js.map",
+    "main.fcea8bf9.css.map": "/learning-analytics-dashboard/static/css/main.fcea8bf9.css.map",
+    "main.28417865.js.map": "/learning-analytics-dashboard/static/js/main.28417865.js.map",
     "787.13feef5e.chunk.js.map": "/learning-analytics-dashboard/static/js/787.13feef5e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.31ab9598.css",
-    "static/js/main.1dec58fe.js"
+    "static/css/main.fcea8bf9.css",
+    "static/js/main.28417865.js"
   ]
 }
