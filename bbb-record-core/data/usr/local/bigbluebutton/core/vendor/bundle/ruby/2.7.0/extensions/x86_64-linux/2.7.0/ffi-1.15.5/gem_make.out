@@ -1,5 +1,5 @@
 current directory: /var/tmp/bbb-record-core_2.5_focal_m25f/staging/usr/local/bigbluebutton/core/vendor/bundle/ruby/2.7.0/gems/ffi-1.15.5/ext/ffi_c
-/usr/bin/ruby2.7 -I /usr/lib/ruby/2.7.0 -r ./siteconf20220602-28-1guvbzc.rb extconf.rb
+/usr/bin/ruby2.7 -I /usr/lib/ruby/2.7.0 -r ./siteconf20220616-27-1goa6nj.rb extconf.rb
 checking for ffi.h... no
 checking for ffi.h in /usr/local/include,/usr/include/ffi,/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ffi,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/ffi... no
 checking for whether -Wl,--exclude-libs,ALL is accepted as LDFLAGS... yes
@@ -162,4 +162,4 @@ compiling Types.c
 compiling Variadic.c
 compiling ffi.c
 linking shared-object ffi_c.so
-/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20220602-28-1xd8ehd
+/usr/bin/install -c -m 0755 ffi_c.so ./.gem.20220616-27-989h88
